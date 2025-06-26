@@ -1,0 +1,213 @@
+[
+    {
+      "id": 1,
+      "name": "Essential Tee",
+      "tagline": "Premium Collection",
+      "price": 499,
+      "image_url": "t-shirt1.jpg",
+      "features": ["100% Cotton", "Premium", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 12
+    },
+    {
+      "id": 101,
+      "name": "Essential mark",
+      "tagline": "Premium Collection",
+      "price": 499,
+      "image_url": "t-shirt1.jpg",
+      "features": ["100% Cotton", "Premium", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 12
+    },
+    {
+      "id": 111,
+      "name": "Essential graph",
+      "tagline": "Premium Collection",
+      "price": 499,
+      "image_url": "t-shirt1.jpg",
+      "features": ["100% Cotton", "Premium", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 12
+    },
+    {
+      "id": 2,
+      "name": "Urban Hoodie",
+      "tagline": "Winter Drop",
+      "price": 999,
+      "image_url": "t-shirt2.jpg",
+      "features": ["Fleece", "Unisex", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 9
+    },
+    {
+      "id": 3,
+      "name": "Denim Jacket",
+      "tagline": "Classic Edit",
+      "price": 1999,
+      "image_url": "t-shirt3.jpg",
+      "features": ["100% Denim", "Vintage", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 7
+    },
+    {
+      "id": 4,
+      "name": "Sports Shorts",
+      "tagline": "Active Line",
+      "price": 699,
+      "image_url": "t-shirt4.jpg",
+      "features": ["Breathable", "Lightweight", "Quick-Dry"],
+      "stock_status": "In Stock",
+      "stock_left": 15
+    },
+    {
+      "id": 5,
+      "name": "Classic Cap",
+      "tagline": "Street Style",
+      "price": 299,
+      "image_url": "t-shirt5.jpg",
+      "features": ["Adjustable", "100% Cotton", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 20
+    },
+    {
+      "id": 6,
+      "name": "Leather Belt",
+      "tagline": "Essentials",
+      "price": 799,
+      "image_url": "t-shirt6.jpg",
+      "features": ["Genuine", "Handcrafted", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 5
+    },
+    {
+      "id": 7,
+      "name": "Canvas Sneakers",
+      "tagline": "Everyday Wear",
+      "price": 1499,
+      "image_url": "t-shirt7.jpg",
+      "features": ["Lightweight", "Comfort-Fit", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 6
+    },
+    {
+      "id": 8,
+      "name": "Athletic Socks",
+      "tagline": "Performance",
+      "price": 199,
+      "image_url": "t-shirt8.jpg",
+      "features": ["Moisture-Wick", "Cushioned", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 40
+    },
+    {
+      "id": 9,
+      "name": "Wrist Watch",
+      "tagline": "Signature",
+      "price": 2499,
+      "image_url": "t-shirt9.jpg",
+      "features": ["Water-Resist", "Stainless", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 4
+    },
+    {
+      "id": 10,
+      "name": "Travel Backpack",
+      "tagline": "Adventure",
+      "price": 2299,
+      "image_url": "t-shirt10.jpg",
+      "features": ["30 L", "Water-Proof", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 11
+    },
+    {
+      "id": 11,
+      "name": "Athletic Socks",
+      "tagline": "Performance",
+      "price": 199,
+      "image_url": "t-shirt8.jpg",
+      "features": ["Moisture-Wick", "Cushioned", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 40
+    },
+    {
+      "id": 12,
+      "name": "Wrist Watch",
+      "tagline": "Signature",
+      "price": 2499,
+      "image_url": "t-shirt9.jpg",
+      "features": ["Water-Resist", "Stainless", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 4
+    },
+    {
+      "id": 13,
+      "name": "Travel Backpack",
+      "tagline": "Adventure",
+      "price": 2299,
+      "image_url": "t-shirt10.jpg",
+      "features": ["30 L", "Water-Proof", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 11
+    },
+    {
+      "id": 14,
+      "name": "Athletic Socks",
+      "tagline": "Performance",
+      "price": 199,
+      "image_url": "t-shirt8.jpg",
+      "features": ["Moisture-Wick", "Cushioned", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 40
+    },
+    {
+      "id": 15,
+      "name": "Wrist Watch",
+      "tagline": "Signature",
+      "price": 2499,
+      "image_url": "t-shirt9.jpg",
+      "features": ["Water-Resist", "Stainless", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 4
+    },
+    {
+      "id": 16,
+      "name": "Travel Backpack",
+      "tagline": "Adventure",
+      "price": 2299,
+      "image_url": "t-shirt10.jpg",
+      "features": ["30 L", "Water-Proof", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 11
+    },
+    {
+      "id": 17,
+      "name": "Athletic Socks",
+      "tagline": "Performance",
+      "price": 199,
+      "image_url": "t-shirt8.jpg",
+      "features": ["Moisture-Wick", "Cushioned", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 40
+    },
+    {
+      "id": 18,
+      "name": "Wrist Watch",
+      "tagline": "Signature",
+      "price": 2499,
+      "image_url": "t-shirt9.jpg",
+      "features": ["Water-Resist", "Stainless", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 4
+    },
+    {
+      "id": 19,
+      "name": "Travel Backpack",
+      "tagline": "Adventure",
+      "price": 2299,
+      "image_url": "t-shirt10.jpg",
+      "features": ["30 L", "Water-Proof", "Limited"],
+      "stock_status": "In Stock",
+      "stock_left": 11
+    }
+  ]
+  

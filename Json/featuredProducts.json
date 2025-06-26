@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Classic White Shirt",
+    "price": 89.99,
+    "image_url": "https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    "id": 2,
+    "name": "Slim Fit Jeans",
+    "price": 129.99,
+    "image_url": "https://images.pexels.com/photos/1346187/pexels-photo-1346187.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    "id": 3,
+    "name": "Leather Jacket",
+    "price": 249.99,
+    "image_url": "https://images.pexels.com/photos/1124468/pexels-photo-1124468.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    "id": 4,
+    "name": "Summer Dress",
+    "price": 79.99,
+    "image_url": "https://images.pexels.com/photos/291762/pexels-photo-291762.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    "id": 5,
+    "name": "Casual Sneakers",
+    "price": 99.99,
+    "image_url": "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    "id": 6,
+    "name": "Classic Wristwatch",
+    "price": 199.00,
+    "image_url": "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    "id": 7,
+    "name": "Aviator Sunglasses",
+    "price": 59.5,
+    "image_url": "https://images.pexels.com/photos/46710/pexels-photo-46710.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    "id": 8,
+    "name": "Travel Backpack",
+    "price": 149.99,
+    "image_url": "https://images.pexels.com/photos/267202/pexels-photo-267202.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    "id": 9,
+    "name": "Sporty Hoodie",
+    "price": 109.49,
+    "image_url": "https://images.pexels.com/photos/428338/pexels-photo-428338.jpeg?auto=compress&cs=tinysrgb&w=800"
+  },
+  {
+    "id": 10,
+    "name": "Formal Suit",
+    "price": 299.99,
+    "image_url": "https://images.pexels.com/photos/428339/pexels-photo-428339.jpeg?auto=compress&cs=tinysrgb&w=800"
+  }
+]

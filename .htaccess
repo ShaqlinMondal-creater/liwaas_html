@@ -1,0 +1,40 @@
+# htdocs/frontend/test/.htaccess
+
+RewriteEngine On
+RewriteBase /frontend/test/
+
+# If file or directory exists, serve it normally
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# ----- Admin special handling -----
+
+# if /admin or /admin/ -> open admin/admin_index.php
+RewriteRule ^admin/?$ admin/admin_index.php [L]
+
+# /admin/pages/filename -> admin/pages/filename.php
+RewriteRule ^admin/pages/([^/]+)$ admin/pages/$1.php [L]
+
+# /admin/filename -> admin/filename.php
+RewriteRule ^admin/([^/]+)$ admin/$1.php [L]
+
+# ----- Public pages -----
+
+# /signin -> signin.php
+RewriteRule ^sign-in$ sign-in.php [L]
+
+# /signup -> signup.php
+RewriteRule ^sign-up$ sign-up.php [L]
+
+# /contact -> contact.php
+RewriteRule ^contact$ contact.php [L]
+
+# /pages/filename -> pages/filename.php
+RewriteRule ^pages/([^/]+)$ pages/$1.php [L]
+
+# /index or / -> index.php
+RewriteRule ^(index)?$ index.php [L]
+
+# ----- Optional: 404 Page -----
+ErrorDocument 404 /frontend/test/404.php

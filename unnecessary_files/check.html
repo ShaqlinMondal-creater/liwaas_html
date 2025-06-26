@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>True Spotlight Cursor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #bubble-cursor {
+      width: 120px;
+      height: 120px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      transform: translate(-50%, -50%);
+      border-radius: 9999px;
+      background: radial-gradient(circle, #fff3cd, #ffcc80);
+      pointer-events: none;
+      z-index: 50;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      mix-blend-mode: multiply;
+    }
+
+    .clip-wrapper {
+      position: relative;
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .clip-wrapper span {
+      color: black;
+      display: inline-block;
+    }
+
+    .clip-wrapper::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: orange;
+      font-weight: inherit;
+      font-size: inherit;
+      white-space: nowrap;
+      clip-path: var(--circle, circle(0px at 0px 0px));
+      transition: clip-path 0.05s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body class="bg-white text-black overflow-x-hidden" id="page-body">
+  <div id="bubble-cursor"></div>
+
+  <section id="offers" class="p-20 min-h-screen bg-white">
+    <h1 class="text-5xl font-bold clip-wrapper" data-text="🔥 Hot Offers"><span>🔥 Hot Offers</span></h1>
+    <p class="mt-4 text-xl clip-wrapper" data-text="Don't miss today's deals."><span>Don't miss today's deals.</span></p>
+  </section>
+
+  <section id="category" class="p-20 min-h-screen bg-gray-100">
+    <h1 class="text-5xl font-bold clip-wrapper" data-text="📁 Categories"><span>📁 Categories</span></h1>
+    <p class="mt-4 text-xl clip-wrapper" data-text="Explore a variety of items."><span>Explore a variety of items.</span></p>
+  </section>
+
+  <section id="product" class="p-20 min-h-screen bg-white">
+    <h1 class="text-5xl font-bold clip-wrapper" data-text="🛍️ Products"><span>🛍️ Products</span></h1>
+    <p class="mt-4 text-xl clip-wrapper" data-text="Check our bestsellers."><span>Check our bestsellers.</span></p>
+  </section>
+
+  <script>
+    const cursor = document.getElementById("bubble-cursor");
+    const clipWrappers = document.querySelectorAll(".clip-wrapper");
+    const activeSections = ["offers", "category", "product"];
+
+    let mouseX = 0, mouseY = 0;
+    let currentX = 0, currentY = 0;
+    const speed = 0.2;
+    const radius = 60;
+
+    function getSetting(name, section, settings) {
+      const found = settings.find(s => s.name === name);
+      return found && found.allowed_section[section] ? found.value : false;
+    }
+
+    function applySettings(settings) {
+      function animateCursor() {
+        currentX += (mouseX - currentX) * speed;
+        currentY += (mouseY - currentY) * speed;
+
+        cursor.style.left = `${currentX}px`;
+        cursor.style.top = `${currentY}px`;
+
+        clipWrappers.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          const x = currentX - rect.left;
+          const y = currentY - rect.top;
+          el.style.setProperty('--circle', `circle(${radius}px at ${x}px ${y}px)`);
+
+          const sectionId = el.closest('section')?.id;
+          if (sectionId && getSetting("Enable Magnetic Effect", sectionId, settings)) {
+            const distX = x - rect.width / 2;
+            const distY = y - rect.height / 2;
+            el.style.transform = `translate(${distX * 0.1}px, ${distY * 0.1}px)`;
+          } else {
+            el.style.transform = 'none';
+          }
+        });
+
+        requestAnimationFrame(animateCursor);
+      }
+
+      animateCursor();
+
+      document.addEventListener("mousemove", e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      activeSections.forEach(id => {
+        const section = document.getElementById(id);
+        section.addEventListener("mouseenter", () => {
+          cursor.style.opacity = 1;
+          if (getSetting("Animations for entering/leaving the bubble area", id, settings)) {
+            cursor.style.transform += " scale(1.1)";
+          }
+          const useActual = getSetting("Show Actual Cursor", id, settings);
+          const usePointer = getSetting("Use Pointer Cursor Shape", id, settings);
+          document.body.style.cursor = useActual ? (usePointer ? "pointer" : "default") : "none";
+        });
+        section.addEventListener("mouseleave", () => {
+          cursor.style.opacity = 0;
+          cursor.style.transform = cursor.style.transform.replace(" scale(1.1)", "");
+          document.body.style.cursor = "default";
+        });
+      });
+    }
+
+    fetch("admin/api/Json/settings.json")
+      .then(response => response.json())
+      .then(data => applySettings(data))
+      .catch(err => console.error("Failed to load settings.json", err));
+  </script>
+</body>
+</html>

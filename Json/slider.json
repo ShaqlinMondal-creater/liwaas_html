@@ -1,0 +1,36 @@
+[
+    {
+      "slider_id": 1,
+      "slider_title": "Welcome to Our Store",
+      "slider_image": "shirt_1.jpg",
+      "slider_description": "Discover the latest deals and new arrivals in our store.",
+      "is_Active": true,
+      "sort_number": 5
+      
+    },
+    {
+      "slider_id": 2,
+      "slider_title": "Summer Collection",
+      "slider_image": "shirt_4.jpg",
+      "slider_description": "Explore vibrant styles and cool comfort this summer.",
+      "is_Active": true,
+      "sort_number": 2
+    },
+    {
+      "slider_id": 3,
+      "slider_title": "Exclusive Offers",
+      "slider_image": "shirt_6.jpg",
+      "slider_description": "Get up to 50% off on select items. Limited time only!",
+      "is_Active": true,
+      "sort_number": 1
+    },
+    {
+      "slider_id": 4,
+      "slider_title": "New Arrivals for You",
+      "slider_image": "shirt_7.jpg",
+      "slider_description": "Check out the latest trends handpicked for your style.",
+      "is_Active": true,
+      "sort_number": 7
+    }
+]
+  

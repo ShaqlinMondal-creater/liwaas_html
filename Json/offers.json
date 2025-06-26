@@ -1,0 +1,113 @@
+[
+    {
+      "offer_id": 1,
+      "title": "Summer Sale - Flat 30% Off",
+      "offer_description": "Enjoy the heat with cool discounts on all summer wear!",
+      "offer_percentage": 30,
+      "sort_number": 1,
+      "start_date": "2025-04-01",
+      "end_date": "2025-04-15",
+      "category_id": "t-shirts",
+      "offers_image": "offer1.png"
+    },
+    {
+      "offer_id": 2,
+      "title": "Buy 1 Get 1 Free on T-Shirts",
+      "offer_description": "Buy one and get another absolutely free on select T-Shirts!",
+      "offer_percentage": 50,
+      "sort_number": 2,
+      "start_date": "2025-04-05",
+      "end_date": "2025-04-20",
+      "category_id": "t-shirts",
+      "offers_image": "offer2.png"
+    },
+    {
+      "offer_id": 3,
+      "title": "Up to 40% Off on Shoes",
+      "offer_description": "Step into savings with amazing deals on shoes.",
+      "offer_percentage": 40,
+      "sort_number": 3,
+      "start_date": "2025-04-01",
+      "end_date": "2025-04-30",
+      "category_id": "shoes",
+      "offers_image": "offer3.jpg"
+    },
+    {
+      "offer_id": 4,
+      "title": "Flat 25% Off on All Bags",
+      "offer_description": "Stylish bags at unbeatable prices. Limited period only!",
+      "offer_percentage": 25,
+      "sort_number": 4,
+      "start_date": "2025-04-03",
+      "end_date": "2025-04-17",
+      "category_id": "bags",
+      "offers_image": "offer4.png"
+    },
+    {
+      "offer_id": 5,
+      "title": "New Arrivals - 10% Launch Discount",
+      "offer_description": "Exclusive discount on newly launched accessories.",
+      "offer_percentage": 10,
+      "sort_number": 5,
+      "start_date": "2025-04-01",
+      "end_date": "2025-04-10",
+      "category_id": "accessories",
+      "offers_image": "offer5.png"
+    },
+    {
+      "offer_id": 6,
+      "title": "Flash Sale - 35% Off Jeans",
+      "offer_description": "Denim lovers rejoice! Get 35% off all jeans today only.",
+      "offer_percentage": 35,
+      "sort_number": 6,
+      "start_date": "2025-04-07",
+      "end_date": "2025-04-07",
+      "category_id": "jeans",
+      "offers_image": "offer6.png"
+    },
+    {
+      "offer_id": 7,
+      "title": "Mid-Season Jackets Sale",
+      "offer_description": "Gear up for chilly evenings with 20% off all jackets.",
+      "offer_percentage": 20,
+      "sort_number": 7,
+      "start_date": "2025-04-10",
+      "end_date": "2025-04-25",
+      "category_id": "jackets",
+      "offers_image": "offer7.png"
+    },
+    {
+      "offer_id": 8,
+      "title": "Shirt Fiesta - 30% Off",
+      "offer_description": "Get classy with our shirt collection – now at 30% off.",
+      "offer_percentage": 30,
+      "sort_number": 8,
+      "start_date": "2025-04-02",
+      "end_date": "2025-04-16",
+      "category_id": "shirts",
+      "offers_image": "offer8.png"
+    },
+    {
+      "offer_id": 9,
+      "title": "Dress to Impress - 45% Off",
+      "offer_description": "Elegant dresses at almost half the price!",
+      "offer_percentage": 45,
+      "sort_number": 9,
+      "start_date": "2025-04-01",
+      "end_date": "2025-04-18",
+      "category_id": "dresses",
+      "offers_image": "offer9.png"
+    },
+    {
+      "offer_id": 10,
+      "title": "Accessory Combo Bonanza",
+      "offer_description": "Flat 15% off on combos of 2+ accessories.",
+      "offer_percentage": 15,
+      "sort_number": 10,
+      "start_date": "2025-04-05",
+      "end_date": "2025-04-30",
+      "category_id": "accessories",
+      "offers_image": "offer10.png"
+    }
+]
+  

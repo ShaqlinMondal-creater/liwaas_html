@@ -1,0 +1,32 @@
+UID, AID,	Name,	Brand,	Category,	Description,	Gender,	Color,	Size,	Regular Price,	Sell Price,	Currency,	GST,	Stock, Product Status,	Image URL,	Shipping,	COD,	Rating,Keyword,	S_Fit,	S_Care,	S_Features,	S_Country origin,	S_Material 
+
+this are my sheet column name, 
+
+`aid`, `name`, `brand_id`, `category_id`, `slug`, `description`, `specification`, `gender`, `cod`, `shipping`, `ratings`,`keyword`, `image_url`,`upload_id`, `created_at`, `updated_at`, `product_status`, `added_by`, `custom_design`
+this are my products table column name 
+
+`id`, `aid`, `color`, `size`, `regular_price`, `sell_price`, `currency`, `gst`, `stock`, `created_at`, `updated_at`
+these are my product_cariations table column (here id as sheet column UID)
+
+id, name, logo, created_at, updated_at
+these are the brands column name 
+
+id, name, logo, created_at, updated_at
+these are the categories column name 
+
+id, sheet_name, sheet_url, status, created_at, updated_at	
+these are my g_sheets table column name
+
+now my logics are :
+1. if the g_sheets table have id=1 row status == 0 then execute the import code if 1 then not 
+
+2. before add product , check the AID if there then check the UID if not exist that mean that product is variation product, so you need to update that as variation in product variation table
+3. if the brand is not exist in brands table then add the brand and get the id and update it in products table brand_id column, if brand is already exist then get the id and add in products table brand_id column as well
+4. if the category is not exist in categories table then add the category and get the id and update it in products table category_id column, if category  is already exist then get the id and add in products table category_id column as well
+
+5. if the product AID not exist then simply add this correctly 
+6. what are the column are starts like "S_" that are the data are add in specification column in product table
+
+7. as default gender=male, cod=Available, shipping=Available, product_status=Active, custom_design=False, currency=INR, gst=18, stock=10
+
+now clear all ?

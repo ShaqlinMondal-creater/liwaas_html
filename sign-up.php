@@ -130,16 +130,18 @@
             const email = document.getElementById('email').value;
             const mobile = document.getElementById('mobile').value;
             const password = document.getElementById('password').value;
-            const address = document.getElementById('address').value;
+            const address_line_1 = document.getElementById('address').value;
 
-            const apiUrl = '<?php echo BASE_URL; ?>/user_index.php?route=register';
+            const apiUrl = 'http://192.168.0.103:8000/api/register';
 
             const requestBody = {
                 name,
                 email,
                 mobile,
                 password,
-                address
+                address_line_1,
+                role: "customer",
+                is_active: "true"
             };
 
             try {
@@ -154,17 +156,15 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    const { user_id, role, email, auth_token } = result.data;
-                    localStorage.setItem('auth_token', auth_token);
-                    localStorage.setItem('user_id', user_id);
-                    localStorage.setItem('role', role);
-                    localStorage.setItem('email', email);
+                    const { id, email, role } = result.data;
 
-                    if (role === 'customer') {
-                        window.location.href = 'index.php';
-                    } else {
-                        window.location.href = 'sign-in.php';
-                    }
+                    // Optional: store if needed
+                    // localStorage.setItem('user_id', id);
+                    // localStorage.setItem('email', email);
+                    // localStorage.setItem('role', role);
+
+                    // alert("Registration successful!");
+                    window.location.href = 'sign-in.php';
                 } else {
                     alert(result.message || 'Registration failed. Please try again.');
                 }
@@ -174,6 +174,7 @@
             }
         });
     </script>
+
 
     <script src="admin/assets/js/core.bundle.js"></script>
     <script src="admin/assets/vendors/apexcharts/apexcharts.min.js"></script>

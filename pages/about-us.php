@@ -59,7 +59,7 @@
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-semibold text-[#edc034] mb-6">Join the Liwaas Family</h2>
                 <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">Explore our curated collection and find the perfect t-shirt to match your personality. With our simple and seamless shopping experience, we’re here to make your fashion journey easy and enjoyable.</p>
-                <a href="/shop" class="inline-block py-3 px-6 bg-[#edc034] text-black font-semibold rounded-lg hover:bg-yellow-400 transition duration-300 transform hover:scale-105">Shop Now</a>
+                <a href="pages/shop.php" class="inline-block py-3 px-6 bg-[#edc034] text-black font-semibold rounded-lg hover:bg-yellow-400 transition duration-300 transform hover:scale-105">Shop Now</a>
             </div>
 
         </div>

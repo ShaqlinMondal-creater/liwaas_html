@@ -88,7 +88,7 @@
             <input class="input input-sm w-[240px]" type="file" name="image[]" accept="image/*" multiple />
           </div>
           <div class="flex flex-col gap-1 justify-end" style="min-width: 140px;">
-            <button type="submit" class="btn btn-primary w-full h-10 mt-6">Add Product</button>
+            <button type="submit" class="btn btn-primary h-8 mt-5 w-[120px]">Add Product</button>
           </div>
         </div>
       </form>

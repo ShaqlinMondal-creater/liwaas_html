@@ -8,7 +8,27 @@
                 <div class="container-fixed" id="content_container">
                 </div>
                 <!-- End of Container -->
-            
+
+                <!-- Container -->
+                <div class="container-fixed">
+                    <div class="flex flex-wrap items-center lg:items-end justify-between gap-5 pb-7.5">
+                        <div class="flex flex-col justify-center gap-2">
+                            <h1 class="text-xl font-medium leading-none text-gray-900">
+                                Products
+                            </h1>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <a class="btn btn-sm btn-primary" href="nxt-pages/add-product.php">
+                                Add Product
+                            </a>
+                            <!-- <a class="btn btn-sm btn-primary" href="#">
+                                Add Member
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Container -->
+
                 <!-- Container -->
                 <div class="container-fixed">
                     <div class="grid gap-5 lg:gap-7.5">

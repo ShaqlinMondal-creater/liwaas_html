@@ -30,14 +30,14 @@
                                     <div class="flex flex-wrap gap-2.5">
                                         <select class="select select-sm w-28" id="filter-loggedin">
                                             <option value="">All Brands</option>
-                                            <option value="true">Liwaas</option>
-                                            <option value="false">Nike</option>
+                                            <option value="Liwaas">Liwaas</option>
+                                            <option value="khadim">Khadim</option>
                                         </select>
                                         <select class="select select-sm w-28" id="filter-active">
                                             <option value="">All Category</option>
-                                            <option value="true">Male Product</option>
-                                            <option value="false">Female Product</option>
-                                            <option value="false">Unisex</option>
+                                            <option value="male">Male Product</option>
+                                            <option value="female">Female Product</option>
+                                            <option value="unisex">Unisex</option>
                                         </select>
                                         <button id="apply-filters" class="btn btn-sm btn-outline btn-primary">
                                             <i class="ki-filled ki-setting-4"></i>
@@ -335,7 +335,19 @@
                     brand: brandFilter.value || undefined,
                     category: categoryFilter.value || undefined
                 };
-
+                // Show loader inside tbody
+                const tbody = document.querySelector("#product_table tbody");
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-gray-500">
+                            <svg class="animate-spin h-5 w-5 inline-block text-gray-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                            </svg>
+                            Loading Product data...
+                        </td>
+                    </tr>
+                `;
                 try {
                     const response = await fetch('http://192.168.0.103:8000/api/products/allProducts', {
                         method: 'POST',

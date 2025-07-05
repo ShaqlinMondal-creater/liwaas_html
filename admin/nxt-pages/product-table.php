@@ -386,17 +386,16 @@
                             <td>${statusBadge}</td>
                             <td class="text-gray-800 font-normal">${product.category?.name || ''}</td>
                             <td class="text-gray-800 font-normal">
-  <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs bg-gray-50 p-2 rounded-md">
-    <div><strong>AID:</strong> ${variation.aid}</div>
-    <div><strong>UID:</strong> ${variation.uid}</div>
-    <div><strong>Color:</strong> ${variation.color}</div>
-    <div><strong>Size:</strong> ${variation.size}</div>
-    <div><strong>Regular:</strong> ₹${variation.regular_price}</div>
-    <div><strong>Sell:</strong> ₹${variation.sell_price}</div>
-    <div><strong>Stock:</strong> ${variation.stock}</div>
-  </div>
-</td>
-
+                                <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs bg-gray-50 p-2 rounded-md">
+                                    <div><strong>AID:</strong> ${variation.aid}</div>
+                                    <div><strong>UID:</strong> ${variation.uid}</div>
+                                    <div><strong>Color:</strong> ${variation.color}</div>
+                                    <div><strong>Size:</strong> ${variation.size}</div>
+                                    <div><strong>Regular:</strong> ₹${variation.regular_price}</div>
+                                    <div><strong>Sell:</strong> ₹${variation.sell_price}</div>
+                                    <div><strong>Stock:</strong> ${variation.stock}</div>
+                                </div>
+                            </td>
                             <td>${customDesignBadge}</td>
                             <td class="text-center">
                                 <div class="menu flex-inline" data-menu="true">

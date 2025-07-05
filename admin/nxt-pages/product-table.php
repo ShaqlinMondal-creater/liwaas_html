@@ -1,6 +1,7 @@
 <base href="../">
 <?php include("../header.php"); ?>
 <!-- End of Header -->
+ 
                <!-- Content -->
             <main class="grow content pt-5" id="content" role="content">
                 <!-- Container -->
@@ -309,199 +310,197 @@
                 </div>
                 <!-- End of Container -->
             </main>
-               <!-- End of Content -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const tableBody = document.querySelector('#product_table tbody');
-        const paginationContainer = document.querySelector('[data-datatable-pagination]');
-        const infoText = document.querySelector('[data-datatable-info]');
-        const pageSizeSelector = document.querySelector('[data-datatable-size]');
-        const searchInput = document.querySelector('input[placeholder="Search Products"]');
-        const brandFilter = document.getElementById('filter-loggedin');
-        const categoryFilter = document.getElementById('filter-active');
-        const applyBtn = document.getElementById('apply-filters');
+            <!-- End of Content -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableBody = document.querySelector('#product_table tbody');
+            const paginationContainer = document.querySelector('[data-datatable-pagination]');
+            const infoText = document.querySelector('[data-datatable-info]');
+            const pageSizeSelector = document.querySelector('[data-datatable-size]');
+            const searchInput = document.querySelector('input[placeholder="Search Products"]');
+            const brandFilter = document.getElementById('filter-loggedin');
+            const categoryFilter = document.getElementById('filter-active');
+            const applyBtn = document.getElementById('apply-filters');
 
-        let currentPage = 1;
-        let limit = 10;
+            let currentPage = 1;
+            let limit = 10;
 
-        async function fetchProducts(page = 1) {
-            const offset = (page - 1) * limit;
+            async function fetchProducts(page = 1) {
+                const offset = (page - 1) * limit;
 
-            const bodyData = {
-                limit: limit,
-                offset: offset,
-                search: searchInput.value.trim() || undefined,
-                brand: brandFilter.value || undefined,
-                category: categoryFilter.value || undefined
-            };
+                const bodyData = {
+                    limit: limit,
+                    offset: offset,
+                    search: searchInput.value.trim() || undefined,
+                    brand: brandFilter.value || undefined,
+                    category: categoryFilter.value || undefined
+                };
 
-            try {
-                const response = await fetch('http://192.168.0.103:8000/api/products/allProducts', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(bodyData)
-                });
+                try {
+                    const response = await fetch('http://192.168.0.103:8000/api/products/allProducts', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(bodyData)
+                    });
 
-                const data = await response.json();
+                    const data = await response.json();
 
-                if (data.success) {
-                    renderTable(data.data);
-                    renderPagination(data.total, limit, page);
-                    renderInfo(data.total, page, limit);
-                } else {
-                    tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-red-500">No products found.</td></tr>`;
+                    if (data.success) {
+                        renderTable(data.data);
+                        renderPagination(data.total, limit, page);
+                        renderInfo(data.total, page, limit);
+                    } else {
+                        tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-red-500">No products found.</td></tr>`;
+                    }
+                } catch (error) {
+                    console.error('Error fetching products:', error);
+                    tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-red-500">Failed to load data</td></tr>`;
                 }
-            } catch (error) {
-                console.error('Error fetching products:', error);
-                tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-red-500">Failed to load data</td></tr>`;
             }
-        }
 
-        function renderTable(products) {
-            tableBody.innerHTML = '';
+            function renderTable(products) {
+                tableBody.innerHTML = '';
 
-            products.forEach(product => {
-                const baseImage = product.upload?.[0]?.url || 'assets/media/avatars/300-1.png';
+                products.forEach(product => {
+                    const baseImage = product.upload?.[0]?.url || 'assets/media/avatars/300-1.png';
 
-                product.variations.forEach(variation => {
-                    const variationImage = variation.images?.[0]?.url || baseImage;
-                    const statusBadge = badge(product.product_status);
-                    const customDesignBadge = badge(product.custom_design);
+                    product.variations.forEach(variation => {
+                        const variationImage = variation.images?.[0]?.url || baseImage;
+                        const statusBadge = badge(product.product_status);
+                        const customDesignBadge = badge(product.custom_design);
 
-                    const row = `
-                        <tr>
-                            <td class="text-center"><input class="checkbox checkbox-sm" type="checkbox" value="${product.id}" /></td>
-                            <td>
-                                <div class="flex items-center gap-2">
-                                    <img class="rounded-full size-9" src="${variationImage}" alt="${product.name}" />
-                                    <div class="flex flex-col">
-                                        <span class="text-sm font-medium text-gray-900">${product.name}</span>
-                                        <div class="rating">${renderStars(product.ratings)}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="text-gray-800 font-normal">${product.brand?.name || ''}</td>
-                            <td>${statusBadge}</td>
-                            <td class="text-gray-800 font-normal">${product.category?.name || ''}</td>
-                            <td class="text-gray-800 font-normal">
-                                <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs bg-gray-50 p-2 rounded-md">
-                                    <div><strong>AID:</strong> ${variation.aid}</div>
-                                    <div><strong>UID:</strong> ${variation.uid}</div>
-                                    <div><strong>Color:</strong> ${variation.color}</div>
-                                    <div><strong>Size:</strong> ${variation.size}</div>
-                                    <div><strong>Regular:</strong> ₹${variation.regular_price}</div>
-                                    <div><strong>Sell:</strong> ₹${variation.sell_price}</div>
-                                    <div><strong>Stock:</strong> ${variation.stock}</div>
-                                </div>
-                            </td>
-                            <td>${customDesignBadge}</td>
-                            <td class="text-center">
-                                <div class="menu flex-inline" data-menu="true">
-                                    <div class="menu-item" data-menu-item-offset="0, 10px"
-                                        data-menu-item-placement="bottom-end"
-                                        data-menu-item-placement-rtl="bottom-start"
-                                        data-menu-item-toggle="dropdown"
-                                        data-menu-item-trigger="click|lg:click">
-                                        <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
-                                            <i class="ki-filled ki-dots-vertical"></i>
-                                        </button>
-                                        <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
-                                            <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-search-list me-2"></i>View</a></div>
-                                            <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-file-up me-2"></i>Export</a></div>
-                                            <div class="menu-separator"></div>
-                                            <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
-                                            <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-copy me-2"></i>Make a copy</a></div>
-                                            <div class="menu-separator"></div>
-                                            <div class="menu-item"><a class="menu-link text-danger" href="#"><i class="ki-filled ki-trash me-2"></i>Remove</a></div>
+                        const row = `
+                            <tr>
+                                <td class="text-center"><input class="checkbox checkbox-sm" type="checkbox" value="${product.id}" /></td>
+                                <td>
+                                    <div class="flex items-center gap-2">
+                                        <img class="rounded-full size-9" src="${variationImage}" alt="${product.name}" />
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-medium text-gray-900">${product.name}</span>
+                                            <div class="rating">${renderStars(product.ratings)}</div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                                </td>
+                                <td class="text-gray-800 font-normal">${product.brand?.name || ''}</td>
+                                <td>${statusBadge}</td>
+                                <td class="text-gray-800 font-normal">${product.category?.name || ''}</td>
+                                <td class="text-gray-800 font-normal">
+                                    <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs bg-gray-50 p-2 rounded-md">
+                                        <div><strong>AID:</strong> ${variation.aid}</div>
+                                        <div><strong>UID:</strong> ${variation.uid}</div>
+                                        <div><strong>Color:</strong> ${variation.color}</div>
+                                        <div><strong>Size:</strong> ${variation.size}</div>
+                                        <div><strong>Regular:</strong> ₹${variation.regular_price}</div>
+                                        <div><strong>Sell:</strong> ₹${variation.sell_price}</div>
+                                        <div><strong>Stock:</strong> ${variation.stock}</div>
+                                    </div>
+                                </td>
+                                <td>${customDesignBadge}</td>
+                                <td class="text-center">
+                                    <div class="menu flex-inline" data-menu="true">
+                                        <div class="menu-item" data-menu-item-offset="0, 10px"
+                                            data-menu-item-placement="bottom-end"
+                                            data-menu-item-placement-rtl="bottom-start"
+                                            data-menu-item-toggle="dropdown"
+                                            data-menu-item-trigger="click|lg:click">
+                                            <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
+                                                <i class="ki-filled ki-dots-vertical"></i>
+                                            </button>
+                                            <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
+                                                <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-search-list me-2"></i>View</a></div>
+                                                <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-file-up me-2"></i>Export</a></div>
+                                                <div class="menu-separator"></div>
+                                                <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
+                                                <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-copy me-2"></i>Make a copy</a></div>
+                                                <div class="menu-separator"></div>
+                                                <div class="menu-item"><a class="menu-link text-danger" href="#"><i class="ki-filled ki-trash me-2"></i>Remove</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
 
-                    tableBody.insertAdjacentHTML('beforeend', row);
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                    });
                 });
-            });
-        }
+            }
 
-        function renderStars(count) {
-            const full = Math.floor(count);
-            const html = [];
-            for (let i = 1; i <= 5; i++) {
-                if (i <= full) {
-                    html.push(`<i class="ki-solid ki-star text-base text-yellow-400"></i>`);
-                } else {
-                    html.push(`<i class="ki-outline ki-star text-base text-gray-400"></i>`);
+            function renderStars(count) {
+                const full = Math.floor(count);
+                const html = [];
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= full) {
+                        html.push(`<i class="ki-solid ki-star text-base text-yellow-400"></i>`);
+                    } else {
+                        html.push(`<i class="ki-outline ki-star text-base text-gray-400"></i>`);
+                    }
+                }
+                return html.join('');
+            }
+
+            function badge(value) {
+                const lower = (value || '').toLowerCase();
+                const isActive = lower === 'active' || lower === 'available';
+                const color = isActive ? 'success' : 'danger';
+                const label = isActive ? 'Active' : 'Inactive';
+
+                return `<span class="badge badge-${color} badge-outline rounded-[30px]">
+                    <span class="size-1.5 rounded-full bg-${color} me-1.5"></span>
+                    ${label}
+                </span>`;
+            }
+
+            function renderPagination(total, limit, currentPage) {
+                const totalPages = Math.ceil(total / limit);
+                paginationContainer.innerHTML = '';
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.className = `px-3 py-1 rounded ${i === currentPage ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 border'}`;
+                    btn.textContent = i;
+                    btn.addEventListener('click', () => {
+                        currentPage = i;
+                        fetchProducts(currentPage);
+                    });
+                    paginationContainer.appendChild(btn);
                 }
             }
-            return html.join('');
-        }
 
-        function badge(value) {
-            const lower = (value || '').toLowerCase();
-            const isActive = lower === 'active' || lower === 'available';
-            const color = isActive ? 'success' : 'danger';
-            const label = isActive ? 'Active' : 'Inactive';
+            function renderInfo(total, currentPage, limit) {
+                const start = (currentPage - 1) * limit + 1;
+                const end = Math.min(currentPage * limit, total);
+                infoText.textContent = `Showing ${start}–${end} of ${total} entries`;
+            }
 
-            return `<span class="badge badge-${color} badge-outline rounded-[30px]">
-                <span class="size-1.5 rounded-full bg-${color} me-1.5"></span>
-                ${label}
-            </span>`;
-        }
-
-        function renderPagination(total, limit, currentPage) {
-            const totalPages = Math.ceil(total / limit);
-            paginationContainer.innerHTML = '';
-            for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement('button');
-                btn.className = `px-3 py-1 rounded ${i === currentPage ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 border'}`;
-                btn.textContent = i;
-                btn.addEventListener('click', () => {
-                    currentPage = i;
+            // Filters & Search Events
+            if (applyBtn) {
+                applyBtn.addEventListener('click', () => {
+                    currentPage = 1;
                     fetchProducts(currentPage);
                 });
-                paginationContainer.appendChild(btn);
             }
-        }
 
-        function renderInfo(total, currentPage, limit) {
-            const start = (currentPage - 1) * limit + 1;
-            const end = Math.min(currentPage * limit, total);
-            infoText.textContent = `Showing ${start}–${end} of ${total} entries`;
-        }
+            if (pageSizeSelector) {
+                [5, 10, 20].forEach(size => {
+                    const option = document.createElement('option');
+                    option.value = size;
+                    option.textContent = size;
+                    pageSizeSelector.appendChild(option);
+                });
 
-        // Filters & Search Events
-        if (applyBtn) {
-            applyBtn.addEventListener('click', () => {
-                currentPage = 1;
-                fetchProducts(currentPage);
-            });
-        }
+                pageSizeSelector.value = limit;
+                pageSizeSelector.addEventListener('change', (e) => {
+                    limit = parseInt(e.target.value);
+                    currentPage = 1;
+                    fetchProducts(currentPage);
+                });
+            }
 
-        if (pageSizeSelector) {
-            [5, 10, 20].forEach(size => {
-                const option = document.createElement('option');
-                option.value = size;
-                option.textContent = size;
-                pageSizeSelector.appendChild(option);
-            });
-
-            pageSizeSelector.value = limit;
-            pageSizeSelector.addEventListener('change', (e) => {
-                limit = parseInt(e.target.value);
-                currentPage = 1;
-                fetchProducts(currentPage);
-            });
-        }
-
-        // Initial Load
-        fetchProducts(currentPage);
-    });
-</script>
-
-
-               <!-- Footer -->
+            // Initial Load
+            fetchProducts(currentPage);
+        });
+    </script>
+<!-- Footer -->
 <?php include("../footer.php"); ?>

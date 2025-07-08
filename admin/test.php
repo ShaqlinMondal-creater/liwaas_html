@@ -1,316 +1,115 @@
-<!-- header.php include -->
 <?php include("header.php"); ?>
 
 <main class="grow content pt-5" id="content" role="content">
   <div class="container-fixed">
     <div class="card min-w-full">
-      <form id="add_product_form" class="card-body flex flex-col gap-5 p-10" method="post" enctype="multipart/form-data">
-        <!-- Title -->
-        <div>
-          <h3 class="text-lg font-medium text-gray-900 leading-none">Add Product</h3>
-          <div class="text-2sm text-gray-700">Fill in all details for variant or non-variant products</div>
-        </div>
+      <form id="update_product_form" class="card-body flex flex-col gap-5 p-10">
+        <h3 class="text-lg font-medium text-gray-900 leading-none">Update Product</h3>
+        <div class="text-sm text-gray-700">Modify the fields as needed and save changes</div>
 
-        <!-- Row: Basic Fields -->
+        <!-- Basic Fields -->
         <div class="flex gap-10 items-center">
-          <div class="flex flex-col gap-1 flex-grow">
-            <label class="form-label text-gray-900">Product Name</label>
-            <input class="input input-sm w-[240px]" type="text" name="name" placeholder="Casual T-Shirt" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label class="form-label text-gray-900">AID</label>
-            <input class="input input-sm w-[240px]" type="text" name="aid" placeholder="A-210" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label class="form-label text-gray-900">Brand</label>
-            <input class="input input-sm w-[240px]" type="number" name="brand" placeholder="4" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label class="form-label text-gray-900">Category</label>
-            <input class="input input-sm w-[240px]" type="number" name="category" placeholder="2" />
-          </div>
+          <input type="hidden" name="slug" id="slug" />
+          <input type="text" class="input input-sm w-[240px]" name="name" id="name" placeholder="Product Name" />
+          <input type="text" class="input input-sm w-[240px]" name="aid" id="aid" placeholder="AID" />
+          <input type="number" class="input input-sm w-[240px]" name="brand" id="brand" placeholder="Brand ID" />
+          <input type="number" class="input input-sm w-[240px]" name="category" id="category" placeholder="Category ID" />
         </div>
 
-        <!-- Row: Info Fields -->
+        <!-- Info Fields -->
         <div class="flex gap-10 items-center">
-          <div class="flex flex-col gap-1">
-            <label class="form-label text-gray-900">Gender</label>
-            <input class="input input-sm w-[240px]" type="text" name="gender" placeholder="male" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label class="form-label text-gray-900">Keyword</label>
-            <input class="input input-sm w-[240px]" type="text" name="keyword" placeholder="Grey shirt, fit" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label class="form-label text-gray-900">Description</label>
-            <input class="input input-sm w-[240px]" type="text" name="description" placeholder="Soft and comfortable" />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label class="form-label text-gray-900">Specification</label>
-            <input class="input input-sm w-[240px]" type="text" name="specification" placeholder="100% cotton" />
-          </div>
+          <input type="text" class="input input-sm w-[240px]" name="gender" id="gender" placeholder="Gender" />
+          <input type="text" class="input input-sm w-[240px]" name="keyword" id="keyword" placeholder="Keyword" />
+          <input type="text" class="input input-sm w-[240px]" name="description" id="description" placeholder="Description" />
+          <input type="text" class="input input-sm w-[240px]" name="specification" id="specification" placeholder="Specification" />
         </div>
 
-        <!-- Row: Product Type -->
-        <div class="flex gap-10 items-center">
-          <div class="flex flex-col gap-1">
-            <label class="form-label text-gray-900">Product Type</label>
-            <select name="product_type" id="product_type" class="input input-sm w-[240px]">
-              <option value="simple">Simple Product</option>
-              <option value="variant">Variant Product</option>
-            </select>
-          </div>
+        <!-- Product Variations Display -->
+        <div class="flex flex-col gap-3 border p-4 rounded bg-gray-50">
+          <h4 class="text-md font-medium mb-2">Variants</h4>
+          <div id="variant_list" class="flex flex-col gap-3"></div>
         </div>
 
-        <!-- Row: Simple Fields -->
-        <div id="simple_fields" class="flex gap-4 items-center">
-          <input class="input input-sm w-[100px]" type="number" name="uid" placeholder="UID" />
-          <input class="input input-sm w-[140px]" type="number" name="regular_price" placeholder="Regular Price" />
-          <input class="input input-sm w-[140px]" type="number" name="sale_price" placeholder="Sale Price" />
-          <input class="input input-sm w-[80px]" type="text" name="size" placeholder="Size" />
-          <input class="input input-sm w-[120px]" type="text" name="color" placeholder="Color" />
-          <input class="input input-sm w-[100px]" type="number" name="stock" placeholder="Stock" />          
-        </div>
-
-        <!-- Variant Fields -->
-        <div id="variant_fields" class="hidden flex flex-col gap-3 border p-4 rounded bg-gray-50">
-          <div class="variation-item flex gap-4 items-center">
-            <input type="number" placeholder="UID" class="input input-sm w-[100px]" />
-            <input type="number" placeholder="Regular Price" class="input input-sm w-[140px]" />
-            <input type="number" placeholder="Sale Price" class="input input-sm w-[140px]" />
-            <input type="text" placeholder="Size" class="input input-sm w-[80px]" />
-            <input type="text" placeholder="Color" class="input input-sm w-[120px]" />
-            <input type="number" placeholder="Stock" class="input input-sm w-[100px]" />
-            <input type="file" class="variation-image-input input input-sm w-[200px]" accept="image/*" multiple />
-            <button type="button" class="remove-variation-btn btn btn-sm bg-red-500 text-white">✕</button>
-          </div>
-          <button type="button" id="add_variation_btn" class="btn btn-secondary w-max mt-2">+ Add Variation</button>
-        </div>
-
-        <!-- Row: Image and Submit -->
-        <div class="flex gap-10 items-center mb-5">
-          <div class="flex flex-col gap-1">
-            <label class="form-label text-gray-900">Product Image</label>
-            <input class="input input-sm w-[240px]" type="file" name="image[]" accept="image/*" multiple />
-          </div>
-          <div class="flex flex-col gap-1 justify-end" style="min-width: 140px;">
-            <button type="submit" class="btn btn-primary h-8 mt-5 w-[120px]">Add Product</button>
-          </div>
-        </div>
+        <!-- Uploaded Images -->
+        <div id="uploaded_images" class="flex flex-wrap gap-3 pt-4"></div>
       </form>
     </div>
   </div>
 </main>
 
-<!-- Footer -->
 <?php include("footer.php"); ?>
 
-<!-- JS will be appended separately -->
 <script>
-window.addEventListener("DOMContentLoaded", () => {
-  const productTypeSelect = document.getElementById("product_type");
-  const simpleFields = document.getElementById("simple_fields");
-  const variantFields = document.getElementById("variant_fields");
-  const addVariationBtn = document.getElementById("add_variation_btn");
-  const form = document.getElementById("add_product_form");
+document.addEventListener("DOMContentLoaded", async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const slug = urlParams.get("name");
 
-  // Toggle form fields between simple and variant
-  productTypeSelect.addEventListener("change", () => {
-    const isVariant = productTypeSelect.value === "variant";
-    simpleFields.classList.toggle("hidden", isVariant);
-    variantFields.classList.toggle("hidden", !isVariant);
-  });
-
-  // Add new variation row
-  addVariationBtn.addEventListener("click", () => {
-    const firstRow = variantFields.querySelector(".variation-item");
-    const clone = firstRow.cloneNode(true);
-    clone.querySelectorAll("input").forEach((input) => {
-      // Clear values and files
-      if (input.type === "file") {
-        input.value = ""; // clear files
-      } else {
-        input.value = "";
-      }
-    });
-    variantFields.insertBefore(clone, addVariationBtn);
-
-    // Attach remove button event to new row
-    attachRemoveListener(clone.querySelector(".remove-variation-btn"));
-  });
-
-  // Remove variation row handler
-  function attachRemoveListener(button) {
-    button.addEventListener("click", () => {
-      const items = variantFields.querySelectorAll(".variation-item");
-      if (items.length > 1) {
-        button.closest(".variation-item").remove();
-      } else {
-        alert("At least one variation is required.");
-      }
-    });
+  if (!slug) {
+    alert("❌ Product slug is missing in URL.");
+    return;
   }
 
-  // Attach remove listener for the initial remove button
-  attachRemoveListener(variantFields.querySelector(".remove-variation-btn"));
+  const token = localStorage.getItem("auth_token");
 
-  // Form submission
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  try {
+    const res = await fetch(`http://192.168.0.101:8000/api/products/get-product-byslug/${slug}`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
 
-    const token = localStorage.getItem("auth_token");
-    const formData = new FormData(form);
-    const isVariant = productTypeSelect.value === "variant";
+    const data = await res.json();
 
-    // Collect basic fields
-    const aid = formData.get("aid");
-    const name = formData.get("name");
-
-    const payload = {
-      aid,
-      name,
-      brand: Number(formData.get("brand")),
-      category: Number(formData.get("category")),
-      gender: formData.get("gender"),
-      keyword: formData.get("keyword"),
-      description: formData.get("description"),
-      specification: formData.get("specification"),
-    };
-
-    if (isVariant) {
-      payload.slug = name.toLowerCase().replace(/\s+/g, "-");
-      payload.cod = "available";
-      payload.shipping = "available";
-      payload.custom_design = "available";
-      payload.added_by = "admin";
-      payload.variations = [];
-
-      // Collect variant rows data
-      const variationRows = variantFields.querySelectorAll(".variation-item");
-      variationRows.forEach((row) => {
-        const inputs = row.querySelectorAll("input:not([type=file])");
-        const [uid, regular_price, sale_price, size, color, stock] = [...inputs].map(input => input.value);
-
-        payload.variations.push({
-          uid: Number(uid),
-          regular_price: Number(regular_price),
-          sale_price: Number(sale_price),
-          size,
-          color,
-          stock: Number(stock),
-        });
-      });
-    } else {
-      // Simple product data
-      payload.uid = Number(formData.get("uid"));
-      payload.size = formData.get("size");
-      payload.color = formData.get("color");
-      payload.stock = Number(formData.get("stock"));
-      payload.regular_price = Number(formData.get("regular_price"));
-      payload.sale_price = Number(formData.get("sale_price"));
+    if (!data.success) {
+      alert("❌ Failed to fetch product: " + data.message);
+      return;
     }
 
-    try {
-      // Step 1: Submit product data
-      const productRes = await fetch("http://192.168.0.101:8000/api/admin/products/add_product", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
+    const product = data.data;
 
-      const result = await productRes.json();
+    // Fill fields
+    document.getElementById("slug").value = product.slug || "";
+    document.getElementById("name").value = product.name || "";
+    document.getElementById("aid").value = product.aid || "";
+    document.getElementById("brand").value = product.brand?.id || "";
+    document.getElementById("category").value = product.category?.id || "";
+    document.getElementById("gender").value = product.gender || "";
+    document.getElementById("keyword").value = product.keyword || "";
+    document.getElementById("description").value = product.description || "";
+    document.getElementById("specification").value = product.specification || "";
 
-      if (!result.success) {
-        alert("❌ Failed to add product: " + result.message);
-        return;
-      }
+    // Variants
+    const variantList = document.getElementById("variant_list");
+    variantList.innerHTML = "";
 
-      alert("✅ Product added: " + result.message);
+    product.variations?.forEach(variant => {
+      const div = document.createElement("div");
+      div.className = "variation-item flex gap-4 items-center";
+      div.innerHTML = `
+        <input type="number" value="${variant.uid}" class="input input-sm w-[100px]" disabled />
+        <input type="number" value="${variant.regular_price}" class="input input-sm w-[140px]" disabled />
+        <input type="number" value="${variant.sell_price}" class="input input-sm w-[140px]" disabled />
+        <input type="text" value="${variant.size}" class="input input-sm w-[80px]" disabled />
+        <input type="text" value="${variant.color}" class="input input-sm w-[120px]" disabled />
+        <input type="number" value="${variant.stock}" class="input input-sm w-[100px]" disabled />
+      `;
+      variantList.appendChild(div);
+    });
 
-      // Step 2: Upload images
-      if (isVariant && payload.variations.length > 0) {
-        // For each variant, upload images selected in its file input
-        const variationItems = variantFields.querySelectorAll(".variation-item");
+    // Product Images (for non-variant products)
+    const imageBox = document.getElementById("uploaded_images");
+    imageBox.innerHTML = "";
+    (product.upload || []).forEach(img => {
+      const imgEl = document.createElement("img");
+      imgEl.src = img.url;
+      imgEl.alt = img.file_name;
+      imgEl.className = "w-28 h-28 object-cover border rounded shadow";
+      imageBox.appendChild(imgEl);
+    });
 
-        for (let i = 0; i < variationItems.length; i++) {
-          const imageInput = variationItems[i].querySelector(".variation-image-input");
-          const files = imageInput.files;
-
-          if (files.length > 0) {
-            const uploadForm = new FormData();
-            uploadForm.append("aid", aid);
-            uploadForm.append("uid", payload.variations[i].uid); // variant UID
-
-            for (let file of files) {
-              uploadForm.append("file[]", file);
-            }
-
-            try {
-              const uploadRes = await fetch("http://192.168.0.101:8000/api/admin/upload/variation-images", {
-                method: "POST",
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-                body: uploadForm,
-              });
-
-              const uploadResult = await uploadRes.json();
-
-              if (uploadResult.success) {
-                console.log(`✅ Images uploaded for variant UID ${payload.variations[i].uid}`);
-              } else {
-                alert(`⚠️ Image upload failed for variant UID ${payload.variations[i].uid}: ${uploadResult.message}`);
-              }
-            } catch (err) {
-              alert(`⚠️ Error uploading images for variant UID ${payload.variations[i].uid}: ${err.message}`);
-            }
-          }
-        }
-      } else {
-        // For simple product, upload images from main image input
-        const imageInput = form.querySelector('input[name="image[]"]');
-        const files = imageInput.files;
-
-        if (files.length > 0) {
-          const uploadForm = new FormData();
-          uploadForm.append("aid", aid);
-          uploadForm.append("uid", payload.uid);
-
-          for (let file of files) {
-            uploadForm.append("file[]", file);
-          }
-
-          const uploadRes = await fetch("http://192.168.0.101:8000/api/admin/upload/variation-images", {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: uploadForm,
-          });
-
-          const uploadResult = await uploadRes.json();
-          if (uploadResult.success) {
-            alert("📦 Images uploaded successfully");
-          } else {
-            alert("⚠️ Product added but image upload failed: " + uploadResult.message);
-          }
-        }
-
-      }
-
-      // Reset form and UI state
-      form.reset();
-      simpleFields.classList.remove("hidden");
-      variantFields.classList.add("hidden");
-      productTypeSelect.value = "simple";
-
-    } catch (err) {
-      alert("⚠️ Error: " + err.message);
-    }
-  });
+  } catch (err) {
+    alert("⚠️ Error fetching product: " + err.message);
+  }
 });
-
 </script>

@@ -369,7 +369,7 @@
                     </tr>
                 `;
                 try {
-                    const response = await fetch('http://192.168.0.103:8000/api/products/allProducts', {
+                    const response = await fetch('http://192.168.0.101:8000/api/products/allProducts', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

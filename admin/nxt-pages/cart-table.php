@@ -116,7 +116,7 @@
             </tr>
         `;
 
-        fetch("http://192.168.0.103:8000/api/admin/carts", {
+        fetch("http://192.168.0.101:8000/api/admin/carts", {
             method: "POST",
             headers: {
             "Content-Type": "application/json",

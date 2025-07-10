@@ -1,5 +1,5 @@
-<base href="">
-<?php include("header.php"); ?>
+<base href="../">
+<?php include("../header.php"); ?>
 <!-- End of Header -->
  
   <!-- Content -->
@@ -8,6 +8,36 @@
       <div class="container-fixed" id="content_container">
       </div>
       <!-- End of Container -->
+  
+      <!-- Shipping Order Chart Section -->
+      <div class="container-fixed mt-10">
+        <div class="grid gap-5 lg:gap-7.5">
+          <div class="card p-5">
+            <h3 class="text-lg font-semibold mb-5">Shipping Orders Stats</h3>
+
+            <!-- Chart canvas -->
+            <div class="mt-4 mb-4">
+              <canvas id="monthlyOrderChart" height="100"></canvas>
+            </div>
+            
+            <!-- Status Summary Cards -->
+            <div class="grid grid-cols-3 sm:grid-cols-3 gap-5 mt-8">
+              <div class="card badge-primary text-blue-900 p-4">
+                <p class="text-sm">New Orders</p>
+                <h4 class="text-xl font-bold" id="new_orders_count">0</h4>
+              </div>
+              <div class="card badge-danger text-red-900 p-4">
+                <p class="text-sm">Cancelled Orders</p>
+                <h4 class="text-xl font-bold" id="cancelled_orders_count">0</h4>
+              </div>
+              <div class="card badge-success text-green-900 p-4">
+                <p class="text-sm">Delivered Orders</p>
+                <h4 class="text-xl font-bold" id="delivered_orders_count">0</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Container -->
       <div class="container-fixed">
@@ -296,11 +326,56 @@
   });
 </script>
 
+<!-- 2. Stats + chart script -->
+<script>
+  console.log("✅ Stats script loaded");
 
-<!-- 1. Chart.js library FIRST -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+  async function fetchShippingStats() {
+    const token = localStorage.getItem("auth_token");
+    console.log("📦 Token:", token);
+    if (!token) { alert("Missing token in localStorage"); return; }
 
+    try {
+      console.log("🚀 Before fetch");
+      const res = await fetch("http://192.168.0.101:8000/api/admin/shiprocket/stats", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log("✅ After fetch (status: " + res.status + ")");
 
+      const data = await res.json();
+      console.log("📊 Stats Response:", data);
 
-<!-- 3. ONLY ONE footer include -->
-<?php include("footer.php"); ?>
+      if (!data.success) { throw new Error(data.message || "API returned success:false"); }
+
+      /* ---- update cards ---- */
+      document.getElementById("new_orders_count").textContent       = data.status_summary?.new       ?? 0;
+      document.getElementById("cancelled_orders_count").textContent = data.status_summary?.cancelled ?? 0;
+      document.getElementById("delivered_orders_count").textContent = data.status_summary?.delivered ?? 0;
+
+      /* ---- build chart ---- */
+      const labels = Object.keys(data.monthly_orders);
+      const values = Object.values(data.monthly_orders).map(v => v ?? 0);
+
+      const ctx = document.getElementById("monthlyOrderChart")?.getContext("2d");
+      if (!ctx) { console.error("❌ Canvas not found"); return; }
+
+      new Chart(ctx,{
+        type:"bar",
+        data:{ labels, datasets:[{ data: values, label:"Monthly Orders", backgroundColor:"#60a5fa"}] },
+        options:{
+          responsive:true,
+          plugins:{ legend:{display:false}, title:{display:true,text:"Monthly Shipping Orders"} },
+          scales:{ y:{beginAtZero:true,ticks:{stepSize:1}} }
+        }
+      });
+
+    } catch (err) {
+      console.error("❌ Stats Error:", err);
+    }
+  }
+
+  fetchShippingStats();          /* direct call */
+</script>
+
+<!-- Footer -->
+<?php include("../footer.php"); ?>

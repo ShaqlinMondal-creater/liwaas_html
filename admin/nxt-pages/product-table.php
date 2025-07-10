@@ -2,335 +2,334 @@
 <?php include("../header.php"); ?>
 <!-- End of Header -->
  
-               <!-- Content -->
-            <main class="grow content pt-5" id="content" role="content">
-                <!-- Container -->
-                <div class="container-fixed" id="content_container">
-                </div>
-                <!-- End of Container -->
+    <!-- Content -->
+    <main class="grow content pt-5" id="content" role="content">
+        <!-- Container -->
+        <div class="container-fixed" id="content_container">
+        </div>
+        <!-- End of Container -->
 
-                <!-- Container -->
-                <div class="container-fixed">
-                    <div class="flex flex-wrap items-center lg:items-end justify-between gap-5 pb-7.5">
-                        <div class="flex flex-col justify-center gap-2">
-                            <h1 class="text-xl font-medium leading-none text-gray-900">
-                                Products
-                            </h1>
-                        </div>
-                        <div class="flex items-center gap-2.5">
-                            <a class="btn btn-sm btn-primary" href="nxt-pages/add-product.php">
-                                Add Product
-                            </a>
-                            <!-- <a class="btn btn-sm btn-primary" href="#">
-                                Add Member
-                            </a> -->
+        <!-- Container -->
+        <div class="container-fixed">
+            <div class="flex flex-wrap items-center lg:items-end justify-between gap-5 pb-7.5">
+                <div class="flex flex-col justify-center gap-2">
+                    <h1 class="text-xl font-medium leading-none text-gray-900">
+                        Products
+                    </h1>
+                </div>
+                <div class="flex items-center gap-2.5">
+                    <a class="btn btn-sm btn-primary" href="nxt-pages/add-product.php">
+                        Add Product
+                    </a>
+                    <!-- <a class="btn btn-sm btn-primary" href="#">
+                        Add Member
+                    </a> -->
+                </div>
+            </div>
+        </div>
+        <!-- End of Container -->
+
+        <!-- Container -->
+        <div class="container-fixed">
+            <div class="grid gap-5 lg:gap-7.5">
+                <div class="card card-grid min-w-full">
+                    <div class="card-header flex-wrap gap-2">
+                        <h3 class="card-title font-medium text-sm">
+                            Product Details
+                        </h3>
+                        <div class="flex flex-wrap gap-2 lg:gap-5">
+                            <div class="flex">
+                                <label class="input input-sm">
+                                    <i class="ki-filled ki-magnifier">
+                                    </i>
+                                    <input data-datatable-search="#team_user_table" placeholder="Search Products"
+                                        type="text" value="">
+                                    </input>
+                                </label>
+                            </div>
+                            <div class="flex flex-wrap gap-2.5">
+                                <select class="select select-sm w-28" id="filter-loggedin">
+                                    <option value="">All Brands</option>
+                                    <option value="Liwaas">Liwaas</option>
+                                    <option value="khadim">Khadim</option>
+                                </select>
+                                <select class="select select-sm w-28" id="filter-active">
+                                    <option value="">All Category</option>
+                                    <option value="male">Male Product</option>
+                                    <option value="female">Female Product</option>
+                                    <option value="unisex">Unisex</option>
+                                </select>
+                                <button id="apply-filters" class="btn btn-sm btn-outline btn-primary">
+                                    <i class="ki-filled ki-setting-4"></i>
+                                    Apply
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- End of Container -->
-
-                <!-- Container -->
-                <div class="container-fixed">
-                    <div class="grid gap-5 lg:gap-7.5">
-                        <div class="card card-grid min-w-full">
-                            <div class="card-header flex-wrap gap-2">
-                                <h3 class="card-title font-medium text-sm">
-                                    Product Details
-                                </h3>
-                                <div class="flex flex-wrap gap-2 lg:gap-5">
-                                    <div class="flex">
-                                        <label class="input input-sm">
-                                            <i class="ki-filled ki-magnifier">
-                                            </i>
-                                            <input data-datatable-search="#team_user_table" placeholder="Search Products"
-                                                type="text" value="">
-                                            </input>
-                                        </label>
-                                    </div>
-                                    <div class="flex flex-wrap gap-2.5">
-                                        <select class="select select-sm w-28" id="filter-loggedin">
-                                            <option value="">All Brands</option>
-                                            <option value="Liwaas">Liwaas</option>
-                                            <option value="khadim">Khadim</option>
-                                        </select>
-                                        <select class="select select-sm w-28" id="filter-active">
-                                            <option value="">All Category</option>
-                                            <option value="male">Male Product</option>
-                                            <option value="female">Female Product</option>
-                                            <option value="unisex">Unisex</option>
-                                        </select>
-                                        <button id="apply-filters" class="btn btn-sm btn-outline btn-primary">
-                                            <i class="ki-filled ki-setting-4"></i>
-                                            Apply
-                                        </button>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body" id="product_table_wrapper">
-                                <div  id="product_table">
-                                    <div class="scrollable-x-auto">
-                                        <table class="table table-auto table-border" data-datatable-table="true">
-                                            <thead>
-                                                <tr>
-                                                    <th class="w-[60px] text-center">
-                                                        <input class="checkbox checkbox-sm" data-datatable-check="true"
-                                                            type="checkbox" />
-                                                    </th>
-                                                    <th class="min-w-[250px]">
-                                                        <span class="sort asc">
-                                                            <span class="sort-label font-normal text-gray-700">
-                                                                Product
-                                                            </span>
-                                                            <span class="sort-icon">
-                                                            </span>
-                                                        </span>
-                                                    </th>
-                                                    <th class="min-w-[120px]">
-                                                        <span class="sort">
-                                                            <span class="sort-label font-normal text-gray-700">
-                                                                Brand
-                                                            </span>
-                                                            <span class="sort-icon">
-                                                            </span>
-                                                        </span>
-                                                    </th>
-                                                    <th class="min-w-[120px]">
-                                                        <span class="sort">
-                                                            <span class="sort-label font-normal text-gray-700">
-                                                                Status
-                                                            </span>
-                                                            <span class="sort-icon">
-                                                            </span>
-                                                        </span>
-                                                    </th>
-                                                    <th class="min-w-[120px]">
-                                                        <span class="sort">
-                                                            <span class="sort-label font-normal text-gray-700">
-                                                                Category
-                                                            </span>
-                                                            <span class="sort-icon">
-                                                            </span>
-                                                        </span>
-                                                    </th>
-                                                    <th class="min-w-[300px]">
-                                                        <span class="sort">
-                                                            <span class="sort-label font-normal text-gray-700">
-                                                                Variation
-                                                            </span>
-                                                            <span class="sort-icon">
-                                                            </span>
-                                                        </span>
-                                                    </th>
-                                                    <th class="min-w-[120px]">
-                                                        <span class="sort">
-                                                            <span class="sort-label font-normal text-gray-700">
-                                                                Custom Design
-                                                            </span>
-                                                            <span class="sort-icon">
-                                                            </span>
-                                                        </span>
-                                                    </th>
-                                                    <th class="w-[60px]">
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- table data -->
-                                                 <!-- <tr>
-                                                    <td class="text-center">
-                                                        <input class="checkbox checkbox-sm"
-                                                            data-datatable-row-check="true" type="checkbox" value="1" />
-                                                    </td>
-                                                    <td>
-                                                        <div class="flex items-center gap-2">
-                                                            <img alt="" class="rounded-full size-9 shrink-0"
-                                                                src="assets/media/avatars/300-1.png" />
-                                                            <div class="flex flex-col">
-                                                                <a class="text-sm font-medium text-gray-900 hover:text-primary-active mb-px"
-                                                                    href="#">
-                                                                    Red-Blue T Shirt
-                                                                </a>
-                                                                <div class="rating">
-                                                                    <div class="rating-label checked">
-                                                                            <i
-                                                                                class="rating-on ki-solid ki-star text-base leading-none">
-                                                                            </i>
-                                                                            <i
-                                                                                class="rating-off ki-outline ki-star text-base leading-none">
-                                                                            </i>
-                                                                    </div>
-                                                                    <div class="rating-label checked">
-                                                                            <i
-                                                                                class="rating-on ki-solid ki-star text-base leading-none">
-                                                                            </i>
-                                                                            <i
-                                                                                class="rating-off ki-outline ki-star text-base leading-none">
-                                                                            </i>
-                                                                    </div>
-                                                                    <div class="rating-label checked">
-                                                                            <i
-                                                                                class="rating-on ki-solid ki-star text-base leading-none">
-                                                                            </i>
-                                                                            <i
-                                                                                class="rating-off ki-outline ki-star text-base leading-none">
-                                                                            </i>
-                                                                    </div>
-                                                                    <div class="rating-label checked">
-                                                                            <i
-                                                                                class="rating-on ki-solid ki-star text-base leading-none">
-                                                                            </i>
-                                                                            <i
-                                                                                class="rating-off ki-outline ki-star text-base leading-none">
-                                                                            </i>
-                                                                    </div>
-                                                                    <div class="rating-label checked">
-                                                                            <i
-                                                                                class="rating-on ki-solid ki-star text-base leading-none">
-                                                                            </i>
-                                                                            <i
-                                                                                class="rating-off ki-outline ki-star text-base leading-none">
-                                                                            </i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-gray-800 font-normal">
-                                                        Liwaas
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge badge-danger badge-outline rounded-[30px]">
-                                                            <span class="size-1.5 rounded-full bg-danger me-1.5">
-                                                            </span>
-                                                            Active
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <div
-                                                            class="flex items-center text-gray-800 font-normal gap-1.5">
-                                                            <img alt="" class="rounded-full size-4 shrink-0"
-                                                                src="assets/media/flags/malaysia.svg" />
-                                                            Unisex
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-gray-800 font-normal">
-                                                        <span>aid: A-210</span><br>
-                                                        <span>uid: 1001</span><br>
-                                                        <span>color: red-200</span><br>
-                                                        <span>size: XL</span><br>
-                                                        <span>regular_price: 799</span><br>
-                                                        <span>sell_price: 549</span><br>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge badge-danger badge-outline rounded-[30px]">
-                                                            <span class="size-1.5 rounded-full bg-danger me-1.5">
-                                                            </span>
-                                                            Not Available
-                                                        </span>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <div class="menu flex-inline" data-menu="true">
-                                                            <div class="menu-item" data-menu-item-offset="0, 10px"
-                                                                data-menu-item-placement="bottom-end"
-                                                                data-menu-item-placement-rtl="bottom-start"
-                                                                data-menu-item-toggle="dropdown"
-                                                                data-menu-item-trigger="click|lg:click">
-                                                                <button
-                                                                    class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
-                                                                    <i class="ki-filled ki-dots-vertical">
+                    <div class="card-body" id="product_table_wrapper">
+                        <div  id="product_table">
+                            <div class="scrollable-x-auto">
+                                <table class="table table-auto table-border" data-datatable-table="true">
+                                    <thead>
+                                        <tr>
+                                            <th class="w-[60px] text-center">
+                                                <input class="checkbox checkbox-sm" data-datatable-check="true"
+                                                    type="checkbox" />
+                                            </th>
+                                            <th class="min-w-[250px]">
+                                                <span class="sort asc">
+                                                    <span class="sort-label font-normal text-gray-700">
+                                                        Product
+                                                    </span>
+                                                    <span class="sort-icon">
+                                                    </span>
+                                                </span>
+                                            </th>
+                                            <th class="min-w-[120px]">
+                                                <span class="sort">
+                                                    <span class="sort-label font-normal text-gray-700">
+                                                        Brand
+                                                    </span>
+                                                    <span class="sort-icon">
+                                                    </span>
+                                                </span>
+                                            </th>
+                                            <th class="min-w-[120px]">
+                                                <span class="sort">
+                                                    <span class="sort-label font-normal text-gray-700">
+                                                        Status
+                                                    </span>
+                                                    <span class="sort-icon">
+                                                    </span>
+                                                </span>
+                                            </th>
+                                            <th class="min-w-[120px]">
+                                                <span class="sort">
+                                                    <span class="sort-label font-normal text-gray-700">
+                                                        Category
+                                                    </span>
+                                                    <span class="sort-icon">
+                                                    </span>
+                                                </span>
+                                            </th>
+                                            <th class="min-w-[300px]">
+                                                <span class="sort">
+                                                    <span class="sort-label font-normal text-gray-700">
+                                                        Variation
+                                                    </span>
+                                                    <span class="sort-icon">
+                                                    </span>
+                                                </span>
+                                            </th>
+                                            <th class="min-w-[120px]">
+                                                <span class="sort">
+                                                    <span class="sort-label font-normal text-gray-700">
+                                                        Custom Design
+                                                    </span>
+                                                    <span class="sort-icon">
+                                                    </span>
+                                                </span>
+                                            </th>
+                                            <th class="w-[60px]">
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- table data -->
+                                            <!-- <tr>
+                                            <td class="text-center">
+                                                <input class="checkbox checkbox-sm"
+                                                    data-datatable-row-check="true" type="checkbox" value="1" />
+                                            </td>
+                                            <td>
+                                                <div class="flex items-center gap-2">
+                                                    <img alt="" class="rounded-full size-9 shrink-0"
+                                                        src="assets/media/avatars/300-1.png" />
+                                                    <div class="flex flex-col">
+                                                        <a class="text-sm font-medium text-gray-900 hover:text-primary-active mb-px"
+                                                            href="#">
+                                                            Red-Blue T Shirt
+                                                        </a>
+                                                        <div class="rating">
+                                                            <div class="rating-label checked">
+                                                                    <i
+                                                                        class="rating-on ki-solid ki-star text-base leading-none">
                                                                     </i>
-                                                                </button>
-                                                                <div class="menu-dropdown menu-default w-full max-w-[175px]"
-                                                                    data-menu-dismiss="true">
-                                                                    <div class="menu-item">
-                                                                        <a class="menu-link" href="#">
-                                                                            <span class="menu-icon">
-                                                                                <i class="ki-filled ki-search-list">
-                                                                                </i>
-                                                                            </span>
-                                                                            <span class="menu-title">
-                                                                                View
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="menu-item">
-                                                                        <a class="menu-link" href="#">
-                                                                            <span class="menu-icon">
-                                                                                <i class="ki-filled ki-file-up">
-                                                                                </i>
-                                                                            </span>
-                                                                            <span class="menu-title">
-                                                                                Export
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="menu-separator">
-                                                                    </div>
-                                                                    <div class="menu-item">
-                                                                        <a class="menu-link" href="#">
-                                                                            <span class="menu-icon">
-                                                                                <i class="ki-filled ki-pencil">
-                                                                                </i>
-                                                                            </span>
-                                                                            <span class="menu-title">
-                                                                                Edit
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="menu-item">
-                                                                        <a class="menu-link" href="#">
-                                                                            <span class="menu-icon">
-                                                                                <i class="ki-filled ki-copy">
-                                                                                </i>
-                                                                            </span>
-                                                                            <span class="menu-title">
-                                                                                Make a copy
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="menu-separator">
-                                                                    </div>
-                                                                    <div class="menu-item">
-                                                                        <a class="menu-link" href="#">
-                                                                            <span class="menu-icon">
-                                                                                <i class="ki-filled ki-trash">
-                                                                                </i>
-                                                                            </span>
-                                                                            <span class="menu-title">
-                                                                                Remove
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
+                                                                    <i
+                                                                        class="rating-off ki-outline ki-star text-base leading-none">
+                                                                    </i>
+                                                            </div>
+                                                            <div class="rating-label checked">
+                                                                    <i
+                                                                        class="rating-on ki-solid ki-star text-base leading-none">
+                                                                    </i>
+                                                                    <i
+                                                                        class="rating-off ki-outline ki-star text-base leading-none">
+                                                                    </i>
+                                                            </div>
+                                                            <div class="rating-label checked">
+                                                                    <i
+                                                                        class="rating-on ki-solid ki-star text-base leading-none">
+                                                                    </i>
+                                                                    <i
+                                                                        class="rating-off ki-outline ki-star text-base leading-none">
+                                                                    </i>
+                                                            </div>
+                                                            <div class="rating-label checked">
+                                                                    <i
+                                                                        class="rating-on ki-solid ki-star text-base leading-none">
+                                                                    </i>
+                                                                    <i
+                                                                        class="rating-off ki-outline ki-star text-base leading-none">
+                                                                    </i>
+                                                            </div>
+                                                            <div class="rating-label checked">
+                                                                    <i
+                                                                        class="rating-on ki-solid ki-star text-base leading-none">
+                                                                    </i>
+                                                                    <i
+                                                                        class="rating-off ki-outline ki-star text-base leading-none">
+                                                                    </i>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                </tr> -->
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
-                                        <div class="flex items-center gap-2 order-2 md:order-1">
-                                            Show
-                                            <select class="select select-sm w-16" data-datatable-size="true" name="perpage"></select>
-                                            per page
-                                        </div>
-                                        <div class="flex items-center gap-4 order-1 md:order-2">
-                                            <span data-datatable-info="true">
-                                            </span>
-                                            <div class="pagination" data-datatable-pagination="true">
-                                            </div>
-                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-gray-800 font-normal">
+                                                Liwaas
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-danger badge-outline rounded-[30px]">
+                                                    <span class="size-1.5 rounded-full bg-danger me-1.5">
+                                                    </span>
+                                                    Active
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="flex items-center text-gray-800 font-normal gap-1.5">
+                                                    <img alt="" class="rounded-full size-4 shrink-0"
+                                                        src="assets/media/flags/malaysia.svg" />
+                                                    Unisex
+                                                </div>
+                                            </td>
+                                            <td class="text-gray-800 font-normal">
+                                                <span>aid: A-210</span><br>
+                                                <span>uid: 1001</span><br>
+                                                <span>color: red-200</span><br>
+                                                <span>size: XL</span><br>
+                                                <span>regular_price: 799</span><br>
+                                                <span>sell_price: 549</span><br>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-danger badge-outline rounded-[30px]">
+                                                    <span class="size-1.5 rounded-full bg-danger me-1.5">
+                                                    </span>
+                                                    Not Available
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="menu flex-inline" data-menu="true">
+                                                    <div class="menu-item" data-menu-item-offset="0, 10px"
+                                                        data-menu-item-placement="bottom-end"
+                                                        data-menu-item-placement-rtl="bottom-start"
+                                                        data-menu-item-toggle="dropdown"
+                                                        data-menu-item-trigger="click|lg:click">
+                                                        <button
+                                                            class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
+                                                            <i class="ki-filled ki-dots-vertical">
+                                                            </i>
+                                                        </button>
+                                                        <div class="menu-dropdown menu-default w-full max-w-[175px]"
+                                                            data-menu-dismiss="true">
+                                                            <div class="menu-item">
+                                                                <a class="menu-link" href="#">
+                                                                    <span class="menu-icon">
+                                                                        <i class="ki-filled ki-search-list">
+                                                                        </i>
+                                                                    </span>
+                                                                    <span class="menu-title">
+                                                                        View
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="menu-item">
+                                                                <a class="menu-link" href="#">
+                                                                    <span class="menu-icon">
+                                                                        <i class="ki-filled ki-file-up">
+                                                                        </i>
+                                                                    </span>
+                                                                    <span class="menu-title">
+                                                                        Export
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="menu-separator">
+                                                            </div>
+                                                            <div class="menu-item">
+                                                                <a class="menu-link" href="#">
+                                                                    <span class="menu-icon">
+                                                                        <i class="ki-filled ki-pencil">
+                                                                        </i>
+                                                                    </span>
+                                                                    <span class="menu-title">
+                                                                        Edit
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="menu-item">
+                                                                <a class="menu-link" href="#">
+                                                                    <span class="menu-icon">
+                                                                        <i class="ki-filled ki-copy">
+                                                                        </i>
+                                                                    </span>
+                                                                    <span class="menu-title">
+                                                                        Make a copy
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="menu-separator">
+                                                            </div>
+                                                            <div class="menu-item">
+                                                                <a class="menu-link" href="#">
+                                                                    <span class="menu-icon">
+                                                                        <i class="ki-filled ki-trash">
+                                                                        </i>
+                                                                    </span>
+                                                                    <span class="menu-title">
+                                                                        Remove
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr> -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
+                                <div class="flex items-center gap-2 order-2 md:order-1">
+                                    Show
+                                    <select class="select select-sm w-16" data-datatable-size="true" name="perpage"></select>
+                                    per page
+                                </div>
+                                <div class="flex items-center gap-4 order-1 md:order-2">
+                                    <span data-datatable-info="true">
+                                    </span>
+                                    <div class="pagination" data-datatable-pagination="true">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- End of Container -->
-            </main>
-            <!-- End of Content -->
+            </div>
+        </div>
+        <!-- End of Container -->
+    </main>
+    <!-- End of Content -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const tableBody = document.querySelector('#product_table tbody');

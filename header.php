@@ -34,6 +34,7 @@
     </style>
 </head>
 
+
 <body class="bg-gray-100">
     <!-- Custom cursor (desktop only) -->
     <!-- <div id="bubbleCursor" class="hidden md:block"></div> -->

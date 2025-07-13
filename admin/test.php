@@ -149,7 +149,7 @@
   <!-- End of Content -->
 <script>
   /* ------------------ globals ------------------ */
-  const ORDERS_API = "http://192.168.0.101:8000/api/admin/shiprocket/orders";
+  const ORDERS_API = "<?= $baseUrl ?>/api/admin/shiprocket/orders";
 
   let orderPage   = 1;
   let orderLimit  = 10;

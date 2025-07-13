@@ -101,7 +101,7 @@
   <!-- End of Content -->
 <script>
   // ✅ Step 1: Change the API URL and filter payload
-  const API_URL = "http://192.168.0.101:8000/api/allBrands";
+  const API_URL = "<?= $baseUrl ?>/api/allBrands";
 
   let currentPage = 1;
   let limit = 10;
@@ -223,7 +223,7 @@
           formData.append('logo', logo);
         }
 
-        return fetch("http://192.168.0.101:8000/api/admin/brands/update", {
+        return fetch("<?= $baseUrl ?>/api/admin/brands/update", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -259,7 +259,7 @@
       if (result.isConfirmed) {
         const authToken = localStorage.getItem("auth_token");
 
-        fetch(`http://192.168.0.101:8000/api/admin/brands/delete/${id}`, {
+        fetch(`<?= $baseUrl ?>/api/admin/brands/delete/${id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -360,7 +360,7 @@
           formData.append("logo", logo);
         }
 
-        return fetch("http://192.168.0.101:8000/api/admin/brands/add", {
+        return fetch("<?= $baseUrl ?>/api/admin/brands/add", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("auth_token")}`,

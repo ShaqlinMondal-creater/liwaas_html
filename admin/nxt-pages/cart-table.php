@@ -1,7 +1,7 @@
 <base href="../">
 <?php include("../header.php"); ?>
 <!-- End of Header -->
- 
+
                <!-- Content -->
             <main class="grow content pt-5" id="content" role="content">
                 <!-- Container -->
@@ -116,7 +116,7 @@
             </tr>
         `;
 
-        fetch("http://192.168.0.101:8000/api/admin/carts", {
+        fetch(`<?= $baseUrl ?>/api/admin/carts`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json",

@@ -53,7 +53,7 @@
     const token = localStorage.getItem("auth_token");
 
     try {
-      const res = await fetch(`http://192.168.0.101:8000/api/products/get-product-byslug/${slug}`, {
+      const res = await fetch(`<?= $baseUrl ?>/api/products/get-product-byslug/${slug}`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -153,7 +153,7 @@ async function handleImageUpload(e, aid, uid) {
   }
 
   try {
-    const res = await fetch("http://192.168.0.101:8000/api/admin/upload/variation-images", {
+    const res = await fetch("<?= $baseUrl ?>/api/admin/upload/variation-images", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -181,7 +181,7 @@ async function deleteImage(imageId) {
   const token = localStorage.getItem("auth_token");
 
   try {
-    const res = await fetch(`http://192.168.0.101:8000/api/admin/delete-image/${imageId}`, {
+    const res = await fetch(`<?= $baseUrl ?>/api/admin/delete-image/${imageId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`
@@ -207,7 +207,7 @@ async function deleteVariationImage(imageId, uid) {
 
   const token = localStorage.getItem("auth_token");
   try {
-    const res = await fetch(`http://192.168.0.101:8000/api/admin/delete-image/${imageId}`, {
+    const res = await fetch(`<?= $baseUrl ?>/api/admin/delete-image/${imageId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

@@ -212,7 +212,7 @@
 
       try {
         // Step 1: Submit product data
-        const productRes = await fetch("http://192.168.0.101:8000/api/admin/products/add_product", {
+        const productRes = await fetch("<?= $baseUrl ?>/api/admin/products/add_product", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -249,7 +249,7 @@
               }
 
               try {
-                const uploadRes = await fetch("http://192.168.0.101:8000/api/admin/upload/variation-images", {
+                const uploadRes = await fetch("<?= $baseUrl ?>/api/admin/upload/variation-images", {
                   method: "POST",
                   headers: {
                     Authorization: `Bearer ${token}`,
@@ -283,7 +283,7 @@
               uploadForm.append("file[]", file);
             }
 
-            const uploadRes = await fetch("http://192.168.0.101:8000/api/admin/upload/variation-images", {
+            const uploadRes = await fetch("<?= $baseUrl ?>/api/admin/upload/variation-images", {
               method: "POST",
               headers: {
                 Authorization: `Bearer ${token}`,

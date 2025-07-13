@@ -70,7 +70,7 @@
   </main>
   <!-- End of Content -->
 <script>
-  const CATEGORY_API = "http://192.168.0.101:8000/api/allCategories";
+  const CATEGORY_API = "<?= $baseUrl ?>/api/allCategories";
   let categoryPage = 1;
   let categoryLimit = 10;
   let categorySearch = "";
@@ -94,7 +94,7 @@
       </tr>
     `;
 
-    fetch(`http://192.168.0.101:8000/api/allCategories`, {
+    fetch(`<?= $baseUrl ?>/api/allCategories`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -217,7 +217,7 @@
             formData.append('name', name);
             if (logo) formData.append('logo', logo);
 
-            return fetch(`http://192.168.0.101:8000/api/admin/categories/update/${id}`, {
+            return fetch(`<?= $baseUrl ?>/api/admin/categories/update/${id}`, {
                 method: 'POST',
                 headers: {
                 Authorization: `Bearer ${token}`,
@@ -254,7 +254,7 @@
             if (result.isConfirmed) {
             const token = localStorage.getItem("auth_token");
 
-            fetch(`http://192.168.0.101:8000/api/admin/categories/delete/${id}`, {
+            fetch(`<?= $baseUrl ?>/api/admin/categories/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                 Authorization: `Bearer ${token}`,
@@ -316,7 +316,7 @@
                 formData.append("logo", logo);
             }
 
-            return fetch("http://192.168.0.101:8000/api/admin/categories/add", {
+            return fetch("<?= $baseUrl ?>/api/admin/categories/add", {
                 method: "POST",
                 headers: {
                 Authorization: `Bearer ${localStorage.getItem("auth_token")}`,

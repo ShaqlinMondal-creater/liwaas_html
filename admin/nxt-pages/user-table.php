@@ -269,7 +269,7 @@
                 tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-gray-500">Loading...</td></tr>`;
 
                 try {
-                    const response = await fetch('http://192.168.0.103:8000/api/admin/users', {
+                    const response = await fetch('<?= $baseUrl ?>/api/admin/users', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

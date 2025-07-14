@@ -34,6 +34,7 @@
     </style>
 </head>
 
+
 <body class="bg-gray-100">
     <!-- Custom cursor (desktop only) -->
     <!-- <div id="bubbleCursor" class="hidden md:block"></div> -->
@@ -98,9 +99,6 @@
                 <div id="mobileSearchResults" class="hidden bg-white border rounded-full shadow max-h-64 overflow-y-auto"></div>
             </div>
 
-
-
-
             <!-- ◀︎ Desktop utilities -->
             <div class="hidden md:flex items-center space-x-6">
 
@@ -117,7 +115,6 @@
                     <!-- Add a container for desktop search results -->
                     <div id="desktopSearchResults" class="absolute z-50 left-0 right-0 mt-1 bg-white border rounded-lg shadow max-h-64 overflow-y-auto hidden"></div>
                 </div>
-
 
                 <!-- Bell -->
                 <div class="relative">
@@ -151,10 +148,10 @@
                     <img id="avatarBtn" src="https://i.pravatar.cc/40?img=32" alt="User Avatar"
                         class="h-9 w-9 rounded-full cursor-pointer ring-2 ring-white">
                     <div id="avatarMenu" class="dropdown avatar-menu hidden w-44 right-0 mt-4">
-                        <a href="sign-in" class="dropdown-link">Login</a>
+                        <a href="sign-in.php" class="dropdown-link">Login</a>
                         <a href="#" class="dropdown-link">Logout</a>
-                        <a href="pages/cart" class="dropdown-link">Cart</a>
-                        <a href="pages/profile" class="dropdown-link">Profile</a>
+                        <a href="pages/cart.php" class="dropdown-link">Cart</a>
+                        <a href="pages/profile.php" class="dropdown-link">Profile</a>
                         <!-- <a href="/account" class="dropdown-link">Account</a> -->
                     </div>
                 </div>
@@ -229,6 +226,98 @@
     </script>
     <!-- ---------- End Nav SCRIPT  ---------- -->
 
+    <!--nav logic with backend  -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            let avatarBtn = document.getElementById('avatarBtn');
+            const isLoggedIn = localStorage.getItem('auth_token') !== null;
+            const name = localStorage.getItem('name') || '';
+            const bellBtn = document.getElementById('bellBtn');
+            const bellMenu = document.getElementById('bellMenu');
+            const avatarMenu = document.getElementById('avatarMenu');
+
+            const loginLink = avatarMenu?.querySelector('a[href*="sign-in"]');
+            const profileLink = avatarMenu?.querySelector('a[href*="profile"]');
+            const logoutLink = avatarMenu?.querySelector('a[href="#"]');
+            const mobileLogout = document.querySelector('.mobile-action a:last-child');
+
+            if (!isLoggedIn) {
+                bellBtn?.classList.add('hidden');
+                bellMenu?.classList.add('hidden');
+                profileLink?.classList.add('hidden');
+                logoutLink?.classList.add('hidden');
+                mobileLogout?.classList.add('hidden');
+
+                // Show login link
+                loginLink?.classList.remove('hidden');
+
+                if (avatarBtn) {
+                    avatarBtn.src = 'https://i.pravatar.cc/40?img=32';
+                }
+            } else {
+                // Hide login link
+                loginLink?.classList.add('hidden');
+
+                if (avatarBtn && name.length > 0) {
+                    const initial = name.charAt(0).toUpperCase();
+                    const span = document.createElement('span');
+                    span.textContent = initial;
+                    span.id = "avatarBtn";
+                    span.className = "h-9 w-9 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold cursor-pointer ring-2 ring-white";
+
+                    avatarBtn.replaceWith(span);
+                    avatarBtn = document.getElementById('avatarBtn');
+
+                    avatarBtn.addEventListener('click', e => {
+                        e.stopPropagation();
+                        avatarMenu?.classList.toggle('hidden');
+                    });
+                }
+            }
+        });
+    </script>
+
+    <!-- Logout logic with api -->
+    <script>
+        // 🚪 Handle Logout
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutLinks = document.querySelectorAll('a[href="#"]');
+
+            logoutLinks.forEach(link => {
+                link.addEventListener('click', async (e) => {
+                    e.preventDefault();
+
+                    const token = localStorage.getItem('auth_token');
+                    if (!token) return window.location.href = 'sign-in.php';
+
+                    try {
+                        const response = await fetch('http://192.168.0.103:8000/api/logout', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            // Clear all user data
+                            localStorage.clear();
+                            window.location.href = 'sign-in.php';
+                        } else {
+                            alert(result.message || 'Logout failed.');
+                        }
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                        alert('An error occurred during logout.');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- search input -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
         // Get inputs and containers for mobile and desktop

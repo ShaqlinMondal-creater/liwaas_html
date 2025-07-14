@@ -113,7 +113,7 @@
                 </div>
 
                 <!-- TABLES -->
-                <div class="menu-item <?= menuShow(['order-table.php','product-table.php','user-table.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
+                <div class="menu-item <?= menuShow(['order-table.php','brand-table.php','category-table.php','product-table.php','cart-table.php','user-table.php','shipping-table.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
                     <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] ps-[10px] pe-[10px] py-[6px]">
                         <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
                             <i class="ki-filled ki-setting-2 text-lg"></i>
@@ -134,9 +134,30 @@
                         </div>
 
                         <div class="menu-item">
+                            <a href="nxt-pages/brand-table.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('brand-table.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('brand-table.php') ?>"></span>
+                                <span class="menu-title text-2sm">Brand Table</span>
+                            </a>
+                        </div>
+
+                        <div class="menu-item">
+                            <a href="nxt-pages/category-table.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('category-table.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('category-table.php') ?>"></span>
+                                <span class="menu-title text-2sm">Category Table</span>
+                            </a>
+                        </div>
+
+                        <div class="menu-item">
                             <a href="nxt-pages/product-table.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('product-table.php') ?>">
                                 <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('product-table.php') ?>"></span>
                                 <span class="menu-title text-2sm">Product Table</span>
+                            </a>
+                        </div>
+
+                        <div class="menu-item">
+                            <a href="nxt-pages/cart-table.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('cart-table.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('cart-table.php') ?>"></span>
+                                <span class="menu-title text-2sm">Cart Table</span>
                             </a>
                         </div>
 
@@ -146,11 +167,18 @@
                                 <span class="menu-title text-2sm">User Table</span>
                             </a>
                         </div>
+
+                        <div class="menu-item">
+                            <a href="nxt-pages/shipping-table.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('shipping-table.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('shipping-table.php') ?>"></span>
+                                <span class="menu-title text-2sm">Shipping Delivery Table</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
                 <!-- CONFIGURATION -->
-                <div class="menu-item <?= menuShow(['get-started.html']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
+                <div class="menu-item <?= menuShow(['get-started.php','backup.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
                     <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] ps-[10px] pe-[10px] py-[6px]">
                         <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
                             <i class="ki-filled ki-users text-lg"></i>
@@ -164,9 +192,18 @@
 
                     <div class="menu-accordion gap-0.5 ps-[10px] relative before:absolute before:start-[20px] before:top-0 before:bottom-0 before:border-s before:border-gray-200">
                         <div class="menu-item">
-                            <a href="html/demo1/network/get-started.html" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('get-started.html') ?>">
-                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('get-started.html') ?>"></span>
+                            <a href="nxt-pages/get-started.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('get-started.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('get-started.php') ?>"></span>
                                 <span class="menu-title text-2sm">Get Started</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="menu-accordion gap-0.5 ps-[10px] relative before:absolute before:start-[20px] before:top-0 before:bottom-0 before:border-s before:border-gray-200">
+                        <div class="menu-item">
+                            <a href="nxt-pages/backup.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('backup.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('backup.php') ?>"></span>
+                                <span class="menu-title text-2sm">Backup</span>
                             </a>
                         </div>
                     </div>

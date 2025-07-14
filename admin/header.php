@@ -4,7 +4,7 @@
 <head>
      <base href="">
      <title>
-          Aqeeq Dashboard
+          Liwaas Dashboard
      </title>
      <meta charset="utf-8" />
      <meta content="follow, index" name="robots" />
@@ -17,8 +17,19 @@
      <link href="assets/vendors/apexcharts/apexcharts.css" rel="stylesheet" />
      <link href="assets/vendors/keenicons/styles.bundle.css" rel="stylesheet" />
      <link href="assets/css/styles.css" rel="stylesheet" />
-</head>
 
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+           <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<?php
+    $config = include('configs/config.php');
+
+    // Access values
+    $baseUrl   = $config['API_BASE_URL'];
+    // $baseLogo  = $config['BASE_LOGO'];
+    // $address   = $config['BASE_ADDRESS'];
+    // $baseEmail = $config['BASE_EMAIL'];
+?>
 <body
      class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:#fefefe] [--tw-page-bg-dark:var(--tw-coal-500)] demo1 sidebar-fixed header-fixed bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
      <!-- Theme Mode -->

@@ -116,7 +116,7 @@
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
 
-            const apiUrl = 'http://localhost/DemoAqeeq/backend/api/user_index.php?route=login';
+            const apiUrl = 'http://192.168.0.103:8000/api/login';
 
             const requestBody = {
                 email: email,
@@ -135,18 +135,26 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    const { user_id, name, auth_token, role, email } = result.data;
-                    localStorage.setItem('auth_token', auth_token);
-                    localStorage.setItem('user_id', user_id);
-                    localStorage.setItem('role', role);
-                    localStorage.setItem('email', email);
-                    localStorage.setItem('name', name);
+                    const token = result.token;
+                    const user = result.user;
 
-                    if (role === 'admin') {
+                    // Store required data in localStorage
+                    localStorage.setItem('auth_token', token);
+                    localStorage.setItem('user_id', user.id);
+                    localStorage.setItem('user_email', user.email);
+                    localStorage.setItem('user_name', user.name);
+                    localStorage.setItem('user_role', user.role);
+
+                    // Redirect based on role
+                    if (user.role === 'admin') {
                         window.location.href = 'admin/index.php';
-                    } else {
+                    } else if (user.role === 'customer') {
                         window.location.href = 'index.php';
+                    } else {
+                        alert("Invalid role. Redirecting to login.");
+                        window.location.href = 'sign-in.php';
                     }
+                    
                 } else {
                     alert(result.message || 'Login failed. Please try again.');
                 }
@@ -156,6 +164,7 @@
             }
         });
     </script>
+
 
     <script src="admin/assets/js/core.bundle.js"></script>
     <script src="admin/assets/vendors/apexcharts/apexcharts.min.js"></script>

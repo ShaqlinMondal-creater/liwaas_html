@@ -46,11 +46,11 @@
 </style>
     <!-- Header -->
     <div class="sidebar-header hidden lg:flex items-center relative justify-between px-3 lg:px-6 shrink-0" id="sidebar_header">
-        <a class="dark:hidden admin_logos" href="html/demo1.html">
+        <a class="dark:hidden admin_logos" href="index.php">
             <img class="default-logo max-h-[22px] max-w-[32px] max-w-none desktop_img" src="../assets/brand/liwaas_logo_white_png.png" />
             <img class="small-logo max-h-[22px] max-w-[32px] max-w-none desktop_img_small" src="../assets/brand/fav_icon.png" />
         </a>
-        <a class="hidden dark:block" href="html/demo1.html">
+        <a class="hidden dark:block" href="index.php">
             <img class="default-logo max-h-[22px] max-w-[32px] max-w-none" src="../assets/brand/liwaas_logo_white_png.png" />
             <img class="small-logo min-h-[22px] max-w-none" src="../assets/brand/fav_icon.png" />
         </a>

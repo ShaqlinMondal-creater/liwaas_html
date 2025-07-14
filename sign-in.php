@@ -116,7 +116,7 @@
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
 
-            const apiUrl = 'http://192.168.0.103:8000/api/login';
+            const apiUrl = 'http://192.168.1.5:8000/api/login';
 
             const requestBody = {
                 email: email,

@@ -292,7 +292,7 @@
                     if (!token) return window.location.href = 'sign-in.php';
 
                     try {
-                        const response = await fetch('http://192.168.0.103:8000/api/logout', {
+                        const response = await fetch('http://192.168.1.5:8000/api/logout', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

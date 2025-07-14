@@ -90,7 +90,8 @@
                 <li><a href="" class="nav-link">Home</a></li>
                 <li><a href="pages/shop" class="nav-link">Shop</a></li>
                 <li><a href="pages/about-us" class="nav-link">About</a></li>
-                <li><a href="#" class="nav-link">Contact</a></li>
+                <li><a href="pages/blogs" class="nav-link">Blogs</a></li>
+                <li><a href="pages/contact" class="nav-link">Contact</a></li>
             </ul>
 
             <!-- Mobile search (takes rest-of-row) -->

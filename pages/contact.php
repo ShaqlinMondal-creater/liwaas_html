@@ -1,40 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Liwaas Crafted for You</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.cdnfonts.com/css/shadeerah-demo" rel="stylesheet" />
-    <style>
-        body { font-family: 'Shadeerah Demo', sans-serif !important; }
-        .animate-ping-slow { animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
-        @keyframes ping {
-            75%, 100% { transform: scale(2); opacity: 0; }
-        }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur px-4 py-3 shadow-md ring-1 ring-gray-200">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-2">
-                <img src="https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg" alt="Liwaas Logo" class="h-10 md:h-14 rounded-full">
-            </a>
-            <ul class="hidden md:flex items-center space-x-8 font-semibold tracking-wide">
-                <li><a href="index.html" class="text-gray-800 hover:text-indigo-600 transition">Home</a></li>
-                <li><a href="shop.html" class="text-gray-800 hover:text-indigo-600 transition">Shop</a></li>
-                <li><a href="about.html" class="text-gray-800 hover:text-indigo-600 transition">About</a></li>
-                <li><a href="contact.html" class="text-indigo-600 font-bold">Contact</a></li>
-                <li><a href="blogs.html" class="text-gray-800 hover:text-indigo-600 transition">Blog</a></li>
-            </ul>
-            <button class="md:hidden flex flex-col justify-center w-8 h-8 relative">
-                <span class="block w-6 h-0.5 bg-gray-700 mb-1.5"></span>
-                <span class="block w-6 h-0.5 bg-gray-700 mb-1.5"></span>
-                <span class="block w-6 h-0.5 bg-gray-700"></span>
-            </button>
-        </div>
-    </nav>
+<base href="../">
+<?php include("../header.php"); ?>
 
     <!-- Hero Section -->
     <section class="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 text-white py-20">
@@ -81,8 +46,59 @@
         </div>
     </section>
 
+    <!-- Quick Links Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Quick Links</h2>
+                <p class="text-xl text-gray-600">Find what you're looking for</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <a href="pages/privacy.php" class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 text-center group">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Privacy Policy</h3>
+                    <p class="text-gray-600 text-sm">Learn how we protect your data</p>
+                </a>
+                
+                <a href="#support" class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 text-center group">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Support Center</h3>
+                    <p class="text-gray-600 text-sm">Get help with your orders</p>
+                </a>
+                
+                <a href="pages/terms.php" class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 text-center group">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Terms & Conditions</h3>
+                    <p class="text-gray-600 text-sm">Read our terms of service</p>
+                </a>
+                
+                <a href="#policy" class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 text-center group">
+                    <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Return Policy</h3>
+                    <p class="text-gray-600 text-sm">Easy returns and exchanges</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Form -->
-    <section class="py-20 bg-gray-50">
+    <section class="py-20 bg-white">
         <div class="max-w-4xl mx-auto px-4">
             <div class="text-center mb-12">
                 <h2 class="text-4xl font-bold text-gray-800 mb-4">Send Us a Message</h2>
@@ -140,84 +156,141 @@
         </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section class="py-20 bg-white">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Frequently Asked Questions</h2>
-                <p class="text-xl text-gray-600">Quick answers to common questions</p>
-            </div>
-            <div class="space-y-4">
-                <div class="border border-gray-200 rounded-lg">
-                    <button class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors">
-                        What are your shipping options and delivery times?
-                    </button>
-                    <div class="px-6 pb-4 text-gray-600">
-                        We offer standard shipping (5-7 business days) and express shipping (2-3 business days). Free shipping is available on orders over $99.
+    <!-- Map and FAQ Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Map Section -->
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Find Us</h2>
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="h-96 bg-gray-200 relative">
+                            <!-- Google Maps Embed -->
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343008!2d-74.00425878459418!3d40.74844097932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf5c1654f3%3A0xc80f9cfce5383d5d!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1635959655654!5m2!1sen!2sus"
+                                width="100%" 
+                                height="100%" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade"
+                                class="absolute inset-0">
+                            </iframe>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Liwaas Flagship Store</h3>
+                            <p class="text-gray-600 mb-4">123 Fashion Street, New York, NY 10001</p>
+                            <div class="space-y-2 text-sm text-gray-600">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Mon-Fri: 9:00 AM - 8:00 PM</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>Sat-Sun: 10:00 AM - 6:00 PM</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                    </svg>
+                                    <span>+1 (555) 123-4567</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="border border-gray-200 rounded-lg">
-                    <button class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors">
-                        What is your return and exchange policy?
-                    </button>
-                    <div class="px-6 pb-4 text-gray-600">
-                        We accept returns within 30 days of purchase. Items must be unworn, unwashed, and in original condition with tags attached.
-                    </div>
-                </div>
-                <div class="border border-gray-200 rounded-lg">
-                    <button class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors">
-                        How do I track my order?
-                    </button>
-                    <div class="px-6 pb-4 text-gray-600">
-                        Once your order ships, you'll receive a tracking number via email. You can also track your order in your account dashboard.
-                    </div>
-                </div>
-                <div class="border border-gray-200 rounded-lg">
-                    <button class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors">
-                        Do you offer international shipping?
-                    </button>
-                    <div class="px-6 pb-4 text-gray-600">
-                        Yes, we ship to over 50 countries worldwide. International shipping rates and delivery times vary by destination.
+
+                <!-- FAQ Section -->
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Frequently Asked Questions</h2>
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-lg shadow-md">
+                            <button class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors rounded-lg">
+                                What are your shipping options and delivery times?
+                            </button>
+                            <div class="px-6 pb-4 text-gray-600">
+                                We offer standard shipping (5-7 business days) and express shipping (2-3 business days). Free shipping is available on orders over $99.
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-md">
+                            <button class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors rounded-lg">
+                                What is your return and exchange policy?
+                            </button>
+                            <div class="px-6 pb-4 text-gray-600">
+                                We accept returns within 30 days of purchase. Items must be unworn, unwashed, and in original condition with tags attached.
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-md">
+                            <button class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors rounded-lg">
+                                How do I track my order?
+                            </button>
+                            <div class="px-6 pb-4 text-gray-600">
+                                Once your order ships, you'll receive a tracking number via email. You can also track your order in your account dashboard.
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-md">
+                            <button class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors rounded-lg">
+                                Do you offer international shipping?
+                            </button>
+                            <div class="px-6 pb-4 text-gray-600">
+                                Yes, we ship to over 50 countries worldwide. International shipping rates and delivery times vary by destination.
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-md">
+                            <button class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors rounded-lg">
+                                How can I contact customer service?
+                            </button>
+                            <div class="px-6 pb-4 text-gray-600">
+                                You can reach us via email at support@liwaas.com, phone at +1 (555) 123-4567, or through our live chat feature on the website.
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg shadow-md">
+                            <button class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors rounded-lg">
+                                Do you have a size guide?
+                            </button>
+                            <div class="px-6 pb-4 text-gray-600">
+                                Yes, we have detailed size guides for all our products. You can find the size guide on each product page or in our help section.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- FAQ Toggle Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqButtons = document.querySelectorAll('.bg-white button');
+            
+            faqButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    const isVisible = !content.classList.contains('hidden');
+                    
+                    // Hide all FAQ answers
+                    faqButtons.forEach(btn => {
+                        const answer = btn.nextElementSibling;
+                        answer.classList.add('hidden');
+                    });
+                    
+                    // Show clicked answer if it was hidden
+                    if (!isVisible) {
+                        content.classList.remove('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 text-sm pt-10 pb-24 md:pb-6 mt-auto rounded-t-2xl">
-        <div class="max-w-7xl mx-auto px-4 space-y-8">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between border-t border-gray-700 pt-8 gap-4">
-                <div>
-                    <h3 class="text-white font-semibold text-base">Subscribe to our newsletter</h3>
-                    <p class="mt-1 text-sm text-gray-400">The latest news, articles, and resources, sent to your inbox weekly.</p>
-                </div>
-                <form class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                    <input type="email" placeholder="Enter your email" class="bg-gray-800 text-white border border-gray-700 rounded-full px-4 py-2 w-full sm:w-64 focus:outline-none focus:ring focus:border-indigo-500">
-                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 transition w-full sm:w-auto text-center">Subscribe</button>
-                </form>
-            </div>
-            <div class="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-sm text-gray-500 text-center">&copy; 2025 Liwaas, Inc. All rights reserved.</p>
-                <div class="flex gap-6 justify-center">
-                    <a href="#" class="hover:text-white transition">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M22 12a10 10 0 10-11.47 9.87v-6.99h-2.1v-2.88h2.1V9.42c0-2.07 1.23-3.22 3.12-3.22.9 0 1.84.16 1.84.16v2.02h-1.04c-1.03 0-1.35.64-1.35 1.3v1.56h2.3l-.37 2.88h-1.93v6.99A10 10 0 0022 12z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="hover:text-white transition">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0022.43 2a9.07 9.07 0 01-2.88 1.1A4.52 4.52 0 0016.5 2c-2.49 0-4.5 2.24-4.5 5a4.9 4.9 0 00.12 1.14A12.94 12.94 0 013 4.1a4.5 4.5 0 001.39 6 4.52 4.52 0 01-2.05-.57v.06a4.52 4.52 0 003.64 4.43A4.48 4.48 0 013 14v.06A4.52 4.52 0 007.5 18a9.05 9.05 0 01-5.58 2c-.36 0-.71-.02-1.05-.06A12.94 12.94 0 008 21c8.28 0 12.8-7.42 12.8-13.85 0-.21 0-.42-.02-.63A9.14 9.14 0 0023 3z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="hover:text-white transition">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
-</body>
-</html>
+<?php include("../footer.php"); ?>

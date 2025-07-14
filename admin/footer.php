@@ -40,6 +40,44 @@
 <!-- End of Main -->
 <?php include("inc/modal.php"); ?>
 <!-- End of Page -->
+
+<!-- Logout Logic -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                const token = localStorage.getItem('auth_token');
+                if (!token) return window.location.href = 'sign-in.php';
+
+                try {
+                    const response = await fetch('<?= $baseUrl ?>/api/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        localStorage.clear();
+                        window.location.href = '../sign-in.php';
+                    } else {
+                        alert(result.message || 'Logout failed.');
+                    }
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    alert('An error occurred during logout.');
+                }
+            });
+        }
+    });
+</script>
 <!-- Scripts -->
 <script src="assets/js/core.bundle.js">
 </script>

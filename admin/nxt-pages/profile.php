@@ -21,12 +21,12 @@
                <div class="container-fixed">
                     <div class="flex flex-col items-center gap-2 lg:gap-3.5 py-4 lg:pt-5 lg:pb-10">
                          <div
-                              class="flex items-center justify-center rounded-full border-2 border-success-clarity size-[100px] shrink-0 bg-light">
-                              <img class="size-[50px]" src="assets/media/brand-logos/duolingo.svg" />
+                              class="flex items-center justify-center rounded-full  size-[120px] shrink-0 bg-light">
+                              <img class="size-[40px]" src="<?php echo $baseLogo; ?>" />
                          </div>
                          <div class="flex items-center gap-1.5">
                               <div class="text-lg leading-5 font-semibold text-gray-900">
-                                   Duolingo
+                                   <?php echo $baseName; ?>
                               </div>
                               <svg class="text-primary" fill="none" height="16" viewbox="0 0 15 16" width="15"
                                    xmlns="http://www.w3.org/2000/svg">
@@ -47,15 +47,15 @@
                                    <i class="ki-filled ki-geolocation text-gray-500 text-sm">
                                    </i>
                                    <span class="text-gray-600 font-medium">
-                                        Pittsburgh, KS
+                                        <?php echo $baseAddress; ?>
                                    </span>
                               </div>
                               <div class="flex gap-1.25 items-center">
                                    <i class="ki-filled ki-sms text-gray-500 text-sm">
                                    </i>
                                    <a class="text-gray-600 font-medium hover:text-primary"
-                                        href="mailto: info@duolingo.com">
-                                        info@duolingo.com
+                                        href="mailto: <?php echo $baseEmail; ?>">
+                                        <?php echo $baseEmail; ?>
                                    </a>
                               </div>
                          </div>

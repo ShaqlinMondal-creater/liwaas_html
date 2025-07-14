@@ -1,8 +1,10 @@
 <?php
 // config.php
 return [
-  'API_BASE_URL' => 'http://192.168.1.5:8000',
-  'BASE_LOGO'    => 'http://yourdomain.com/assets/logo.png',
-  'BASE_ADDRESS' => '1234, Street Name, City, State, Country',
-  'BASE_EMAIL'   => 'support@yourdomain.com',
+  'API_BASE_URL' => 'http://192.168.0.101:8000',
+  'BASE_NAME' => 'Liwaas',
+  'BASE_LOGO'    => '../assets/brand/liwaas_logo_white_png.png',
+  'BASE_FAV_ICON'    => '../assets/brand/fav_icon.png',
+  'BASE_ADDRESS' => 'Dum Dum, Kol-700030',
+  'BASE_EMAIL'   => 'business.liwaas.com',
 ];

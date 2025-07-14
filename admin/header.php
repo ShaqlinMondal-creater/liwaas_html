@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html class="h-full" data-theme="true" data-theme-mode="light" dir="ltr" lang="en">
+<?php
+    $config = include('configs/config.php');
 
+    // Access values
+    $baseUrl   = $config['API_BASE_URL'];
+    $baseName = $config['BASE_NAME'];
+    $baseLogo  = $config['BASE_LOGO'];
+    $baseFavicon  = $config['BASE_FAV_ICON'];
+    $baseAddress   = $config['BASE_ADDRESS'];
+    $baseEmail = $config['BASE_EMAIL'];
+?>
 <head>
      <base href="">
      <title>
-          Liwaas Dashboard
+          <?php echo $baseName; ?> Dashboard
      </title>
      <meta charset="utf-8" />
      <meta content="follow, index" name="robots" />
-     <meta content="../assets/brand/fav_icon.png" property="og:image" />
-     <link href="../assets/brand/fav_icon.png" rel="apple-touch-icon" sizes="180x180" />
-     <link href="../assets/brand/fav_icon.png" rel="icon" sizes="32x32" type="image/png" />
-     <link href="../assets/brand/fav_icon.png" rel="icon" sizes="16x16" type="image/png" />
-     <link href="../assets/brand/fav_icon.png" rel="shortcut icon" />
+     <meta content="<?php echo $baseFavicon; ?>" property="og:image" />
+     <link href="<?php echo $baseFavicon; ?>" rel="apple-touch-icon" sizes="180x180" />
+     <link href="<?php echo $baseFavicon; ?>" rel="icon" sizes="32x32" type="image/png" />
+     <link href="<?php echo $baseFavicon; ?>" rel="icon" sizes="16x16" type="image/png" />
+     <link href="<?php echo $baseFavicon; ?>" rel="shortcut icon" />
      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
      <link href="assets/vendors/apexcharts/apexcharts.css" rel="stylesheet" />
      <link href="assets/vendors/keenicons/styles.bundle.css" rel="stylesheet" />
      <link href="assets/css/styles.css" rel="stylesheet" />
 
      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-           <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<?php
-    $config = include('configs/config.php');
 
-    // Access values
-    $baseUrl   = $config['API_BASE_URL'];
-    // $baseLogo  = $config['BASE_LOGO'];
-    // $address   = $config['BASE_ADDRESS'];
-    // $baseEmail = $config['BASE_EMAIL'];
-?>
 <body
      class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:#fefefe] [--tw-page-bg-dark:var(--tw-coal-500)] demo1 sidebar-fixed header-fixed bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
      <!-- Theme Mode -->
@@ -71,7 +73,7 @@
                          <!-- Mobile Logo -->
                          <div class="flex gap-1 lg:hidden items-center -ms-1">
                               <a class="shrink-0" href="index.php">
-                                   <img class="max-h-[25px] w-full" src="../assets/brand/fav_icon.png" />
+                                   <img class="max-h-[25px] w-full" src="<?php echo $baseFavicon; ?>" />
                               </a>
                               <div class="flex items-center">
                                    <button class="btn btn-icon btn-light btn-clear btn-sm"

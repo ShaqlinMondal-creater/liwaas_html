@@ -132,7 +132,7 @@
             const password = document.getElementById('password').value;
             const address_line_1 = document.getElementById('address').value;
 
-            const apiUrl = 'http://192.168.0.103:8000/api/register';
+            const apiUrl = 'http://192.168.0.101:8000/api/register';
 
             const requestBody = {
                 name,

@@ -83,12 +83,12 @@
                 </div>
 
                 <!-- PUBLIC PROFILE -->
-                <div class="menu-item <?= menuShow(['account.php','profile.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
+                <div class="menu-item <?= menuShow(['account.php','dev_web.php','profile.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
                     <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] ps-[10px] pe-[10px] py-[6px]">
                         <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
                             <i class="ki-filled ki-profile-circle text-lg"></i>
                         </span>
-                        <span class="menu-title text-sm font-medium text-gray-800">Public Profile</span>
+                        <span class="menu-title text-sm font-medium text-gray-800">Liwaas Profile</span>
                         <span class="menu-arrow text-gray-400 w-[20px] shrink-0 justify-end ms-1 me-[-10px]">
                             <i class="ki-filled ki-plus text-2xs menu-item-show:hidden"></i>
                             <i class="ki-filled ki-minus text-2xs hidden menu-item-show:inline-flex"></i>
@@ -102,7 +102,12 @@
                                 <span class="menu-title text-2sm">Account</span>
                             </a>
                         </div>
-
+                        <div class="menu-item">
+                            <a href="nxt-pages/dev_web.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('dev_web.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('dev_web.php') ?>"></span>
+                                <span class="menu-title text-2sm">Developer Website</span>
+                            </a>
+                        </div>
                         <div class="menu-item">
                             <a href="nxt-pages/profile.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('profile.php') ?>">
                                 <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('profile.php') ?>"></span>

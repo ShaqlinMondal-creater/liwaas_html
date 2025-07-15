@@ -5,7 +5,7 @@
   </div>
 </section>
 
-<script>
+<!-- <script>
   // Fetch slider JSON and build slides
   fetch('json/slider.json')
     .then(res => res.json())
@@ -71,5 +71,89 @@
     })
     .catch(err => {
       console.error('Failed to load slider JSON:', err);
+    });
+</script> -->
+
+<script>
+  const baseUrl = "<?= $baseUrl ?>";
+  const token = localStorage.getItem("auth_token");
+
+  // Fetch slider data from backend
+  fetch(`${baseUrl}/api/admin/extras/getall`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      show_status: "1",
+      purpose_name: "Slider"
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.success || !Array.isArray(data.data)) {
+        throw new Error("Invalid slider data");
+      }
+
+      // Sort by sort_number if available, otherwise keep order
+      const slides = data.data
+        .sort((a, b) => (a.sort_number ?? 0) - (b.sort_number ?? 0));
+
+      const wrapper = document.getElementById('sliderWrapper');
+
+      slides.forEach(({ file_path, purpose_name, file_name }) => {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide relative';
+
+        slide.innerHTML = `
+          <img
+            src="${file_path}"
+            alt="${purpose_name || ''}"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div class="slide-overlay"></div>
+          <div
+            class="absolute bottom-6 left-6 max-w-[80%] z-20 text-white"
+          >
+            <h2 class="text-3xl font-extrabold drop-shadow-lg mb-2">${purpose_name || ''}</h2>
+            <p class="text-sm drop-shadow-md mb-4">${file_name || ''}</p>
+            <a
+              href="/shop"
+              class="inline-block bg-amber-400 hover:bg-amber-500 text-black font-semibold px-6 py-3 rounded-full transition"
+              >Shop Now</a
+            >
+          </div>
+        `;
+
+        wrapper.appendChild(slide);
+      });
+
+      // Initialize Swiper
+      const swiper = new Swiper('.mySwiper', {
+        effect: 'fade',
+        fadeEffect: { crossFade: true },
+        loop: true,
+        speed: 1000,
+        autoplay: {
+          delay: 4500,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+          type: 'bullets',
+          dynamicBullets: false,
+        },
+      });
+
+      // Pause autoplay on hover
+      const swiperEl = document.querySelector('.mySwiper');
+      swiperEl.addEventListener('mouseenter', () => swiper.autoplay.stop());
+      swiperEl.addEventListener('mouseleave', () => swiper.autoplay.start());
+    })
+    .catch(err => {
+      console.error('Failed to load slider from API:', err);
     });
 </script>

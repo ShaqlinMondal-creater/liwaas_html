@@ -372,16 +372,24 @@
             res.data.forEach(extra => {
             container.innerHTML += `
                 <div class="card shadow-none w-[280px] border-0 mb-4 relative">
-                <img alt="" class="rounded-t-xl max-w-[280px] shrink-0" src="${extra.file_path}" />
-                <div class="card-border card-rounded-b px-3.5 h-full pt-3 pb-3.5">
-                    <a class="font-medium block text-gray-900 hover:text-primary text-md mb-2" href="#">
-                    ${extra.purpose_name}
-                    </a>
-                    <p class="text-2sm text-gray-700 break-words">
-                    ${extra.file_name}
-                    </p>
-                    <button class="btn btn-sm btn-danger mt-2" onclick="deleteExtra(${extra.id})">Remove</button>
-                </div>
+                    <img alt="" class="rounded-t-xl max-w-[280px] shrink-0" src="${extra.file_path}" />
+                    <div class="card-border card-rounded-b px-3.5 h-full pt-3 pb-3.5">
+                        <a class="font-medium block text-gray-900 hover:text-primary text-md mb-2" href="#">
+                        ${extra.purpose_name}
+                        </a>
+                        <p class="text-2sm text-gray-700 break-words">
+                        ${extra.file_name}
+                        </p>
+                        <div class="flex gap-5">
+                            <button class="btn btn-sm btn-danger mt-2" onclick="deleteExtra(${extra.id})">Remove</button>
+                            <div class="flex items-center gap-2 mt-2">
+                                <label class="text-xs">Active:</label>
+                                <label class="switch switch-sm p-2">
+                                <input name="check" type="checkbox" value="1" ${extra.show_status == 1 ? "checked" : ""} onchange="toggleExtraStatus(${extra.id}, this.checked)">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
             });
@@ -395,6 +403,8 @@
             title: 'Add Extras',
             html: `
             <input type="text" id="extra_purpose" class="swal2-input" placeholder="Purpose Name">
+            <input type="text" id="extra_comments" class="swal2-input" placeholder="Comments (optional)">
+            <input type="text" id="extra_highlights" class="swal2-input" placeholder="Highlights (optional)">
             <input type="file" id="extra_file" class="swal2-file" accept="image/*">
             <select id="extra_status" class="swal2-select">
                 <option value="1">Active</option>
@@ -405,6 +415,8 @@
             showCancelButton: true,
             preConfirm: () => {
             const purpose = document.getElementById("extra_purpose").value;
+            const comments = document.getElementById("extra_comments").value;
+            const highlights = document.getElementById("extra_highlights").value;
             const file = document.getElementById("extra_file").files[0];
             const status = document.getElementById("extra_status").value;
 
@@ -415,6 +427,8 @@
 
             const formData = new FormData();
             formData.append("purpose_name", purpose);
+            formData.append("comments", comments);
+            formData.append("highlights", highlights);
             formData.append("file", file);
             formData.append("show_status", status);
 
@@ -468,7 +482,30 @@
         });
     }
 
-    // 4. Attach event to Add Extras button and filters
+    // 4. Update extra Status 
+    function toggleExtraStatus(id, isActive) {
+        fetch(`${baseUrl}/api/admin/extras/update-status/${id}`, {
+            method: "PUT",
+            headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+            show_status: isActive ? 1 : 0
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+        if (!data.success) {
+            Swal.fire("Error", data.message || "Failed to update status", "error");
+        }
+        })
+        .catch(err => {
+        Swal.fire("Error", "Something went wrong while updating status", "error");
+        });
+    }
+
+    // 5. Attach event to Add Extras button and filters
     document.addEventListener("DOMContentLoaded", () => {
         fetchExtras(extraFilter);
 

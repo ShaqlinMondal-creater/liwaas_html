@@ -1,5 +1,6 @@
 <!-- header.php include -->
-<?php include("header.php"); ?>
+<base href="../">
+<?php include("../header.php"); ?>
 
 <main class="grow content pt-5" id="content" role="content">
   <div class="container-fixed">
@@ -21,22 +22,38 @@
             <label class="form-label text-gray-900">AID</label>
             <input class="input input-sm w-[240px]" type="text" name="aid" placeholder="A-210" />
           </div>
+
           <div class="flex flex-col gap-1">
             <label class="form-label text-gray-900">Brand</label>
-            <input class="input input-sm w-[240px]" type="number" name="brand" placeholder="4" />
+            <select name="brand_select" id="brand_select" class="input input-sm w-[240px]">
+              <option value="">Select Brand</option>
+              <option value="2">Liwaas</option>
+            </select>
           </div>
+          
           <div class="flex flex-col gap-1">
             <label class="form-label text-gray-900">Category</label>
-            <input class="input input-sm w-[240px]" type="number" name="category" placeholder="2" />
+            <select name="category_select" id="category_select" class="input input-sm w-[240px]">
+              <option value="">Select Category</option>
+              <option value="1">Over Sized T-Shirt</option>
+              <option value="3">Full T-Shirt</option>
+            </select>
           </div>
+
         </div>
 
         <!-- Row: Info Fields -->
         <div class="flex gap-10 items-center">
           <div class="flex flex-col gap-1">
             <label class="form-label text-gray-900">Gender</label>
-            <input class="input input-sm w-[240px]" type="text" name="gender" placeholder="male" />
+            <select name="gender_select" id="gender_select" class="input input-sm w-[240px]">
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="unisex">Unisex</option>
+            </select>
           </div>
+
           <div class="flex flex-col gap-1">
             <label class="form-label text-gray-900">Keyword</label>
             <input class="input input-sm w-[240px]" type="text" name="keyword" placeholder="Grey shirt, fit" />
@@ -91,7 +108,8 @@
         <div class="flex gap-10 items-center mb-5">
           <div class="flex flex-col gap-1">
             <label class="form-label text-gray-900">Product Image</label>
-            <input class="input input-sm w-[240px]" type="file" name="image[]" accept="image/*" multiple />
+            <input class=" input-sm w-[240px]" type="file" name="image[]" accept="image/*" multiple />
+            <span class="text-gray-400 italic">Use Format: jpeg,png,jpg (Max: 8mb)</span>
           </div>
           <div class="flex flex-col gap-1 justify-end" style="min-width: 140px;">
             <button type="submit" class="btn btn-primary h-8 mt-5 w-[120px]">Add Product</button>
@@ -103,7 +121,84 @@
 </main>
 
 <!-- Footer -->
-<?php include("footer.php"); ?>
+<?php include("../footer.php"); ?>
+
+<!-- Get Brands and Categories -->
+<script>
+  const baseUrl = "<?= $baseUrl ?>"; // Or replace with your actual base URL
+  const token = localStorage.getItem("auth_token");
+
+  // Fetch and populate all brands
+  function fetchBrands() {
+      fetch(`${baseUrl}/api/allBrands`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+              limit: 100,
+              offset: 0
+          })
+      })
+      .then(res => res.json())
+      .then(data => {
+          if (data.success && Array.isArray(data.data)) {
+              const brandSelect = document.getElementById("brand_select");
+              // Clear existing options
+              brandSelect.innerHTML = `<option value="">Select Brand</option>`;
+              data.data.forEach(brand => {
+                  const option = document.createElement("option");
+                  option.value = brand.id;
+                  option.textContent = brand.name;
+                  brandSelect.appendChild(option);
+              });
+          } else {
+              console.error("Failed to fetch brands:", data.message);
+          }
+      })
+      .catch(err => console.error("Brand fetch error:", err));
+  }
+
+  // Fetch and populate all categories
+  function fetchCategories() {
+      fetch(`${baseUrl}/api/allCategories`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+              limit: 100,
+              offset: 0
+          })
+      })
+      .then(res => res.json())
+      .then(data => {
+          if (data.success && Array.isArray(data.data)) {
+              const categorySelect = document.getElementById("category_select");
+              // Clear existing options
+              categorySelect.innerHTML = `<option value="">Select Category</option>`;
+              data.data.forEach(category => {
+                  const option = document.createElement("option");
+                  option.value = category.id;
+                  option.textContent = category.name;
+                  categorySelect.appendChild(option);
+              });
+          } else {
+              console.error("Failed to fetch categories:", data.message);
+          }
+      })
+      .catch(err => console.error("Category fetch error:", err));
+  }
+
+  // Call both on page load
+  document.addEventListener("DOMContentLoaded", () => {
+      fetchBrands();
+      fetchCategories();
+  });
+</script>
+
 
 <!-- JS will be appended separately -->
 <script>
@@ -169,9 +264,9 @@
       const payload = {
         aid,
         name,
-        brand: Number(formData.get("brand")),
-        category: Number(formData.get("category")),
-        gender: formData.get("gender"),
+        brand: Number(formData.get("brand_select")),
+        category: Number(formData.get("category_select")),
+        gender: formData.get("gender_select"),
         keyword: formData.get("keyword"),
         description: formData.get("description"),
         specification: formData.get("specification"),

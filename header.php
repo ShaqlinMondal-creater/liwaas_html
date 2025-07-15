@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+    $config = include('admin/configs/config.php');
 
+    // Access values
+    $baseUrl   = $config['API_BASE_URL'];
+    $baseName = $config['BASE_NAME'];
+    $baseLogo  = $config['BASE_LOGO'];
+    $baseFavicon  = $config['BASE_FAV_ICON'];
+    $baseAddress   = $config['BASE_ADDRESS'];
+    $baseEmail = $config['BASE_EMAIL'];
+?>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -292,7 +302,7 @@
                     if (!token) return window.location.href = 'sign-in.php';
 
                     try {
-                        const response = await fetch('http://192.168.1.5:8000/api/logout', {
+                        const response = await fetch('<?php echo $baseUrl; ?>/api/logout', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

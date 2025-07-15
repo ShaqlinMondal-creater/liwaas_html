@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html class="h-full" data-theme="true" data-theme-mode="light" dir="ltr" lang="en">
+<?php
+    $config = include('admin/configs/config.php');
 
+    // Access values
+    $baseUrl   = $config['API_BASE_URL'];
+    $baseName = $config['BASE_NAME'];
+    $baseLogo  = $config['BASE_LOGO'];
+    $baseFavicon  = $config['BASE_FAV_ICON'];
+    $baseAddress   = $config['BASE_ADDRESS'];
+    $baseEmail = $config['BASE_EMAIL'];
+?>
 <head>
     <!-- <base href="admin/"> -->
-    <title>Aqeeq Sign-In</title>
+    <title>Liwaas Sign-In</title>
     <meta charset="utf-8" />
     <meta content="follow, index" name="robots" />
-    <meta content="admin/assets/media/app/og-image.png" property="og:image" />
-    <link href="admin/assets/media/app/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
-    <link href="admin/assets/media/app/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
-    <link href="admin/assets/media/app/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
-    <link href="admin/assets/media/app/favicon.ico" rel="shortcut icon" />
+    <meta content="assets/brand/fav_icon.png" property="og:image" />
+    <link href="assets/brand/fav_icon.png" rel="apple-touch-icon" sizes="180x180" />
+    <link href="assets/brand/fav_icon.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="assets/brand/fav_icon.png" rel="icon" sizes="16x16" type="image/png" />
+    <link href="assets/brand/fav_icon.png" rel="shortcut icon" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="admin/assets/vendors/apexcharts/apexcharts.css" rel="stylesheet" />
     <link href="admin/assets/vendors/keenicons/styles.bundle.css" rel="stylesheet" />
@@ -37,8 +47,15 @@
     </script>
 
     <style>
+        .bg-main {
+            background: radial-gradient(#d9a53f, #78829d);
+        }
         .branded-bg {
-            background-image: url('admin/assets/media/images/2600x1600/1.png');
+            background-image: url('assets/static/t-shirt2.jpg'); /* or correct relative path */
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            box-shadow: 0 5px 20px #7e581ca3;
         }
 
         .dark .branded-bg {
@@ -46,7 +63,7 @@
         }
     </style>
 
-    <div class="grid lg:grid-cols-2 grow">
+    <div class="grid lg:grid-cols-2 grow bg-main">
         <div class="flex justify-center items-center p-8 lg:p-10 order-2 lg:order-1">
             <div class="card max-w-[370px] w-full">
                 <form id="sign_in_form" class="card-body flex flex-col gap-5 p-10">
@@ -91,19 +108,19 @@
             </div>
         </div>
 
-        <div class="lg:rounded-xl lg:border lg:border-gray-200 lg:m-5 order-1 lg:order-2 bg-top xxl:bg-center xl:bg-cover bg-no-repeat branded-bg">
+        <div class="lg:rounded-xl lg:border-gray-200 lg:m-5 order-1 lg:order-2 bg-top xl:bg-center xl:bg-cover bg-no-repeat branded-bg">
             <div class="flex flex-col p-8 lg:p-16 gap-4">
-                <a href="html/demo1.html">
-                    <img class="h-[28px] max-w-none" src="admin/assets/media/app/mini-logo.svg" />
+                <a href="index.php">
+                    <img class="h-[28px] max-w-none" src="assets/brand/fav_icon.png" />
                 </a>
-                <div class="flex flex-col gap-3">
+                <!-- <div class="flex flex-col gap-3">
                     <h3 class="text-2xl font-semibold text-gray-900">Secure Access Portal</h3>
                     <div class="text-base font-medium text-gray-600">
                         A robust authentication gateway ensuring<br />
                         secure <span class="text-gray-900 font-semibold">efficient user access</span>
                         to the Metronic Dashboard interface.
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -116,7 +133,7 @@
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
 
-            const apiUrl = 'http://192.168.0.101:8000/api/login';
+            const apiUrl = '<?php echo $baseUrl; ?>/api/login';
 
             const requestBody = {
                 email: email,

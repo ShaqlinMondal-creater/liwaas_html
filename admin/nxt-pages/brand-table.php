@@ -99,6 +99,7 @@
       <!-- End of Container -->
   </main>
   <!-- End of Content -->
+
 <script>
   // ✅ Step 1: Change the API URL and filter payload
   const API_URL = "<?= $baseUrl ?>/api/allBrands";
@@ -155,7 +156,7 @@
 
     data.forEach((brand) => {
       const logoDisplay = brand.logo
-        ? `<span class='text-green-600'>ID: ${brand.logo}</span>`
+        ? `<img src="${brand.logo}" alt="Brand Logo" class="h-10 w-auto" />`
         : `<span class='text-gray-400 italic'>No logo</span>`;
 
       const row = `
@@ -207,7 +208,8 @@
       title: 'Edit Brand',
       html: `
         <input id="brand_name" class="swal2-input" placeholder="Brand Name" value="${brand.name}">
-        <input id="brand_logo" type="file" class="swal2-file" accept="image/*">
+        <input id="brand_logo" type="file" class="swal2-file" accept="image/*"><br />
+        <span class="text-gray-400 italic">Use Format: jpeg,png,jpg (Max: 8mb)</span>
       `,
       confirmButtonText: 'Update',
       showCancelButton: true,
@@ -216,9 +218,9 @@
         const logo = document.getElementById('brand_logo').files[0];
 
         const formData = new FormData();
-        formData.append('name', name);
         formData.append('id', id); // pass id in form data
-
+        formData.append('name', name);
+        
         if (logo) {
           formData.append('logo', logo);
         }
@@ -331,8 +333,9 @@
     fetchBrands(currentPage);
   });
 
-
 </script>
+
+<!-- Add new Brand -->
 <script>
   document.querySelector(".btn-primary").addEventListener("click", function (e) {
     e.preventDefault();

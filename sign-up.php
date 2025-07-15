@@ -1,7 +1,17 @@
 
 <!DOCTYPE html>
 <html class="h-full" data-theme="true" data-theme-mode="light" dir="ltr" lang="en">
+<?php
+    $config = include('admin/configs/config.php');
 
+    // Access values
+    $baseUrl   = $config['API_BASE_URL'];
+    $baseName = $config['BASE_NAME'];
+    $baseLogo  = $config['BASE_LOGO'];
+    $baseFavicon  = $config['BASE_FAV_ICON'];
+    $baseAddress   = $config['BASE_ADDRESS'];
+    $baseEmail = $config['BASE_EMAIL'];
+?>
 <head>
     <title>Aqeeq Sign-Up</title>
     <meta charset="utf-8" />
@@ -132,7 +142,7 @@
             const password = document.getElementById('password').value;
             const address_line_1 = document.getElementById('address').value;
 
-            const apiUrl = 'http://192.168.0.101:8000/api/register';
+            const apiUrl = '<?php echo $baseUrl; ?>/api/register';
 
             const requestBody = {
                 name,

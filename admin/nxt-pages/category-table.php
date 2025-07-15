@@ -124,7 +124,8 @@
     tbody.innerHTML = "";
 
     data.forEach((cat) => {
-      const logo = cat.logo ? `<span class="text-green-600">ID: ${cat.logo}</span>` : `<span class="text-gray-400 italic">No logo</span>`;
+
+      const logo = cat.logo ? `<img src="${cat.logo}" alt="Category Logo" class="h-10 w-auto" />` : `<span class="text-gray-400 italic">No logo</span>`;
       const row = `
         <tr>
             <td class="text-center"><input type="checkbox" class="checkbox checkbox-sm" value="${cat.id}" /></td>
@@ -158,84 +159,132 @@
     });
   }
 
-  function setupCategoryPagination(total, limit, current) {
-    const container = document.getElementById("category_pagination");
-    const info = document.getElementById("category_info");
-    container.innerHTML = "";
+    function setupCategoryPagination(total, limit, current) {
+        const container = document.getElementById("category_pagination");
+        const info = document.getElementById("category_info");
+        container.innerHTML = "";
 
-    const totalPages = Math.ceil(total / limit);
-    for (let i = 1; i <= totalPages; i++) {
-      const btn = document.createElement("button");
-      btn.className = `btn btn-sm ${i === current ? "active" : "btn-light"}`;
-      btn.textContent = i;
-      btn.addEventListener("click", () => fetchCategories(i));
-      container.appendChild(btn);
+        const totalPages = Math.ceil(total / limit);
+        for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.className = `btn btn-sm ${i === current ? "active" : "btn-light"}`;
+        btn.textContent = i;
+        btn.addEventListener("click", () => fetchCategories(i));
+        container.appendChild(btn);
+        }
+
+        if (info) info.innerText = `Page ${current} of ${totalPages}`;
     }
 
-    if (info) info.innerText = `Page ${current} of ${totalPages}`;
-  }
+    function populateCategoryPerPage() {
+        const select = document.getElementById("category_per_page");
+        const options = [5, 10, 20, 50];
+        select.innerHTML = "";
 
-  function populateCategoryPerPage() {
-    const select = document.getElementById("category_per_page");
-    const options = [5, 10, 20, 50];
-    select.innerHTML = "";
+        options.forEach(num => {
+        const option = document.createElement("option");
+        option.value = num;
+        option.textContent = num;
+        if (num === categoryLimit) option.selected = true;
+        select.appendChild(option);
+        });
 
-    options.forEach(num => {
-      const option = document.createElement("option");
-      option.value = num;
-      option.textContent = num;
-      if (num === categoryLimit) option.selected = true;
-      select.appendChild(option);
-    });
+        select.addEventListener("change", function () {
+        categoryLimit = parseInt(this.value);
+        categoryPage = 1;
+        fetchCategories(categoryPage);
+        });
+    }
 
-    select.addEventListener("change", function () {
-      categoryLimit = parseInt(this.value);
-      categoryPage = 1;
-      fetchCategories(categoryPage);
-    });
-  }
+    // function editCategory(id) {
+    //     const token = localStorage.getItem("auth_token");
+    //     const baseUrl = "<?= $baseUrl ?>"; 
+    //     const category = currentCategoryList.find(cat => cat.id === id);
+    //     if (!category) return alert("Category not found.");
+
+    //     Swal.fire({
+    //         title: 'Edit Category',
+    //         html: `
+    //         <input id="cat_name" class="swal2-input" placeholder="Category Name" value="${category.name}">
+    //         <input id="cat_logo" type="file" class="swal2-file" accept="image/*">
+    //         `,
+    //         confirmButtonText: 'Update',
+    //         showCancelButton: true,
+    //         preConfirm: () => {
+    //         const name = document.getElementById('cat_name').value;
+    //         const logo = document.getElementById('cat_logo').files[0];
+
+    //         const formData = new FormData();
+    //         formData.append('name', name);
+    //         if (logo) formData.append('logo', logo);
+
+    //         return fetch(`${baseUrl}/api/admin/categories/update/${id}`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //             },
+    //             body: formData,
+    //         })
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             if (!result.success) {
+    //             throw new Error(result.message);
+    //             }
+    //             return result;
+    //         });
+    //         }
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //         Swal.fire('✅ Updated!', 'Category updated successfully.', 'success');
+    //         fetchCategories(categoryPage); // reload after update
+    //         }
+    //     }).catch(err => {
+    //         Swal.fire('❌ Error', err.message || 'Update failed', 'error');
+    //     });
+    // }
 
     function editCategory(id) {
-        const token = localStorage.getItem("auth_token");
-
+        const token = localStorage.getItem("auth_token"); 
         const category = currentCategoryList.find(cat => cat.id === id);
         if (!category) return alert("Category not found.");
 
         Swal.fire({
             title: 'Edit Category',
             html: `
-            <input id="cat_name" class="swal2-input" placeholder="Category Name" value="${category.name}">
-            <input id="cat_logo" type="file" class="swal2-file" accept="image/*">
+                <input id="cat_name" class="swal2-input" placeholder="Category Name" value="${category.name}">
+                <input id="cat_logo" type="file" class="swal2-file" accept="image/*"><br />
+                <span class="text-gray-400 italic">Use Format: jpeg,png,jpg (Max: 8mb)</span>
             `,
             confirmButtonText: 'Update',
             showCancelButton: true,
             preConfirm: () => {
-            const name = document.getElementById('cat_name').value;
-            const logo = document.getElementById('cat_logo').files[0];
+                const name = document.getElementById('cat_name').value;
+                const logo = document.getElementById('cat_logo').files[0];
 
-            const formData = new FormData();
-            formData.append('name', name);
-            if (logo) formData.append('logo', logo);
+                const formData = new FormData();
+                formData.append('id', id);              // ✅ pass id in form data
+                formData.append('name', name);
+                if (logo) formData.append('logo', logo);
 
-            return fetch(`<?= $baseUrl ?>/api/admin/categories/update/${id}`, {
-                method: 'POST',
-                headers: {
-                Authorization: `Bearer ${token}`,
-                },
-                body: formData,
-            })
-            .then(res => res.json())
-            .then(result => {
-                if (!result.success) {
-                throw new Error(result.message);
-                }
-                return result;
-            });
+                return fetch(`<?= $baseUrl ?>/api/admin/categories/update`, { // ✅ no /{id}
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,               // ✅ token in header
+                    },
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(result => {
+                    if (!result.success) {
+                        throw new Error(result.message);
+                    }
+                    return result;
+                });
             }
         }).then((result) => {
             if (result.isConfirmed) {
-            Swal.fire('✅ Updated!', 'Category updated successfully.', 'success');
-            fetchCategories(categoryPage); // reload after update
+                Swal.fire('✅ Updated!', 'Category updated successfully.', 'success');
+                fetchCategories(categoryPage); // reload categories
             }
         }).catch(err => {
             Swal.fire('❌ Error', err.message || 'Update failed', 'error');
@@ -276,18 +325,17 @@
         });
     }
 
+    // Search input handler
+    document.addEventListener("DOMContentLoaded", () => {
+        populateCategoryPerPage();
+        fetchCategories();
 
-  // Search input handler
-  document.addEventListener("DOMContentLoaded", () => {
-    populateCategoryPerPage();
-    fetchCategories();
-
-    document.getElementById("category_search_input").addEventListener("input", function () {
-      categorySearch = this.value.trim();
-      categoryPage = 1;
-      fetchCategories(categoryPage);
+        document.getElementById("category_search_input").addEventListener("input", function () {
+            categorySearch = this.value.trim();
+            categoryPage = 1;
+            fetchCategories(categoryPage);
+        });
     });
-  });
 </script>
 <script>
     document.querySelector(".btn-primary").addEventListener("click", function (e) {
@@ -296,8 +344,8 @@
         Swal.fire({
             title: 'Add New Category',
             html: `
-            <input id="new_category_name" class="swal2-input" placeholder="Category Name">
-            <input id="new_category_logo" type="file" class="swal2-file" accept="image/*">
+                <input id="new_category_name" class="swal2-input" placeholder="Category Name">
+                <input id="new_category_logo" type="file" class="swal2-file" accept="image/*">
             `,
             confirmButtonText: 'Add Category',
             showCancelButton: true,

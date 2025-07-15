@@ -75,15 +75,14 @@
 </script> -->
 
 <script>
-  const baseUrl = "<?= $baseUrl ?>";
-  const token = localStorage.getItem("auth_token");
+  const slider_token = localStorage.getItem("auth_token");
 
   // Fetch slider data from backend
-  fetch(`${baseUrl}/api/admin/extras/getall`, {
+  fetch(`<?= $baseUrl ?>/api/extras/getall`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
+      "Authorization": `Bearer ${slider_token}`
     },
     body: JSON.stringify({
       show_status: "1",

@@ -355,7 +355,7 @@
     function fetchExtras(filters = {}) {
         console.log("Sending filters:", filters);
 
-        fetch(`${baseUrl}/api/admin/extras/getall`, {
+        fetch(`${baseUrl}/api/extras/getall`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json",

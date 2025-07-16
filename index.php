@@ -13,10 +13,10 @@
   <!-- Products -->
   <?php //include("inc/product_gallary_section.php"); ?>
 
-  <!-- 💥 Offers2 -->
+  <!-- Offers2 -->
   <?php include("inc/offers.php"); ?>
 
-  <!-- 💥 products cards -->
+  <!-- products cards -->
   <?php //include("inc/home-product-card.php"); ?>
 
   <!-- best seller -->

@@ -247,3 +247,76 @@
           display: none !important;
       }
     }
+
+
+
+
+.wishlist-flash {
+  animation: flashHighlight 0.5s ease-out;
+}
+
+@keyframes flashHighlight {
+  0% {
+    transform: scale(1);
+    background-color: transparent;
+  }
+  50% {
+    transform: scale(1.2);
+    background-color: rgba(255, 0, 0, 0.1);
+  }
+  100% {
+    transform: scale(1);
+    background-color: transparent;
+  }
+}
+
+  #flash-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #d8160f; /* green */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: opacity 0.4s ease;
+  }
+
+  #flash-toast.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+.cart_popup {
+  width: 400px !important;
+}
+
+.swal-add-btn, .swal-cancel-btn {
+  width: 100px;
+  padding: 8px 0;
+  font-weight: 600;
+}
+
+.swal-add-btn {
+  background-color: orange !important; /* orange-500 */
+  color: white !important;
+  border: none !important;
+}
+
+.swal-add-btn:hover {
+  background-color: #fb923c !important; /* orange-400 */
+}
+
+.swal-cancel-btn {
+  background-color: #ef4444 !important; /* red-500 */
+  color: white !important;
+  border: none !important;
+}
+
+.swal-cancel-btn:hover {
+  background-color: #f87171 !important; /* red-400 */
+}

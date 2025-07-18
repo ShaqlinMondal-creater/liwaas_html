@@ -8,7 +8,7 @@
   <?php include("inc/category.php"); ?>
 
   <!-- Featured -->
-  <?php //include("inc/featured_section.php"); ?>
+  <?php include("inc/trending_section.php"); ?>
 
   <!-- Products -->
   <?php //include("inc/product_gallary_section.php"); ?>

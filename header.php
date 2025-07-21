@@ -241,7 +241,7 @@
     <!-- ---------- End Nav SCRIPT  ---------- -->
 
     <!--nav logic with backend  -->
-    <script>
+    <!-- <script>
         window.addEventListener('DOMContentLoaded', () => {
             let avatarBtn = document.getElementById('avatarBtn');
             const isLoggedIn = localStorage.getItem('auth_token') !== null;
@@ -289,7 +289,63 @@
                 }
             }
         });
+    </script> -->
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            let avatarBtn = document.getElementById('avatarBtn');
+            const isLoggedIn = localStorage.getItem('auth_token') !== null;
+            const name = localStorage.getItem('user_name') || '';
+            const bellBtn = document.getElementById('bellBtn');
+            const bellMenu = document.getElementById('bellMenu');
+            const avatarMenu = document.getElementById('avatarMenu');
+
+            const loginLink = avatarMenu?.querySelector('a[href*="sign-in"]');
+            const profileLink = avatarMenu?.querySelector('a[href*="profile"]');
+            const logoutLink = avatarMenu?.querySelector('a[href="#"]');
+            const mobileLogout = document.querySelector('.mobile-action a:last-child');
+
+            if (!isLoggedIn) {
+                bellBtn?.classList.add('hidden');
+                bellMenu?.classList.add('hidden');
+                profileLink?.classList.add('hidden');
+                logoutLink?.classList.add('hidden');
+                mobileLogout?.classList.add('hidden');
+
+                // Show login link
+                loginLink?.classList.remove('hidden');
+
+                if (avatarBtn) {
+                    avatarBtn.src = 'https://i.pravatar.cc/40?img=32';
+                }
+            } else {
+                // Hide login link
+                loginLink?.classList.add('hidden');
+
+                // Show Profile / Name in the link
+                if (profileLink && name.length > 0) {
+                    profileLink.textContent = `Profile / ${name}`;
+                }
+
+                if (avatarBtn && name.length > 0) {
+                    const initial = name.charAt(0).toUpperCase();
+                    const span = document.createElement('span');
+                    span.textContent = initial;
+                    span.id = "avatarBtn";
+                    span.className = "h-9 w-9 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold cursor-pointer ring-2 ring-white";
+
+                    avatarBtn.replaceWith(span);
+                    avatarBtn = document.getElementById('avatarBtn');
+
+                    avatarBtn.addEventListener('click', e => {
+                        e.stopPropagation();
+                        avatarMenu?.classList.toggle('hidden');
+                    });
+                }
+            }
+        });
     </script>
+
 
     <!-- Logout logic with api -->
     <script>

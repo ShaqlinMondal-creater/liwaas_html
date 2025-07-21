@@ -20,6 +20,6 @@
   <?php //include("inc/home-product-card.php"); ?>
 
   <!-- best seller -->
-  <?php include("inc/best_seller.php"); ?>
+  <?php include("inc/new_arrival_seller.php"); ?>
 
 <?php include("footer.php"); ?>

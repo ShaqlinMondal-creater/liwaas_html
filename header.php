@@ -324,7 +324,7 @@
 
                 // Show Profile / Name in the link
                 if (profileLink && name.length > 0) {
-                    profileLink.textContent = `Profile / ${name}`;
+                    profileLink.textContent = `${name}`;
                 }
 
                 if (avatarBtn && name.length > 0) {

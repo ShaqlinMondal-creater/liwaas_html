@@ -320,3 +320,13 @@
 .swal-cancel-btn:hover {
   background-color: #f87171 !important; /* red-400 */
 }
+
+
+/* new arrival */
+.slider-container {
+  overflow: hidden;
+}
+.slider-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}

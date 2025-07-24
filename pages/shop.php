@@ -16,7 +16,7 @@
                 <div class="border-b pb-6">
                     <h3 class="font-medium mb-4">Categories</h3>
                     <div class="space-y-3 filters-categories">
-                        <label class="flex items-center">
+                        <!-- <label class="flex items-center">
                             <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                             <span class="ml-2">T-Shirts (24)</span>
                         </label>
@@ -31,7 +31,7 @@
                         <label class="flex items-center">
                             <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                             <span class="ml-2">Accessories (16)</span>
-                        </label>
+                        </label> -->
                     </div>
                 </div>
 
@@ -55,12 +55,12 @@
                 <div class="border-b pb-6">
                     <h3 class="font-medium mb-4">Colors</h3>
                     <div class="flex flex-wrap gap-3 filters-colors">
-                        <button class="w-10 h-10 rounded-full bg-black ring-2 ring-offset-2 ring-black"></button>
+                        <!-- <button class="w-10 h-10 rounded-full bg-black ring-2 ring-offset-2 ring-black"></button>
                         <button class="w-10 h-10 rounded-full bg-white border-2 border-gray-200"></button>
                         <button class="w-10 h-10 rounded-full bg-gray-500"></button>
                         <button class="w-10 h-10 rounded-full bg-red-500"></button>
                         <button class="w-10 h-10 rounded-full bg-blue-500"></button>
-                        <button class="w-10 h-10 rounded-full bg-green-500"></button>
+                        <button class="w-10 h-10 rounded-full bg-green-500"></button> -->
                     </div>
                 </div>
 
@@ -68,19 +68,19 @@
                 <div class="pb-6">
                     <h3 class="font-medium mb-4">Size</h3>
                     <div class="grid grid-cols-3 gap-3 filters-sizes">
-                        <button class="py-3 border rounded-lg hover:border-black">XS</button>
+                        <!-- <button class="py-3 border rounded-lg hover:border-black">XS</button>
                         <button class="py-3 border rounded-lg hover:border-black">S</button>
                         <button class="py-3 bg-black text-white rounded-lg">M</button>
                         <button class="py-3 border rounded-lg hover:border-black">L</button>
                         <button class="py-3 border rounded-lg hover:border-black">XL</button>
-                        <button class="py-3 border rounded-lg hover:border-black">2XL</button>
+                        <button class="py-3 border rounded-lg hover:border-black">2XL</button> -->
                     </div>
                 </div>
 
                 <!-- Apply Filters Button -->
-                <button class="w-full bg-black text-white py-3 rounded-lg font-medium">
+                <!-- <button class="w-full bg-black text-white py-3 rounded-lg font-medium">
                     Apply Filters
-                </button>
+                </button> -->
             </div>
         </div>
     </div>
@@ -110,7 +110,7 @@
                 <div class="bg-white p-6 rounded-xl shadow-sm border">
                     <h3 class="font-medium mb-4">Categories</h3>
                     <div class="space-y-3 filters-categories">
-                        <label class="flex items-center">
+                        <!-- <label class="flex items-center">
                             <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                             <span class="ml-2">T-Shirts (24)</span>
                         </label>
@@ -125,7 +125,7 @@
                         <label class="flex items-center">
                             <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                             <span class="ml-2">Accessories (16)</span>
-                        </label>
+                        </label> -->
                     </div>
                 </div>
                 <!-- Price Range -->
@@ -148,12 +148,12 @@
                 <div class="bg-white p-6 rounded-xl shadow-sm border">
                     <h3 class="font-medium mb-4">Colors</h3>
                     <div class="flex flex-wrap gap-3 filters-colors">
-                        <button class="w-10 h-10 rounded-full bg-black ring-2 ring-offset-2 ring-black"></button>
+                        <!-- <button class="w-10 h-10 rounded-full bg-black ring-2 ring-offset-2 ring-black"></button>
                         <button class="w-10 h-10 rounded-full bg-white border-2 border-gray-200"></button>
                         <button class="w-10 h-10 rounded-full bg-gray-500"></button>
                         <button class="w-10 h-10 rounded-full bg-red-500"></button>
                         <button class="w-10 h-10 rounded-full bg-blue-500"></button>
-                        <button class="w-10 h-10 rounded-full bg-green-500"></button>
+                        <button class="w-10 h-10 rounded-full bg-green-500"></button> -->
                     </div>
                 </div>
 
@@ -161,12 +161,12 @@
                 <div class="bg-white p-6 rounded-xl shadow-sm border">
                     <h3 class="font-medium mb-4">Size</h3>
                     <div class="grid grid-cols-3 gap-3 filters-sizes">
-                        <button class="py-3 border rounded-lg hover:border-black">XS</button>
+                        <!-- <button class="py-3 border rounded-lg hover:border-black">XS</button>
                         <button class="py-3 border rounded-lg hover:border-black">S</button>
                         <button class="py-3 bg-black text-white rounded-lg">M</button>
                         <button class="py-3 border rounded-lg hover:border-black">L</button>
                         <button class="py-3 border rounded-lg hover:border-black">XL</button>
-                        <button class="py-3 border rounded-lg hover:border-black">2XL</button>
+                        <button class="py-3 border rounded-lg hover:border-black">2XL</button> -->
                     </div>
                 </div>
             </div>
@@ -431,36 +431,90 @@
 
     // RENDER PRODUCTS
     function renderProducts(products) {
-    productGrid.innerHTML = "";
+        productGrid.innerHTML = "";
 
-    products.forEach(product => {
-        const firstImage = product.upload?.[0]?.url || 'assets/brand/li.jpg';
-        const price = product.variations?.[0]?.sell_price || "N/A";
-        const category = product.category?.name || "";
+        products.forEach(product => {
+            const firstImage = product.upload?.[0]?.url || 'assets/brand/li.jpg';
+            const price = product.variations?.[0]?.sell_price || "N/A";
+            const category = product.category?.name || "";
+            const productName = product.name;
+            const productId = product.id;
+            const variationId = product.variations?.[0]?.id || null;
 
-        const card = document.createElement("div");
-        card.className = "featured-card bg-white rounded-xl shadow-md border overflow-hidden transition-all hover:shadow-lg";
-        card.innerHTML = `
-        <div class="relative group">
-            <img src="${firstImage}" alt="${product.name}" class="w-full h-64 object-cover">
-            <button class="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100">
-            <i data-lucide="heart" class="w-5 h-5"></i>
-            </button>
-        </div>
-        <div class="p-4">
-            <h3 class="text-base font-semibold">${product.name}</h3>
-            <p class="text-sm text-gray-500">${category}</p>
-            <div class="mt-2 flex justify-between items-center">
-            <span class="text-lg font-bold text-black">₹${price}</span>
-            <a href="pages/product-detail.php?id=${product.id}" class="text-blue-600 text-sm hover:underline">Add to Cart</a>
-            </div>
-        </div>`;
-        productGrid.appendChild(card);
-    });
+            // Create a wrapper anchor tag for the entire card
+            const card = document.createElement("a");
+            card.href = `pages/product-detail.php?id=${productId}`;
+            card.className = "featured-card bg-white rounded-xl shadow-md border overflow-hidden transition-all hover:shadow-lg block group";
 
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+            card.innerHTML = `
+                <div class="relative group">
+                    <img src="${firstImage}" alt="${product.name}" class="w-full h-64 object-cover">
+                    <button class="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-base font-semibold">${product.name}</h3>
+                    <p class="text-sm text-gray-500">${category}</p>
+                    <div class="mt-2 flex justify-between items-center">
+                    <span class="text-lg font-bold text-black">₹${price}</span>
+                    <button class="add-to-cart-btn text-blue-600 text-sm hover:underline">Add to Cart</button>
+                </div>
+            </div>`;
+            // Add to Cart Button Logic
+            const addToCartBtn = card.querySelector(".add-to-cart-btn");
+            addToCartBtn.addEventListener("click", (e) => {
+                e.preventDefault();      // prevent <a> navigation
+                e.stopPropagation();     // prevent bubbling up to <a>
+                addToCart(productId, variationId, productName);
+            });
+            productGrid.appendChild(card);
+        });
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
+    // Add To cart
+    function addToCart(productId, variationId, productName) {
+        const payload = {
+            product_id: productId,
+            variation_id: variationId,
+            quantity: 1
+        };
+
+        fetch(`${baseUrl}/api/cart/add`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Added to Cart",
+                    text: `${productName} has been added to your cart!`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: res.message || "Something went wrong!"
+                });
+            }
+        })
+        .catch(() => {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Failed to add product to cart. Please try again later."
+            });
+        });
+    }
 
     // RENDER PAGINATION
     function renderPagination() {

@@ -42,6 +42,14 @@
 
     <link rel="stylesheet" href="style/style.css" />
     <link rel="stylesheet" href="style/skeleton.css">
+
+    <!-- For Price -->
+    <!-- noUiSlider CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.css" />
+
+    <!-- noUiSlider JS -->
+    <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.0/dist/nouislider.min.js"></script>
+
     <style>
         body{font-family:'Shadeerah Demo',sans-serif!important;}
     </style>

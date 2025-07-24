@@ -15,7 +15,7 @@
                 <!-- Categories -->
                 <div class="border-b pb-6">
                     <h3 class="font-medium mb-4">Categories</h3>
-                    <div class="space-y-3 filters-categories">
+                    <div class="space-y-3">
                         <label class="flex items-center">
                             <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                             <span class="ml-2">T-Shirts (24)</span>
@@ -51,7 +51,7 @@
                 <!-- Colors -->
                 <div class="border-b pb-6">
                     <h3 class="font-medium mb-4">Colors</h3>
-                    <div class="flex flex-wrap gap-3 filters-colors">
+                    <div class="flex flex-wrap gap-3">
                         <button class="w-10 h-10 rounded-full bg-black ring-2 ring-offset-2 ring-black"></button>
                         <button class="w-10 h-10 rounded-full bg-white border-2 border-gray-200"></button>
                         <button class="w-10 h-10 rounded-full bg-gray-500"></button>
@@ -64,7 +64,7 @@
                 <!-- Size -->
                 <div class="pb-6">
                     <h3 class="font-medium mb-4">Size</h3>
-                    <div class="grid grid-cols-3 gap-3 filters-sizes">
+                    <div class="grid grid-cols-3 gap-3">
                         <button class="py-3 border rounded-lg hover:border-black">XS</button>
                         <button class="py-3 border rounded-lg hover:border-black">S</button>
                         <button class="py-3 bg-black text-white rounded-lg">M</button>
@@ -106,7 +106,7 @@
                 <!-- Categories -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border">
                     <h3 class="font-medium mb-4">Categories</h3>
-                    <div class="space-y-3 filters-categories">
+                    <div class="space-y-3">
                         <label class="flex items-center">
                             <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                             <span class="ml-2">T-Shirts (24)</span>
@@ -142,7 +142,7 @@
                 <!-- Colors -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border">
                     <h3 class="font-medium mb-4">Colors</h3>
-                    <div class="flex flex-wrap gap-3 filters-colors">
+                    <div class="flex flex-wrap gap-3">
                         <button class="w-10 h-10 rounded-full bg-black ring-2 ring-offset-2 ring-black"></button>
                         <button class="w-10 h-10 rounded-full bg-white border-2 border-gray-200"></button>
                         <button class="w-10 h-10 rounded-full bg-gray-500"></button>
@@ -155,7 +155,7 @@
                 <!-- Size -->
                 <div class="bg-white p-6 rounded-xl shadow-sm border">
                     <h3 class="font-medium mb-4">Size</h3>
-                    <div class="grid grid-cols-3 gap-3 filters-sizes">
+                    <div class="grid grid-cols-3 gap-3">
                         <button class="py-3 border rounded-lg hover:border-black">XS</button>
                         <button class="py-3 border rounded-lg hover:border-black">S</button>
                         <button class="py-3 bg-black text-white rounded-lg">M</button>
@@ -188,9 +188,9 @@
 
                 <!-- Actual product grid (will be filled via JS) -->
                 <div id="product-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"></div>
-                <p id="no-products" class="text-center text-gray-500 hidden mt-8">No products found.</p>
+
                 <!-- Desktop Pagination -->
-                <div id="pagination-container" class="mt-12 flex items-center justify-between hidden md:flex">
+                <div class="mt-12 flex items-center justify-between hidden md:flex">
                     <div class="relative">
                         <select class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-400 py-2 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
                             <option>6 per page</option>
@@ -215,272 +215,89 @@
             </div>
         </div>
     </main>
-<script>
-    const baseUrl = "<?= $baseUrl ?>"; // Replace this if you're injecting from PHP
 
-    const filtersEndpoint = `${baseUrl}/api/filters`;
-    const productsEndpoint = `${baseUrl}/api/products/allProducts`;
+    <script>
+        lucide.createIcons();
 
-    const categoriesContainer = document.querySelectorAll(".filters-categories");
-    const sizesContainer = document.querySelectorAll(".filters-sizes");
-    const colorsContainer = document.querySelectorAll(".filters-colors");
-
-    const productGrid = document.getElementById("product-grid");
-    const skeletonLoader = document.getElementById("skeleton-loader");
-    const paginationContainer = document.getElementById("pagination-container");
-           
-    const chunkDesktop = 9;
-    const chunkMobile = 5;
-    const initialMobile = 8;
-    const isMobile = window.innerWidth < 768;
-
-    // STATE
-    let filters = {
-        category: null,
-        size: null,
-        color: null,
-        sort: null,
-        min_price: null,
-        max_price: null,
-        limit: 9,
-        offset: 0,
-        currentPage: 1,
-        totalPages: 1
-    };
-
-    // FETCH FILTER DATA
-    fetch(filtersEndpoint)
-    .then(res => res.json())
-    .then(data => {
-        console.log("Products API Response:", data);
-        if (data.success) {
-        renderFilterOptions(data);
-        fetchAndRenderProducts();
+        function toggleMobileFilter() {
+            document.getElementById('mobileSidebar').classList.toggle('hidden');
         }
-    });
 
-    function renderFilterOptions(data) {
-    // CATEGORIES
-    categoriesContainer.forEach(container => {
-        container.innerHTML = "";
-        data.categories.forEach(cat => {
-        const label = document.createElement("label");
-        label.className = "flex items-center";
-        label.innerHTML = `
-            <input type="radio" name="category" value="${cat.id}" class="category-radio rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-            <span class="ml-2">${cat.name}</span>
-        `;
-        label.querySelector("input").addEventListener("change", e => {
-            filters.category = parseInt(e.target.value);
-            filters.currentPage = 1;
-            filters.offset = 0;
-            fetchAndRenderProducts();
-        });
-        container.appendChild(label);
-        });
-    });
+        let allProducts = [];
+        let currentIndex = 0;
+        const chunkDesktop = 9;
+        const chunkMobile = 5;
+        const initialMobile = 8;
+        const productGrid = document.getElementById("product-grid");
+        const isMobile = window.innerWidth < 768;
 
-    // SIZES
-    sizesContainer.forEach(container => {
-        container.innerHTML = "";
-        data.sizes.forEach(size => {
-        const btn = document.createElement("button");
-        btn.className = "py-3 border rounded-lg hover:border-black text-sm px-3";
-        btn.textContent = size;
-        btn.addEventListener("click", () => {
-            filters.size = size;
-            filters.currentPage = 1;
-            filters.offset = 0;
-            fetchAndRenderProducts();
-        });
-        container.appendChild(btn);
-        });
-    });
+        function renderProducts(products) {
+            products.forEach(product => {
+                const card = document.createElement("div");
+                card.className = "bg-white rounded-lg shadow-sm border group";
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="assets/uploads/t-shirts/${product.image_url}" alt="${product.name}" class="w-full aspect-square object-cover rounded-t-lg">
+                        <div class="absolute top-4 right-4">
+                            <button class="p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
+                                <i data-lucide="heart" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-medium">${product.name}</h3>
+                        <p class="text-sm text-gray-500 mt-1">${product.tagline}</p>
+                        <div class="flex items-center justify-between mt-3">
+                            <span class="font-bold">₹${product.price}</span>
+                            <a href="pages/product-detail.php?id=${product.id}" class="text-sm text-blue-600 hover:text-blue-700">Add to Cart</a>
+                        </div>
+                    </div>`;
+                productGrid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
 
-    // COLORS
-    colorsContainer.forEach(container => {
-        container.innerHTML = "";
-        data.colors.forEach(color => {
-        const btn = document.createElement("button");
-        btn.className = `w-10 h-10 rounded-full border ring-1 ring-offset-1`;
-        btn.style.backgroundColor = color.toLowerCase();
-        btn.title = color;
-        btn.addEventListener("click", () => {
-            filters.color = color;
-            filters.currentPage = 1;
-            filters.offset = 0;
-            fetchAndRenderProducts();
-        });
-        container.appendChild(btn);
-        });
-    });
+        function loadNextChunk() {
+            const count = isMobile && currentIndex === 0 ? initialMobile : chunkMobile;
+            const nextProducts = allProducts.slice(currentIndex, currentIndex + count);
+            renderProducts(nextProducts);
+            currentIndex += count;
+        }
 
-    // PRICE RANGE
-    const rangeInput = document.querySelector("input[type=range]");
-    const minInput = document.querySelector("input[placeholder=Min]");
-    const maxInput = document.querySelector("input[placeholder=Max]");
+        function setupInfiniteScroll() {
+            window.addEventListener("scroll", () => {
+                if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100 && currentIndex < allProducts.length) {
+                    loadNextChunk();
+                }
+            });
+        }
 
-    if (data.price) {
-        rangeInput.min = data.price.min;
-        rangeInput.max = data.price.max;
-        rangeInput.value = data.price.max;
-        maxInput.value = data.price.max;
-        minInput.value = data.price.min;
+        fetch("json/exclusiveProducts.json")
+            .then(res => res.json())
+            .then(data => {
+                allProducts = data;
 
-        minInput.addEventListener("change", () => {
-        filters.min_price = parseInt(minInput.value);
-        filters.currentPage = 1;
-        filters.offset = 0;
-        fetchAndRenderProducts();
-        });
-
-        maxInput.addEventListener("change", () => {
-        filters.max_price = parseInt(maxInput.value);
-        filters.currentPage = 1;
-        filters.offset = 0;
-        fetchAndRenderProducts();
-        });
-    }
-    }
-
-    function loadNextChunk() {
-        const count = isMobile && currentIndex === 0 ? initialMobile : chunkMobile;
-        const nextProducts = allProducts.slice(currentIndex, currentIndex + count);
-        renderProducts(nextProducts);
-        currentIndex += count;
-    }
-
-    function setupInfiniteScroll() {
-        window.addEventListener("scroll", () => {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100 && currentIndex < allProducts.length) {
-                loadNextChunk();
-            }
-        });
-    }
-
-    // FETCH PRODUCTS
-    function fetchAndRenderProducts() {
-        skeletonLoader.style.display = "grid";
-        productGrid.innerHTML = "";
-
-        const body = { ...filters };
-
-        fetch(productsEndpoint, {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json"
-            },
-            body: JSON.stringify(body)
-        })
-        .then(res => res.json())
-        .then(data => {
-            skeletonLoader.style.display = "none";
-            if (data.success && Array.isArray(data.data)) {
-                filters.totalPages = Math.ceil(data.total / filters.limit);
-                allProducts = data.data; // 👈 Add this line
-                currentIndex = 0;
+                // ✅ Hide skeleton
+                document.getElementById('skeleton-loader').style.display = 'none';
 
                 if (isMobile) {
-                    productGrid.innerHTML = ""; // clear before appending
                     loadNextChunk();
                     setupInfiniteScroll();
                 } else {
                     renderProducts(allProducts.slice(0, chunkDesktop));
                 }
-                renderPagination();
-            } else {
-                productGrid.innerHTML = "<p class='text-center w-full'>No products found.</p>";
-            }
-        });
-
-    }
-
-    // RENDER PRODUCTS
-    function renderProducts(products) {
-    productGrid.innerHTML = "";
-
-    products.forEach(product => {
-        const firstImage = product.upload?.[0]?.url || 'assets/brand/li.jpg';
-        const price = product.variations?.[0]?.sell_price || "N/A";
-        const category = product.category?.name || "";
-
-        const card = document.createElement("div");
-        card.className = "featured-card bg-white rounded-xl shadow-md border overflow-hidden transition-all hover:shadow-lg";
-        card.innerHTML = `
-        <div class="relative group">
-            <img src="${firstImage}" alt="${product.name}" class="w-full h-64 object-cover">
-            <button class="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100">
-            <i data-lucide="heart" class="w-5 h-5"></i>
-            </button>
-        </div>
-        <div class="p-4">
-            <h3 class="text-base font-semibold">${product.name}</h3>
-            <p class="text-sm text-gray-500">${category}</p>
-            <div class="mt-2 flex justify-between items-center">
-            <span class="text-lg font-bold text-black">₹${price}</span>
-            <a href="pages/product-detail.php?id=${product.id}" class="text-blue-600 text-sm hover:underline">Add to Cart</a>
-            </div>
-        </div>`;
-        productGrid.appendChild(card);
-    });
-
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-
-
-    // RENDER PAGINATION
-    function renderPagination() {
-        if (!paginationContainer) return;
-
-        paginationContainer.innerHTML = "";
-
-        const ul = document.createElement("ul");
-        ul.className = "flex items-center space-x-2";
-
-        for (let i = 1; i <= filters.totalPages; i++) {
-            const li = document.createElement("li");
-            li.innerHTML = `<button class="px-4 py-2 rounded-lg ${filters.currentPage === i ? 'bg-black text-white' : 'border hover:bg-gray-100'}">${i}</button>`;
-            li.querySelector("button").addEventListener("click", () => {
-            filters.currentPage = i;
-            filters.offset = (i - 1) * filters.limit;
-            fetchAndRenderProducts();
             });
-            ul.appendChild(li);
+
+    </script>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile filter toggle
+        function toggleMobileFilter() {
+            const sidebar = document.getElementById('mobileSidebar');
+            sidebar.classList.toggle('hidden');
         }
-
-        paginationContainer.appendChild(ul);
-    }
-    document.querySelector("select").addEventListener("change", (e) => {
-        const val = e.target.value;
-        if (val.includes("Low to High")) filters.sort = "asc";
-        else if (val.includes("High to Low")) filters.sort = "desc";
-        else if (val.includes("Newest")) filters.sort = "newest";
-        else filters.sort = null;
-        filters.currentPage = 1;
-        filters.offset = 0;
-        fetchAndRenderProducts();
-    });
-
-</script>
-
-<script>
-    // Initialize Lucide icons
-    lucide.createIcons();
-
-    // Mobile filter toggle
-    function toggleMobileFilter() {
-        const sidebar = document.getElementById('mobileSidebar');
-        sidebar.classList.toggle('hidden');
-    }
-
-    document.querySelectorAll('.apply-filters').forEach(btn => {
-        btn.addEventListener('click', () => {
-            toggleMobileFilter();
-            fetchAndRenderProducts();
-        });
-    });
-</script>
-
-
+    </script>
 <?php include("../footer.php"); ?>
-

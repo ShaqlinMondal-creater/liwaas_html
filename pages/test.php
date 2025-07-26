@@ -52,15 +52,17 @@
         </div>
         <!-- Main Content -->
         <main class="max-w-7xl mx-auto px-4 py-4">
+
             <!-- Profile Header -->
             <div class="bg-white rounded-xl shadow-sm border p-6 mb-2">
                 <div class="flex items-center space-x-4">
-                    <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center">
-                        <i data-lucide="user" class="w-10 h-10 text-gray-400"></i>
+                    <!-- Avatar with first letter -->
+                    <div id="avatar" class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-3xl font-bold text-gray-600">
+                        <!-- JS will inject first letter -->
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold">John Doe</h1>
-                        <p class="text-gray-500">john.doe@example.com</p>
+                        <h1 id="userName" class="text-2xl font-bold">User Name</h1>
+                        <p id="userEmail" class="text-gray-500">user@example.com</p>
                     </div>
                 </div>
             </div>
@@ -99,19 +101,19 @@
                 <!-- Desktop Sidebar -->
                 <div class="hidden md:block w-64 min-h-[500px] mt-12">
                     <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
-                        <button onclick="switchTab('orders')" class="w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-black">
+                        <button onclick="switchTab('orders')" class="sidebar-btn w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-black">
                             <i data-lucide="package" class="w-5 h-5"></i>
                             <span>My Orders</span>
                         </button>
-                        <button onclick="switchTab('addresses')" class="w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-transparent">
+                        <button onclick="switchTab('addresses')" class="sidebar-btn w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-transparent">
                             <i data-lucide="map-pin" class="w-5 h-5"></i>
                             <span>Saved Addresses</span>
                         </button>
-                        <button onclick="switchTab('wishlist')" class="w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-transparent">
+                        <button onclick="switchTab('wishlist')" class="sidebar-btn w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-transparent">
                             <i data-lucide="heart" class="w-5 h-5"></i>
                             <span>Wishlist</span>
                         </button>
-                        <button onclick="switchTab('settings')" class="w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-transparent">
+                        <button onclick="switchTab('settings')" class="sidebar-btn w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-transparent">
                             <i data-lucide="settings" class="w-5 h-5"></i>
                             <span>Account Settings</span>
                         </button>
@@ -152,6 +154,9 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!--  -->
+                        </div>
+                        <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="bg-white rounded-xl shadow-sm border p-6">
                                 <div class="flex justify-between items-start mb-4">
                                     <span class="font-medium">Home</span>
@@ -187,13 +192,16 @@
                                 <p class="text-sm text-gray-600">New York, NY 10002</p>
                                 <p class="text-sm text-gray-600">Phone: (555) 987-6543</p>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Wishlist Section (Hidden by default) -->
                     <div id="wishlist" class="hidden space-y-6">
                         <h2 class="text-xl font-semibold">Wishlist</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!--  -->
+                        </div>
+                        <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             <div class="bg-white rounded-xl shadow-sm border group">
                                 <div class="relative">
                                     <img 
@@ -216,7 +224,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Settings Section (Hidden by default) -->
@@ -293,48 +301,153 @@
 
     </div>
     <!-- ═══════════  END REAL CONTENT  ═══════════ -->
-        <!-- Static Js -->
-        <script>
-            // Initialise icons
-            lucide.createIcons();
-
-            // SWITCH TABS (works for both desktop & mobile)
-            function switchTab(tabId) {
-                // Hide all content panes
-                ['orders','addresses','wishlist','settings'].forEach(id =>
-                    document.getElementById(id).classList.add('hidden')
-                );
-                document.getElementById(tabId).classList.remove('hidden');
-
-                // Desktop sidebar active state
-                document.querySelectorAll('.sidebar-btn').forEach(btn => {
-                    btn.classList.remove('border-black');
-                    btn.classList.add('border-transparent');
-                });
-                const sidebarActive = document.querySelector(`.sidebar-btn[onclick="switchTab('${tabId}')"]`);
-                if (sidebarActive) {
-                    sidebarActive.classList.add('border-black');
-                    sidebarActive.classList.remove('border-transparent');
-                }
-
-                // Mobile tab active state
-                document.querySelectorAll('.mobile-tab-button').forEach(btn => {
-                    btn.classList.remove('text-black','border-t-2','border-black');
-                    btn.classList.add('text-gray-500');
-                });
-                const mobileActive = document.getElementById('tab-' + tabId);
-                if (mobileActive) {
-                    mobileActive.classList.remove('text-gray-500');
-                    mobileActive.classList.add('text-black','border-t-2','border-black');
-                }
-            }
-
-            // Default: show Orders
-            switchTab('orders');
-        </script>
-        
-    <!-- Order data get -->
     <script>
+        // Fetch user details from localStorage
+        const userName = localStorage.getItem('user_name') || 'Guest';
+        const userEmail = localStorage.getItem('user_email') || 'guest@example.com';
+
+        // Update DOM
+        document.getElementById('userName').textContent = userName;
+        document.getElementById('userEmail').textContent = userEmail;
+
+        // Set first letter of name in avatar
+        const firstLetter = userName.trim().charAt(0).toUpperCase();
+        document.getElementById('avatar').textContent = firstLetter;
+    </script>
+    <!-- Apis Setup -->
+    <script>
+        const baseUrl = "<?= $baseUrl ?>"; // already set from PHP config
+        const authToken = localStorage.getItem("auth_token"); // or however you store tokens
+    </script>
+
+    <!-- Fetch Orders -->
+    <script>
+        async function loadOrders() {
+            try {
+                const res = await fetch(`${baseUrl}/user/orders`, {
+                    headers: { Authorization: `Bearer ${authToken}` }
+                });
+                const data = await res.json();
+
+                const container = document.getElementById("orders-container");
+                container.innerHTML = "";
+
+                data.orders.forEach(order => {
+                    container.innerHTML += `
+                        <div class="bg-white p-4 rounded-xl shadow-sm border">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="text-sm font-medium">Order ID: ${order.id}</p>
+                                    <p class="text-xs text-gray-500">Placed on ${new Date(order.created_at).toLocaleDateString()}</p>
+                                </div>
+                                <div class="text-sm font-bold text-right text-green-600">${order.status}</div>
+                            </div>
+                            <div class="mt-3 text-sm text-gray-700">Total: ₹${order.total_amount}</div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error("Failed to fetch orders:", err);
+            }
+        }
+    </script>
+
+    <!-- Fetch Address --> 
+     <script>
+        async function loadAddresses() {
+            try {
+                const res = await fetch(`${baseUrl}/api/customer/address/getAddressBy-user`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${authToken}`
+                    }
+                });
+                const result = await res.json();
+
+                const container = document.querySelector("#addresses .grid");
+                container.innerHTML = "";
+
+                if (!result.success || !Array.isArray(result.data) || result.data.length === 0) {
+                    container.innerHTML = `<p class="text-sm text-gray-500">No saved addresses found.</p>`;
+                    return;
+                }
+
+                result.data.forEach(addr => {
+                    container.innerHTML += `
+                        <div class="bg-white rounded-xl shadow-sm border p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="font-medium capitalize">${addr.address_type || "Address"}</span>
+                                <div class="flex space-x-2">
+                                    <button class="text-gray-400 hover:text-gray-500">
+                                        <i data-lucide="edit" class="w-4 h-4"></i>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-500">
+                                        <i data-lucide="trash" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600">${addr.name}</p>
+                            <p class="text-sm text-gray-600">${addr.address_line_1}, ${addr.address_line_2}</p>
+                            <p class="text-sm text-gray-600">${addr.city}, ${addr.state}, ${addr.pincode}</p>
+                            <p class="text-sm text-gray-600">${addr.country}</p>
+                            <p class="text-sm text-gray-600">Phone: ${addr.mobile}</p>
+                        </div>
+                    `;
+                });
+
+                // Re-render icons after dynamic HTML injection
+                lucide.createIcons();
+
+            } catch (error) {
+                console.error("Failed to load addresses:", error);
+            }
+        }
+
+     </script>
+
+    <!-- Fetch Wishlists -->
+    <script>
+        async function loadWishlist() {
+            try {
+                const res = await fetch(`${baseUrl}/user/wishlist`, {
+                    headers: { Authorization: `Bearer ${authToken}` }
+                });
+                const data = await res.json();
+
+                const container = document.querySelector("#wishlist .grid");
+                container.innerHTML = "";
+
+                data.wishlist.forEach(item => {
+                    container.innerHTML += `
+                        <div class="bg-white rounded-xl shadow-sm border group">
+                            <div class="relative">
+                                <img src="${item.image}" class="w-full aspect-square object-cover rounded-t-xl" />
+                                <button class="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
+                                    <i data-lucide="trash" class="w-5 h-5 text-red-500"></i>
+                                </button>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium">${item.name}</h3>
+                                <p class="text-sm text-gray-500 mt-1">${item.category}</p>
+                                <div class="flex items-center justify-between mt-3">
+                                    <span class="font-bold">₹${item.price}</span>
+                                    <button class="px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-black/90">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error("Failed to fetch wishlist:", err);
+            }
+        }
+    </script>
+
+    <!-- Order data get -->
+    <!-- <script>
         // JSON path — adjust if needed
         const ordersJsonPath = 'json/order.json';
 
@@ -595,6 +708,59 @@
             if (typeof switchTab === 'function') switchTab('orders');
         });
 
+    </script> -->
+
+    <!-- Static Js -->
+    <script>
+        // Initialise icons
+        lucide.createIcons();
+
+        // === SWITCH TABS Function (Desktop + Mobile) ===
+        // 2️⃣ Then define switchTab
+        function switchTab(tabId) {
+            // Hide all content panes
+            ['orders','addresses','wishlist','settings'].forEach(id =>
+                document.getElementById(id).classList.add('hidden')
+            );
+            document.getElementById(tabId).classList.remove('hidden');
+
+            // Desktop sidebar active state
+            document.querySelectorAll('.sidebar-btn').forEach(btn => {
+                btn.classList.remove('border-black');
+                btn.classList.add('border-transparent');
+            });
+            const sidebarActive = document.querySelector(`.sidebar-btn[onclick="switchTab('${tabId}')"]`);
+            if (sidebarActive) {
+                sidebarActive.classList.add('border-black');
+                sidebarActive.classList.remove('border-transparent');
+            }
+
+            // Mobile tab active state
+            document.querySelectorAll('.mobile-tab-button').forEach(btn => {
+                btn.classList.remove('text-black', 'border-t-2', 'border-black');
+                btn.classList.add('text-gray-500');
+            });
+            const mobileActive = document.getElementById('tab-' + tabId);
+            if (mobileActive) {
+                mobileActive.classList.remove('text-gray-500');
+                mobileActive.classList.add('text-black', 'border-t-2', 'border-black');
+            }
+
+            // Load tab data
+            if (tabId === 'orders') loadOrders();
+            else if (tabId === 'addresses') loadAddresses();
+            else if (tabId === 'wishlist') loadWishlist();
+        }
+
+
+        // 3️⃣ Only call switchTab after all definitions
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                document.getElementById("profile-skeleton").classList.add("hidden");
+                document.getElementById("profile-content").classList.remove("hidden");
+                switchTab("orders");
+            }, 500);
+        });
     </script>
     
 <?php include("../footer.php"); ?>

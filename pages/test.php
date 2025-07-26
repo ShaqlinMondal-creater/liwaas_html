@@ -113,6 +113,10 @@
                             <i data-lucide="heart" class="w-5 h-5"></i>
                             <span>Wishlist</span>
                         </button>
+                        <button onclick="switchTab('cart')" class="sidebar-btn w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-transparent">
+                            <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                            <span>Cart</span>
+                        </button>
                         <button onclick="switchTab('settings')" class="sidebar-btn w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-transparent">
                             <i data-lucide="settings" class="w-5 h-5"></i>
                             <span>Account Settings</span>
@@ -147,7 +151,7 @@
                     <div id="addresses" class="hidden space-y-6">
                         <div class="flex justify-between items-center">
                             <h2 class="text-xl font-semibold">Saved Addresses</h2>
-                            <button onclick="toggleAddressModal()" class="flex items-center space-x-2 text-sm font-medium text-blue-600 hover:text-blue-700">
+                            <button onclick="openCreateAddressModal()" class="flex items-center space-x-2 text-sm font-medium text-blue-600 hover:text-blue-700">
                                 <i data-lucide="plus" class="w-4 h-4"></i>
                                 <span>Add New Address</span>
                             </button>
@@ -156,75 +160,22 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!--  -->
                         </div>
-                        <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-white rounded-xl shadow-sm border p-6">
-                                <div class="flex justify-between items-start mb-4">
-                                    <span class="font-medium">Home</span>
-                                    <div class="flex space-x-2">
-                                        <button class="text-gray-400 hover:text-gray-500">
-                                            <i data-lucide="edit" class="w-4 h-4"></i>
-                                        </button>
-                                        <button class="text-gray-400 hover:text-gray-500">
-                                            <i data-lucide="trash" class="w-4 h-4"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <p class="text-sm text-gray-600">John Doe</p>
-                                <p class="text-sm text-gray-600">123 Main St, Apt 4B</p>
-                                <p class="text-sm text-gray-600">New York, NY 10001</p>
-                                <p class="text-sm text-gray-600">Phone: (555) 123-4567</p>
-                            </div>
-
-                            <div class="bg-white rounded-xl shadow-sm border p-6">
-                                <div class="flex justify-between items-start mb-4">
-                                    <span class="font-medium">Office</span>
-                                    <div class="flex space-x-2">
-                                        <button class="text-gray-400 hover:text-gray-500">
-                                            <i data-lucide="edit" class="w-4 h-4"></i>
-                                        </button>
-                                        <button class="text-gray-400 hover:text-gray-500">
-                                            <i data-lucide="trash" class="w-4 h-4"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <p class="text-sm text-gray-600">John Doe</p>
-                                <p class="text-sm text-gray-600">456 Business Ave, Floor 12</p>
-                                <p class="text-sm text-gray-600">New York, NY 10002</p>
-                                <p class="text-sm text-gray-600">Phone: (555) 987-6543</p>
-                            </div>
-                        </div> -->
                     </div>
 
                     <!-- Wishlist Section (Hidden by default) -->
                     <div id="wishlist" class="hidden space-y-6">
                         <h2 class="text-xl font-semibold">Wishlist</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                             <!--  -->
                         </div>
-                        <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div class="bg-white rounded-xl shadow-sm border group">
-                                <div class="relative">
-                                    <img 
-                                        src="https://images.pexels.com/photos/4066293/pexels-photo-4066293.jpeg"
-                                        alt="Premium T-Shirt"
-                                        class="w-full aspect-square object-cover rounded-t-xl"
-                                    />
-                                    <button class="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
-                                        <i data-lucide="trash" class="w-5 h-5 text-red-500"></i>
-                                    </button>
-                                </div>
-                                <div class="p-4">
-                                    <h3 class="font-medium">Essential Premium T-Shirt</h3>
-                                    <p class="text-sm text-gray-500 mt-1">Premium Collection</p>
-                                    <div class="flex items-center justify-between mt-3">
-                                        <span class="font-bold">$49.99</span>
-                                        <button class="px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-black/90">
-                                            Add to Cart
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
+                    </div>
+
+                    <!-- Cart Section (Hidden by default) -->
+                    <div id="cart" class="hidden space-y-6">
+                        <h2 class="text-xl font-semibold">Cart</h2>
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                            <!--  -->
+                        </div>
                     </div>
 
                     <!-- Settings Section (Hidden by default) -->
@@ -301,6 +252,7 @@
 
     </div>
     <!-- ═══════════  END REAL CONTENT  ═══════════ -->
+
     <script>
         // Fetch user details from localStorage
         const userName = localStorage.getItem('user_name') || 'Guest';
@@ -314,6 +266,7 @@
         const firstLetter = userName.trim().charAt(0).toUpperCase();
         document.getElementById('avatar').textContent = firstLetter;
     </script>
+
     <!-- Apis Setup -->
     <script>
         const baseUrl = "<?= $baseUrl ?>"; // already set from PHP config
@@ -353,7 +306,8 @@
     </script>
 
     <!-- Fetch Address --> 
-     <script>
+    <script>
+        // Get Address
         async function loadAddresses() {
             try {
                 const res = await fetch(`${baseUrl}/api/customer/address/getAddressBy-user`, {
@@ -379,10 +333,10 @@
                             <div class="flex justify-between items-start mb-4">
                                 <span class="font-medium capitalize">${addr.address_type || "Address"}</span>
                                 <div class="flex space-x-2">
-                                    <button class="text-gray-400 hover:text-gray-500">
+                                    <button onclick='openEditAddressModal(${JSON.stringify(addr)})' class="text-gray-400 hover:text-gray-500">
                                         <i data-lucide="edit" class="w-4 h-4"></i>
                                     </button>
-                                    <button class="text-gray-400 hover:text-gray-500">
+                                    <button onclick="deleteAddress(${addr.id})" class="text-gray-400 hover:text-red-600">
                                         <i data-lucide="trash" class="w-4 h-4"></i>
                                     </button>
                                 </div>
@@ -403,36 +357,471 @@
                 console.error("Failed to load addresses:", error);
             }
         }
+        // Create Address
+        async function openCreateAddressModal() {
+            const { value: formValues } = await Swal.fire({
+                title: 'Add New Address',
+                width: '800px',
+                customClass: {
+                popup: 'custom-swal-popup',
+                confirmButton: 'custom-swal-confirm',
+                cancelButton: 'custom-swal-cancel'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Create',
+                cancelButtonText: 'Cancel',
+                html: `
+                <div class="custom-grid">
+                    <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="swal-name" placeholder="John Doe" />
+                    </div>
+                    <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="swal-email" placeholder="john@example.com" />
+                    </div>
+                    <div class="form-group">
+                    <label>Mobile</label>
+                    <input type="text" id="swal-mobile" placeholder="1234567890" />
+                    </div>
+                    <div class="form-group">
+                    <label>State</label>
+                    <input type="text" id="swal-state" placeholder="Your State" />
+                    </div>
+                    <div class="form-group">
+                    <label>City</label>
+                    <input type="text" id="swal-city" placeholder="Your City" />
+                    </div>
+                    <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" id="swal-country" placeholder="Your Country" />
+                    </div>
+                    <div class="form-group">
+                    <label>Pincode</label>
+                    <input type="text" id="swal-pincode" placeholder="110011" />
+                    </div>
+                    <div class="form-group">
+                    <label>Address Line 1</label>
+                    <input type="text" id="swal-line1" placeholder="123 Main St" />
+                    </div>
+                    <div class="form-group">
+                    <label>Address Line 2</label>
+                    <input type="text" id="swal-line2" placeholder="Apt 4B" />
+                    </div>
+                </div>
+                `,
+                preConfirm: () => ({
+                name: document.getElementById('swal-name').value,
+                email: document.getElementById('swal-email').value,
+                address_type: "primary",
+                mobile: document.getElementById('swal-mobile').value,
+                state: document.getElementById('swal-state').value,
+                city: document.getElementById('swal-city').value,
+                country: document.getElementById('swal-country').value,
+                pincode: document.getElementById('swal-pincode').value,
+                address_line_1: document.getElementById('swal-line1').value,
+                address_line_2: document.getElementById('swal-line2').value,
+                })
+            });
 
-     </script>
-
-    <!-- Fetch Wishlists -->
-    <script>
-        async function loadWishlist() {
-            try {
-                const res = await fetch(`${baseUrl}/user/wishlist`, {
-                    headers: { Authorization: `Bearer ${authToken}` }
+            if (formValues) {
+                try {
+                const res = await fetch(`${baseUrl}/api/customer/address/create-address`, {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(formValues)
                 });
-                const data = await res.json();
 
-                const container = document.querySelector("#wishlist .grid");
+                const result = await res.json();
+                if (result.success) {
+                    Swal.fire("Success!", "Address created successfully.", "success");
+                    loadAddresses();
+                } else {
+                    Swal.fire("Error", result.message || "Creation failed.", "error");
+                }
+                } catch (err) {
+                console.error("Create address error:", err);
+                Swal.fire("Error", "Something went wrong.", "error");
+                }
+            }
+        }
+        // Delete Address
+        async function deleteAddress(addressId) {
+            const confirm = await Swal.fire({
+                title: 'Delete Address?',
+                text: "Are you sure you want to delete this address?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626', // red
+                cancelButtonColor: '#6b7280',  // gray
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            });
+
+            if (confirm.isConfirmed) {
+                try {
+                const res = await fetch(`${baseUrl}/api/customer/address/delete-address/${addressId}`, {
+                    method: 'DELETE',
+                    headers: {
+                    'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    Swal.fire('Deleted!', result.message, 'success');
+                    loadAddresses();
+                } else {
+                    Swal.fire('Error', result.message || 'Failed to delete address.', 'error');
+                }
+                } catch (err) {
+                console.error("Delete error:", err);
+                Swal.fire('Error', 'Something went wrong.', 'error');
+                }
+            }
+        }
+        // Update Address
+        async function openEditAddressModal(addr) {
+            const { value: formValues } = await Swal.fire({
+                title: 'Edit Address',
+                width: '800px',
+                customClass: {
+                popup: 'custom-swal-popup',
+                confirmButton: 'custom-swal-confirm',
+                cancelButton: 'custom-swal-cancel'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Update',
+                cancelButtonText: 'Cancel',
+                html: `
+                <div class="custom-grid">
+                    <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="swal-name" value="${addr.name || ''}" />
+                    </div>
+                    <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="swal-email" value="${addr.email || ''}" />
+                    </div>
+                    <div class="form-group">
+                    <label>Mobile</label>
+                    <input type="text" id="swal-mobile" value="${addr.mobile || ''}" />
+                    </div>
+                    <div class="form-group">
+                    <label>State</label>
+                    <input type="text" id="swal-state" value="${addr.state || ''}" />
+                    </div>
+                    <div class="form-group">
+                    <label>City</label>
+                    <input type="text" id="swal-city" value="${addr.city || ''}" />
+                    </div>
+                    <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" id="swal-country" value="${addr.country || ''}" />
+                    </div>
+                    <div class="form-group">
+                    <label>Pincode</label>
+                    <input type="text" id="swal-pincode" value="${addr.pincode || ''}" />
+                    </div>
+                    <div class="form-group">
+                    <label>Address Line 1</label>
+                    <input type="text" id="swal-line1" value="${addr.address_line_1 || ''}" />
+                    </div>
+                    <div class="form-group">
+                    <label>Address Line 2</label>
+                    <input type="text" id="swal-line2" value="${addr.address_line_2 || ''}" />
+                    </div>
+                </div>
+                `,
+                preConfirm: () => ({
+                address_id: addr.id,
+                name: document.getElementById('swal-name').value,
+                email: document.getElementById('swal-email').value,
+                mobile: document.getElementById('swal-mobile').value,
+                state: document.getElementById('swal-state').value,
+                city: document.getElementById('swal-city').value,
+                country: document.getElementById('swal-country').value,
+                pincode: document.getElementById('swal-pincode').value,
+                address_line_1: document.getElementById('swal-line1').value,
+                address_line_2: document.getElementById('swal-line2').value,
+                })
+            });
+
+            if (formValues) {
+                try {
+                const res = await fetch(`${baseUrl}/api/customer/address/update-address`, {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(formValues)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    Swal.fire("Updated!", "Address updated successfully.", "success");
+                    loadAddresses();
+                } else {
+                    Swal.fire("Error", result.message || "Update failed.", "error");
+                }
+                } catch (err) {
+                console.error("Address update error:", err);
+                Swal.fire("Error", "Something went wrong.", "error");
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .custom-swal-popup {
+        padding: 0 !important;
+        }
+
+        .custom-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        padding: 16px;
+        text-align: left;
+        }
+
+        .custom-grid .form-group {
+        display: flex;
+        flex-direction: column;
+        }
+
+        .custom-grid .form-group label {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 2px;
+            color: #f27474;
+        }
+
+        .custom-grid .form-group input {
+        padding: 8px 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        outline: none;
+        transition: border-color 0.3s;
+        }
+
+        .custom-grid .form-group input:focus {
+        border-color: #000;
+        }
+
+        .swal2-actions .custom-swal-confirm,
+        .swal2-actions .custom-swal-cancel {
+        width: 120px;
+        font-weight: bold;
+        font-size: 14px;
+        border-radius: 6px;
+        padding: 10px 16px;
+        margin-bottom:10px;
+        }
+
+        .custom-swal-confirm {
+        background-color: #eab308 !important; /* dark yellow */
+        color: #000 !important;
+        }
+
+        .custom-swal-cancel {
+        background-color: #dc2626 !important; /* red */
+        color: #fff !important;
+        }
+    </style>
+
+    <!-- Fetch Cart -->
+    <script>
+        // Get Carts Data
+        async function loadCarts() {
+            try {
+                const res = await fetch(`${baseUrl}/api/customer/cart/get-cart`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${authToken}`
+                    }
+                });
+
+                const result = await res.json();
+                const container = document.querySelector("#cart .grid");
                 container.innerHTML = "";
 
-                data.wishlist.forEach(item => {
+                if (!result.success || !Array.isArray(result.data) || result.data.length === 0) {
+                    container.innerHTML = ` 
+                                <div class="col-span-full w-full flex justify-center items-center py-16">
+                                    <p class="text-lg text-gray-500">No items in your cart.</p>
+                                </div>
+
+                            `;
+                    return;
+                }
+
+                result.data.forEach(item => {
+                    const variation = item.variation || {};
+                    const imageUrl = variation.images?.[0] || "assets/placeholder.jpg";
+                    const colorValue = variation.color || "#ccc";
+
                     container.innerHTML += `
-                        <div class="bg-white rounded-xl shadow-sm border group">
+                        <div class="bg-white rounded-xl shadow-sm border group overflow-hidden">
                             <div class="relative">
-                                <img src="${item.image}" class="w-full aspect-square object-cover rounded-t-xl" />
-                                <button class="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
+                                <img src="${imageUrl}" alt="${item.product_name}" class="w-full aspect-square object-cover rounded-t-xl"/>
+                                <button onclick="removeFromCart(${item.cart_id})" class="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
                                     <i data-lucide="trash" class="w-5 h-5 text-red-500"></i>
                                 </button>
                             </div>
                             <div class="p-4">
-                                <h3 class="font-medium">${item.name}</h3>
-                                <p class="text-sm text-gray-500 mt-1">${item.category}</p>
+                                <h3 class="font-medium">${item.product_name}</h3>
+                                <p class="text-sm text-gray-500 mt-1 flex items-center gap-2">
+                                    <span>Size: ${variation.size}</span> | 
+                                    <span class="flex items-center gap-1">
+                                        <span class="w-4 h-4 rounded-full border" style="background-color: ${colorValue};"></span>
+                                    </span>
+                                </p>
+
+                                <div class="mt-3 text-sm text-gray-600">
+                                    Quantity: ${item.quantity}
+                                </div>
+
+                                <div class="flex items-center justify-between mt-2">
+                                    <span class="font-bold text-base">₹${item.total_price}</span>
+                                    <button onclick='window.location.href="pages/product-detail.php?slug=${item.slug || ""}"' class="px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-black/90">
+                                        View Product
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                // Re-render icons
+                lucide.createIcons();
+
+            } catch (err) {
+                console.error("Error loading cart:", err);
+                document.querySelector("#cart .grid").innerHTML = `
+                    <p class="text-sm text-red-500">Failed to load cart. Please try again later.</p>
+                `;
+            }
+        }
+        // Remove Cart
+        // async function removeFromCart(cartId) {
+        //     try {
+        //         const res = await fetch(`${baseUrl}/api/customer/cart/${cartId}`, {
+        //             method: "DELETE",
+        //             headers: {
+        //                 "Authorization": `Bearer ${authToken}`
+        //             }
+        //         });
+        //         const result = await res.json();
+        //         if (result.success) {
+        //             Swal.fire("Removed!", "Cart item removed successfully.", "success");
+        //             loadWishlist(); // refresh the list
+        //         } else {
+        //             Swal.fire("Oops!", result.message || "Failed to remove item.", "error");
+        //         }
+        //     } catch (err) {
+        //         console.error("Error removing cart item:", err);
+        //         Swal.fire("Error", "Something went wrong.", "error");
+        //     }
+        // }
+
+        async function removeFromCart(cartId) {
+        const confirm = await Swal.fire({
+            title: 'Remove Item?',
+            text: 'Are you sure you want to remove this item from your cart?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Yes, remove it'
+        });
+
+        if (confirm.isConfirmed) {
+            try {
+            const res = await fetch(`${baseUrl}/api/customer/cart/${cartId}`, {
+                method: 'DELETE',
+                headers: {
+                'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+                Swal.fire('Removed!', result.message, 'success');
+
+                // Wait 1 second then refresh cart
+                setTimeout(() => {
+                loadCarts();
+                }, 1000);
+            } else {
+                Swal.fire('Error', result.message || 'Failed to remove item.', 'error');
+            }
+            } catch (err) {
+            console.error('Remove Cart Error:', err);
+            Swal.fire('Error', 'Something went wrong.', 'error');
+            }
+        }
+        }
+
+    </script>
+
+    <!-- Fetch Wishlists -->
+    <script>
+        // Get Wishlist Data
+        async function loadWishlist() {
+            try {
+                const res = await fetch(`${baseUrl}/api/customer/wishlist/get`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${authToken}`
+                    }
+                });
+
+                const result = await res.json();
+                const container = document.querySelector("#wishlist .grid");
+                container.innerHTML = "";
+
+                if (!result.success || !Array.isArray(result.data) || result.data.length === 0) {
+                    container.innerHTML = `<p class="text-sm text-gray-500">No items in your wishlist.</p>`;
+                    return;
+                }
+
+                result.data.forEach(item => {
+                    const product = item.product || {};
+                    const variation = item.variation || {};
+
+                    // Clean up malformed image URLs
+                    let imageUrl = variation.images?.[0] || "assets/placeholder.jpg";
+
+                    container.innerHTML += `
+                        <div class="bg-white rounded-xl shadow-sm border group overflow-hidden cursor-pointer">
+                            <div class="relative">
+                                <img src="${imageUrl}" alt="${product.name}" class="w-full aspect-square object-cover rounded-t-xl" onclick="window.location.href='pages/product-detail.php?slug=${product.slug}'"/>
+                                <button onclick="removeFromWishlist(${item.id})" class="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
+                                    <i data-lucide="trash" class="w-5 h-5 text-red-500"></i>
+                                </button>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-medium">${product.name || "Unnamed Product"}</h3>
+                                <p class="text-sm text-gray-500 mt-1 flex items-center gap-2">
+                                    <span>Size: ${variation.size}</span> | 
+                                    <span class="flex items-center gap-1">
+                                        <span class="w-4 h-4 rounded-full border" style="background-color: ${variation.color};"></span>
+                                        
+                                    </span>
+                                </p>
+
                                 <div class="flex items-center justify-between mt-3">
-                                    <span class="font-bold">₹${item.price}</span>
-                                    <button class="px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-black/90">
+                                    <span class="font-bold">₹${variation.sell_price}</span>
+                                    <button onclick='addToCart(${product.id}, "${product.aid}", ${variation.uid})' class="px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-black/90">
                                         Add to Cart
                                     </button>
                                 </div>
@@ -440,8 +829,66 @@
                         </div>
                     `;
                 });
+
+                // Re-render Lucide icons after DOM update
+                lucide.createIcons();
+
             } catch (err) {
-                console.error("Failed to fetch wishlist:", err);
+                console.error("Error loading wishlist:", err);
+                document.querySelector("#wishlist .grid").innerHTML = `
+                    <p class="text-sm text-red-500">Failed to load wishlist. Please try again later.</p>
+                `;
+            }
+        }
+
+        // Remove wishlist
+        async function removeFromWishlist(wishlistId) {
+            try {
+                const res = await fetch(`${baseUrl}/api/customer/wishlist/remove/${wishlistId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${authToken}`
+                    }
+                });
+                const result = await res.json();
+                if (result.success) {
+                    Swal.fire("Removed!", "Wishlist item removed successfully.", "success");
+                    loadWishlist(); // refresh the list
+                } else {
+                    Swal.fire("Oops!", result.message || "Failed to remove item.", "error");
+                }
+            } catch (err) {
+                console.error("Error removing wishlist item:", err);
+                Swal.fire("Error", "Something went wrong.", "error");
+            }
+        }
+
+        // Add To cart Functionality
+        async function addToCart(productId, aid, uid) {
+            try {
+                const res = await fetch(`${baseUrl}/api/customer/cart/create-cart`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        products_id: productId,
+                        aid: aid,
+                        uid: uid,
+                        quantity: 1
+                    })
+                });
+
+                const result = await res.json();
+                if (result.success) {
+                    Swal.fire("Added!", "Product added to cart successfully.", "success");
+                } else {
+                    Swal.fire("Failed", result.message || "Could not add to cart.", "error");
+                }
+            } catch (err) {
+                console.error("Error adding to cart:", err);
+                Swal.fire("Error", "Something went wrong.", "error");
             }
         }
     </script>
@@ -719,7 +1166,7 @@
         // 2️⃣ Then define switchTab
         function switchTab(tabId) {
             // Hide all content panes
-            ['orders','addresses','wishlist','settings'].forEach(id =>
+            ['orders','addresses','wishlist','cart','settings'].forEach(id =>
                 document.getElementById(id).classList.add('hidden')
             );
             document.getElementById(tabId).classList.remove('hidden');
@@ -750,15 +1197,15 @@
             if (tabId === 'orders') loadOrders();
             else if (tabId === 'addresses') loadAddresses();
             else if (tabId === 'wishlist') loadWishlist();
+            else if (tabId === 'cart') loadCarts();
         }
-
 
         // 3️⃣ Only call switchTab after all definitions
         document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 document.getElementById("profile-skeleton").classList.add("hidden");
                 document.getElementById("profile-content").classList.remove("hidden");
-                switchTab("orders");
+                switchTab("cart");
             }, 500);
         });
     </script>

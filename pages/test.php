@@ -277,7 +277,7 @@
     <script>
         async function loadOrders() {
             try {
-                const res = await fetch(`${baseUrl}/user/orders`, {
+                const res = await fetch(`${baseUrl}/api/customer/get-order`, {
                     headers: { Authorization: `Bearer ${authToken}` }
                 });
                 const data = await res.json();
@@ -640,12 +640,27 @@
         // Get Carts Data
         async function loadCarts() {
             try {
-                const res = await fetch(`${baseUrl}/api/customer/cart/get-cart`, {
+                const authToken = localStorage.getItem("auth_token");
+                const guestId = localStorage.getItem("guest_id");
+
+                let headers = {
+                    "Content-Type": "application/json"
+                };
+
+                let url = `${baseUrl}/api/cart/get-cart`;
+
+                // If logged in, send token
+                if (authToken) {
+                    headers["Authorization"] = `Bearer ${authToken}`;
+                } 
+                // If guest, append temp_id in query params (or body if your API expects it)
+                else if (guestId) {
+                    url += `?temp_id=${guestId}`;
+                }
+
+                const res = await fetch(url, {
                     method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${authToken}`
-                    }
+                    headers: headers
                 });
 
                 const result = await res.json();
@@ -654,23 +669,25 @@
 
                 if (!result.success || !Array.isArray(result.data) || result.data.length === 0) {
                     container.innerHTML = ` 
-                                <div class="col-span-full w-full flex justify-center items-center py-16">
-                                    <p class="text-lg text-gray-500">No items in your cart.</p>
-                                </div>
-
-                            `;
+                        <div class="col-span-full w-full flex justify-center items-center py-16">
+                            <p class="text-lg text-gray-500">No items in your cart.</p>
+                        </div>
+                    `;
                     return;
                 }
 
                 result.data.forEach(item => {
                     const variation = item.variation || {};
-                    const imageUrl = variation.images?.[0] || "assets/placeholder.jpg";
+                    // ✅ Fix URL issue (your API sends double `/uploads/http://...`)
+                    let imageUrl = variation.images?.[0] || "assets/placeholder.jpg";
+                    // imageUrl = imageUrl.replace("http://127.0.0.1:8000/uploads/http://", "http://");
+
                     const colorValue = variation.color || "#ccc";
 
                     container.innerHTML += `
                         <div class="bg-white rounded-xl shadow-sm border group overflow-hidden">
                             <div class="relative">
-                                <img src="${imageUrl}" alt="${item.product_name}" class="w-full aspect-square object-cover rounded-t-xl"/>
+                                <img src="${imageUrl}" alt="${item.product_name}" class="aspect-square object-cover rounded-t-xl"/>
                                 <button onclick="removeFromCart(${item.cart_id})" class="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
                                     <i data-lucide="trash" class="w-5 h-5 text-red-500"></i>
                                 </button>
@@ -689,7 +706,7 @@
                                 </div>
 
                                 <div class="flex items-center justify-between mt-2">
-                                    <span class="font-bold text-base">₹${item.total_price}</span>
+                                    <span class="font-bold text-base">₹${item.sell_price}</span>
                                     <button onclick='window.location.href="pages/product-detail.php?slug=${item.slug || ""}"' class="px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-black/90">
                                         View Product
                                     </button>
@@ -709,6 +726,7 @@
                 `;
             }
         }
+
         // Remove Cart
         // async function removeFromCart(cartId) {
         //     try {
@@ -732,42 +750,42 @@
         // }
 
         async function removeFromCart(cartId) {
-        const confirm = await Swal.fire({
-            title: 'Remove Item?',
-            text: 'Are you sure you want to remove this item from your cart?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#dc2626',
-            cancelButtonColor: '#6b7280',
-            confirmButtonText: 'Yes, remove it'
-        });
-
-        if (confirm.isConfirmed) {
-            try {
-            const res = await fetch(`${baseUrl}/api/customer/cart/${cartId}`, {
-                method: 'DELETE',
-                headers: {
-                'Authorization': `Bearer ${authToken}`
-                }
+            const confirm = await Swal.fire({
+                title: 'Remove Item?',
+                text: 'Are you sure you want to remove this item from your cart?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Yes, remove it'
             });
 
-            const result = await res.json();
+            if (confirm.isConfirmed) {
+                try {
+                const res = await fetch(`${baseUrl}/api/cart/delete-cart/${cartId}`, {
+                    method: 'DELETE',
+                    headers: {
+                    'Authorization': `Bearer ${authToken}`
+                    }
+                });
 
-            if (result.success) {
-                Swal.fire('Removed!', result.message, 'success');
+                const result = await res.json();
 
-                // Wait 1 second then refresh cart
-                setTimeout(() => {
-                loadCarts();
-                }, 1000);
-            } else {
-                Swal.fire('Error', result.message || 'Failed to remove item.', 'error');
+                if (result.success) {
+                    Swal.fire('Removed!', result.message, 'success');
+
+                    // Wait 1 second then refresh cart
+                    setTimeout(() => {
+                    loadCarts();
+                    }, 1000);
+                } else {
+                    Swal.fire('Error', result.message || 'Failed to remove item.', 'error');
+                }
+                } catch (err) {
+                console.error('Remove Cart Error:', err);
+                Swal.fire('Error', 'Something went wrong.', 'error');
+                }
             }
-            } catch (err) {
-            console.error('Remove Cart Error:', err);
-            Swal.fire('Error', 'Something went wrong.', 'error');
-            }
-        }
         }
 
     </script>
@@ -790,7 +808,11 @@
                 container.innerHTML = "";
 
                 if (!result.success || !Array.isArray(result.data) || result.data.length === 0) {
-                    container.innerHTML = `<p class="text-sm text-gray-500">No items in your wishlist.</p>`;
+                    container.innerHTML = `
+                                            <div class="col-span-full w-full flex justify-center items-center py-16">
+                                                <p class="text-sm text-gray-500">No items in your wishlist.</p>
+                                            </div>
+                                        `;
                     return;
                 }
 
@@ -800,6 +822,7 @@
 
                     // Clean up malformed image URLs
                     let imageUrl = variation.images?.[0] || "assets/placeholder.jpg";
+                    const colorValue = variation.color || "#ccc";
 
                     container.innerHTML += `
                         <div class="bg-white rounded-xl shadow-sm border group overflow-hidden cursor-pointer">

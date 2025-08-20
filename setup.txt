@@ -1,0 +1,18 @@
+complete pages->
+1. Home
+2. shop
+3. profile - > cart, wishlist, address
+
+
+incomplete pages->
+1. product detail
+2. cart 
+3. profile -> fetch order
+3. profile -> account setting
+
+
+modify pages->
+
+
+current pages->
+profile

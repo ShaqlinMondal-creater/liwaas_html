@@ -440,6 +440,8 @@
             const productName = product.name;
             const productId = product.id;
             const variationId = product.variations?.[0]?.id || null;
+            const variationAID = product.variations?.[0]?.aid || null;
+            const variationUID = product.variations?.[0]?.uid || null;
 
             // Create a wrapper anchor tag for the entire card
             const card = document.createElement("a");
@@ -466,7 +468,7 @@
             addToCartBtn.addEventListener("click", (e) => {
                 e.preventDefault();      // prevent <a> navigation
                 e.stopPropagation();     // prevent bubbling up to <a>
-                addToCart(productId, variationId, productName);
+                addToCart(productId, variationId, variationAID, variationUID, productName);
             });
             productGrid.appendChild(card);
         });
@@ -475,23 +477,85 @@
     }
 
     // Add To cart
-    function addToCart(productId, variationId, productName) {
+    // function addToCart(productId, variationId, variationAID, variationUID, productName) {
+    //     const payload = {
+    //         products_id: productId,
+    //         variation_id: variationId,
+    //         aid: variationAID,
+    //         uid: variationUID,
+    //         quantity: 1
+    //     };
+
+    //     fetch(`${baseUrl}/api/cart/create-cart`, {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify(payload)
+    //     })
+    //     .then(res => res.json())
+    //     .then(res => {
+    //         if (res.success) {
+    //             Swal.fire({
+    //                 icon: "success",
+    //                 title: "Added to Cart",
+    //                 text: `${productName} has been added to your cart!`,
+    //                 showConfirmButton: false,
+    //                 timer: 1500
+    //             });
+    //         } else {
+    //             Swal.fire({
+    //                 icon: "error",
+    //                 title: "Error",
+    //                 text: res.message || "Something went wrong!"
+    //             });
+    //         }
+    //     })
+    //     .catch(() => {
+    //         Swal.fire({
+    //             icon: "error",
+    //             title: "Error",
+    //             text: "Failed to add product to cart. Please try again later."
+    //         });
+    //     });
+    // }
+    
+    function addToCart(productId, variationId, variationAID, variationUID, productName) {
         const payload = {
-            product_id: productId,
+            products_id: productId,
             variation_id: variationId,
+            aid: variationAID,
+            uid: variationUID,
             quantity: 1
         };
 
-        fetch(`${baseUrl}/api/cart/add`, {
+        // 🔑 Check authentication
+        const authToken = localStorage.getItem("auth_token");
+        const guestId = localStorage.getItem("guest_id");
+
+        let headers = {
+            "Content-Type": "application/json"
+        };
+
+        if (authToken) {
+            headers["Authorization"] = `Bearer ${authToken}`;
+        } else if (guestId) {
+            payload.temp_id = guestId;
+        }
+
+        fetch(`${baseUrl}/api/cart/create-cart`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: headers,
             body: JSON.stringify(payload)
         })
         .then(res => res.json())
         .then(res => {
             if (res.success) {
+                // 🛒 Save new guest_id if returned
+                if (!authToken && res.temp_id) {
+                    localStorage.setItem("guest_id", res.temp_id);
+                }
+
                 Swal.fire({
                     icon: "success",
                     title: "Added to Cart",
@@ -515,6 +579,7 @@
             });
         });
     }
+
 
     // RENDER PAGINATION
     function renderPagination() {

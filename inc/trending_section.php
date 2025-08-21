@@ -166,7 +166,7 @@
               if (result.isConfirmed) {
                 const qty = parseInt(Swal.getPopup().querySelector('#qty-input')?.value || '1');
 
-                fetch('<?= $baseUrl ?>/api/customer/cart/create-cart', {
+                fetch('<?= $baseUrl ?>/api/cart/create-cart', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',

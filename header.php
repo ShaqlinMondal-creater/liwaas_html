@@ -55,7 +55,6 @@
     </style>
 </head>
 
-
 <body class="bg-gray-100">
     <!-- Custom cursor (desktop only) -->
     <!-- <div id="bubbleCursor" class="hidden md:block"></div> -->
@@ -91,6 +90,14 @@
                     <path d="M7 8V7a2 2 0 012-2h4" />
                 </svg><span class="text-xs">Logout</span>
             </a>
+            <a href="pages/profile" class="flex flex-col items-center text-sm hover:text-blue-500">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+                <span class="text-xs">Account</span>
+            </a>
+
+
         </div>
     </div>
 
@@ -249,56 +256,6 @@
     <!-- ---------- End Nav SCRIPT  ---------- -->
 
     <!--nav logic with backend  -->
-    <!-- <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            let avatarBtn = document.getElementById('avatarBtn');
-            const isLoggedIn = localStorage.getItem('auth_token') !== null;
-            const name = localStorage.getItem('name') || '';
-            const bellBtn = document.getElementById('bellBtn');
-            const bellMenu = document.getElementById('bellMenu');
-            const avatarMenu = document.getElementById('avatarMenu');
-
-            const loginLink = avatarMenu?.querySelector('a[href*="sign-in"]');
-            const profileLink = avatarMenu?.querySelector('a[href*="profile"]');
-            const logoutLink = avatarMenu?.querySelector('a[href="#"]');
-            const mobileLogout = document.querySelector('.mobile-action a:last-child');
-
-            if (!isLoggedIn) {
-                bellBtn?.classList.add('hidden');
-                bellMenu?.classList.add('hidden');
-                profileLink?.classList.add('hidden');
-                logoutLink?.classList.add('hidden');
-                mobileLogout?.classList.add('hidden');
-
-                // Show login link
-                loginLink?.classList.remove('hidden');
-
-                if (avatarBtn) {
-                    avatarBtn.src = 'https://i.pravatar.cc/40?img=32';
-                }
-            } else {
-                // Hide login link
-                loginLink?.classList.add('hidden');
-
-                if (avatarBtn && name.length > 0) {
-                    const initial = name.charAt(0).toUpperCase();
-                    const span = document.createElement('span');
-                    span.textContent = initial;
-                    span.id = "avatarBtn";
-                    span.className = "h-9 w-9 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold cursor-pointer ring-2 ring-white";
-
-                    avatarBtn.replaceWith(span);
-                    avatarBtn = document.getElementById('avatarBtn');
-
-                    avatarBtn.addEventListener('click', e => {
-                        e.stopPropagation();
-                        avatarMenu?.classList.toggle('hidden');
-                    });
-                }
-            }
-        });
-    </script> -->
-
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             let avatarBtn = document.getElementById('avatarBtn');
@@ -340,7 +297,7 @@
                     const span = document.createElement('span');
                     span.textContent = initial;
                     span.id = "avatarBtn";
-                    span.className = "h-9 w-9 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold cursor-pointer ring-2 ring-white";
+                    span.className = "h-9 w-9 rounded-full bg-gradient-to-r from-orange-300 to-orange-600 text-white flex items-center justify-center text-sm font-bold cursor-pointer ring-2 ring-white";
 
                     avatarBtn.replaceWith(span);
                     avatarBtn = document.getElementById('avatarBtn');

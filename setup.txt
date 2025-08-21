@@ -16,3 +16,48 @@ modify pages->
 
 current pages->
 profile
+
+
+
+---------------------------------------
+home page: 
+slider section✅
+trending section✅
+offers section - > render page setting 
+new arrival section -> need modification
+
+---------------------------------------
+shop page:
+need modification on wishlist, sorting
+
+---------------------------------------
+profile page:
+need modification on order (full)
+need modification on account details (full)
+need modification on address (full)✅
+need modification on cart (full)✅
+need modification on wishlist (full)✅
+
+---------------------------------------
+cart page:
+need modification (all)
+
+---------------------------------------
+About page:
+need modification (all)
+
+---------------------------------------
+contact page:
+need modification (all)
+
+---------------------------------------
+blog page:
+need modification (all)
+
+
+UNIVERSEL SETTING->
+-------------------
+
+header
+footer
+color uses

@@ -446,10 +446,10 @@
             // Create a wrapper anchor tag for the entire card
             const card = document.createElement("a");
             card.href = `pages/product-detail.php?id=${productId}`;
-            card.className = "featured-card bg-white rounded-xl shadow-md border overflow-hidden transition-all hover:shadow-lg block group";
+            card.className = "featured-card bg-white rounded-xl shadow-md border overflow-hidden transition-all hover:shadow-lg block group p-0";
 
             card.innerHTML = `
-                <div class="relative group">
+                <div class="relative group ">
                     <img src="${firstImage}" alt="${product.name}" class="w-full h-64 object-cover">
                     <button class="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100">
                     <i data-lucide="heart" class="w-5 h-5"></i>
@@ -579,7 +579,6 @@
             });
         });
     }
-
 
     // RENDER PAGINATION
     function renderPagination() {

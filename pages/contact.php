@@ -2,7 +2,7 @@
 <?php include("../header.php"); ?>
 
     <!-- Hero Section -->
-    <section class="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 text-white py-20">
+    <section class="relative bg-gradient-to-br from-black via-orange-900 to-orange-400 text-white py-20">
         <div class="absolute inset-0 bg-black/20"></div>
         <div class="relative max-w-7xl mx-auto px-4 text-center">
             <h1 class="text-5xl md:text-7xl font-bold mb-6">Contact Us</h1>

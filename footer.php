@@ -6,9 +6,9 @@
           
           <!-- Company Info -->
           <div class="space-y-4">
-            <div class="flex items-center space-x-2">
-              <div class="w-8 h-8 bg-gradient-to-r from-black to-orange-600 rounded-lg flex items-center justify-center">
-                <span class="text-white font-bold text-sm"><img src="assets/brand/fav_icon.png" alt=""></span>
+            <div class="flex justify-center items-center space-x-2">
+              <div class="w-40 h-50 bg-transparent rounded-lg flex items-center justify-center overflow-hidden">
+                <img src="assets/brand/liwaas_design_giff.gif" alt="logo" class="w-full h-full object-cover" />
               </div>
               <!-- <h3 class="text-xl font-bold">Liwaas</h3> -->
             </div>

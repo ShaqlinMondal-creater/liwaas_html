@@ -58,6 +58,6 @@ need modification (all)
 UNIVERSEL SETTING->
 -------------------
 
-header
-footer
+header -->
+footer -->
 color uses

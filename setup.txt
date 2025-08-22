@@ -32,8 +32,8 @@ need modification on wishlist, sorting
 
 ---------------------------------------
 profile page:
-need modification on order (full)
-need modification on account details (full)
+need modification on order (full)✅
+need modification on account details (full)✅
 need modification on address (full)✅
 need modification on cart (full)✅
 need modification on wishlist (full)✅

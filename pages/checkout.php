@@ -3,65 +3,65 @@
 
     <!-- ============  SKELETON  ============ -->
     <main id="checkout-skeleton" class="max-w-7xl mx-auto px-4 py-12 animate-pulse">
-    <div class="flex flex-col lg:flex-row gap-8">
+        <div class="flex flex-col lg:flex-row gap-8">
 
-        <!-- Left column skeleton -->
-        <div class="lg:w-2/3 space-y-8">
-        <!-- Address skeleton -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
-            <div class="h-5 bg-gray-200 rounded w-40"></div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <?php for ($i=0;$i<2;$i++): ?>
-            <div class="border rounded-lg p-4 space-y-2">
-                <div class="h-4 bg-gray-200 rounded w-24"></div>
-                <div class="h-3 bg-gray-200 rounded w-32"></div>
-                <div class="h-3 bg-gray-200 rounded w-40"></div>
-                <div class="h-3 bg-gray-200 rounded w-32"></div>
-                <div class="h-3 bg-gray-200 rounded w-36"></div>
+            <!-- Left column skeleton -->
+            <div class="lg:w-2/3 space-y-8">
+            <!-- Address skeleton -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
+                <div class="h-5 bg-gray-200 rounded w-40"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <?php for ($i=0;$i<2;$i++): ?>
+                <div class="border rounded-lg p-4 space-y-2">
+                    <div class="h-4 bg-gray-200 rounded w-24"></div>
+                    <div class="h-3 bg-gray-200 rounded w-32"></div>
+                    <div class="h-3 bg-gray-200 rounded w-40"></div>
+                    <div class="h-3 bg-gray-200 rounded w-32"></div>
+                    <div class="h-3 bg-gray-200 rounded w-36"></div>
+                </div>
+                <?php endfor; ?>
+                <div class="h-4 bg-gray-200 rounded w-32 mt-2"></div>
+                </div>
             </div>
-            <?php endfor; ?>
-            <div class="h-4 bg-gray-200 rounded w-32 mt-2"></div>
-            </div>
-        </div>
 
-        <!-- Payment skeleton -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
-            <div class="h-5 bg-gray-200 rounded w-40"></div>
-            <?php for ($i=0;$i<3;$i++): ?>
-            <div class="flex items-center p-4 border rounded-lg space-x-4">
-            <div class="h-4 w-4 bg-gray-200 rounded-full"></div>
-            <div class="flex-1 h-4 bg-gray-200 rounded"></div>
-            <div class="h-6 w-6 bg-gray-200 rounded"></div>
+            <!-- Payment skeleton -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
+                <div class="h-5 bg-gray-200 rounded w-40"></div>
+                <?php for ($i=0;$i<3;$i++): ?>
+                <div class="flex items-center p-4 border rounded-lg space-x-4">
+                <div class="h-4 w-4 bg-gray-200 rounded-full"></div>
+                <div class="flex-1 h-4 bg-gray-200 rounded"></div>
+                <div class="h-6 w-6 bg-gray-200 rounded"></div>
+                </div>
+                <?php endfor; ?>
             </div>
-            <?php endfor; ?>
-        </div>
-        </div>
+            </div>
 
-        <!-- Right column skeleton -->
-        <div class="lg:w-1/3 space-y-4">
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
-            <div class="h-5 bg-gray-200 rounded w-32"></div>
-            <div class="space-y-3">
-            <?php for ($i=0;$i<2;$i++): ?>
-            <div class="flex justify-between">
-                <div class="h-3 bg-gray-200 rounded w-1/2"></div>
-                <div class="h-3 bg-gray-200 rounded w-16"></div>
+            <!-- Right column skeleton -->
+            <div class="lg:w-1/3 space-y-4">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
+                    <div class="h-5 bg-gray-200 rounded w-32"></div>
+                    <div class="space-y-3">
+                    <?php for ($i=0;$i<2;$i++): ?>
+                    <div class="flex justify-between">
+                        <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                        <div class="h-3 bg-gray-200 rounded w-16"></div>
+                    </div>
+                    <?php endfor; ?>
+                    </div>
+                    <div class="border-t pt-4 space-y-3">
+                    <?php for ($i=0;$i<3;$i++): ?>
+                    <div class="flex justify-between">
+                        <div class="h-3 bg-gray-200 rounded w-24"></div>
+                        <div class="h-3 bg-gray-200 rounded w-16"></div>
+                    </div>
+                    <?php endfor; ?>
+                    </div>
+                    <div class="h-10 bg-gray-200 rounded"></div>
+                </div>
             </div>
-            <?php endfor; ?>
-            </div>
-            <div class="border-t pt-4 space-y-3">
-            <?php for ($i=0;$i<3;$i++): ?>
-            <div class="flex justify-between">
-                <div class="h-3 bg-gray-200 rounded w-24"></div>
-                <div class="h-3 bg-gray-200 rounded w-16"></div>
-            </div>
-            <?php endfor; ?>
-            </div>
-            <div class="h-10 bg-gray-200 rounded"></div>
-        </div>
-        </div>
 
-    </div>
+        </div>
     </main>
     <!-- ============  END SKELETON  ============ -->
     <div id="checkout-content" class="hidden">
@@ -319,6 +319,125 @@
             </div>
         </main>
     </div>
+<script>
+const baseUrl = "http://127.0.0.1:8000/api";
+let authToken = localStorage.getItem("auth_token");
+
+// Load addresses on page load
+window.onload = async () => {
+    document.getElementById('checkout-skeleton').classList.add('hidden');
+    document.getElementById('checkout-content').classList.remove('hidden');
+    if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+
+    if (authToken) {
+        // Auth user → fetch address
+        fetchAddresses();
+    } else {
+        // Guest user → force open modal
+        toggleModal();
+    }
+};
+
+// Fetch addresses
+async function fetchAddresses() {
+    try {
+        const res = await fetch(`${baseUrl}/customer/address/getAddressBy-user`, {
+            headers: { "Authorization": `Bearer ${authToken}` }
+        });
+        const data = await res.json();
+
+        if (data.success && data.data.length > 0) {
+            renderAddresses(data.data);
+        } else {
+            toggleModal(); // no address → force open modal
+        }
+    } catch (err) {
+        console.error("Error fetching addresses", err);
+    }
+}
+
+// Render addresses dynamically
+function renderAddresses(addresses) {
+    const container = document.querySelector(".grid.grid-cols-1.md\\:grid-cols-2");
+    container.innerHTML = ""; // clear old dummy cards
+
+    addresses.forEach(addr => {
+        const card = document.createElement("div");
+        card.className = "border rounded-lg p-4 cursor-pointer hover:border-blue-500";
+        card.onclick = () => selectAddress(card, addr.id);
+        card.innerHTML = `
+            <div class="flex justify-between items-start mb-2">
+                <div class="flex items-center">
+                    <input type="radio" name="address" class="h-4 w-4 text-blue-600" />
+                    <span class="ml-2 font-medium">${addr.address_type || 'Home'}</span>
+                </div>
+            </div>
+            <p class="text-sm text-gray-600">${addr.name}</p>
+            <p class="text-sm text-gray-600">${addr.address_line_1}, ${addr.address_line_2 || ''}</p>
+            <p class="text-sm text-gray-600">${addr.city}, ${addr.state} ${addr.pincode}</p>
+            <p class="text-sm text-gray-600">Phone: ${addr.mobile}</p>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// Handle address form submit
+document.querySelector("#addressModal form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const payload = {
+        name: form.querySelector('input[type="text"]').value,
+        email: form.querySelector('input[type="email"]').value,
+        mobile: form.querySelector('input[type="tel"]').value,
+        address_type: form.querySelector('#defaultAddress').checked ? "primary" : "secondary",
+        state: form.querySelectorAll('input[type="text"]')[1].value,
+        city: form.querySelectorAll('input[type="text"]')[2].value,
+        country: "India",
+        pincode: form.querySelectorAll('input[type="text"]')[3].value,
+        address_line_1: form.querySelector('textarea').value,
+        address_line_2: ""
+    };
+
+    if (!authToken) {
+        // Guest → create user first
+        const guestId = localStorage.getItem("guest_id") || "temp_" + Math.random().toString(36).substr(2, 8);
+        const makeUserRes = await fetch(`${baseUrl}/make_user`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: payload.name,
+                email: payload.email,
+                mobile: payload.mobile,
+                guest_id: guestId
+            })
+        });
+        const makeUserData = await makeUserRes.json();
+        if (makeUserData.success) {
+            // store auth data
+            localStorage.setItem("auth_token", makeUserData.token);
+            localStorage.setItem("user_id", makeUserData.user.id);
+            localStorage.setItem("user_email", makeUserData.user.email);
+            localStorage.setItem("user_name", makeUserData.user.name);
+            localStorage.setItem("user_role", makeUserData.user.role);
+            authToken = makeUserData.token;
+        }
+    }
+
+    // Create address
+    await fetch(`${baseUrl}/customer/address/create-address`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${authToken}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
+
+    location.reload(); // reload to fetch addresses
+});
+
+</script>
 
     <script>
         // Initialize Lucide icons

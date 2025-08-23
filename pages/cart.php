@@ -61,351 +61,7 @@
 
             <!-- Cart Items List -->
             <div class="divide-y divide-gray-200">
-              <!-- Cart Item 1 -->
-              <div class="p-6 flex gap-6" data-cart-item>
-                <div class="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden">
-                  <img 
-                    src="https://images.pexels.com/photos/6626903/pexels-photo-6626903.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                    alt="Premium Wool Blend Overcoat"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                
-                <div class="flex-1 flex flex-col">
-                  <div class="flex justify-between">
-                    <div>
-                      <h3 class="text-sm font-medium text-gray-900">
-                        Premium Wool Blend Overcoat
-                      </h3>
-                      <p class="mt-1 text-sm text-gray-500">Charcoal / Size L</p>
-                    </div>
-                    <p class="text-sm font-medium text-gray-900" data-price data-original-price="299.99">
-                      $299.99
-                    </p>
-                  </div>
-                  
-                  <div class="mt-4 flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                      <div class="flex items-center border border-gray-300 rounded-md" data-quantity-control data-max-quantity="28">
-                        <button
-                          data-decrease
-                          class="p-2 text-gray-500 hover:bg-gray-50"
-                          aria-label="Decrease quantity"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                        </button>
-                        <span data-quantity class="w-10 text-center">1</span>
-                        <button
-                          data-increase
-                          class="p-2 text-gray-500 hover:bg-gray-50"
-                          aria-label="Increase quantity"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                        </button>
-                      </div>
-                      
-                      <button 
-                        data-save-for-later
-                        class="text-sm font-medium text-gray-700 hover:text-blue-600 flex items-center gap-1"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        Save
-                      </button>
-                    </div>
-                    
-                    <button 
-                      data-remove-item
-                      class="text-sm font-medium text-red-600 hover:text-red-500"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Cart Item 2 -->
-              <div class="p-6 flex gap-6" data-cart-item>
-                <div class="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden">
-                  <img 
-                    src="https://images.pexels.com/photos/6626778/pexels-photo-6626778.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                    alt="Cashmere Scarf"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                
-                <div class="flex-1 flex flex-col">
-                  <div class="flex justify-between">
-                    <div>
-                      <h3 class="text-sm font-medium text-gray-900">
-                        Cashmere Scarf
-                      </h3>
-                      <p class="mt-1 text-sm text-gray-500">Beige</p>
-                    </div>
-                    <p class="text-sm font-medium text-gray-900" data-price data-original-price="79.99">
-                      $79.99
-                    </p>
-                  </div>
-                  
-                  <div class="mt-4 flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                      <div class="flex items-center border border-gray-300 rounded-md" data-quantity-control data-max-quantity="10">
-                        <button
-                          data-decrease
-                          class="p-2 text-gray-500 hover:bg-gray-50"
-                          aria-label="Decrease quantity"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                        </button>
-                        <span data-quantity class="w-10 text-center">1</span>
-                        <button
-                          data-increase
-                          class="p-2 text-gray-500 hover:bg-gray-50"
-                          aria-label="Increase quantity"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                        </button>
-                      </div>
-                      
-                      <button 
-                        data-save-for-later
-                        class="text-sm font-medium text-gray-700 hover:text-blue-600 flex items-center gap-1"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        Save
-                      </button>
-                    </div>
-                    
-                    <button 
-                      data-remove-item
-                      class="text-sm font-medium text-red-600 hover:text-red-500"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Cart Item 3 -->
-              <div class="p-6 flex gap-6" data-cart-item>
-                <div class="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden">
-                  <img 
-                    src="https://images.pexels.com/photos/45924/pexels-photo-45924.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                    alt="Leather Gloves"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                
-                <div class="flex-1 flex flex-col">
-                  <div class="flex justify-between">
-                    <div>
-                      <h3 class="text-sm font-medium text-gray-900">
-                        Leather Gloves
-                      </h3>
-                      <p class="mt-1 text-sm text-gray-500">Brown / Size M</p>
-                    </div>
-                    <p class="text-sm font-medium text-gray-900" data-price data-original-price="59.99">
-                      $59.99
-                    </p>
-                  </div>
-                  
-                  <div class="mt-4 flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                      <div class="flex items-center border border-gray-300 rounded-md" data-quantity-control data-max-quantity="15">
-                        <button
-                          data-decrease
-                          class="p-2 text-gray-500 hover:bg-gray-50"
-                          aria-label="Decrease quantity"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                        </button>
-                        <span data-quantity class="w-10 text-center">1</span>
-                        <button
-                          data-increase
-                          class="p-2 text-gray-500 hover:bg-gray-50"
-                          aria-label="Increase quantity"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                        </button>
-                      </div>
-                      
-                      <button 
-                        data-save-for-later
-                        class="text-sm font-medium text-gray-700 hover:text-blue-600 flex items-center gap-1"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        Save
-                      </button>
-                    </div>
-                    
-                    <button 
-                      data-remove-item
-                      class="text-sm font-medium text-red-600 hover:text-red-500"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Cart Item 4 -->
-              <div class="p-6 flex gap-6" data-cart-item>
-                <div class="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden">
-                  <img 
-                    src="https://images.pexels.com/photos/45924/pexels-photo-45924.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                    alt="Leather Gloves"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                
-                <div class="flex-1 flex flex-col">
-                  <div class="flex justify-between">
-                    <div>
-                      <h3 class="text-sm font-medium text-gray-900">
-                        Leather Gloves
-                      </h3>
-                      <p class="mt-1 text-sm text-gray-500">Brown / Size M</p>
-                    </div>
-                    <p class="text-sm font-medium text-gray-900" data-price data-original-price="59.99">
-                      $59.99
-                    </p>
-                  </div>
-                  
-                  <div class="mt-4 flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                      <div class="flex items-center border border-gray-300 rounded-md" data-quantity-control data-max-quantity="15">
-                        <button
-                          data-decrease
-                          class="p-2 text-gray-500 hover:bg-gray-50"
-                          aria-label="Decrease quantity"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                        </button>
-                        <span data-quantity class="w-10 text-center">1</span>
-                        <button
-                          data-increase
-                          class="p-2 text-gray-500 hover:bg-gray-50"
-                          aria-label="Increase quantity"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                        </button>
-                      </div>
-                      
-                      <button 
-                        data-save-for-later
-                        class="text-sm font-medium text-gray-700 hover:text-blue-600 flex items-center gap-1"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        Save
-                      </button>
-                    </div>
-                    
-                    <button 
-                      data-remove-item
-                      class="text-sm font-medium text-red-600 hover:text-red-500"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Cart Item 5 -->
-              <div class="p-6 flex gap-6" data-cart-item>
-                <div class="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden">
-                  <img 
-                    src="https://images.pexels.com/photos/45924/pexels-photo-45924.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                    alt="Leather Gloves"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-                
-                <div class="flex-1 flex flex-col">
-                  <div class="flex justify-between">
-                    <div>
-                      <h3 class="text-sm font-medium text-gray-900">
-                        Leather Gloves
-                      </h3>
-                      <p class="mt-1 text-sm text-gray-500">Brown / Size M</p>
-                    </div>
-                    <p class="text-sm font-medium text-gray-900" data-price data-original-price="59.99">
-                      $59.99
-                    </p>
-                  </div>
-                  
-                  <div class="mt-4 flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                      <div class="flex items-center border border-gray-300 rounded-md" data-quantity-control data-max-quantity="15">
-                        <button
-                          data-decrease
-                          class="p-2 text-gray-500 hover:bg-gray-50"
-                          aria-label="Decrease quantity"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                        </button>
-                        <span data-quantity class="w-10 text-center">1</span>
-                        <button
-                          data-increase
-                          class="p-2 text-gray-500 hover:bg-gray-50"
-                          aria-label="Increase quantity"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                          </svg>
-                        </button>
-                      </div>
-                      
-                      <button 
-                        data-save-for-later
-                        class="text-sm font-medium text-gray-700 hover:text-blue-600 flex items-center gap-1"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        Save
-                      </button>
-                    </div>
-                    
-                    <button 
-                      data-remove-item
-                      class="text-sm font-medium text-red-600 hover:text-red-500"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-
+                <!--  -->
             </div>
           </div>
         </div>
@@ -419,21 +75,20 @@
               <div class="space-y-3">
                 <div class="flex justify-between text-sm">
                   <span class="text-gray-500">Subtotal</span>
-                  <span class="text-gray-900 font-medium" id="subtotal">$439.97</span>
-                </div>
-                
+                  <span class="text-gray-900 font-medium" id="subtotal">₹ 0.00</span>
+                </div>               
                 <div class="flex justify-between text-sm">
                   <span class="text-gray-500">Shipping</span>
-                  <span class="text-green-600 font-medium">Free</span>
+                  <span class="text-green-600 font-medium" id="shipping">Free</span>
                 </div>
                 
                 <div class="pt-3 border-t border-gray-200 flex justify-between">
                   <span class="text-base font-medium text-gray-900">Total</span>
-                  <span class="text-base font-medium text-gray-900" id="total">$439.97</span>
+                  <span class="text-base font-medium text-gray-900" id="total">₹ 0.00</span>
                 </div>
               </div>
               
-              <button class="w-full py-3 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+              <button id="checkoutBtn" class="w-full py-3 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
                 Proceed to Checkout
               </button>
               
@@ -480,112 +135,284 @@
         </div>
       </div>
     </main>
+
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Cart Item Quantity Controls
-        const quantityControls = document.querySelectorAll('[data-quantity-control]');
-        
-        quantityControls.forEach(control => {
-          const decreaseBtn = control.querySelector('[data-decrease]');
-          const increaseBtn = control.querySelector('[data-increase]');
-          const quantityDisplay = control.querySelector('[data-quantity]');
-          const priceElement = control.closest('[data-cart-item]').querySelector('[data-price]');
-          const originalPrice = parseFloat(priceElement.getAttribute('data-original-price'));
-          
-          function updatePrice(quantity) {
-            const newPrice = (originalPrice * quantity).toFixed(2);
-            priceElement.textContent = `$${newPrice}`;
-            updateCartTotal();
+      document.addEventListener("DOMContentLoaded", async function() {
+        const authToken = localStorage.getItem("auth_token");
+        const guestId   = localStorage.getItem("guest_id");
+
+        const skeleton  = document.getElementById("cart-skeleton");
+        const cartList  = document.querySelector(".divide-y");
+        const subtotalElement = document.getElementById("subtotal");
+        const totalElement    = document.getElementById("total");
+        const cartCountElements = document.querySelectorAll("[data-cart-count]");
+
+        let cartData = [];
+        const baseUrl = "<?= $baseUrl ?>";
+        /* ---------------- GET CART ---------------- */
+        async function fetchCart() {
+          try {
+            let headers = { "Content-Type": "application/json" };
+            let url = `${baseUrl}/api/cart/get-cart`;
+
+            if (authToken) {
+              headers["Authorization"] = `Bearer ${authToken}`;
+            } else if (guestId) {
+              url += `?temp_id=${guestId}`;
+            }
+
+            const res = await fetch(url, { method: "GET", headers });
+            const result = await res.json();
+
+            if (result.success) {
+              cartData = result.data || [];
+              if (!authToken && result.temp_id) {
+                localStorage.setItem("guest_id", result.temp_id);
+              }
+              renderCart();
+            } else {
+              cartList.innerHTML = `<div class="p-6 text-gray-500">No items in your cart.</div>`;
+            }
+          } catch (err) {
+            console.error("Error fetching cart:", err);
+            cartList.innerHTML = `<div class="p-6 text-red-500">Failed to load cart. Try again later.</div>`;
+          } finally {
+            skeleton.classList.add("hidden");
           }
-          
-          decreaseBtn.addEventListener('click', () => {
-            const currentQty = parseInt(quantityDisplay.textContent);
-            if (currentQty > 1) {
-              quantityDisplay.textContent = currentQty - 1;
-              updatePrice(currentQty - 1);
+        }
+
+        function checkCartStatus() {
+            const checkoutBtn = document.getElementById("checkoutBtn");
+            checkoutBtn.disabled = cartData.length === 0;
+        }
+
+        /* ---------------- RENDER CART ---------------- */
+        function renderCart() {
+          cartList.innerHTML = "";
+          if (!cartData.length) {
+            cartList.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-20 text-center">
+                  <img src="assets/empty_cart.svg" alt="Empty Cart" class="w-40 h-40 mb-6 opacity-80">
+                  <h2 class="text-2xl font-semibold mb-2">Your cart is empty</h2>
+                  <p class="text-gray-500 mb-6">Looks like you haven’t added anything yet.</p>
+                  <a href="shop.php" class="bg-orange-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition">
+                    Start Shopping
+                  </a>
+                </div>
+              `;
             }
+
+          cartData.forEach(item => {
+            const variation = item.variation || {};
+            let imageUrl = variation.images?.[0] || "assets/placeholder.jpg";
+            imageUrl = imageUrl.replace("http://127.0.0.1:8000/uploads/http://", "http://");
+
+            const html = `
+              <div class="p-6 flex gap-6" data-cart-item data-id="${item.cart_id}">
+                <div class="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden">
+                  <img src="${imageUrl}" alt="${item.product_name}" class="w-full h-full object-cover" />
+                </div>
+                <div class="flex-1 flex flex-col">
+                  <div class="flex justify-between">
+                    <div>
+                      <h3 class="text-sm font-medium text-gray-900">${item.product_name}</h3>
+                      <p class="mt-1 text-sm text-gray-500">Size: ${variation.size || "-"} </p>
+                    </div>
+                    <p class="text-sm font-medium text-gray-900" data-price data-original-price="${item.sell_price}">
+                      ₹${item.total_price}
+                    </p>
+                  </div>
+                  <div class="mt-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                      <div class="flex items-center border border-gray-300 rounded-md" data-quantity-control data-max-quantity="50">
+                        <button data-decrease class="p-2 text-gray-500 hover:bg-gray-50">-</button>
+                        <span data-quantity class="w-10 text-center">${item.quantity}</span>
+                        <button data-increase class="p-2 text-gray-500 hover:bg-gray-50">+</button>
+                      </div>
+                    </div>
+                    <button data-remove-item class="text-sm font-medium text-red-600 hover:text-red-500">
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+            cartList.insertAdjacentHTML("beforeend", html);
           });
-          
-          increaseBtn.addEventListener('click', () => {
-            const currentQty = parseInt(quantityDisplay.textContent);
-            const maxQty = parseInt(control.getAttribute('data-max-quantity'));
-            if (currentQty < maxQty) {
-              quantityDisplay.textContent = currentQty + 1;
-              updatePrice(currentQty + 1);
+
+          attachEvents();
+          updateCartTotal();
+          updateCartCount();
+          checkCartStatus(); // ✅ Call after rendering cart
+        }       
+
+        /* ---------------- UPDATE QUANTITY ---------------- */
+        async function updateQuantity(cartId, quantity) {
+          try {
+            let headers = { "Content-Type": "application/json" };
+            let body = null;
+
+            if (authToken) {
+              headers["Authorization"] = `Bearer ${authToken}`;
+              body = JSON.stringify({ quantity });
+            } else {
+              body = JSON.stringify({ temp_id: guestId, quantity });
             }
-          });
-        });
-        
-        // Remove Cart Item
-        const removeButtons = document.querySelectorAll('[data-remove-item]');
-        
-        removeButtons.forEach(button => {
-          button.addEventListener('click', () => {
-            const cartItem = button.closest('[data-cart-item]');
-            cartItem.classList.add('opacity-0');
-            setTimeout(() => {
-              cartItem.remove();
+
+            const res = await fetch(`${baseUrl}/api/cart/update-cart/${cartId}`, {
+              method: "POST",
+              headers,
+              body
+            });
+
+            const result = await res.json();
+            if (result.success) {
+              // Update local cart data with response
+              const updatedItem = result.data;
+              cartData = cartData.map(i =>
+                i.cart_id === cartId ? { ...i, ...updatedItem } : i
+              );
+              renderCart();
+            } else {
+              console.error("Update failed:", result.message);
+            }
+          } catch (err) {
+            console.error("Error updating item:", err);
+          }
+        }
+
+        /* ---------------- REMOVE CART ITEM ---------------- */
+        async function removeCartItem(cartId) {
+          try {
+            let headers = { "Content-Type": "application/json" };
+            let body = null;
+
+            if (authToken) {
+              headers["Authorization"] = `Bearer ${authToken}`;
+            } else {
+              body = JSON.stringify({ temp_id: guestId });
+            }
+
+            const res = await fetch(`${baseUrl}/api/cart/delete-cart/${cartId}`, {
+              method: "DELETE", // assuming API expects POST, not DELETE
+              headers,
+              body
+            });
+
+            const result = await res.json();
+            if (result.success) {
+              // Remove item locally
+              cartData = cartData.filter(i => i.cart_id !== cartId);
+              renderCart();
+            } else {
+              console.error("Remove failed:", result.message);
+            }
+          } catch (err) {
+            console.error("Error removing item:", err);
+          }
+        }
+
+        /* ---------------- EVENTS ---------------- */
+        function attachEvents() {
+          // Quantity controls
+          document.querySelectorAll("[data-quantity-control]").forEach(control => {
+            const decreaseBtn = control.querySelector("[data-decrease]");
+            const increaseBtn = control.querySelector("[data-increase]");
+            const quantityDisplay = control.querySelector("[data-quantity]");
+            const priceElement = control.closest("[data-cart-item]").querySelector("[data-price]");
+            const originalPrice = parseFloat(priceElement.getAttribute("data-original-price"));
+            const cartId = parseInt(control.closest("[data-cart-item]").dataset.id);
+
+            decreaseBtn.onclick = () => {
+              let qty = parseInt(quantityDisplay.textContent);
+              if (qty > 1) {
+                qty--;
+                quantityDisplay.textContent = qty;
+                priceElement.textContent = `₹${(originalPrice * qty).toFixed(2)}`;
+                updateCartTotal();
+                updateQuantity(cartId, qty);
+              }
+            };
+
+            increaseBtn.onclick = () => {
+              let qty = parseInt(quantityDisplay.textContent);
+              qty++;
+              quantityDisplay.textContent = qty;
+              priceElement.textContent = `₹${(originalPrice * qty).toFixed(2)}`;
               updateCartTotal();
-              updateCartCount();
-            }, 300);
+              updateQuantity(cartId, qty);
+            };
           });
-        });
-        
-        // Update Cart Total
+
+          // Remove buttons
+          document.querySelectorAll("[data-remove-item]").forEach(button => {
+            const cartId = parseInt(button.closest("[data-cart-item]").dataset.id);
+            button.onclick = () => removeCartItem(cartId);
+          });
+        }
+
+        /* ---------------- UPDATE TOTALS ---------------- */
         function updateCartTotal() {
-          const subtotalElement = document.getElementById('subtotal');
-          const totalElement = document.getElementById('total');
-          const priceElements = document.querySelectorAll('[data-price]');
-          
           let subtotal = 0;
-          priceElements.forEach(element => {
-            subtotal += parseFloat(element.textContent.replace('$', ''));
+
+          // ✅ Calculate subtotal (sum of item prices)
+          document.querySelectorAll("[data-price]").forEach(el => {
+            subtotal += parseFloat(el.textContent.replace("₹", "")) || 0;
           });
-          
-          const shipping = 0; // Free shipping
-          const total = subtotal + shipping;
-          
-          subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-          totalElement.textContent = `$${total.toFixed(2)}`;
+
+          // Subtotal display
+          subtotalElement.textContent = `₹${subtotal.toFixed(2)}`;
+
+          // ✅ Shipping calculation
+          const shippingElement = document.getElementById("shipping");
+          let shipping = 0;
+          if (subtotal > 0 && subtotal < 3500) {
+            shipping = 120;
+            shippingElement.textContent = `₹${shipping.toFixed(2)}`;
+            shippingElement.classList.remove("text-green-600");
+            shippingElement.classList.add("text-gray-900");
+          } else if (subtotal >= 3500) {
+            shipping = 0;
+            shippingElement.textContent = "Free";
+            shippingElement.classList.remove("text-gray-900");
+            shippingElement.classList.add("text-green-600");
+          } else {
+            shippingElement.textContent = "₹0.00";
+            shippingElement.classList.remove("text-green-600");
+            shippingElement.classList.add("text-gray-900");
+          }
+
+          // ✅ Total = subtotal + tax + shipping
+          const total = subtotal +  shipping;
+          totalElement.textContent = `₹${total.toFixed(2)}`;
+
+          // ✅ Enable/Disable checkout button
+          const checkoutBtn = document.getElementById("checkoutBtn");
+          if (cartData.length === 0) {
+            checkoutBtn.disabled = true;
+            checkoutBtn.classList.add("opacity-50", "cursor-not-allowed");
+          } else {
+            checkoutBtn.disabled = false;
+            checkoutBtn.classList.remove("opacity-50", "cursor-not-allowed");
+          }
         }
-        
-        // Update Cart Count
+
         function updateCartCount() {
-          const cartCount = document.querySelectorAll('[data-cart-item]').length;
-          const cartCountElements = document.querySelectorAll('[data-cart-count]');
-          
-          cartCountElements.forEach(element => {
-            element.textContent = cartCount;
+          cartCountElements.forEach(el => {
+            el.textContent = cartData.length;
           });
         }
-        
-        // Save for Later
-        const saveButtons = document.querySelectorAll('[data-save-for-later]');
-        
-        saveButtons.forEach(button => {
-          button.addEventListener('click', () => {
-            const icon = button.querySelector('svg');
-            button.classList.toggle('text-blue-600');
-            icon.classList.toggle('fill-blue-600');
-          });
-        });
-        
-        // Initialize
-        updateCartTotal();
-        updateCartCount();
 
-        /* ---------- SKELETON SWAP ---------- */
-        window.onload = () => {
-          // swap visibility
-          document.getElementById('cart-skeleton').classList.add('hidden');
-          const real = document.getElementById('cart-content');
-          real.classList.remove('hidden');
-
-          // make sure totals match fresh DOM
-          if (typeof updateCartTotal === 'function') updateCartTotal();
-          if (typeof updateCartCount === 'function') updateCartCount();
-        };
-        
+        /* ---------------- INIT ---------------- */
+        fetchCart();
       });
+
+      document.getElementById("checkoutBtn").addEventListener("click", () => {
+          if (!document.getElementById("checkoutBtn").disabled) {
+              window.location.href = "pages/checkout";
+          }
+      });
+
     </script>
+
 <?php include("../footer.php"); ?>

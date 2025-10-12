@@ -1,7 +1,7 @@
 # htdocs/frontend/test/.htaccess
 
 RewriteEngine On
-RewriteBase /frontend/test/
+RewriteBase /liwaas_html/
 
 # If file or directory exists, serve it normally
 RewriteCond %{REQUEST_FILENAME} -f [OR]

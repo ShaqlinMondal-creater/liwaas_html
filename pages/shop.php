@@ -475,50 +475,6 @@
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
     }
-
-    // Add To cart
-    // function addToCart(productId, variationId, variationAID, variationUID, productName) {
-    //     const payload = {
-    //         products_id: productId,
-    //         variation_id: variationId,
-    //         aid: variationAID,
-    //         uid: variationUID,
-    //         quantity: 1
-    //     };
-
-    //     fetch(`${baseUrl}/api/cart/create-cart`, {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(payload)
-    //     })
-    //     .then(res => res.json())
-    //     .then(res => {
-    //         if (res.success) {
-    //             Swal.fire({
-    //                 icon: "success",
-    //                 title: "Added to Cart",
-    //                 text: `${productName} has been added to your cart!`,
-    //                 showConfirmButton: false,
-    //                 timer: 1500
-    //             });
-    //         } else {
-    //             Swal.fire({
-    //                 icon: "error",
-    //                 title: "Error",
-    //                 text: res.message || "Something went wrong!"
-    //             });
-    //         }
-    //     })
-    //     .catch(() => {
-    //         Swal.fire({
-    //             icon: "error",
-    //             title: "Error",
-    //             text: "Failed to add product to cart. Please try again later."
-    //         });
-    //     });
-    // }
     
     function addToCart(productId, variationId, variationAID, variationUID, productName) {
         const payload = {

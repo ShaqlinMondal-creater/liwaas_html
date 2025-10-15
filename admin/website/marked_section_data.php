@@ -17,7 +17,7 @@
                          </h1>
                     </div>
                     <div class="flex items-center gap-2.5">
-                         <a class="btn btn-sm btn-primary" href="website/section_config.php">
+                         <a class="btn btn-sm btn-primary" href="website/mark_product.php">
                               <- Back in Config
                          </a>
                     </div>

@@ -83,7 +83,7 @@
                 </div>
 
                 <!-- PUBLIC PROFILE -->
-                <div class="menu-item <?= menuShow(['account.php','dev_web.php','profile.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
+                <div class="menu-item <?= menuShow(['account.php','development.php','profile.php','mark_product.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
                     <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] ps-[10px] pe-[10px] py-[6px]">
                         <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
                             <i class="ki-filled ki-profile-circle text-lg"></i>
@@ -103,15 +103,21 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="nxt-pages/dev_web.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('dev_web.php') ?>">
-                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('dev_web.php') ?>"></span>
-                                <span class="menu-title text-2sm">Developer Website</span>
+                            <a href="nxt-pages/development.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('development.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('development.php') ?>"></span>
+                                <span class="menu-title text-2sm">Website Development</span>
                             </a>
                         </div>
                         <div class="menu-item">
                             <a href="nxt-pages/profile.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('profile.php') ?>">
                                 <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('profile.php') ?>"></span>
                                 <span class="menu-title text-2sm">Profile</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="website/mark_product.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('mark_product.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('mark_product.php') ?>"></span>
+                                <span class="menu-title text-2sm">Mark Product</span>
                             </a>
                         </div>
                     </div>
@@ -183,7 +189,7 @@
                 </div>
 
                 <!-- CONFIGURATION -->
-                <div class="menu-item <?= menuShow(['get-started.php','backup.php','section_config.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
+                <div class="menu-item <?= menuShow(['get-started.php','backup.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
                     <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] ps-[10px] pe-[10px] py-[6px]">
                         <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
                             <i class="ki-filled ki-users text-lg"></i>
@@ -213,14 +219,6 @@
                         </div>
                     </div>
 
-                    <div class="menu-accordion gap-0.5 ps-[10px] relative before:absolute before:start-[20px] before:top-0 before:bottom-0 before:border-s before:border-gray-200">
-                        <div class="menu-item">
-                            <a href="website/section_config.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('section_config.php') ?>">
-                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('section_config.php') ?>"></span>
-                                <span class="menu-title text-2sm">Website Configure</span>
-                            </a>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Logout -->

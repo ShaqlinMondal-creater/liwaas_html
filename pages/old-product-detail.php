@@ -203,7 +203,7 @@
             <div class="space-y-3">
               <div class="flex justify-between">
                 <span class="text-sm font-medium text-gray-700">Color</span>
-                <span id="selectedColorName" class="text-sm text-gray-500">Charcoal</span>
+                <span class="text-sm text-gray-500">Charcoal</span>
               </div>
               <div class="flex gap-3">
                 <button
@@ -301,7 +301,7 @@
                   </svg>
                 </button>
               </div>
-              <span id="stockText" class="text-sm text-gray-500"></span>
+              <span class="text-sm text-gray-500">28 available</span>
             </div>
 
             <!-- Shipping Info -->
@@ -507,232 +507,6 @@
 
 
       <script>
-        const BASE_URL = "<?= $baseUrl ?>"; // change to production later
-        let images = [];   // ✅ ADD THIS
-        let selectedColor = null;
-        let selectedSize  = null;
-        let variations    = [];
-        let currentStock = 0;
-        let currentImageIndex = 0;
-
-        // 1. Get slug & uid from URL
-        function getProductParams() {
-          const params = new URLSearchParams(window.location.search);
-
-          const slug = params.get("slug"); // ✅ correct
-          const uid  = params.get("uid");  // optional
-
-          return { slug, uid };
-        }
-
-        // 2. Fetch product from API
-        async function fetchProduct() {
-          const { slug, uid } = getProductParams();
-
-          if (!slug) {
-            console.error("Slug not found in URL");
-            return;
-          }
-
-          const url = `${BASE_URL}/api/products/get-product-byslug/${slug}`;
-
-          const options = {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            }
-          };
-
-          // send uid only if exists
-          if (uid) {
-            options.body = JSON.stringify({ uid });
-          }
-
-          const res = await fetch(url, options);
-          const json = await res.json();
-
-          if (!json.success) {
-            alert("Product not found");
-            return;
-          }
-
-          bindProduct(json.data);
-        }
-
-        // 3. Bind API data to your EXISTING UI
-        function bindProduct(data) {
-
-          images = data.upload.map(img => ({
-            src: img.url,
-            alt: data.name
-          }));
-          /* ========= BASIC INFO ========= */
-          document.querySelector("h1").innerText = data.name;
-          document.querySelector("h3.text-blue-600").innerText = data.brand?.name || "";
-          // Short description (top)
-          document.querySelector(".text-gray-700.leading-relaxed").innerText = data.description;
-          // Mobile description tab
-          document.querySelector('[data-tab-content="description"] p').innerText = data.description;
-          // Desktop description section
-          document.querySelector('.prose.max-w-none.text-gray-700 p').innerText = data.description;
-
-          // ========= REVIEWS (TEMP PLACEHOLDER) =========
-          const reviewsTab = document.querySelector('[data-tab-content="reviews"]');
-
-          if (reviewsTab) {
-            reviewsTab.innerHTML = `
-              <p class="text-sm text-gray-500">
-                No reviews yet. Be the first to review this product.
-              </p>
-            `;
-          }
-
-          /* ========= IMAGES ========= */
-          const allImages = data.upload || [];
-          if (allImages.length) {
-            document.getElementById("mainImage").src = allImages[0].url;
-          }
-
-          const thumbContainer = document.querySelector(".flex.gap-2.overflow-x-auto");
-          thumbContainer.innerHTML = "";
-
-          allImages.forEach((img, index) => {
-            thumbContainer.innerHTML += `
-              <button class="thumbnail relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden ${index === 0 ? 'ring-2 ring-blue-500' : 'ring-1 ring-gray-200 opacity-70'}">
-                <img src="${img.url}" class="object-cover w-full h-full"/>
-              </button>
-            `;
-          });
-
-          const colors = [...new Set(data.variations.map(v => v.color))];
-          const sizes  = [...new Set(data.variations.map(v => v.size))];
-
-          /* ========= VARIATIONS ========= */
-          variations = data.variations;
-          selectedColor = variations[0].color;
-          selectedSize  = variations[0].size;
-
-          const colorWrap = document.querySelector("[data-color]")?.parentElement;
-          colorWrap.innerHTML = "";
-
-          colors.forEach((color, i) => {
-            colorWrap.innerHTML += `
-              <button data-color="${color}" onclick="selectColor('${color}')"
-                class="relative w-10 h-10 rounded-full ring-1 ring-gray-300 ${i === 0 ? 'ring-2 ring-blue-500' : ''}">
-                <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">
-                  ${color[0]}
-                </span>
-              </button>
-            `;
-          });
-
-
-          const sizeWrap = document.querySelector("[data-size]")?.parentElement;
-          sizeWrap.innerHTML = "";
-
-          sizes.forEach(size => {
-            sizeWrap.innerHTML += `
-              <button data-size="${size}" onclick="selectSize('${size}')" class="w-12 h-12 border rounded-md">
-                ${size}
-              </button>
-            `;
-          });
-
-          /* ========= PRICE (default first variation) ========= */
-          const v = data.variations[0];
-          currentStock = v.stock; // ✅ HERE
-
-          // document.getElementById("mobilePrice").innerText = `₹${v.sell_price}`;
-          const mobilePriceEl = document.getElementById("mobilePrice");
-          if (mobilePriceEl) {
-            mobilePriceEl.innerText = `₹${v.sell_price}`;
-          }
-          document.querySelector(".text-2xl.font-bold").innerText = `₹${v.sell_price}`;
-          document.querySelector(".line-through").innerText = `₹${v.regular_price}`;
-          document.getElementById("stockText").innerText = `${v.stock} available`;
-
-          /* ========= SKU ========= */
-          document.querySelector(".text-xs.text-gray-500").innerText = `SKU: ${v.aid}-${v.uid}`;
-
-          // Color UI active state
-          document.querySelectorAll('[data-color]').forEach(btn => {
-            btn.addEventListener('click', () => {
-              document.querySelectorAll('[data-color]').forEach(b =>
-                b.classList.remove('ring-2','ring-blue-500')
-              );
-              btn.classList.add('ring-2','ring-blue-500');
-            });
-          });
-
-          // Size UI active state
-          document.querySelectorAll('[data-size]').forEach(btn => {
-            btn.addEventListener('click', () => {
-              document.querySelectorAll('[data-size]').forEach(b => {
-                b.classList.remove('bg-gray-900','text-white');
-                b.classList.add('bg-white','text-gray-900');
-              });
-              btn.classList.add('bg-gray-900','text-white');
-            });
-          });
-
-          showRealContent(); // hide skeleton
-          // Thumbnail click (AFTER API render)
-          document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
-            thumb.addEventListener('click', () => {
-              currentImageIndex = index;
-              updateMainImage(index);
-            });
-          });
-        }
-
-        // 4. Init
-        document.addEventListener("DOMContentLoaded", fetchProduct);
-
-        function selectColor(color) {
-          document.getElementById("selectedColorName").innerText = color;
-          selectedColor = color;
-          updateVariation();
-        }
-
-        function selectSize(size) {
-          selectedSize = size;
-          updateVariation();
-        }
-
-        function updateVariation() {
-          const v = variations.find(
-              x => x.color === selectedColor && x.size === selectedSize
-            );
-
-            if (!v) return;
-
-            currentStock = v.stock;
-
-            // sync quantity
-            const quantityEl = document.getElementById("quantity");
-            if (parseInt(quantityEl.textContent) > currentStock) {
-              quantityEl.textContent = currentStock;
-            }
-
-          document.getElementById("mobilePrice").innerText = `₹${v.sell_price}`;
-          document.querySelector(".text-2xl.font-bold").innerText = `₹${v.sell_price}`;
-          document.querySelector(".line-through").innerText = `₹${v.regular_price}`;
-          document.getElementById("stockText").innerText = `${v.stock} available`;
-          document.querySelector(".text-xs.text-gray-500").innerText = `SKU: ${v.aid}-${v.uid}`;
-          if (v.images && v.images.length) {
-            images = v.images.map(img => ({
-              src: img.url,
-              alt: v.color
-            }));
-            currentImageIndex = 0;
-            updateMainImage(0);
-          }
-
-        }
-
-      </script>
-
-      <script>
           // Show the real page after data / images are ready
         function showRealContent() {
           document.getElementById('productSkeleton')?.classList.add('hidden');
@@ -741,43 +515,97 @@
 
         // DEMO: remove skeleton after 1.2 s
         document.addEventListener('DOMContentLoaded', () => {
-          // setTimeout(showRealContent, 1200);
+          setTimeout(showRealContent, 1200);
         });
-        function updateMainImage(index) {
-          if (!images.length) return;
 
-          const mainImage = document.getElementById('mainImage');
+        document.addEventListener('DOMContentLoaded', function() {
+        // Image Gallery
+        const mainImage = document.getElementById('mainImage');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const prevButton = document.getElementById('prevImage');
+        const nextButton = document.getElementById('nextImage');
+        let currentImageIndex = 0;
+
+        const images = [
+            {
+                src: "https://images.pexels.com/photos/6626903/pexels-photo-6626903.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                alt: "Premium wool overcoat - front view"
+            },
+            {
+                src: "https://images.pexels.com/photos/6626967/pexels-photo-6626967.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                alt: "Premium wool overcoat - side view"
+            },
+            {
+                src: "https://images.pexels.com/photos/6626874/pexels-photo-6626874.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                alt: "Premium wool overcoat - detail view"
+            },
+            {
+                src: "https://images.pexels.com/photos/6626863/pexels-photo-6626863.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                alt: "Premium wool overcoat - back view"
+            },
+            {
+                src: "https://images.pexels.com/photos/6626874/pexels-photo-6626874.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                alt: "Premium wool overcoat - detail view"
+            },
+            {
+                src: "https://images.pexels.com/photos/6626863/pexels-photo-6626863.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                alt: "Premium wool overcoat - back view"
+            }
+        ];
+
+        function updateMainImage(index) {
           mainImage.src = images[index].src;
           mainImage.alt = images[index].alt;
-
-          document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
-            if (i === index) {
-              thumb.classList.add('ring-2','ring-blue-500');
-              thumb.classList.remove('ring-1','ring-gray-200','opacity-70');
-            } else {
-              thumb.classList.remove('ring-2','ring-blue-500');
-              thumb.classList.add('ring-1','ring-gray-200','opacity-70');
+            thumbnails.forEach((thumb, i) => {
+              if (i === index) {
+            thumb.classList.add('ring-2', 'ring-blue-500');
+          thumb.classList.remove('opacity-70');
+              } else {
+            thumb.classList.remove('ring-2', 'ring-blue-500');
+          thumb.classList.add('opacity-70');
             }
           });
         }
 
-      document.addEventListener('DOMContentLoaded', function() {
-        // Image Gallery
-        const mainImage = document.getElementById('mainImage');
-        // const thumbnails = document.querySelectorAll('.thumbnail');
-        const prevButton = document.getElementById('prevImage');
-        const nextButton = document.getElementById('nextImage');
-        
+        thumbnails.forEach((thumb, index) => {
+          thumb.addEventListener('click', () => {
+            currentImageIndex = index;
+            updateMainImage(currentImageIndex);
+          });
+        });
+
         prevButton.addEventListener('click', () => {
-          if (!images.length) return;   // ✅ ADD
           currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-          updateMainImage(currentImageIndex);
+        updateMainImage(currentImageIndex);
         });
 
         nextButton.addEventListener('click', () => {
-          if (!images.length) return;   // ✅ ADD
           currentImageIndex = (currentImageIndex + 1) % images.length;
-          updateMainImage(currentImageIndex);
+        updateMainImage(currentImageIndex);
+        });
+
+        // Color Selection
+        const colorButtons = document.querySelectorAll('[data-color]');
+        colorButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            colorButtons.forEach(b => b.classList.remove('ring-2', 'ring-offset-2', 'ring-blue-500'));
+            button.classList.add('ring-2', 'ring-offset-2', 'ring-blue-500');
+          });
+        });
+
+        // Size Selection
+        const sizeButtons = document.querySelectorAll('[data-size]');
+        sizeButtons.forEach(button => {
+          if (!button.disabled) {
+          button.addEventListener('click', () => {
+            sizeButtons.forEach(b => {
+              b.classList.remove('bg-gray-900', 'text-white');
+              b.classList.add('bg-white', 'text-gray-900');
+            });
+            button.classList.remove('bg-white', 'text-gray-900');
+            button.classList.add('bg-gray-900', 'text-white');
+          });
+          }
         });
 
         // Quantity Controls
@@ -794,8 +622,8 @@
 
         increaseButton.addEventListener('click', () => {
           const currentValue = parseInt(quantityInput.textContent);
-          if (currentValue < currentStock) {
-            quantityInput.textContent = currentValue + 1;
+        if (currentValue < 28) {
+          quantityInput.textContent = currentValue + 1;
           }
         });
 
@@ -845,8 +673,8 @@
           if (navigator.share) {
             try {
           await navigator.share({
-            title: document.querySelector("h1").innerText,
-            text: document.querySelector(".text-gray-700.leading-relaxed").innerText,
+            title: 'Premium Wool Blend Overcoat',
+            text: 'Check out this amazing wool blend overcoat!',
             url: window.location.href
           });
             } catch (err) {
@@ -970,7 +798,7 @@
 
             container.innerHTML = relatedProductsData.map(product => `
             <div class="flex-shrink-0 w-48 group" data-product-id="${product.id}">
-                <div onclick="redirectToDetail('demo-slug')" class="aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3 relative">
+                <div onclick="redirectToDetail(${product.id})" class="aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3 relative">
                 <img
                     src="${product.image}"
                     alt="${product.name}"
@@ -1043,8 +871,8 @@
             return `<div class="flex">${stars}</div>`;
         };
         // Add this function to handle redirection
-        window.redirectToDetail = function(slug) {
-          window.location.href = `pages/product-detail.php?slug=${slug}`;
+        window.redirectToDetail = function(productId) {
+            window.location.href = `pages/product-detail.php?id=${productId}`;
         };
         // Initialize related products
         generateProductCards();
@@ -1111,7 +939,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-xs text-gray-500">Price</p>
-            <p id="mobilePrice" class="text-lg font-bold text-gray-900">$ 0.00</p>
+            <p class="text-lg font-bold text-gray-900">$299.99</p>
           </div>
 
           <button

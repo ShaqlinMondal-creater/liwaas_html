@@ -195,7 +195,7 @@
                   <img src="assets/empty_cart.svg" alt="Empty Cart" class="w-40 h-40 mb-6 opacity-80">
                   <h2 class="text-2xl font-semibold mb-2">Your cart is empty</h2>
                   <p class="text-gray-500 mb-6">Looks like you haven’t added anything yet.</p>
-                  <a href="shop.php" class="bg-orange-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition">
+                  <a href="pages/shop.php" class="bg-orange-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition">
                     Start Shopping
                   </a>
                 </div>

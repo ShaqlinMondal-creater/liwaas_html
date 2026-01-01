@@ -203,9 +203,9 @@
             <div class="space-y-3">
               <div class="flex justify-between">
                 <span class="text-sm font-medium text-gray-700">Color</span>
-                <span id="selectedColorName" class="text-sm text-gray-500">Charcoal</span>
+                <span id="selectedColorName" class="text-sm text-gray-500"></span>
               </div>
-              <div class="flex gap-3">
+              <div id="colorOptions" class="flex gap-3">
                 <button
                   data-color="charcoal"
                   class="relative w-10 h-10 rounded-full ring-2 ring-offset-2 ring-blue-500"
@@ -241,7 +241,7 @@
                   Size Guide
                 </a>
               </div>
-              <div class="flex flex-wrap gap-2">
+              <div id="sizeOptions" class="flex flex-wrap gap-2">
                 <button
                   data-size="S"
                   class="w-12 h-12 flex items-center justify-center rounded-md text-sm font-medium bg-white text-gray-900 border border-gray-300 hover:bg-gray-50"
@@ -515,40 +515,80 @@
         let currentStock = 0;
         let currentImageIndex = 0;
 
-        // 1. Get slug & uid from URL
-        function getProductParams() {
+        // 🔹 Normalize helper (ADD HERE)
+        function normalize(v) {
+          return String(v).trim().toLowerCase();
+        }
+
+        function updateAvailability() {
+          // Disable / enable COLORS
+          document.querySelectorAll('.color-btn').forEach(btn => {
+            const color = btn.dataset.color;
+
+            const exists = variations.some(v =>
+              normalize(v.color) === normalize(color) &&
+              (!selectedSize || normalize(v.size) === normalize(selectedSize))
+            );
+
+            btn.disabled = !exists;
+            btn.classList.toggle('opacity-30', !exists);
+            btn.classList.toggle('cursor-not-allowed', !exists);
+          });
+
+          // Disable / enable SIZES
+          document.querySelectorAll('[data-size]').forEach(btn => {
+            const size = btn.dataset.size;
+
+            const exists = variations.some(v =>
+              normalize(v.size) === normalize(size) &&
+              (!selectedColor || normalize(v.color) === normalize(selectedColor))
+            );
+
+            btn.disabled = !exists;
+            btn.classList.toggle('opacity-30', !exists);
+            btn.classList.toggle('cursor-not-allowed', !exists);
+          });
+
+          if (selectedSize && !variations.some(v =>
+            normalize(v.size) === normalize(selectedSize) &&
+            normalize(v.color) === normalize(selectedColor)
+          )) {
+            const fallback = variations.find(v =>
+              normalize(v.size) === normalize(selectedSize)
+            );
+            if (fallback && normalize(fallback.color) !== normalize(selectedColor)) {
+              selectedColor = fallback.color;
+              document.getElementById("selectedColorName").innerText = selectedColor;
+              updateVariation();
+            }
+          }
+
+        }
+
+        // 1. Get uid from URL
+        function getProductUid() {
           const params = new URLSearchParams(window.location.search);
-
-          const slug = params.get("slug"); // ✅ correct
-          const uid  = params.get("uid");  // optional
-
-          return { slug, uid };
+          return params.get("id"); // id = uid
         }
 
         // 2. Fetch product from API
         async function fetchProduct() {
-          const { slug, uid } = getProductParams();
+          const uid = getProductUid();
 
-          if (!slug) {
-            console.error("Slug not found in URL");
+          if (!uid) {
+            alert("Product ID missing in URL");
             return;
           }
 
-          const url = `${BASE_URL}/api/products/get-product-byslug/${slug}`;
+          const url = `${BASE_URL}/api/products/get-product-byUid/${uid}`;
 
-          const options = {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            }
-          };
-
-          // send uid only if exists
-          if (uid) {
-            options.body = JSON.stringify({ uid });
-          }
-
-          const res = await fetch(url, options);
+          const res = await fetch(url, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              }
+              // no body needed since uid is in URL
+            });
           const json = await res.json();
 
           if (!json.success) {
@@ -559,13 +599,51 @@
           bindProduct(json.data);
         }
 
+        function renderGallery(imageList = []) {
+          const mainImage = document.getElementById("mainImage");
+          const thumbContainer = document.querySelector(".flex.gap-2.overflow-x-auto");
+
+          images = imageList.map(img => ({
+            src: img.url,
+            alt: img.file_name || ""
+          }));
+
+          currentImageIndex = 0;
+
+          // Clear thumbnails
+          thumbContainer.innerHTML = "";
+
+          if (!images.length) {
+            mainImage.src = "";
+            return;
+          }
+
+          // Set main image
+          mainImage.src = images[0].src;
+          mainImage.alt = images[0].alt;
+
+          // Build thumbnails
+          images.forEach((img, index) => {
+            const btn = document.createElement("button");
+            btn.className = `thumbnail relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all ${
+              index === 0 ? "ring-2 ring-blue-500" : "ring-1 ring-gray-200 opacity-70"
+            }`;
+
+            btn.innerHTML = `
+              <img src="${img.src}" class="object-cover w-full h-full" />
+            `;
+
+            btn.addEventListener("click", () => {
+              updateMainImage(index);
+            });
+
+            thumbContainer.appendChild(btn);
+          });
+        }
+
         // 3. Bind API data to your EXISTING UI
         function bindProduct(data) {
 
-          images = data.upload.map(img => ({
-            src: img.url,
-            alt: data.name
-          }));
           /* ========= BASIC INFO ========= */
           document.querySelector("h1").innerText = data.name;
           document.querySelector("h3.text-blue-600").innerText = data.brand?.name || "";
@@ -588,46 +666,41 @@
           }
 
           /* ========= IMAGES ========= */
-          const allImages = data.upload || [];
-          if (allImages.length) {
-            document.getElementById("mainImage").src = allImages[0].url;
-          }
-
-          const thumbContainer = document.querySelector(".flex.gap-2.overflow-x-auto");
-          thumbContainer.innerHTML = "";
-
-          allImages.forEach((img, index) => {
-            thumbContainer.innerHTML += `
-              <button class="thumbnail relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden ${index === 0 ? 'ring-2 ring-blue-500' : 'ring-1 ring-gray-200 opacity-70'}">
-                <img src="${img.url}" class="object-cover w-full h-full"/>
-              </button>
-            `;
-          });
-
           const colors = [...new Set(data.variations.map(v => v.color))];
           const sizes  = [...new Set(data.variations.map(v => v.size))];
 
           /* ========= VARIATIONS ========= */
           variations = data.variations;
-          selectedColor = variations[0].color;
-          selectedSize  = variations[0].size;
+          const activeVariation = data.selected_variation || data.variations[0];
 
-          const colorWrap = document.querySelector("[data-color]")?.parentElement;
+          selectedColor = activeVariation.color;
+          selectedSize  = activeVariation.size;
+
+          document.getElementById("selectedColorName").innerText = selectedColor;
+
+
+          const colorWrap = document.getElementById("colorOptions");
+
           colorWrap.innerHTML = "";
 
-          colors.forEach((color, i) => {
+          colors.forEach(color => {
+            const isHex = color.startsWith('#');
+
             colorWrap.innerHTML += `
-              <button data-color="${color}" onclick="selectColor('${color}')"
-                class="relative w-10 h-10 rounded-full ring-1 ring-gray-300 ${i === 0 ? 'ring-2 ring-blue-500' : ''}">
-                <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">
-                  ${color[0]}
-                </span>
+              <button
+                data-color="${color}"
+                onclick="selectColor('${color}')"
+                class="color-btn relative w-10 h-10 rounded-full border border-gray-300
+                      ${normalize(color) === normalize(selectedColor) ? 'ring-2 ring-blue-500' : ''}"
+                style="background-color: ${isHex ? color : '#f3f4f6'};"
+                title="${color}"
+              >
+                ${!isHex ? `<span class="text-[10px] font-medium">${color}</span>` : ``}
               </button>
             `;
           });
 
-
-          const sizeWrap = document.querySelector("[data-size]")?.parentElement;
+          const sizeWrap = document.getElementById("sizeOptions");
           sizeWrap.innerHTML = "";
 
           sizes.forEach(size => {
@@ -637,10 +710,15 @@
               </button>
             `;
           });
+          updateAvailability();
 
           /* ========= PRICE (default first variation) ========= */
-          const v = data.variations[0];
+          const v = data.selected_variation || data.variations[0];
           currentStock = v.stock; // ✅ HERE
+          // const v = data.selected_variation || data.variations[0];
+
+          // Load ONLY variant images
+          renderGallery(v.images || data.upload || []);
 
           // document.getElementById("mobilePrice").innerText = `₹${v.sell_price}`;
           const mobilePriceEl = document.getElementById("mobilePrice");
@@ -654,26 +732,7 @@
           /* ========= SKU ========= */
           document.querySelector(".text-xs.text-gray-500").innerText = `SKU: ${v.aid}-${v.uid}`;
 
-          // Color UI active state
-          document.querySelectorAll('[data-color]').forEach(btn => {
-            btn.addEventListener('click', () => {
-              document.querySelectorAll('[data-color]').forEach(b =>
-                b.classList.remove('ring-2','ring-blue-500')
-              );
-              btn.classList.add('ring-2','ring-blue-500');
-            });
-          });
-
-          // Size UI active state
-          document.querySelectorAll('[data-size]').forEach(btn => {
-            btn.addEventListener('click', () => {
-              document.querySelectorAll('[data-size]').forEach(b => {
-                b.classList.remove('bg-gray-900','text-white');
-                b.classList.add('bg-white','text-gray-900');
-              });
-              btn.classList.add('bg-gray-900','text-white');
-            });
-          });
+          
 
           showRealContent(); // hide skeleton
           // Thumbnail click (AFTER API render)
@@ -684,52 +743,52 @@
             });
           });
         }
-
+        
         // 4. Init
         document.addEventListener("DOMContentLoaded", fetchProduct);
 
         function selectColor(color) {
-          document.getElementById("selectedColorName").innerText = color;
+          const btn = [...document.querySelectorAll('.color-btn')]
+            .find(b => b.dataset.color === color);
+
+          if (btn?.disabled) return;
+
           selectedColor = color;
+          document.getElementById("selectedColorName").innerText = color;
+          updateAvailability();
           updateVariation();
         }
 
         function selectSize(size) {
+          const btn = [...document.querySelectorAll('[data-size]')]
+            .find(b => b.dataset.size === size);
+
+          if (btn?.disabled) return;
+
           selectedSize = size;
+          updateAvailability();
           updateVariation();
         }
 
+
+
         function updateVariation() {
-          const v = variations.find(
-              x => x.color === selectedColor && x.size === selectedSize
-            );
+          if (!selectedColor || !selectedSize) return;
 
-            if (!v) return;
+          const match = variations.find(v =>
+            normalize(v.color) === normalize(selectedColor) &&
+            normalize(v.size) === normalize(selectedSize)
+          );
 
-            currentStock = v.stock;
+          if (!match) return;
 
-            // sync quantity
-            const quantityEl = document.getElementById("quantity");
-            if (parseInt(quantityEl.textContent) > currentStock) {
-              quantityEl.textContent = currentStock;
-            }
+          const currentUid = String(getProductUid());
 
-          document.getElementById("mobilePrice").innerText = `₹${v.sell_price}`;
-          document.querySelector(".text-2xl.font-bold").innerText = `₹${v.sell_price}`;
-          document.querySelector(".line-through").innerText = `₹${v.regular_price}`;
-          document.getElementById("stockText").innerText = `${v.stock} available`;
-          document.querySelector(".text-xs.text-gray-500").innerText = `SKU: ${v.aid}-${v.uid}`;
-          if (v.images && v.images.length) {
-            images = v.images.map(img => ({
-              src: img.url,
-              alt: v.color
-            }));
-            currentImageIndex = 0;
-            updateMainImage(0);
+          // Redirect ONLY if UID is different
+          if (currentUid !== String(match.uid)) {
+            window.location.href = `${window.location.pathname}?id=${match.uid}`;
           }
-
         }
-
       </script>
 
       <script>
@@ -744,20 +803,20 @@
           // setTimeout(showRealContent, 1200);
         });
         function updateMainImage(index) {
-          if (!images.length) return;
+          if (!images.length || !images[index]) return;
 
-          const mainImage = document.getElementById('mainImage');
+          currentImageIndex = index;
+
+          const mainImage = document.getElementById("mainImage");
           mainImage.src = images[index].src;
           mainImage.alt = images[index].alt;
 
           document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
-            if (i === index) {
-              thumb.classList.add('ring-2','ring-blue-500');
-              thumb.classList.remove('ring-1','ring-gray-200','opacity-70');
-            } else {
-              thumb.classList.remove('ring-2','ring-blue-500');
-              thumb.classList.add('ring-1','ring-gray-200','opacity-70');
-            }
+            thumb.classList.toggle('ring-2', i === index);
+            thumb.classList.toggle('ring-blue-500', i === index);
+            thumb.classList.toggle('ring-1', i !== index);
+            thumb.classList.toggle('ring-gray-200', i !== index);
+            thumb.classList.toggle('opacity-70', i !== index);
           });
         }
 
@@ -1043,8 +1102,8 @@
             return `<div class="flex">${stars}</div>`;
         };
         // Add this function to handle redirection
-        window.redirectToDetail = function(slug) {
-          window.location.href = `pages/product-detail.php?slug=${slug}`;
+        window.redirectToDetail = function(id) {
+          window.location.href = `pages/product-detail.php?id=${id}`;
         };
         // Initialize related products
         generateProductCards();

@@ -1106,6 +1106,7 @@
         }
         });
       </script>
+      
       <!-- Mobile Action Bar -->
       <div id="mobileActionBar" class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 md:hidden z-10 shadow-lg transition-transform transform-gpu duration-300 translate-y-full">
         <div class="flex items-center justify-between">

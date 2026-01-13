@@ -640,7 +640,7 @@
           // Mobile description tab
           document.querySelector('.mb_long_desc p').innerText = data.description;
           // Desktop description section
-          document.querySelector('long_desc p').innerText = data.description;
+          document.querySelector('.long_desc p').innerText = data.description;
 
           // ========= REVIEWS (TEMP PLACEHOLDER) =========
           const reviewsTab = document.querySelector('[data-tab-content="reviews"]');

@@ -73,7 +73,7 @@
                     <div class="container-fixed flex justify-between items-stretch lg:gap-4" id="header_container">
                          <!-- Mobile Logo -->
                          <div class="flex gap-1 lg:hidden items-center -ms-1">
-                              <a class="shrink-0" href="index.php">
+                              <a class="shrink-0" href="home.php">
                                    <img class="max-h-[25px] w-full" src="<?php echo $baseFavicon; ?>" />
                               </a>
                               <div class="flex items-center">
@@ -106,7 +106,7 @@
                                              <!--Megamenu Item-->
                                              <div class="menu-item active">
                                                   <a class="menu-link text-nowrap text-sm text-gray-800 font-medium menu-item-hover:text-primary menu-item-active:text-gray-900 menu-item-active:font-medium"
-                                                       href="index.php">
+                                                       href="home.php">
                                                        <span class="menu-title text-nowrap">
                                                             Home
                                                        </span>

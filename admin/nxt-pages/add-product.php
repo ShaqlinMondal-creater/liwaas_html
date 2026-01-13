@@ -127,6 +127,7 @@
 <script>
   const baseUrl = "<?= $baseUrl ?>"; // Or replace with your actual base URL
   const token = localStorage.getItem("auth_token");
+  let nextUID = null; // global UID tracker
 
   // Fetch and populate all brands
   function fetchBrands() {
@@ -192,10 +193,54 @@
       .catch(err => console.error("Category fetch error:", err));
   }
 
+  async function fetchNextAidUid() {
+    try {
+      const res = await fetch("<?= $baseUrl ?>/admin/products/get-next-count", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        const { aid, uid } = data.data;
+
+        // Set AID
+        const aidInput = document.querySelector('input[name="aid"]');
+        aidInput.value = aid;
+
+        // Set UID tracker
+        nextUID = Number(uid);
+
+        // Set UID for simple product
+        const simpleUidInput = document.querySelector('input[name="uid"]');
+        if (simpleUidInput) {
+          simpleUidInput.value = nextUID;
+        }
+
+        // Set UID for first variant
+        const firstVariantUid = document.querySelector(
+          "#variant_fields .variation-item input[type='number']"
+        );
+        if (firstVariantUid) {
+          firstVariantUid.value = nextUID;
+        }
+      } else {
+        console.error("Failed to fetch AID/UID");
+      }
+    } catch (err) {
+      console.error("AID/UID fetch error:", err);
+    }
+  }
+
   // Call both on page load
   document.addEventListener("DOMContentLoaded", () => {
       fetchBrands();
       fetchCategories();
+      // call it
+      fetchNextAidUid();
   });
 </script>
 
@@ -214,6 +259,9 @@
       const isVariant = productTypeSelect.value === "variant";
       simpleFields.classList.toggle("hidden", isVariant);
       variantFields.classList.toggle("hidden", !isVariant);
+      if (productTypeSelect.value === "simple" && nextUID !== null) {
+        document.querySelector('input[name="uid"]').value = nextUID;
+      }
     });
 
     // Add new variation row
@@ -221,13 +269,20 @@
       const firstRow = variantFields.querySelector(".variation-item");
       const clone = firstRow.cloneNode(true);
       clone.querySelectorAll("input").forEach((input) => {
-        // Clear values and files
         if (input.type === "file") {
-          input.value = ""; // clear files
+          input.value = "";
         } else {
           input.value = "";
         }
       });
+
+      // AUTO UID INCREMENT
+      const uidInput = clone.querySelector("input[type='number']");
+      if (uidInput && nextUID !== null) {
+        nextUID += 1;
+        uidInput.value = nextUID;
+      }
+
       variantFields.insertBefore(clone, addVariationBtn);
 
       // Attach remove button event to new row

@@ -392,7 +392,7 @@
               <h2 class="text-lg font-semibold text-gray-900">Product Description</h2>
             </div>
             <div class="p-6">
-              <div class="prose max-w-none text-gray-700">
+              <div class="prose max-w-none text-gray-700 long_desc">
                 <p class="whitespace-pre-line">
                   Crafted with the utmost attention to detail, our Premium Wool Blend Overcoat combines luxurious materials with expert tailoring for an exceptional cold-weather essential. The rich wool blend provides superior warmth and comfort while maintaining a refined appearance.
 
@@ -638,9 +638,9 @@
           // Short description (top)
           document.querySelector(".short_desc").innerText = data.description;
           // Mobile description tab
-          document.querySelector('[data-tab-content="description"] p').innerText = data.description;
+          document.querySelector('.mb_long_desc p').innerText = data.description;
           // Desktop description section
-          document.querySelector('.prose.max-w-none.text-gray-700 p').innerText = data.description;
+          document.querySelector('long_desc p').innerText = data.description;
 
           // ========= REVIEWS (TEMP PLACEHOLDER) =========
           const reviewsTab = document.querySelector('[data-tab-content="reviews"]');

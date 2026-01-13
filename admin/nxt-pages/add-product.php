@@ -67,6 +67,32 @@
             <input class="input input-sm w-[240px]" type="text" name="specification" placeholder="100% cotton" />
           </div>
         </div>
+        <!-- Row: Availability Options -->
+      <div class="flex gap-10 items-center">
+        <div class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="cod_checkbox"
+            class="h-4 w-4"
+            checked
+          />
+          <label for="cod_checkbox" class="form-label text-gray-900">
+            Cash on Delivery (COD)
+          </label>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="custom_design_checkbox"
+            class="h-4 w-4"
+            checked
+          />
+          <label for="custom_design_checkbox" class="form-label text-gray-900">
+            Custom Design Available
+          </label>
+        </div>
+      </div>
 
         <!-- Row: Product Type -->
         <div class="flex gap-10 items-center">
@@ -82,8 +108,8 @@
         <!-- Row: Simple Fields -->
         <div id="simple_fields" class="flex gap-4 items-center">
           <input class="input input-sm w-[100px]" type="number" name="uid" placeholder="UID" />
-          <input class="input input-sm w-[140px]" type="number" name="regular_price" placeholder="Regular Price" />
-          <input class="input input-sm w-[140px]" type="number" name="sale_price" placeholder="Sale Price" />
+          <input class="input input-sm w-[120px]" type="number" name="regular_price" placeholder="Regular Price" />
+          <input class="input input-sm w-[120px]" type="number" name="sale_price" placeholder="Sale Price" />
           <input class="input input-sm w-[80px]" type="text" name="size" placeholder="Size" />
           <input class="input input-sm w-[120px]" type="text" name="color" placeholder="Color" />
           <input class="input input-sm w-[100px]" type="number" name="stock" placeholder="Stock" />          
@@ -93,8 +119,8 @@
         <div id="variant_fields" class="hidden flex flex-col gap-3 border p-4 rounded bg-gray-50">
           <div class="variation-item flex gap-4 items-center">
             <input type="number" placeholder="UID" class="input input-sm w-[100px]" />
-            <input type="number" placeholder="Regular Price" class="input input-sm w-[140px]" />
-            <input type="number" placeholder="Sale Price" class="input input-sm w-[140px]" />
+            <input type="number" placeholder="Regular Price" class="input input-sm w-[120px]" />
+            <input type="number" placeholder="Sale Price" class="input input-sm w-[120px]" />
             <input type="text" placeholder="Size" class="input input-sm w-[80px]" />
             <input type="text" placeholder="Color" class="input input-sm w-[120px]" />
             <input type="number" placeholder="Stock" class="input input-sm w-[100px]" />
@@ -311,6 +337,11 @@
       const token = localStorage.getItem("auth_token");
       const formData = new FormData(form);
       const isVariant = productTypeSelect.value === "variant";
+      const codCheckbox = document.getElementById("cod_checkbox");
+      const customDesignCheckbox = document.getElementById("custom_design_checkbox");
+
+      const codValue = codCheckbox.checked ? "available" : "not available";
+      const customDesignValue = customDesignCheckbox.checked ? "available" : "not available";
 
       // Collect basic fields
       const aid = formData.get("aid");
@@ -325,13 +356,13 @@
         keyword: formData.get("keyword"),
         description: formData.get("description"),
         specification: formData.get("specification"),
+        cod: codValue,
+        custom_design: customDesignValue,
       };
 
       if (isVariant) {
         payload.slug = name.toLowerCase().replace(/\s+/g, "-");
-        payload.cod = "available";
         payload.shipping = "available";
-        payload.custom_design = "available";
         payload.added_by = "admin";
         payload.variations = [];
 

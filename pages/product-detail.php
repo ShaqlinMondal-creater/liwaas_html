@@ -487,6 +487,9 @@
         // 3. Bind API data to your EXISTING UI
         function bindProduct(data) {
 
+        
+          const v = data.selected_variation || data.variations[0];
+          
           /* ========= BASIC INFO ========= */
           document.querySelector("h1.product_name").innerText = data.name;
           document.querySelector("h3.brand_name").innerText = data.brand?.name || "";
@@ -606,7 +609,6 @@
 
 
           /* ========= PRICE (default first variation) ========= */
-          const v = data.selected_variation || data.variations[0];
           currentStock = v.stock; // ✅ HERE
           // const v = data.selected_variation || data.variations[0];
 

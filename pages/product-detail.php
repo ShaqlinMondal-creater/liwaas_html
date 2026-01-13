@@ -139,7 +139,7 @@
           <!-- Product Info -->
           <div id="product-options" class="space-y-6">
             <div>
-              <h3 class="text-sm font-medium text-blue-600 brand_name">LUXE APPAREL</h3>
+              <h3 class="text-sm font-medium text-blue-600 brand_name"></h3>
             </div>
 
             <h1 class="text-3xl font-bold text-gray-900 leading-tight product_name">
@@ -189,16 +189,13 @@
 
             <!-- Description -->
             <p class="text-gray-700 leading-relaxed short_desc">
-              Elevate your winter wardrobe with our premium wool-blend overcoat. Featuring impeccable tailoring and a timeless silhouette.
             </p>
 
             <!-- Price -->
             <div class="flex items-end gap-2">
-              <span class="text-2xl font-bold text-gray-900">$299.99</span>
-              <span class="text-lg text-gray-500 line-through">$399.99</span>
-              <span class="ml-2 text-sm font-medium text-red-600 bg-red-100 px-2 py-0.5 rounded">
-                25% OFF
-              </span>
+              <span class="text-2xl font-bold text-gray-900 sale_price"></span>
+              <span class="text-lg text-gray-500 line-through regular_price"></span>
+              <span class="ml-2 text-sm font-medium text-red-600 bg-red-100 px-2 py-0.5 rounded discount_percentage"> </span>
             </div>
 
             <!-- Color Options -->
@@ -207,32 +204,7 @@
                 <span class="text-sm font-medium text-gray-700">Color</span>
                 <span id="selectedColorName" class="text-sm text-gray-500"></span>
               </div>
-              <div id="colorOptions" class="flex gap-3">
-                <button
-                  data-color="charcoal"
-                  class="relative w-10 h-10 rounded-full ring-2 ring-offset-2 ring-blue-500"
-                  style="background-color: #36454F"
-                  aria-label="Select Charcoal color"
-                >
-                  <span class="absolute inset-0 flex items-center justify-center text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </span>
-                </button>
-                <button
-                  data-color="camel"
-                  class="relative w-10 h-10 rounded-full ring-1 ring-gray-200 hover:ring-gray-300"
-                  style="background-color: #C19A6B"
-                  aria-label="Select Camel color"
-                ></button>
-                <button
-                  data-color="navy"
-                  class="relative w-10 h-10 rounded-full ring-1 ring-gray-200 hover:ring-gray-300"
-                  style="background-color: #000080"
-                  aria-label="Select Navy color"
-                ></button>
-              </div>
+              <div id="colorOptions" class="flex gap-3"></div>
             </div>
 
             <!-- Size Options -->
@@ -243,39 +215,7 @@
                   Size Guide
                 </a>
               </div>
-              <div id="sizeOptions" class="flex flex-wrap gap-2">
-                <button
-                  data-size="S"
-                  class="w-12 h-12 flex items-center justify-center rounded-md text-sm font-medium bg-white text-gray-900 border border-gray-300 hover:bg-gray-50"
-                >
-                  S
-                </button>
-                <button
-                  data-size="M"
-                  class="w-12 h-12 flex items-center justify-center rounded-md text-sm font-medium bg-white text-gray-900 border border-gray-300 hover:bg-gray-50"
-                >
-                  M
-                </button>
-                <button
-                  data-size="L"
-                  class="w-12 h-12 flex items-center justify-center rounded-md text-sm font-medium bg-white text-gray-900 border border-gray-300 hover:bg-gray-50"
-                >
-                  L
-                </button>
-                <button
-                  data-size="XL"
-                  disabled
-                  class="w-12 h-12 flex items-center justify-center rounded-md text-sm font-medium bg-gray-100 text-gray-400 cursor-not-allowed line-through"
-                >
-                  XL
-                </button>
-                <button
-                  data-size="XXL"
-                  class="w-12 h-12 flex items-center justify-center rounded-md text-sm font-medium bg-white text-gray-900 border border-gray-300 hover:bg-gray-50"
-                >
-                  XXL
-                </button>
-              </div>
+              <div id="sizeOptions" class="flex flex-wrap gap-2"></div>
             </div>
 
             <!-- Quantity Selector -->
@@ -348,7 +288,7 @@
 
             <!-- SKU -->
             <div class="pt-2">
-              <p class="text-xs text-gray-500">SKU: WC-PREM-0723-L</p>
+              <p class="text-xs text-gray-500 sku_text"></p>
             </div>
           </div>
         </div>
@@ -713,12 +653,12 @@
           if (mobilePriceEl) {
             mobilePriceEl.innerText = `₹${v.sell_price}`;
           }
-          document.querySelector(".text-2xl.font-bold").innerText = `₹${v.sell_price}`;
-          document.querySelector(".line-through").innerText = `₹${v.regular_price}`;
+          document.querySelector(".sale_price").innerText = `₹${v.sell_price}`;
+          document.querySelector(".regular_price").innerText = `₹${v.regular_price}`;
           document.getElementById("stockText").innerText = `${v.stock} available`;
 
           /* ========= SKU ========= */
-          document.querySelector(".text-xs.text-gray-500").innerText = `SKU: ${v.aid}-${v.uid}`;
+          document.querySelector(".sku_text").innerText = `SKU: ${v.aid}-${v.uid}`;
 
           
 
@@ -1157,7 +1097,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-xs text-gray-500">Price</p>
-            <p id="mobilePrice" class="text-lg font-bold text-gray-900">$ 0.00</p>
+            <p id="mobilePrice" class="text-lg font-bold text-gray-900"></p>
           </div>
 
           <button

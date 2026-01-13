@@ -195,7 +195,7 @@
 
   async function fetchNextAidUid() {
     try {
-      const res = await fetch("<?= $baseUrl ?>/admin/products/get-next-count", {
+      const res = await fetch("<?= $baseUrl ?>/api/admin/products/get-next-count", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -774,7 +774,7 @@
           selectedColor = color;
           document.getElementById("selectedColorName").innerText = color;
           updateAvailability();
-          // updateVariation();
+          updateVariation();
         }
 
         function selectSize(size) {
@@ -785,67 +785,29 @@
 
           selectedSize = size;
           updateAvailability();
-          updateVariation();
+          // updateVariation();
         }
 
-        function applyVariation(v) {
+        let currentAppliedVariation = null;
+        function applyVariation(v, updateImages = true) {
           if (!v) return;
 
-          // Update globals
+          currentAppliedVariation = v;
+
           selectedColor = v.color;
           selectedSize  = v.size;
           currentStock  = v.stock;
 
-          // Update selected labels
-          document.getElementById("selectedColorName").innerText = selectedColor;
-
-          // Prices
           document.querySelector(".sale_price").innerText = `₹${v.sell_price}`;
           document.querySelector(".regular_price").innerText = `₹${v.regular_price}`;
           document.getElementById("stockText").innerText = `${v.stock} available`;
 
-          const mobilePriceEl = document.getElementById("mobilePrice");
-          if (mobilePriceEl) {
-            mobilePriceEl.innerText = `₹${v.sell_price}`;
+          // ✅ ONLY reload images when COLOR changes
+          if (updateImages) {
+            renderGallery(v.images || []);
           }
 
-          // Discount
-          const discountEl = document.querySelector(".discount_percentage");
-          const regular = Number(v.regular_price);
-          const sell = Number(v.sell_price);
-
-          if (regular > sell) {
-            const percent = Math.round(((regular - sell) / regular) * 100);
-            discountEl.innerText = `${percent}% OFF`;
-            discountEl.classList.remove("hidden");
-          } else {
-            discountEl.classList.add("hidden");
-          }
-
-          // Images
-          renderGallery(v.images || []);
-
-          // Specs
-          const specTable = document.getElementById("specTable");
-          if (v.specs && v.specs.length) {
-            specTable.innerHTML = "";
-            v.specs.forEach(spec => {
-              specTable.innerHTML += `
-                <div class="grid grid-cols-3 px-6 py-4 gap-4">
-                  <div class="text-sm text-gray-500">${spec.spec_name}</div>
-                  <div class="text-sm text-gray-900">${spec.spec_value}</div>
-                </div>
-              `;
-            });
-            specTable.closest(".bg-white")?.classList.remove("hidden");
-          } else {
-            specTable.closest(".bg-white")?.classList.add("hidden");
-          }
-
-          // SKU
           document.querySelector(".sku_text").innerText = `SKU: ${v.aid}-${v.uid}`;
-
-          // Update availability UI
           updateAvailability();
         }
 
@@ -859,10 +821,12 @@
 
           if (!match) return;
 
-          // ✅ Just apply variation (NO reload)
-          applyVariation(match);
-        }
+          const colorChanged =
+            !currentAppliedVariation ||
+            normalize(currentAppliedVariation.color) !== normalize(match.color);
 
+          applyVariation(match, colorChanged);
+        }
       </script>
 
       <script>

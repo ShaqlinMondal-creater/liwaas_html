@@ -332,11 +332,22 @@
         function createSlider(slider, min, max, minInput, maxInput) {
             if (!slider || slider.noUiSlider) return;
 
+            min = Number(min);
+            max = Number(max);
+
+            if (isNaN(min) || isNaN(max)) {
+                console.error("Slider values are not numeric:", min, max);
+                return;
+            }
+
             noUiSlider.create(slider, {
                 start: [min, max],
                 connect: true,
                 step: 10,
-                range: { min, max },
+                range: {
+                    min: min,
+                    max: max
+                },
                 format: {
                     to: value => Math.round(value),
                     from: value => Number(value)
@@ -355,26 +366,63 @@
                 filters.offset = 0;
                 fetchAndRenderProducts();
             });
-
-            if (minInput) {
-                minInput.addEventListener('change', () => {
-                    slider.noUiSlider.set([minInput.value, null]);
-                });
-            }
-
-            if (maxInput) {
-                maxInput.addEventListener('change', () => {
-                    slider.noUiSlider.set([null, maxInput.value]);
-                });
-            }
         }
+
+        // function createSlider(slider, min, max, minInput, maxInput) {
+        //     if (!slider || slider.noUiSlider) return;
+
+        //     noUiSlider.create(slider, {
+        //         start: [min, max],
+        //         connect: true,
+        //         step: 10,
+        //         range: { min, max },
+        //         format: {
+        //             to: value => Math.round(value),
+        //             from: value => Number(value)
+        //         }
+        //     });
+
+        //     slider.noUiSlider.on('update', function (values) {
+        //         if (minInput) minInput.value = values[0];
+        //         if (maxInput) maxInput.value = values[1];
+        //     });
+
+        //     slider.noUiSlider.on('change', function (values) {
+        //         filters.min_price = parseInt(values[0]);
+        //         filters.max_price = parseInt(values[1]);
+        //         filters.currentPage = 1;
+        //         filters.offset = 0;
+        //         fetchAndRenderProducts();
+        //     });
+
+        //     if (minInput) {
+        //         minInput.addEventListener('change', () => {
+        //             slider.noUiSlider.set([minInput.value, null]);
+        //         });
+        //     }
+
+        //     if (maxInput) {
+        //         maxInput.addEventListener('change', () => {
+        //             slider.noUiSlider.set([null, maxInput.value]);
+        //         });
+        //     }
+        // }
 
         // Initialize sliders only if price data is available
-        if (data.price) {
-            createSlider(priceSliderDesktop, data.price.min, data.price.max, deskMinInput, deskMaxInput);
-            createSlider(priceSliderMobile, data.price.min, data.price.max, mobMinInput, mobMaxInput);
-        }
+        if (
+            data.price &&
+            !isNaN(parseFloat(data.price.min)) &&
+            !isNaN(parseFloat(data.price.max)) &&
+            parseFloat(data.price.min) < parseFloat(data.price.max)
+        ) {
+            const minPrice = parseFloat(data.price.min);
+            const maxPrice = parseFloat(data.price.max);
 
+            createSlider(priceSliderDesktop, minPrice, maxPrice, deskMinInput, deskMaxInput);
+            createSlider(priceSliderMobile, minPrice, maxPrice, mobMinInput, mobMaxInput);
+        } else {
+            console.warn("Invalid price range from API:", data.price);
+        }
     }
 
     function loadNextChunk() {

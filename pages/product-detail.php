@@ -139,10 +139,12 @@
           <!-- Product Info -->
           <div id="product-options" class="space-y-6">
             <div>
-              <h3 class="text-sm font-medium text-blue-600">LUXE APPAREL</h3>
+              <h3 class="text-sm font-medium text-blue-600 brand_name">LUXE APPAREL</h3>
             </div>
 
-            <h1 class="text-3xl font-bold text-gray-900 leading-tight">Premium Wool Blend Overcoat</h1>
+            <h1 class="text-3xl font-bold text-gray-900 leading-tight product_name">
+              <!-- Product Name -->
+            </h1>
 
             <!-- Ratings & Reviews -->
             <div class="flex items-center gap-4">
@@ -186,7 +188,7 @@
             </div>
 
             <!-- Description -->
-            <p class="text-gray-700 leading-relaxed">
+            <p class="text-gray-700 leading-relaxed short_desc">
               Elevate your winter wardrobe with our premium wool-blend overcoat. Featuring impeccable tailoring and a timeless silhouette.
             </p>
 
@@ -354,34 +356,21 @@
         <!-- Mobile Tabs -->
         <div class="md:hidden mb-8">
           <div class="border-b border-gray-200 flex space-x-4">
-            <button
-              data-tab="description"
-              class="pb-2 px-1 border-b-2 border-blue-600 text-blue-600 font-medium"
-            >
+            <button data-tab="description" class="pb-2 px-1 border-b-2 border-blue-600 text-blue-600 font-medium">
               Description
             </button>
-            <button
-              data-tab="specifications"
-              class="pb-2 px-1 text-gray-500"
-            >
+            <button data-tab="specifications" class="pb-2 px-1 text-gray-500">
               Specifications
             </button>
-            <button
-              data-tab="reviews"
-              class="pb-2 px-1 text-gray-500"
-            >
+            <button data-tab="reviews" class="pb-2 px-1 text-gray-500">
               Reviews
             </button>
           </div>
 
           <div class="py-4">
-            <div data-tab-content="description" class="prose prose-sm max-w-none text-gray-700">
+            <div data-tab-content="description" class="prose prose-sm max-w-none text-gray-700 mb_long_desc">
               <p class="whitespace-pre-line">
-                Crafted with the utmost attention to detail, our Premium Wool Blend Overcoat combines luxurious materials with expert tailoring for an exceptional cold-weather essential. The rich wool blend provides superior warmth and comfort while maintaining a refined appearance.
-
-                The classic silhouette features a versatile lapel collar, convenient side pockets, and meticulous internal construction to ensure longevity. This sophisticated piece transitions effortlessly from professional settings to formal evening occasions.
-
-                Each coat undergoes rigorous quality control to meet our exacting standards, ensuring you receive a garment that will remain a cornerstone of your wardrobe for years to come.
+                <!-- Long Descrip -->
               </p>
             </div>
 
@@ -644,14 +633,14 @@
         function bindProduct(data) {
 
           /* ========= BASIC INFO ========= */
-          document.querySelector("h1").innerText = data.name;
-          document.querySelector("h3.text-blue-600").innerText = data.brand?.name || "";
+          document.querySelector("h1.product_name").innerText = data.name;
+          document.querySelector("h3.brand_name").innerText = data.brand?.name || "";
           // Short description (top)
-          document.querySelector(".text-gray-700.leading-relaxed").innerText = data.description;
+          document.querySelector(".short_desc").innerText = data.description;
           // Mobile description tab
           document.querySelector('[data-tab-content="description"] p').innerText = data.description;
           // Desktop description section
-          document.querySelector('.prose.max-w-none.text-gray-700 p').innerText = data.description;
+          document.querySelector('p.long_desc').innerText = data.description;
 
           // ========= REVIEWS (TEMP PLACEHOLDER) =========
           const reviewsTab = document.querySelector('[data-tab-content="reviews"]');

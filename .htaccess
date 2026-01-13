@@ -34,7 +34,10 @@ RewriteRule ^contact$ contact.php [L]
 RewriteRule ^pages/([^/]+)$ pages/$1.php [L]
 
 # /index or / -> index.php
-RewriteRule ^(index)?$ index.php [L]
+# RewriteRule ^(index)?$ index.php [L]
+
+# /index or / -> home.php
+RewriteRule ^(index)?$ home.php [L]
 
 # ----- Optional: 404 Page -----
 ErrorDocument 404 /frontend/test/404.php

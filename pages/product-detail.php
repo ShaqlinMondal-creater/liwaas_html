@@ -358,6 +358,7 @@
         let variations    = [];
         let currentStock = 0;
         let currentImageIndex = 0;
+        const STATIC_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
 
         // 🔹 Normalize helper (ADD HERE)
         function normalize(v) {
@@ -404,6 +405,24 @@
               selectedColor = fallback.color;
               document.getElementById("selectedColorName").innerText = selectedColor;
               updateVariation();
+            }
+          }
+
+          // If selected size is not available for selected color → auto-pick first valid size
+          if (
+            selectedColor &&
+            selectedSize &&
+            !variations.some(v =>
+              normalize(v.color) === normalize(selectedColor) &&
+              normalize(v.size) === normalize(selectedSize)
+            )
+          ) {
+            const fallback = variations.find(v =>
+              normalize(v.color) === normalize(selectedColor)
+            );
+
+            if (fallback) {
+              selectedSize = fallback.size;
             }
           }
         }
@@ -489,7 +508,7 @@
 
         
           const v = data.selected_variation || data.variations[0];
-          
+
           /* ========= BASIC INFO ========= */
           document.querySelector("h1.product_name").innerText = data.name;
           document.querySelector("h3.brand_name").innerText = data.brand?.name || "";
@@ -524,7 +543,6 @@
 
           /* ========= IMAGES ========= */
           const colors = [...new Set(data.variations.map(v => v.color))];
-          const sizes  = [...new Set(data.variations.map(v => v.size))];
 
           /* ========= VARIATIONS ========= */
           variations = data.variations;
@@ -559,14 +577,28 @@
 
           const sizeWrap = document.getElementById("sizeOptions");
           sizeWrap.innerHTML = "";
+          // Available sizes from API
+          const availableSizes = new Set(
+            data.variations.map(v => normalize(v.size))
+          );
+          // Render STATIC sizes in correct order
+          STATIC_SIZES.forEach(size => {
+            const isAvailable = availableSizes.has(normalize(size));
 
-          sizes.forEach(size => {
             sizeWrap.innerHTML += `
-              <button data-size="${size}" onclick="selectSize('${size}')" class="w-12 h-12 border rounded-md">
+              <button
+                data-size="${size}"
+                onclick="selectSize('${size}')"
+                class="w-12 h-12 border rounded-md text-sm
+                  ${isAvailable ? '' : 'opacity-30 cursor-not-allowed'}
+                  ${normalize(size) === normalize(selectedSize) ? 'ring-2 ring-blue-500' : ''}"
+                ${isAvailable ? '' : 'disabled'}
+              >
                 ${size}
               </button>
             `;
           });
+
           updateAvailability();
 
           /* ========= SPECIFICATIONS ========= */
@@ -651,7 +683,7 @@
           selectedColor = color;
           document.getElementById("selectedColorName").innerText = color;
           updateAvailability();
-          updateVariation();
+          // updateVariation();
         }
 
         function selectSize(size) {

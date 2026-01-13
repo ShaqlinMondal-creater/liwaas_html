@@ -5,7 +5,7 @@
 <main class="grow content pt-5" id="content" role="content">
   <div class="container-fixed">
     <div class="card min-w-full">
-      <form id="add_product_form" class="card-body flex flex-col gap-5 p-10" method="post" enctype="multipart/form-data">
+      <form id="add_product_form" class="card-body flex flex-col gap-5 p-5" method="post" enctype="multipart/form-data">
         <!-- Title -->
         <div>
           <h3 class="text-lg font-medium text-gray-900 leading-none">Add Product</h3>
@@ -107,29 +107,28 @@
 
         <!-- Row: Simple Fields -->
         <div id="simple_fields" class="flex gap-4 items-center">
-          <input class="input input-sm w-[100px]" type="number" name="uid" placeholder="UID" />
-          <input class="input input-sm w-[120px]" type="number" name="regular_price" placeholder="Regular Price" />
-          <input class="input input-sm w-[120px]" type="number" name="sale_price" placeholder="Sale Price" />
-          <input class="input input-sm w-[80px]" type="text" name="size" placeholder="Size" />
+          <input class="input input-sm w-[120px]" type="number" name="uid" placeholder="UID" />
+          <input class="input input-sm w-[140px]" type="number" name="regular_price" placeholder="Regular Price" />
+          <input class="input input-sm w-[140px]" type="number" name="sale_price" placeholder="Sale Price" />
+          <input class="input input-sm w-[120px]" type="text" name="size" placeholder="Size" />
           <input class="input input-sm w-[120px]" type="text" name="color" placeholder="Color" />
           <input class="input input-sm w-[100px]" type="number" name="stock" placeholder="Stock" />          
         </div>
 
         <!-- Variant Fields -->
-        <div id="variant_fields" class="hidden flex flex-col gap-3 border p-4 rounded bg-gray-50">
+        <div id="variant_fields" class="hidden flex flex-col gap-3 border rounded bg-gray-50">
           <div class="variation-item flex flex-col gap-3 border p-3 rounded bg-white">
             <!-- Variation main row -->
             <div class="flex gap-4 items-center">
-              <input type="number" placeholder="UID" class="input input-sm w-[100px]" />
-              <input type="number" placeholder="Regular Price" class="input input-sm w-[120px]" />
-              <input type="number" placeholder="Sale Price" class="input input-sm w-[120px]" />
-              <input type="text" placeholder="Size" class="input input-sm w-[80px]" />
+              <input type="number" placeholder="UID" class="input input-sm w-[120px]" />
+              <input type="number" placeholder="Regular Price" class="input input-sm w-[140px]" />
+              <input type="number" placeholder="Sale Price" class="input input-sm w-[140px]" />
+              <input type="text" placeholder="Size" class="input input-sm w-[120px]" />
               <input type="text" placeholder="Color" class="input input-sm w-[120px]" />
               <input type="number" placeholder="Stock" class="input input-sm w-[100px]" />
-              <input type="file" class="variation-image-input input input-sm w-[200px]" accept="image/*" multiple />
+              <input type="file" class="variation-image-input input input-sm w-[160px]" accept="image/*" multiple />
               <button type="button" class="remove-variation-btn btn btn-sm bg-red-500 text-white">✕</button>
             </div>
-
             <!-- SPECIFICATIONS -->
             <div class="specs-wrapper flex flex-col gap-2 mt-2">
               <div class="spec-row flex gap-2 items-center">
@@ -379,7 +378,7 @@
       if (!specs.length) return;
 
       try {
-        const res = await fetch("<?= $baseUrl ?>/admin/products/add-specs", {
+        const res = await fetch("<?= $baseUrl ?>/api/admin/products/add-specs", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

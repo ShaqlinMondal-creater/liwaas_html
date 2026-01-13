@@ -62,37 +62,33 @@
             <label class="form-label text-gray-900">Description</label>
             <input class="input input-sm w-[240px]" type="text" name="description" placeholder="Soft and comfortable" />
           </div>
-          <div class="flex flex-col gap-1">
-            <label class="form-label text-gray-900">Specification</label>
-            <input class="input input-sm w-[240px]" type="text" name="specification" placeholder="100% cotton" />
-          </div>
         </div>
         <!-- Row: Availability Options -->
-      <div class="flex gap-10 items-center">
-        <div class="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="cod_checkbox"
-            class="h-4 w-4"
-            checked
-          />
-          <label for="cod_checkbox" class="form-label text-gray-900">
-            Cash on Delivery (COD)
-          </label>
-        </div>
+        <div class="flex gap-10 items-center">
+          <div class="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="cod_checkbox"
+              class="h-4 w-4"
+              checked
+            />
+            <label for="cod_checkbox" class="form-label text-gray-900">
+              Cash on Delivery (COD)
+            </label>
+          </div>
 
-        <div class="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="custom_design_checkbox"
-            class="h-4 w-4"
-            checked
-          />
-          <label for="custom_design_checkbox" class="form-label text-gray-900">
-            Custom Design Available
-          </label>
+          <div class="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="custom_design_checkbox"
+              class="h-4 w-4"
+              checked
+            />
+            <label for="custom_design_checkbox" class="form-label text-gray-900">
+              Custom Design Available
+            </label>
+          </div>
         </div>
-      </div>
 
         <!-- Row: Product Type -->
         <div class="flex gap-10 items-center">
@@ -428,7 +424,6 @@
         gender: formData.get("gender_select"),
         keyword: formData.get("keyword"),
         description: formData.get("description"),
-        specification: formData.get("specification"),
         cod: codValue,
         custom_design: customDesignValue,
       };

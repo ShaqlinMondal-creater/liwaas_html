@@ -117,16 +117,40 @@
 
         <!-- Variant Fields -->
         <div id="variant_fields" class="hidden flex flex-col gap-3 border p-4 rounded bg-gray-50">
-          <div class="variation-item flex gap-4 items-center">
-            <input type="number" placeholder="UID" class="input input-sm w-[100px]" />
-            <input type="number" placeholder="Regular Price" class="input input-sm w-[120px]" />
-            <input type="number" placeholder="Sale Price" class="input input-sm w-[120px]" />
-            <input type="text" placeholder="Size" class="input input-sm w-[80px]" />
-            <input type="text" placeholder="Color" class="input input-sm w-[120px]" />
-            <input type="number" placeholder="Stock" class="input input-sm w-[100px]" />
-            <input type="file" class="variation-image-input input input-sm w-[200px]" accept="image/*" multiple />
-            <button type="button" class="remove-variation-btn btn btn-sm bg-red-500 text-white">✕</button>
+          <div class="variation-item flex flex-col gap-3 border p-3 rounded bg-white">
+            <!-- Variation main row -->
+            <div class="flex gap-4 items-center">
+              <input type="number" placeholder="UID" class="input input-sm w-[100px]" />
+              <input type="number" placeholder="Regular Price" class="input input-sm w-[120px]" />
+              <input type="number" placeholder="Sale Price" class="input input-sm w-[120px]" />
+              <input type="text" placeholder="Size" class="input input-sm w-[80px]" />
+              <input type="text" placeholder="Color" class="input input-sm w-[120px]" />
+              <input type="number" placeholder="Stock" class="input input-sm w-[100px]" />
+              <input type="file" class="variation-image-input input input-sm w-[200px]" accept="image/*" multiple />
+              <button type="button" class="remove-variation-btn btn btn-sm bg-red-500 text-white">✕</button>
+            </div>
+
+            <!-- SPECIFICATIONS -->
+            <div class="specs-wrapper flex flex-col gap-2 mt-2">
+              <div class="spec-row flex gap-2 items-center">
+                <select class="input input-sm w-[180px] spec-name">
+                  <option value="">Select Spec</option>
+                  <option value="Material">Material</option>
+                  <option value="Fit">Fit</option>
+                  <option value="Country of Origin">Country of Origin</option>
+                  <option value="Color">Color</option>
+                  <option value="Wash">Wash</option>
+                </select>
+                <input type="text" class="input input-sm w-[240px] spec-value" placeholder="Spec value" />
+                <button type="button" class="remove-spec btn btn-xs bg-gray-300">✕</button>
+              </div>
+            </div>
+
+            <button type="button" class="add-spec btn btn-xs btn-secondary w-max">
+              + Add Specification
+            </button>
           </div>
+
           <button type="button" id="add_variation_btn" class="btn btn-secondary w-max mt-2">+ Add Variation</button>
         </div>
 
@@ -290,6 +314,30 @@
       }
     });
 
+    // Add spec row
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("add-spec")) {
+        const wrapper = e.target.previousElementSibling;
+        const firstRow = wrapper.querySelector(".spec-row");
+        const clone = firstRow.cloneNode(true);
+
+        clone.querySelector(".spec-name").value = "";
+        clone.querySelector(".spec-value").value = "";
+
+        wrapper.appendChild(clone);
+      }
+
+      // Remove spec row
+      if (e.target.classList.contains("remove-spec")) {
+        const wrapper = e.target.closest(".specs-wrapper");
+        const rows = wrapper.querySelectorAll(".spec-row");
+
+        if (rows.length > 1) {
+          e.target.closest(".spec-row").remove();
+        }
+      }
+    });
+
     // Add new variation row
     addVariationBtn.addEventListener("click", () => {
       const firstRow = variantFields.querySelector(".variation-item");
@@ -325,6 +373,32 @@
           alert("At least one variation is required.");
         }
       });
+    }
+
+    async function submitSpecs(uid, specs) {
+      if (!specs.length) return;
+
+      try {
+        const res = await fetch("<?= $baseUrl ?>/admin/products/add-specs", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            uid,
+            features: specs,
+          }),
+        });
+
+        const result = await res.json();
+
+        if (!result.success) {
+          console.warn(`Specs failed for UID ${uid}`, result.message);
+        }
+      } catch (err) {
+        console.error("Spec API error:", err);
+      }
     }
 
     // Attach remove listener for the initial remove button
@@ -480,6 +554,31 @@
             }
           }
 
+        }
+
+        // STEP 3: ADD SPECS PER VARIATION
+        const variationItems = variantFields.querySelectorAll(".variation-item");
+
+        for (let i = 0; i < variationItems.length; i++) {
+          const row = variationItems[i];
+          const uid = payload.variations[i].uid;
+
+          const specs = [];
+          row.querySelectorAll(".spec-row").forEach(specRow => {
+            const name = specRow.querySelector(".spec-name").value;
+            const value = specRow.querySelector(".spec-value").value;
+
+            if (name && value) {
+              specs.push({
+                spec_name: name,
+                spec_value: value,
+              });
+            }
+          });
+
+          if (specs.length) {
+            await submitSpecs(uid, specs);
+          }
         }
 
         // Reset form and UI state

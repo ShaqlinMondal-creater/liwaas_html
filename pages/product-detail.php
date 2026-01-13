@@ -60,8 +60,7 @@
               <div class="w-full h-full transition-transform duration-300">
                 <img
                   id="mainImage"
-                  src="https://images.pexels.com/photos/6626903/pexels-photo-6626903.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="Premium wool overcoat - front view"
+                  alt=""
                   class="object-cover w-full h-full"
                 />
               </div>
@@ -90,50 +89,7 @@
             </div>
 
             <!-- Thumbnails -->
-            <div class="flex gap-2 overflow-x-auto pb-2">
-              <button class="thumbnail relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all ring-2 ring-blue-500">
-                <img
-                  src="https://images.pexels.com/photos/6626903/pexels-photo-6626903.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="Thumbnail 1"
-                  class="object-cover w-full h-full"
-                />
-              </button>
-              <button class="thumbnail relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all ring-1 ring-gray-200 opacity-70 hover:opacity-100">
-                <img
-                  src="https://images.pexels.com/photos/6626967/pexels-photo-6626967.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="Thumbnail 2"
-                  class="object-cover w-full h-full"
-                />
-              </button>
-              <button class="thumbnail relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all ring-1 ring-gray-200 opacity-70 hover:opacity-100">
-                <img
-                  src="https://images.pexels.com/photos/6626874/pexels-photo-6626874.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="Thumbnail 3"
-                  class="object-cover w-full h-full"
-                />
-              </button>
-              <button class="thumbnail relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all ring-1 ring-gray-200 opacity-70 hover:opacity-100">
-                <img
-                  src="https://images.pexels.com/photos/6626863/pexels-photo-6626863.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="Thumbnail 4"
-                  class="object-cover w-full h-full"
-                />
-              </button>
-              <button class="thumbnail relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all ring-1 ring-gray-200 opacity-70 hover:opacity-100">
-                <img
-                  src="https://images.pexels.com/photos/6626874/pexels-photo-6626874.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="Thumbnail 3"
-                  class="object-cover w-full h-full"
-                />
-              </button>
-              <button class="thumbnail relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all ring-1 ring-gray-200 opacity-70 hover:opacity-100">
-                <img
-                  src="https://images.pexels.com/photos/6626863/pexels-photo-6626863.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="Thumbnail 4"
-                  class="object-cover w-full h-full"
-                />
-              </button>
-            </div>
+            <div class="flex gap-2 overflow-x-auto pb-2"></div>
           </div>
 
           <!-- Product Info -->
@@ -349,48 +305,7 @@
             <div class="px-6 py-4 border-b border-gray-200">
               <h2 class="text-lg font-semibold text-gray-900">Product Specifications</h2>
             </div>
-            <div class="divide-y divide-gray-200">
-              <div class="grid grid-cols-3 px-6 py-4 gap-4 hover:bg-gray-50 transition-colors">
-                <div class="col-span-1">
-                  <h3 class="text-sm font-medium text-gray-500">Material</h3>
-                </div>
-                <div class="col-span-2">
-                  <p class="text-sm text-gray-900">70% Wool, 20% Polyester, 10% Cashmere</p>
-                </div>
-              </div>
-              <div class="grid grid-cols-3 px-6 py-4 gap-4 hover:bg-gray-50 transition-colors">
-                <div class="col-span-1">
-                  <h3 class="text-sm font-medium text-gray-500">Fit</h3>
-                </div>
-                <div class="col-span-2">
-                  <p class="text-sm text-gray-900">Regular fit, true to size</p>
-                </div>
-              </div>
-              <div class="grid grid-cols-3 px-6 py-4 gap-4 hover:bg-gray-50 transition-colors">
-                <div class="col-span-1">
-                  <h3 class="text-sm font-medium text-gray-500">Care</h3>
-                </div>
-                <div class="col-span-2">
-                  <p class="text-sm text-gray-900">Dry clean only</p>
-                </div>
-              </div>
-              <div class="grid grid-cols-3 px-6 py-4 gap-4 hover:bg-gray-50 transition-colors">
-                <div class="col-span-1">
-                  <h3 class="text-sm font-medium text-gray-500">Features</h3>
-                </div>
-                <div class="col-span-2">
-                  <p class="text-sm text-gray-900">Two side pockets, one chest pocket, fully lined</p>
-                </div>
-              </div>
-              <div class="grid grid-cols-3 px-6 py-4 gap-4 hover:bg-gray-50 transition-colors">
-                <div class="col-span-1">
-                  <h3 class="text-sm font-medium text-gray-500">Country of Origin</h3>
-                </div>
-                <div class="col-span-2">
-                  <p class="text-sm text-gray-900">Italy</p>
-                </div>
-              </div>
-            </div>
+            <div class="divide-y divide-gray-200" id="specTable"></div>
           </div>
 
           <!-- Reviews -->
@@ -582,6 +497,17 @@
           // Desktop description section
           document.querySelector('.long_desc p').innerText = data.description;
 
+          const discountEl = document.querySelector(".discount_percentage");
+          const regular = Number(v.regular_price);
+          const sell = Number(v.sell_price);
+
+          if (regular > sell) {
+            const percent = Math.round(((regular - sell) / regular) * 100);
+            discountEl.innerText = `${percent}% OFF`;
+            discountEl.classList.remove("hidden");
+          } else {
+            discountEl.classList.add("hidden");
+          }
           // ========= REVIEWS (TEMP PLACEHOLDER) =========
           const reviewsTab = document.querySelector('[data-tab-content="reviews"]');
 
@@ -639,6 +565,45 @@
             `;
           });
           updateAvailability();
+
+          /* ========= SPECIFICATIONS ========= */
+          const specTable = document.getElementById("specTable");
+
+          if (v.specs && Array.isArray(v.specs) && v.specs.length > 0) {
+            specTable.innerHTML = "";
+
+            v.specs.forEach(spec => {
+              specTable.innerHTML += `
+                <div class="grid grid-cols-3 px-6 py-4 gap-4 hover:bg-gray-50 transition-colors">
+                  <div class="col-span-1">
+                    <h3 class="text-sm font-medium text-gray-500">${spec.spec_name}</h3>
+                  </div>
+                  <div class="col-span-2">
+                    <p class="text-sm text-gray-900">${spec.spec_value}</p>
+                  </div>
+                </div>
+              `;
+            });
+
+            specTable.closest(".bg-white")?.classList.remove("hidden");
+          } else {
+            // 🔥 IMPORTANT: hide block if specs empty
+            specTable.closest(".bg-white")?.classList.add("hidden");
+          }
+
+          const mobileSpecTab = document.querySelector('[data-tab-content="specifications"]');
+          if (mobileSpecTab) {
+            if (v.specs && v.specs.length) {
+              mobileSpecTab.innerHTML = `
+                <ul class="space-y-2 text-sm text-gray-700">
+                  ${v.specs.map(s => `<li><strong>${s.spec_name}:</strong> ${s.spec_value}</li>`).join("")}
+                </ul>
+              `;
+            } else {
+              mobileSpecTab.innerHTML = `<p class="text-sm text-gray-500">No specifications available.</p>`;
+            }
+          }
+
 
           /* ========= PRICE (default first variation) ========= */
           const v = data.selected_variation || data.variations[0];

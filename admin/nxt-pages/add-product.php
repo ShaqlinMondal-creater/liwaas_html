@@ -249,6 +249,10 @@
     font-size: 13px;
   }
 
+  .color-menu div span{
+    min-width:16px;
+  }
+
   .color-menu div:hover {
     background: #f3f4f6;
   }

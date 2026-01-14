@@ -350,134 +350,289 @@
       </main>
 
       <script>
-        const BASE_URL = "<?= $baseUrl ?>"; // change to production later
-        let images = [];   // ✅ ADD THIS
+        // ============================================
+        // PRODUCT DETAIL PAGE - CLEAN & ORGANIZED
+        // ============================================
+
+        // ========== GLOBAL VARIABLES ==========
+        const BASE_URL = "<?= $baseUrl ?>";
+        const STATIC_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+        
+        let images = [];
+        let variations = [];
+        let COLOR_MAP = {};
         let selectedColor = null;
-        let selectedSize  = null;
-        let variations    = [];
+        let selectedSize = null;
         let currentStock = 0;
         let currentImageIndex = 0;
-        const STATIC_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
-        let COLOR_MAP = {};
-        let imageNavBound = false;
-        let quantityBound = false;
+        let currentVariation = null;
 
-        async function loadColorMap() {
-          const res = await fetch("../inc/color.json");
-          const json = await res.json();
-          json.colors.forEach(c => {
-            COLOR_MAP[c.name.toLowerCase()] = c.code;
-          });
+        // ========== UTILITY FUNCTIONS ==========
+        function normalize(value) {
+          return String(value).trim().toLowerCase();
         }
-        // 🔹 Normalize helper (ADD HERE)
-        function normalize(v) {
-          return String(v).trim().toLowerCase();
+
+        function getProductUid() {
+          const params = new URLSearchParams(window.location.search);
+          return params.get("id");
+        }
+
+        function findVariation(color, size) {
+          return variations.find(v => 
+            normalize(v.color) === normalize(color) && 
+            sizeMatches(v, size)
+          );
+        }
+
+        function sizeMatches(variation, size) {
+          if (!variation.size || !size) return false;
+          const sizes = variation.size.split(",").map(s => normalize(s.trim()));
+          return sizes.includes(normalize(size));
+        }
+
+        function getAllAvailableSizes() {
+          const sizeSet = new Set();
+          variations.forEach(v => {
+            if (v.size) {
+              v.size.split(",").forEach(s => sizeSet.add(normalize(s.trim())));
+            }
+          });
+          return sizeSet;
+        }
+
+        function getAllAvailableColors() {
+          return [...new Set(variations.map(v => v.color))];
+        }
+
+        // ========== COLOR & SIZE LOGIC ==========
+        function getAvailableSizesForColor(color) {
+          if (!color) return getAllAvailableSizes();
+          const sizeSet = new Set();
+          variations.forEach(v => {
+            if (normalize(v.color) === normalize(color) && v.size) {
+              v.size.split(",").forEach(s => sizeSet.add(normalize(s.trim())));
+            }
+          });
+          return sizeSet;
+        }
+
+        function getAvailableColorsForSize(size) {
+          if (!size) return getAllAvailableColors();
+          const colorSet = new Set();
+          variations.forEach(v => {
+            if (sizeMatches(v, size)) {
+              colorSet.add(v.color);
+            }
+          });
+          return [...colorSet];
         }
 
         function updateAvailability() {
-          // Disable / enable COLORS
+          const availableColors = selectedSize ? getAvailableColorsForSize(selectedSize) : getAllAvailableColors();
+          const availableSizes = selectedColor ? getAvailableSizesForColor(selectedColor) : getAllAvailableSizes();
+
+          // Update color buttons
           document.querySelectorAll('.color-btn').forEach(btn => {
             const color = btn.dataset.color;
-
-            const exists = variations.some(v =>
-              normalize(v.color) === normalize(color) &&
-              (!selectedSize || normalize(v.size) === normalize(selectedSize))
-            );
-
-            btn.disabled = !exists;
-            btn.classList.toggle('opacity-30', !exists);
-            btn.classList.toggle('cursor-not-allowed', !exists);
+            const isAvailable = availableColors.includes(color);
+            const isSelected = normalize(color) === normalize(selectedColor);
+            
+            btn.disabled = !isAvailable;
+            btn.classList.toggle('opacity-30', !isAvailable);
+            btn.classList.toggle('cursor-not-allowed', !isAvailable);
+            btn.classList.toggle('ring-2', isSelected);
+            btn.classList.toggle('ring-blue-500', isSelected);
           });
 
-          // Disable / enable SIZES
+          // Update size buttons
           document.querySelectorAll('[data-size]').forEach(btn => {
             const size = btn.dataset.size;
-
-            const exists = variations.some(v =>
-              sizeMatches(v, size) &&
-              (!selectedColor || normalize(v.color) === normalize(selectedColor))
-            );
-
-            btn.disabled = !exists;
-            btn.classList.toggle('opacity-30', !exists);
-            btn.classList.toggle('cursor-not-allowed', !exists);
+            const isAvailable = availableSizes.has(normalize(size));
+            const isSelected = normalize(size) === normalize(selectedSize);
+            
+            btn.disabled = !isAvailable;
+            btn.classList.toggle('opacity-30', !isAvailable);
+            btn.classList.toggle('cursor-not-allowed', !isAvailable);
+            btn.classList.toggle('ring-2', isSelected);
+            btn.classList.toggle('ring-blue-500', isSelected);
           });
+        }
 
-          if (selectedSize && !variations.some(v =>
-            normalize(v.size) === normalize(selectedSize) &&
-            normalize(v.color) === normalize(selectedColor)
-          )) {
-            const fallback = variations.find(v =>
-              normalize(v.size) === normalize(selectedSize)
-            );
-            if (fallback && normalize(fallback.color) !== normalize(selectedColor)) {
-              selectedColor = fallback.color;
-              document.getElementById("selectedColorName").innerText = selectedColor;
-              updateVariation();
+        function autoSelectValidVariation() {
+          if (!selectedColor || !selectedSize) return;
+          
+          const match = findVariation(selectedColor, selectedSize);
+          
+          // If current combination doesn't exist, try to find a fallback
+          if (!match) {
+            // First, try to keep color and change size
+            const availableSizes = getAvailableSizesForColor(selectedColor);
+            if (availableSizes.size > 0) {
+              selectedSize = Array.from(availableSizes)[0];
+              const newMatch = findVariation(selectedColor, selectedSize);
+              if (newMatch) {
+                applyVariation(newMatch, true);
+                return;
+              }
             }
-          }
-
-          // If selected size is not available for selected color → auto-pick first valid size
-          if (
-            selectedColor &&
-            selectedSize &&
-            !variations.some(v =>
-              normalize(v.color) === normalize(selectedColor) &&
-              normalize(v.size) === normalize(selectedSize)
-            )
-          ) {
-            const fallback = variations.find(v =>
-              normalize(v.color) === normalize(selectedColor)
-            );
-
-            if (fallback) {
-              selectedSize = fallback.size;
+            
+            // If that fails, try to keep size and change color
+            const availableColors = getAvailableColorsForSize(selectedSize);
+            if (availableColors.length > 0) {
+              selectedColor = availableColors[0];
+              const newMatch = findVariation(selectedColor, selectedSize);
+              if (newMatch) {
+                applyVariation(newMatch, true);
+                return;
+              }
             }
+            
+            // Last resort: use first available variation
+            if (variations.length > 0) {
+              const firstVar = variations[0];
+              selectedColor = firstVar.color;
+              selectedSize = firstVar.size.split(",")[0].trim();
+              applyVariation(firstVar, true);
+            }
+          } else {
+            const colorChanged = !currentVariation || 
+              normalize(currentVariation.color) !== normalize(match.color);
+            applyVariation(match, colorChanged);
           }
         }
 
-        // 1. Get uid from URL
-        function getProductUid() {
-          const params = new URLSearchParams(window.location.search);
-          return params.get("id"); // id = uid
+        // ========== VARIATION SELECTION ==========
+        function selectColor(color) {
+          const btn = document.querySelector(`[data-color="${color}"]`);
+          if (!btn || btn.disabled) return;
+
+          selectedColor = color;
+          document.getElementById("selectedColorName").innerText = color;
+          autoSelectValidVariation();
         }
 
-        document.addEventListener("DOMContentLoaded", async () => {
-          await loadColorMap();
-          await fetchProduct();
-        });
+        function selectSize(size) {
+          const btn = document.querySelector(`[data-size="${size}"]`);
+          if (!btn || btn.disabled) return;
 
-        // 2. Fetch product from API
+          selectedSize = size;
+          autoSelectValidVariation();
+        }
+
+        function applyVariation(variation, updateImages = true) {
+          if (!variation) return;
+
+          currentVariation = variation;
+          selectedColor = variation.color;
+          selectedSize = variation.size.split(",")[0].trim();
+          currentStock = variation.stock || 0;
+
+          // Calculate discount
+          let discount = 0;
+          if (variation.regular_price > 0) {
+            discount = Math.round(((variation.regular_price - variation.sell_price) / variation.regular_price) * 100);
+          }
+
+          // Update price display
+          document.querySelector(".sale_price").innerText = `₹${variation.sell_price}`;
+          document.querySelector(".regular_price").innerText = `₹${variation.regular_price}`;
+          
+          const mobilePrice = document.getElementById("mobilePrice");
+          if (mobilePrice) {
+            mobilePrice.innerText = `₹${variation.sell_price}`;
+          }
+
+          // Update discount
+          const discountEl = document.querySelector(".discount_percentage");
+          discountEl.innerText = discount > 0 ? `${discount}% OFF` : "";
+
+          // Update stock
+          document.getElementById("stockText").innerText = `${currentStock} available`;
+
+          // Update SKU
+          document.querySelector(".sku_text").innerText = `SKU: ${variation.aid}-${variation.uid}`;
+
+          // Update images if color changed
+          if (updateImages) {
+            renderGallery(variation.images || []);
+          }
+
+          // Update quantity if needed
+          const qtyEl = document.getElementById("quantity");
+          if (qtyEl && parseInt(qtyEl.innerText) > currentStock) {
+            qtyEl.innerText = Math.min(parseInt(qtyEl.innerText), currentStock);
+          }
+
+          // Update availability states
+          updateAvailability();
+        }
+
+        // ========== IMAGE GALLERY ==========
+        function navigateImage(direction) {
+          if (!images.length) return;
+          currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
+          updateMainImage(currentImageIndex);
+        }
+
+        function updateMainImage(index) {
+          if (!images.length || !images[index]) return;
+
+          currentImageIndex = index;
+          const mainImage = document.getElementById("mainImage");
+          mainImage.src = images[index].src;
+          mainImage.alt = images[index].alt;
+
+          // Update thumbnail states
+          document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+            const isActive = i === index;
+            thumb.className = `thumbnail relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all ${
+              isActive ? "ring-2 ring-blue-500" : "ring-1 ring-gray-200 opacity-70"
+            }`;
+          });
+        }
+
+        // ========== PRODUCT DATA ==========
+        async function loadColorMap() {
+          try {
+            const res = await fetch("../inc/color.json");
+            const json = await res.json();
+            json.colors.forEach(c => {
+              COLOR_MAP[c.name.toLowerCase()] = c.code;
+            });
+          } catch (error) {
+            console.error("Failed to load color map:", error);
+          }
+        }
+
         async function fetchProduct() {
           const uid = getProductUid();
-
           if (!uid) {
             alert("Product ID missing in URL");
             return;
           }
 
-          const url = `${BASE_URL}/api/products/get-product-byUid/${uid}`;
-
-          const res = await fetch(url, {
+          try {
+            const res = await fetch(`${BASE_URL}/api/products/get-product-byUid/${uid}`, {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              }
-              // no body needed since uid is in URL
+              headers: { "Content-Type": "application/json" }
             });
-          const json = await res.json();
+            const json = await res.json();
 
-          if (!json.success) {
-            alert("Product not found");
-            return;
+            if (!json.success) {
+              alert("Product not found");
+              return;
+            }
+
+            bindProduct(json.data);
+          } catch (error) {
+            console.error("Failed to fetch product:", error);
+            alert("Error loading product");
           }
-
-          bindProduct(json.data);
         }
 
         function renderGallery(imageList = []) {
           const mainImage = document.getElementById("mainImage");
-          const thumbContainer = document.getElementById("thumbContainer");
+          const thumbContainer = document.querySelector(".flex.gap-2.overflow-x-auto.pb-2");
 
           images = imageList.map(img => ({
             src: img.url,
@@ -485,12 +640,11 @@
           }));
 
           currentImageIndex = 0;
-
-          // Clear thumbnails
           thumbContainer.innerHTML = "";
 
           if (!images.length) {
             mainImage.src = "";
+            mainImage.alt = "";
             return;
           }
 
@@ -504,278 +658,149 @@
             btn.className = `thumbnail relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all ${
               index === 0 ? "ring-2 ring-blue-500" : "ring-1 ring-gray-200 opacity-70"
             }`;
-
-            btn.innerHTML = `
-              <img src="${img.src}" class="object-cover w-full h-full" />
-            `;
-
-            btn.addEventListener("click", () => {
-              updateMainImage(index);
-            });
-
+            btn.innerHTML = `<img src="${img.src}" alt="${img.alt}" class="object-cover w-full h-full" />`;
+            btn.addEventListener("click", () => updateMainImage(index));
             thumbContainer.appendChild(btn);
           });
         }
 
         function bindProduct(data) {
-
-          /* ================= BASIC PRODUCT INFO ================= */
-          document.querySelector(".product_name").innerText = data.name;
+          // Basic product info
+          document.querySelector(".product_name").innerText = data.name || "";
           document.querySelector(".brand_name").innerText = data.brand?.name || "";
-          document.querySelector(".short_desc").innerText = data.description || "";
-          document.querySelector(".mb_long_desc p").innerText = data.description || "";
-          document.querySelector(".long_desc p").innerText = data.description || "";
+          const description = data.description || "";
+          document.querySelector(".short_desc").innerText = description;
+          document.querySelector(".mb_long_desc p").innerText = description;
+          document.querySelector(".long_desc p").innerText = description;
 
-          /* ================= VARIATIONS ================= */
+          // Variations
           variations = Array.isArray(data.variations) ? data.variations : [];
-
           if (!variations.length) {
             alert("No variations available for this product");
             return;
           }
 
-          const v = data.selected_variation || variations[0];
-
-          selectedColor = v.color;
-          selectedSize  = v.size;
-
+          // Initial variation
+          const initialVariation = data.selected_variation || variations[0];
+          selectedColor = initialVariation.color;
+          selectedSize = initialVariation.size.split(",")[0].trim();
           document.getElementById("selectedColorName").innerText = selectedColor;
 
-          /* ================= COLOR OPTIONS ================= */
+          // Render color options
+          renderColorOptions();
+          
+          // Render size options
+          renderSizeOptions();
+
+          // Reviews placeholder
+          const reviewsTab = document.querySelector('[data-tab-content="reviews"]');
+          if (reviewsTab) {
+            reviewsTab.innerHTML = `<p class="text-sm text-gray-500">No reviews yet. Be the first to review this product.</p>`;
+          }
+
+          // Apply initial variation
+          applyVariation(initialVariation, true);
+          renderSpecs(initialVariation.specs || []);
+
+          // Show content
+          showRealContent();
+        }
+
+        function renderColorOptions() {
           const colorWrap = document.getElementById("colorOptions");
           colorWrap.innerHTML = "";
 
-          const colors = [...new Set(variations.map(v => v.color))];
-
+          const colors = getAllAvailableColors();
+          
           colors.forEach(color => {
             const code = COLOR_MAP[color.toLowerCase()] || "#e5e7eb";
+            const isSelected = normalize(color) === normalize(selectedColor);
 
-            colorWrap.innerHTML += `
-              <button
-                data-color="${color}"
-                onclick="selectColor('${color}')"
-                class="color-btn w-10 h-10 rounded-full border flex items-center justify-center
-                ${normalize(color) === normalize(selectedColor) ? "ring-2 ring-blue-500" : ""}"
-                style="background:${code}"
-                title="${color}"
-              >
-                <span class="sr-only">${color}</span>
-              </button>
-            `;
+            const btn = document.createElement("button");
+            btn.dataset.color = color;
+            btn.className = `color-btn w-10 h-10 rounded-full border flex items-center justify-center ${
+              isSelected ? "ring-2 ring-blue-500" : ""
+            }`;
+            btn.style.background = code;
+            btn.title = color;
+            btn.innerHTML = `<span class="sr-only">${color}</span>`;
+            btn.addEventListener("click", () => selectColor(color));
+            
+            colorWrap.appendChild(btn);
           });
+        }
 
-
-          /* ================= SIZE OPTIONS ================= */
+        function renderSizeOptions() {
           const sizeWrap = document.getElementById("sizeOptions");
           sizeWrap.innerHTML = "";
 
-          function getAllSizes() {
-            const sizes = new Set();
-
-            variations.forEach(v => {
-              if (!v.size) return;
-              v.size.split(",").forEach(s => sizes.add(normalize(s)));
-            });
-
-            return sizes;
-          }
-
-          const availableSizes = getAllSizes();
+          const availableSizes = getAllAvailableSizes();
 
           STATIC_SIZES.forEach(size => {
-            const enabled = availableSizes.has(normalize(size));
+            const isAvailable = availableSizes.has(normalize(size));
+            const isSelected = normalize(size) === normalize(selectedSize);
 
-            sizeWrap.innerHTML += `
-              <button
-                data-size="${size}"
-                onclick="selectSize('${size}')"
-                class="w-12 h-12 border rounded-md text-sm
-                ${enabled ? "" : "opacity-30 cursor-not-allowed"}
-                ${normalize(size) === normalize(selectedSize) ? "ring-2 ring-blue-500" : ""}"
-                ${enabled ? "" : "disabled"}
-              >
-                ${size}
-              </button>
-            `;
+            const btn = document.createElement("button");
+            btn.dataset.size = size;
+            btn.className = `w-12 h-12 border rounded-md text-sm ${
+              isSelected ? "ring-2 ring-blue-500" : ""
+            } ${isAvailable ? "" : "opacity-30 cursor-not-allowed"}`;
+            btn.disabled = !isAvailable;
+            btn.innerText = size;
+            btn.addEventListener("click", () => selectSize(size));
+            
+            sizeWrap.appendChild(btn);
           });
+        }
 
+        function renderSpecs(specs = []) {
+          const table = document.getElementById("specTable");
+          const mobile = document.querySelector('[data-tab-content="specifications"]');
 
-          /* ================= REVIEWS (PLACEHOLDER) ================= */
-          const reviewsTab = document.querySelector('[data-tab-content="reviews"]');
-          if (reviewsTab) {
-            reviewsTab.innerHTML = `
-              <p class="text-sm text-gray-500">
-                No reviews yet. Be the first to review this product.
-              </p>
-            `;
+          if (!specs.length) {
+            const emptyMsg = `<p class="p-6 text-sm text-gray-500">No specifications available</p>`;
+            table.innerHTML = emptyMsg;
+            mobile.innerHTML = emptyMsg;
+            return;
           }
 
-          /* ================= APPLY INITIAL VARIANT ================= */
-          applyVariation(v, true);
-          renderSpecs(v.specs || []);
+          table.innerHTML = specs.map(s => `
+            <div class="flex justify-between px-6 py-3 text-sm">
+              <span class="text-gray-600">${s.spec_name}</span>
+              <span class="font-medium text-gray-900">${s.spec_value}</span>
+            </div>
+          `).join("");
 
-          /* ================= SHOW REAL CONTENT ================= */
-          showRealContent();
-        }
-      
-        // 4. Init
-        function selectColor(color) {
-          const btn = [...document.querySelectorAll('.color-btn')]
-            .find(b => b.dataset.color === color);
-
-          if (btn?.disabled) return;
-
-          selectedColor = color;
-          document.getElementById("selectedColorName").innerText = color;
-          updateAvailability();
-          updateVariation();
+          mobile.innerHTML = `
+            <ul class="space-y-2 text-sm text-gray-700">
+              ${specs.map(s => `<li><strong>${s.spec_name}:</strong> ${s.spec_value}</li>`).join("")}
+            </ul>
+          `;
         }
 
-        function selectSize(size) {
-          const btn = [...document.querySelectorAll('[data-size]')]
-            .find(b => b.dataset.size === size);
-
-          if (btn?.disabled) return;
-
-          selectedSize = size;
-          updateAvailability();
-          updateVariation();
-        }
-
-        let currentAppliedVariation = null;
-        function applyVariation(v, updateImages = true) {
-          if (!v) return;
-
-          currentAppliedVariation = v;
-
-          selectedColor = v.color;
-          selectedSize = v.size ? v.size.split(",")[0].trim() : null;
-          currentStock  = v.stock;
-          let discount = 0;
-          if (v.regular_price > 0) {
-            discount = Math.round(((v.regular_price - v.sell_price) / v.regular_price) * 100);
-          }
-
-          const mobilePrice = document.getElementById("mobilePrice");
-          if (mobilePrice) {
-            mobilePrice.innerText = `₹${v.sell_price}`;
-          }
-
-          document.querySelector(".sale_price").innerText = `₹${v.sell_price}`;
-          document.querySelector(".regular_price").innerText = `₹${v.regular_price}`;
-          document.getElementById("stockText").innerText = `${v.stock} available`;
-        
-          document.querySelector(".discount_percentage").innerText =
-            discount > 0 ? `${discount}% OFF` : "";
-
-          // ✅ ONLY reload images when COLOR changes
-          if (updateImages) {
-            renderGallery(v.images || []);
-          }
-
-          document.querySelector(".sku_text").innerText = `SKU: ${v.aid}-${v.uid}`;
-          updateAvailability();
-        }
-
-        function sizeMatches(v, size) {
-          if (!v.size || !size) return false;
-
-          return v.size
-            .split(",")
-            .map(s => normalize(s))
-            .includes(normalize(size));
-        }
-
-        function updateVariation() {
-          if (!selectedColor || !selectedSize) return;
-
-          const match = variations.find(v =>
-            normalize(v.color) === normalize(selectedColor) &&
-            sizeMatches(v, selectedSize)
-          );
-
-          if (!match) return;
-
-          const colorChanged =
-            !currentAppliedVariation ||
-            normalize(currentAppliedVariation.color) !== normalize(match.color);
-
-          applyVariation(match, colorChanged);
-        }
-      </script>
-
-      <script>
-        // Show the real page after data / images are ready
         function showRealContent() {
           document.getElementById('productSkeleton')?.classList.add('hidden');
           document.getElementById('productContent')?.classList.remove('hidden');
         }
+        // ========== UI EVENTS ==========
+        function initUIEvents() {
+          // Image navigation
+          document.getElementById('prevImage')?.addEventListener('click', () => navigateImage(-1));
+          document.getElementById('nextImage')?.addEventListener('click', () => navigateImage(1));
 
-        function updateMainImage(index) {
-          if (!images.length || !images[index]) return;
-
-          currentImageIndex = index;
-
-          const mainImage = document.getElementById("mainImage");
-          mainImage.src = images[index].src;
-          mainImage.alt = images[index].alt;
-
-          document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
-            thumb.classList.toggle('ring-2', i === index);
-            thumb.classList.toggle('ring-blue-500', i === index);
-            thumb.classList.toggle('ring-1', i !== index);
-            thumb.classList.toggle('ring-gray-200', i !== index);
-            thumb.classList.toggle('opacity-70', i !== index);
+          // Quantity controls
+          const qtyEl = document.getElementById('quantity');
+          document.getElementById('decreaseQuantity')?.addEventListener('click', () => {
+            const current = parseInt(qtyEl.innerText);
+            if (current > 1) qtyEl.innerText = current - 1;
           });
-        }
 
-        document.addEventListener('DOMContentLoaded', function() {
-          // Image Gallery
-          // const mainImage = document.getElementById('mainImage');
-          // const thumbnails = document.querySelectorAll('.thumbnail');
-          const prevButton = document.getElementById('prevImage');
-          const nextButton = document.getElementById('nextImage');
-          
-          if (!imageNavBound) {
-            prevButton.addEventListener('click', () => {
-              if (!images.length) return;
-              currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-              updateMainImage(currentImageIndex);
-            });
+          document.getElementById('increaseQuantity')?.addEventListener('click', () => {
+            const current = parseInt(qtyEl.innerText);
+            if (current < currentStock) qtyEl.innerText = current + 1;
+          });
 
-            nextButton.addEventListener('click', () => {
-              if (!images.length) return;
-              currentImageIndex = (currentImageIndex + 1) % images.length;
-              updateMainImage(currentImageIndex);
-            });
-
-            imageNavBound = true;
-          }
-
-          // Quantity Controls
-          const quantityInput = document.getElementById('quantity');
-          const decreaseButton = document.getElementById('decreaseQuantity');
-          const increaseButton = document.getElementById('increaseQuantity');
-          
-          if (!quantityBound) {
-            decreaseButton.addEventListener('click', () => {
-              const currentValue = parseInt(quantityInput.textContent);
-              if (currentValue > 1) {
-                quantityInput.textContent = currentValue - 1;
-              }
-            });
-
-            increaseButton.addEventListener('click', () => {
-              const currentValue = parseInt(quantityInput.textContent);
-              if (currentValue < currentStock) {
-                quantityInput.textContent = currentValue + 1;
-              }
-            });
-
-            quantityBound = true;
-          }
-
-          // Mobile Navigation
+          // Mobile tabs
           const tabButtons = document.querySelectorAll('[data-tab]');
           const tabContents = document.querySelectorAll('[data-tab-content]');
 
@@ -785,10 +810,10 @@
 
               tabButtons.forEach(b => {
                 if (b.getAttribute('data-tab') === tabName) {
-                  b.classList.add('border-b-2', 'border-blue-600', 'text-blue-600');
+                  b.classList.add('border-b-2', 'border-blue-600', 'text-blue-600', 'font-medium');
                   b.classList.remove('text-gray-500');
                 } else {
-                  b.classList.remove('border-b-2', 'border-blue-600', 'text-blue-600');
+                  b.classList.remove('border-b-2', 'border-blue-600', 'text-blue-600', 'font-medium');
                   b.classList.add('text-gray-500');
                 }
               });
@@ -803,102 +828,88 @@
             });
           });
 
-          // Mobile Action Bar
+          // Mobile action bar scroll
           const actionBar = document.getElementById('mobileActionBar');
           const productOptions = document.getElementById('product-options');
-
-          window.addEventListener('scroll', () => {
-            if (window.scrollY > productOptions.offsetTop + 200) {
-            actionBar.classList.remove('translate-y-full');
-            } else {
-            actionBar.classList.add('translate-y-full');
-            }
-          });
-
-          // Share Button
-          const shareButton = document.getElementById('shareButton');
-          shareButton.addEventListener('click', async () => {
-            if (navigator.share) {
-              try {
-            await navigator.share({
-              title: document.querySelector("h1").innerText,
-              text: document.querySelector(".text-gray-700.leading-relaxed").innerText,
-              url: window.location.href
-            });
-              } catch (err) {
-            console.error('Share failed:', err);
+          if (actionBar && productOptions) {
+            window.addEventListener('scroll', () => {
+              if (window.scrollY > productOptions.offsetTop + 200) {
+                actionBar.classList.remove('translate-y-full');
+              } else {
+                actionBar.classList.add('translate-y-full');
               }
-            } else {
-            // Fallback to copying URL
-            navigator.clipboard.writeText(window.location.href);
-          alert('Link copied to clipboard!');
-            }
-          });
-
-          // Wishlist Toggle
-          const wishlistButton = document.getElementById('wishlistButton');
-          const wishlistIcon = wishlistButton.querySelector('svg');
-          
-          wishlistButton.addEventListener('click', () => {
-            wishlistButton.classList.toggle('bg-red-50');
-          wishlistButton.classList.toggle('border-red-200');
-          wishlistButton.classList.toggle('text-red-500');
-          wishlistIcon.classList.toggle('fill-red-500');
-          });
-
-          // Add to Cart Animation
-          const addToCartButton = document.getElementById('addToCartButton');
-          let isAnimating = false;
-
-          addToCartButton.addEventListener('click', () => {
-            if (!isAnimating) {
-            isAnimating = true;
-          const originalContent = addToCartButton.innerHTML;
-
-          addToCartButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-          addToCartButton.classList.add('bg-green-600');
-          addToCartButton.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          Added to Cart
-          `;
-
-              setTimeout(() => {
-            addToCartButton.classList.remove('bg-green-600');
-          addToCartButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
-          addToCartButton.innerHTML = originalContent;
-          isAnimating = false;
-              }, 2000);
-            }
-          });
-        });
-
-        function renderSpecs(specs = []) {
-          const table = document.getElementById("specTable");
-          const mobile = document.querySelector('[data-tab-content="specifications"]');
-
-          if (!specs.length) {
-            table.innerHTML = `<p class="p-6 text-sm text-gray-500">No specifications available</p>`;
-            mobile.innerHTML = table.innerHTML;
-            return;
+            });
           }
 
-          table.innerHTML = specs.map(s => `
-            <div class="flex justify-between px-6 py-3 text-sm">
-              <span class="text-gray-600">${s.spec_name}</span>
-              <span class="font-medium text-gray-900">${s.spec_value}</span>
-            </div>
-          `).join("");
+          // Share button
+          document.getElementById('shareButton')?.addEventListener('click', async () => {
+            if (navigator.share) {
+              try {
+                await navigator.share({
+                  title: document.querySelector("h1")?.innerText || "",
+                  text: document.querySelector(".short_desc")?.innerText || "",
+                  url: window.location.href
+                });
+              } catch (err) {
+                console.error('Share failed:', err);
+              }
+            } else {
+              navigator.clipboard.writeText(window.location.href);
+              alert('Link copied to clipboard!');
+            }
+          });
 
-          mobile.innerHTML = `
-            <ul class="space-y-2 text-sm text-gray-700">
-              ${specs.map(s => `
-                <li><strong>${s.spec_name}:</strong> ${s.spec_value}</li>
-              `).join("")}
-            </ul>
-          `;
+          // Wishlist toggle
+          const wishlistButton = document.getElementById('wishlistButton');
+          if (wishlistButton) {
+            wishlistButton.addEventListener('click', () => {
+              const icon = wishlistButton.querySelector('svg');
+              wishlistButton.classList.toggle('bg-red-50');
+              wishlistButton.classList.toggle('border-red-200');
+              wishlistButton.classList.toggle('text-red-500');
+              if (icon) icon.classList.toggle('fill-red-500');
+            });
+          }
+
+          // Add to cart
+          const addToCartButton = document.getElementById('addToCartButton');
+          if (addToCartButton) {
+            let isAnimating = false;
+            addToCartButton.addEventListener('click', () => {
+              if (isAnimating) return;
+              
+              isAnimating = true;
+              const originalContent = addToCartButton.innerHTML;
+
+              addToCartButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+              addToCartButton.classList.add('bg-green-600');
+              addToCartButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Added to Cart
+              `;
+
+              setTimeout(() => {
+                addToCartButton.classList.remove('bg-green-600');
+                addToCartButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                addToCartButton.innerHTML = originalContent;
+                isAnimating = false;
+              }, 2000);
+            });
+          }
         }
+
+        // ========== INITIALIZATION ==========
+        document.addEventListener("DOMContentLoaded", async () => {
+          await loadColorMap();
+          await fetchProduct();
+          initUIEvents();
+        });
+
+        // Expose selectColor and selectSize for onclick handlers (backward compatibility)
+        window.selectColor = selectColor;
+        window.selectSize = selectSize;
       </script>
 
       <!-- related product slider -->

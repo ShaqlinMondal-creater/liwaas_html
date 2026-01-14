@@ -109,9 +109,9 @@
           <input class="input input-sm w-[120px]" type="text" name="size" placeholder="Size" />
           <div class="color-dropdown relative w-[120px]">
             <input type="hidden" name="color" class="color-value" />
-            <button type="button" class="color-btn input input-sm w-full flex items-center gap-2">
-              <span class="color-dot w-4 h-4 rounded-full border"></span>
-              <span class="color-text text-gray-500">Select Color</span>
+            <button type="button" class="color-btn">
+              <span class="color-dot"></span>
+              <span class="color-text">Select Color</span>
             </button>
             <div class="color-menu hidden absolute z-50 bg-white border rounded shadow w-full mt-1"></div>
           </div>
@@ -180,65 +180,78 @@
 </main>
 
 <style>
-/* ---------- COLOR DROPDOWN FIX ---------- */
+  /* ---------- COLOR SELECT FIX (FINAL) ---------- */
 
-.color-dropdown {
-  width: 140px; /* little wider */
-  position: relative;
-}
+  .color-dropdown {
+    width: 150px;
+    position: relative;
+    font-size: 13px;
+  }
 
-.color-btn {
-  height: 34px;
-  padding: 4px 8px;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: flex-start;
-  cursor: pointer;
-}
+  .color-btn {
+    width: 100%;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #fff;
 
-/* THIS IS THE KEY FIX */
-.color-dot {
-  min-width: 14px;
-  min-height: 14px;
-  width: 14px;
-  height: 14px;
-  border-radius: 9999px;
-  border: 1px solid #cbd5e1;
-  background-color: transparent; /* default */
-}
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
-/* Selected text */
-.color-text {
-  font-size: 13px;
-  line-height: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+    cursor: pointer;
+  }
 
-/* Dropdown menu */
-.color-menu {
-  max-height: 180px;
-  overflow-y: auto;
-  width: 100%;
-  z-index: 50;
-}
+  /* LOCK DOT SIZE */
+  .color-dot {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    min-height: 14px;
+    border-radius: 9999px;
+    border: 1px solid #94a3b8;
+    background-color: transparent;
+  }
 
-/* Dropdown item */
-.color-menu div {
-  padding: 6px 10px;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
+  /* TEXT MUST NEVER WRAP */
+  .color-text {
+    font-size: 13px;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-.color-menu div:hover {
-  background: #f3f4f6;
-}
+  /* DROPDOWN MENU */
+  .color-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin-top: 4px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 999;
+  }
+
+  /* DROPDOWN ITEM */
+  .color-menu div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+  .color-menu div:hover {
+    background: #f3f4f6;
+  }
 </style>
 
 <!-- Footer -->
@@ -336,11 +349,11 @@
           `;
 
           item.onclick = () => {
-            dot.style.backgroundColor = color.code;   // ✅ FIX
-            dot.style.borderColor = "#94a3b8";        // subtle border
+            dot.style.backgroundColor = color.code;
+            dot.style.borderColor = "#64748b";
             text.textContent = color.name;
             text.classList.remove("text-gray-500");
-            input.value = color.name;                 // backend-safe
+            input.value = color.name; // backend-safe
             menu.classList.add("hidden");
           };
 

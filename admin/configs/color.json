@@ -5,22 +5,6 @@
             "name": "White"
         },
         {
-            "code": "#000",
-            "name": "Black"
-        },
-        {
-            "code": "#f5b3ff",
-            "name": "Fade Pink"
-        },
-        {
-            "code": "#accffc",
-            "name": "Light Blue"
-        },
-        {
-            "code": "#fcc1ac",
-            "name": "Cream Orange"
-        },
-        {
             "code": "#faf7f2",
             "name": "Fade White"
         },
@@ -33,32 +17,48 @@
             "name": "Nature Green"
         },
         {
-            "code": "#7b91ff",
-            "name": "Fresh Blue"
+            "code": "#00b8a7",
+            "name": "Sea Green"
         },
         {
             "code": "#3aa2cc",
             "name": "Sky Blue"
         },
         {
-            "code": "#00b8a7",
-            "name": "Sea Green"
+            "code": "#7b91ff",
+            "name": "Fresh Blue"
         },
         {
-            "code": "#da3e43",
-            "name": "Royal Red"
+            "code": "#accffc",
+            "name": "Light Blue"
+        },
+        {
+            "code": "#000",
+            "name": "Black"
         },
         {
             "code": "#7e93a4",
             "name": "Cloud Grey"
         },
         {
+            "code": "#f5b3ff",
+            "name": "Fade Pink"
+        },
+        {
             "code": "#e22f95",
             "name": "Royal Pink"
         },
         {
+            "code": "#fcc1ac",
+            "name": "Cream Orange"
+        },
+        {
             "code": "#f85000",
             "name": "Fresh Orange"
+        },
+        {
+            "code": "#da3e43",
+            "name": "Royal Red"
         }
     ]
 }

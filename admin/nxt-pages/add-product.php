@@ -189,7 +189,7 @@
   }
 
   .color-btn {
-    width: 100%;
+    width: 120px;
     height: 36px;
     padding: 0 10px;
     border: 1px solid #cbd5e1;
@@ -228,7 +228,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    width: 100%;
+    width: 120px;
     margin-top: 4px;
     background: #fff;
     border: 1px solid #e5e7eb;

@@ -663,9 +663,41 @@
 
         alert("✅ Product added: " + result.message);
 
-        // Step 2: Upload images
+        // ===============================
+        // STEP 2A: UPLOAD PRODUCT IMAGES (ALWAYS)
+        // ===============================
+        const productImageInput = form.querySelector('input[name="image[]"]');
+        const productFiles = productImageInput.files;
+
+        if (productFiles.length > 0) {
+          const uploadForm = new FormData();
+          uploadForm.append("aid", aid);
+
+          for (let file of productFiles) {
+            uploadForm.append("file[]", file);
+          }
+
+          const uploadRes = await fetch("<?= $baseUrl ?>/admin/upload/product-images", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: uploadForm,
+          });
+
+          const uploadResult = await uploadRes.json();
+
+          if (uploadResult.success) {
+            console.log("✅ Product images uploaded");
+          } else {
+            alert("⚠️ Product image upload failed: " + uploadResult.message);
+          }
+        }
+
+        // ===============================
+        // STEP 2B: UPLOAD VARIATION IMAGES (ONLY IF VARIANT)
+        // ===============================
         if (isVariant && payload.variations.length > 0) {
-          // For each variant, upload images selected in its file input
           const variationItems = variantFields.querySelectorAll(".variation-item");
 
           for (let i = 0; i < variationItems.length; i++) {
@@ -675,63 +707,34 @@
             if (files.length > 0) {
               const uploadForm = new FormData();
               uploadForm.append("aid", aid);
-              uploadForm.append("uid", payload.variations[i].uid); // variant UID
+              uploadForm.append("uid", payload.variations[i].uid);
 
               for (let file of files) {
                 uploadForm.append("file[]", file);
               }
 
               try {
-                const uploadRes = await fetch("<?= $baseUrl ?>/api/admin/upload/variation-images", {
-                  method: "POST",
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                  body: uploadForm,
-                });
+                const uploadRes = await fetch(
+                  "<?= $baseUrl ?>/api/admin/upload/variation-images",
+                  {
+                    method: "POST",
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                    body: uploadForm,
+                  }
+                );
 
                 const uploadResult = await uploadRes.json();
 
-                if (uploadResult.success) {
-                  console.log(`✅ Images uploaded for variant UID ${payload.variations[i].uid}`);
-                } else {
-                  alert(`⚠️ Image upload failed for variant UID ${payload.variations[i].uid}: ${uploadResult.message}`);
+                if (!uploadResult.success) {
+                  alert(
+                    `⚠️ Variant image upload failed for UID ${payload.variations[i].uid}`
+                  );
                 }
               } catch (err) {
-                alert(`⚠️ Error uploading images for variant UID ${payload.variations[i].uid}: ${err.message}`);
+                alert(`⚠️ Error uploading variant images: ${err.message}`);
               }
-            }
-          }
-        } else {
-          // For simple product, upload images from main image input
-          // ✅ PRODUCT IMAGE UPLOAD (BOTTOM INPUT)
-          const imageInput = form.querySelector('input[name="image[]"]');
-          const files = imageInput.files;
-
-          if (files.length > 0) {
-            const uploadForm = new FormData();
-
-            // ✅ ONLY aid (NO uid here)
-            uploadForm.append("aid", aid);
-
-            for (let file of files) {
-              uploadForm.append("file[]", file);
-            }
-
-            const uploadRes = await fetch("<?= $baseUrl ?>/admin/upload/product-images", {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-              body: uploadForm,
-            });
-
-            const uploadResult = await uploadRes.json();
-
-            if (uploadResult.success) {
-              alert("✅ Product images uploaded successfully");
-            } else {
-              alert("⚠️ Product image upload failed: " + uploadResult.message);
             }
           }
         }

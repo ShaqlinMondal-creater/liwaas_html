@@ -107,9 +107,14 @@
           <input class="input input-sm w-[140px]" type="number" name="regular_price" placeholder="Regular Price" />
           <input class="input input-sm w-[140px]" type="number" name="sale_price" placeholder="Sale Price" />
           <input class="input input-sm w-[120px]" type="text" name="size" placeholder="Size" />
-          <select name="color" class="input input-sm w-[120px] color-select">
-            <option value="">Select Color</option>
-          </select>
+          <div class="color-dropdown relative w-[120px]">
+            <input type="hidden" name="color" class="color-value" />
+            <button type="button" class="color-btn input input-sm w-full flex items-center gap-2">
+              <span class="color-dot w-4 h-4 rounded-full border"></span>
+              <span class="color-text text-gray-500">Select Color</span>
+            </button>
+            <div class="color-menu hidden absolute z-50 bg-white border rounded shadow w-full mt-1"></div>
+          </div>
           <input class="input input-sm w-[100px]" type="number" name="stock" placeholder="Stock" />          
         </div>
 
@@ -122,9 +127,14 @@
               <input type="number" placeholder="Regular Price" class="input input-sm w-[140px]" />
               <input type="number" placeholder="Sale Price" class="input input-sm w-[140px]" />
               <input type="text" placeholder="Size" class="input input-sm w-[120px]" />
-              <select class="input input-sm w-[120px] color-select">
-                <option value="">Select Color</option>
-              </select>
+              <div class="color-dropdown relative w-[120px]">
+                <input type="hidden" class="color-value" />
+                <button type="button" class="color-btn input input-sm w-full flex items-center gap-2">
+                  <span class="color-dot w-4 h-4 rounded-full border"></span>
+                  <span class="color-text text-gray-500">Select Color</span>
+                </button>
+                <div class="color-menu hidden absolute z-50 bg-white border rounded shadow w-full mt-1"></div>
+              </div>
               <input type="number" placeholder="Stock" class="input input-sm w-[100px]" />
               <input type="file" class="variation-image-input input input-sm w-[160px]" accept="image/*" multiple />
               <button type="button" class="remove-variation-btn btn btn-sm bg-red-500 text-white">✕</button>
@@ -168,6 +178,19 @@
     </div>
   </div>
 </main>
+
+<style>
+  .color-menu div {
+    cursor: pointer;
+    padding: 6px 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .color-menu div:hover {
+    background: #f3f4f6;
+  }
+</style>
 
 <!-- Footer -->
 <?php include("../footer.php"); ?>
@@ -247,21 +270,38 @@
       const res = await fetch("./configs/color.json");
       const data = await res.json();
 
-      if (!data.colors || !Array.isArray(data.colors)) return;
+      document.querySelectorAll(".color-dropdown").forEach(dropdown => {
+        const menu = dropdown.querySelector(".color-menu");
+        const btn = dropdown.querySelector(".color-btn");
+        const dot = dropdown.querySelector(".color-dot");
+        const text = dropdown.querySelector(".color-text");
+        const input = dropdown.querySelector(".color-value");
 
-      document.querySelectorAll(".color-select").forEach(select => {
-        select.innerHTML = `<option value="">Select Color</option>`;
+        menu.innerHTML = "";
 
         data.colors.forEach(color => {
-          const option = document.createElement("option");
-          option.value = color.name; // SEND NAME TO BACKEND
-          option.textContent = color.name;
-          option.style.backgroundColor = color.code;
-          option.style.color = color.code === "#000" ? "#fff" : "#000";
+          const item = document.createElement("div");
+          item.innerHTML = `
+            <span style="background:${color.code}" class="w-4 h-4 rounded-full border"></span>
+            <span>${color.name}</span>
+          `;
 
-          select.appendChild(option);
+          item.onclick = () => {
+            dot.style.background = color.code;
+            text.textContent = color.name;
+            text.classList.remove("text-gray-500");
+            input.value = color.name; // ✅ backend-safe
+            menu.classList.add("hidden");
+          };
+
+          menu.appendChild(item);
         });
+
+        btn.onclick = () => {
+          menu.classList.toggle("hidden");
+        };
       });
+
     } catch (err) {
       console.error("Color load error:", err);
     }
@@ -473,7 +513,7 @@
           const regular_price = row.querySelector("input[placeholder='Regular Price']").value;
           const sale_price = row.querySelector("input[placeholder='Sale Price']").value;
           const size = row.querySelector("input[placeholder='Size']").value;
-          const color = row.querySelector(".color-select").value;
+          const color = row.querySelector(".color-value").value;
           const stock = row.querySelector("input[placeholder='Stock']").value;
 
           payload.variations.push({

@@ -180,17 +180,65 @@
 </main>
 
 <style>
-  .color-menu div {
-    cursor: pointer;
-    padding: 6px 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .color-menu div:hover {
-    background: #f3f4f6;
-  }
+/* ---------- COLOR DROPDOWN FIX ---------- */
+
+.color-dropdown {
+  width: 120px;
+}
+
+/* Button styling */
+.color-btn {
+  height: 32px;
+  padding: 4px 6px;
+  font-size: 12px;
+  justify-content: flex-start;
+}
+
+/* Color dot */
+.color-dot {
+  width: 14px;
+  height: 14px;
+}
+
+/* Text size */
+.color-text {
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dropdown menu */
+.color-menu {
+  max-height: 160px;           /* ✅ FIX HEIGHT */
+  overflow-y: auto;            /* ✅ SCROLL INSIDE */
+  overflow-x: hidden;
+  width: 100%;
+  scrollbar-width: thin;
+}
+
+/* Dropdown item */
+.color-menu div {
+  padding: 6px 8px;
+  font-size: 12px;             /* ✅ SMALLER TEXT */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+/* Hover */
+.color-menu div:hover {
+  background: #f3f4f6;
+}
+
+/* Fix page scroll issue */
+body {
+  overflow-y: auto;
+}
 </style>
+
 
 <!-- Footer -->
 <?php include("../footer.php"); ?>

@@ -139,7 +139,7 @@
     <script>
       document.addEventListener("DOMContentLoaded", async function() {
         const authToken = localStorage.getItem("auth_token");
-        const guestId   = localStorage.getItem("guest_id");
+        const guestId   = localStorage.getItem("guest_token");
 
         const skeleton  = document.getElementById("cart-skeleton");
         const cartList  = document.querySelector(".divide-y");
@@ -167,7 +167,7 @@
             if (result.success) {
               cartData = result.data || [];
               if (!authToken && result.temp_id) {
-                localStorage.setItem("guest_id", result.temp_id);
+                localStorage.setItem("guest_token", result.temp_id);
               }
               renderCart();
             } else {

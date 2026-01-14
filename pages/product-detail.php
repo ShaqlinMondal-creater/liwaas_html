@@ -981,6 +981,108 @@
         window.selectSize = selectSize;
       </script>
 
+      <!-- Cart Logic -->
+      <script>
+        // ============================================
+        // ADD TO CART LOGIC (PRODUCT DETAIL PAGE)
+        // ============================================
+
+        function getSelectedQuantity() {
+          const qtyEl = document.getElementById("quantity");
+          return Math.max(1, parseInt(qtyEl?.innerText || "1"));
+        }
+
+        async function addToCart() {
+          if (!currentVariation) {
+            alert("Please select a valid product variation");
+            return;
+          }
+
+          const authToken = localStorage.getItem("auth_token");
+          if (!authToken) {
+            alert("Please login to add items to cart");
+            return;
+          }
+
+          const payload = {
+            products_id: currentVariation.product_id || currentVariation.products_id || null,
+            aid: currentVariation.aid,
+            uid: currentVariation.uid,
+            quantity: getSelectedQuantity()
+          };
+
+          try {
+            const res = await fetch(`${BASE_URL}/api/cart/create-cart`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}`
+              },
+              body: JSON.stringify(payload)
+            });
+
+            const json = await res.json();
+
+            if (json.success) {
+              showCartSuccess();
+            } else {
+              showCartError(json.message || "Failed to add to cart");
+            }
+
+          } catch (err) {
+            console.error("Add to cart error:", err);
+            showCartError("Something went wrong. Try again.");
+          }
+        }
+
+        // ============================================
+        // UI FEEDBACK
+        // ============================================
+
+        function showCartSuccess() {
+          const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
+
+          btns.forEach(btn => {
+            if (!btn) return;
+
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.classList.remove("bg-blue-600", "hover:bg-blue-700");
+            btn.classList.add("bg-green-600");
+
+            btn.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Added to Cart
+            `;
+
+            setTimeout(() => {
+              btn.innerHTML = originalHTML;
+              btn.disabled = false;
+              btn.classList.remove("bg-green-600");
+              btn.classList.add("bg-blue-600", "hover:bg-blue-700");
+            }, 2000);
+          });
+        }
+
+        function showCartError(message) {
+          alert(message);
+        }
+
+        // ============================================
+        // BUTTON BINDINGS
+        // ============================================
+
+        document.addEventListener("DOMContentLoaded", () => {
+          // Desktop button
+          document.getElementById("addToCartButton")?.addEventListener("click", addToCart);
+
+          // Mobile bottom button (add id)
+          document.querySelector("#mobileActionBar button")?.addEventListener("click", addToCart);
+        });
+      </script>
+
       <!-- related product slider -->
       <script>
         // related-products.js

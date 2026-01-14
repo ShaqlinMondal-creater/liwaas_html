@@ -102,7 +102,7 @@
           // Card click → navigate to product detail
           card.addEventListener('click', (e) => {
             if (e.target.closest('button')) return; // Skip if a button (cart or wish) is clicked
-            window.location.href = `pages/product-detail.php?slug=${product.slug}`;
+            window.location.href = `pages/product-detail.php?id=${variation.uid}`;
           });
 
           // Cart button click

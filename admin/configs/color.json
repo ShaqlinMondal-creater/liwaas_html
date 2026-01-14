@@ -1,0 +1,64 @@
+{
+    "colors": [
+        {
+            "code": "#fff",
+            "name": "White"
+        },
+        {
+            "code": "#000",
+            "name": "Black"
+        },
+        {
+            "code": "#f5b3ff",
+            "name": "Fade Pink"
+        },
+        {
+            "code": "#accffc",
+            "name": "Light Blue"
+        },
+        {
+            "code": "#fcc1ac",
+            "name": "Cream Orange"
+        },
+        {
+            "code": "#faf7f2",
+            "name": "Fade White"
+        },
+        {
+            "code": "#bdfcbf",
+            "name": "Fade Green"
+        },
+        {
+            "code": "#00bf5b",
+            "name": "Nature Green"
+        },
+        {
+            "code": "#7b91ff",
+            "name": "Fresh Blue"
+        },
+        {
+            "code": "#3aa2cc",
+            "name": "Sky Blue"
+        },
+        {
+            "code": "#00b8a7",
+            "name": "Sea Green"
+        },
+        {
+            "code": "#da3e43",
+            "name": "Royal Red"
+        },
+        {
+            "code": "#7e93a4",
+            "name": "Cloud Grey"
+        },
+        {
+            "code": "#e22f95",
+            "name": "Royal Pink"
+        },
+        {
+            "code": "#f85000",
+            "name": "Fresh Orange"
+        }
+    ]
+}

@@ -107,7 +107,9 @@
           <input class="input input-sm w-[140px]" type="number" name="regular_price" placeholder="Regular Price" />
           <input class="input input-sm w-[140px]" type="number" name="sale_price" placeholder="Sale Price" />
           <input class="input input-sm w-[120px]" type="text" name="size" placeholder="Size" />
-          <input class="input input-sm w-[120px]" type="text" name="color" placeholder="Color" />
+          <select name="color" class="input input-sm w-[120px] color-select">
+            <option value="">Select Color</option>
+          </select>
           <input class="input input-sm w-[100px]" type="number" name="stock" placeholder="Stock" />          
         </div>
 
@@ -120,7 +122,9 @@
               <input type="number" placeholder="Regular Price" class="input input-sm w-[140px]" />
               <input type="number" placeholder="Sale Price" class="input input-sm w-[140px]" />
               <input type="text" placeholder="Size" class="input input-sm w-[120px]" />
-              <input type="text" placeholder="Color" class="input input-sm w-[120px]" />
+              <select class="input input-sm w-[120px] color-select">
+                <option value="">Select Color</option>
+              </select>
               <input type="number" placeholder="Stock" class="input input-sm w-[100px]" />
               <input type="file" class="variation-image-input input input-sm w-[160px]" accept="image/*" multiple />
               <button type="button" class="remove-variation-btn btn btn-sm bg-red-500 text-white">✕</button>
@@ -238,6 +242,31 @@
       .catch(err => console.error("Category fetch error:", err));
   }
 
+  async function loadColors() {
+    try {
+      const res = await fetch("<?= $baseUrl ?>/config/color.json");
+      const data = await res.json();
+
+      if (!data.colors || !Array.isArray(data.colors)) return;
+
+      document.querySelectorAll(".color-select").forEach(select => {
+        select.innerHTML = `<option value="">Select Color</option>`;
+
+        data.colors.forEach(color => {
+          const option = document.createElement("option");
+          option.value = color.name; // SEND NAME TO BACKEND
+          option.textContent = color.name;
+          option.style.backgroundColor = color.code;
+          option.style.color = color.code === "#000" ? "#fff" : "#000";
+
+          select.appendChild(option);
+        });
+      });
+    } catch (err) {
+      console.error("Color load error:", err);
+    }
+  }
+
   async function fetchNextAidUid() {
     try {
       const res = await fetch("<?= $baseUrl ?>/api/admin/products/get-next-count", {
@@ -286,6 +315,7 @@
       fetchCategories();
       // call it
       fetchNextAidUid();
+      loadColors();
   });
 </script>
 
@@ -356,8 +386,10 @@
 
       // Attach remove button event to new row
       attachRemoveListener(clone.querySelector(".remove-variation-btn"));
+      // Reload colors for newly added variation
+      loadColors();
     });
-
+    
     // Remove variation row handler
     function attachRemoveListener(button) {
       button.addEventListener("click", () => {
@@ -437,15 +469,19 @@
         // Collect variant rows data
         const variationRows = variantFields.querySelectorAll(".variation-item");
         variationRows.forEach((row) => {
-          const inputs = row.querySelectorAll("input:not([type=file])");
-          const [uid, regular_price, sale_price, size, color, stock] = [...inputs].map(input => input.value);
+          const uid = row.querySelector("input[placeholder='UID']").value;
+          const regular_price = row.querySelector("input[placeholder='Regular Price']").value;
+          const sale_price = row.querySelector("input[placeholder='Sale Price']").value;
+          const size = row.querySelector("input[placeholder='Size']").value;
+          const color = row.querySelector(".color-select").value;
+          const stock = row.querySelector("input[placeholder='Stock']").value;
 
           payload.variations.push({
             uid: Number(uid),
             regular_price: Number(regular_price),
             sale_price: Number(sale_price),
             size,
-            color,
+            color, // ✅ CORRECT COLOR NAME
             stock: Number(stock),
           });
         });

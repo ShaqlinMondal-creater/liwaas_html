@@ -137,7 +137,12 @@
               </div>
               <input type="number" placeholder="Stock" class="input input-sm w-[100px]" />
               <input type="file" class="variation-image-input input input-sm w-[160px]" accept="image/*" multiple />
-              <button type="button" class="remove-variation-btn btn btn-sm bg-red-500 text-white">✕</button>
+              <button type="button" class="clone-variation-btn btn btn-sm bg-blue-500 text-white">
+                Clone
+              </button>
+              <button type="button" class="remove-variation-btn btn btn-sm bg-red-500 text-white">
+                ✕
+              </button>
             </div>
             <!-- SPECIFICATIONS -->
             <div class="specs-wrapper flex flex-col gap-2 mt-2">
@@ -497,6 +502,42 @@
       loadColors();
     });
     
+    // ✅ CLONE VARIATION (FINAL SAFE VERSION)
+    document.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("clone-variation-btn")) return;
+
+      const currentItem = e.target.closest(".variation-item");
+      const clone = currentItem.cloneNode(true);
+
+      // ❌ Clear file input
+      const fileInput = clone.querySelector(".variation-image-input");
+      if (fileInput) fileInput.value = "";
+
+      // ✅ NEW UID
+      const uidInput = clone.querySelector("input[placeholder='UID']");
+      if (uidInput && nextUID !== null) {
+        nextUID += 1;
+        uidInput.value = nextUID;
+      }
+
+      // ✅ Rebind remove variation button
+      attachRemoveListener(clone.querySelector(".remove-variation-btn"));
+
+      // ✅ Insert clone AFTER current row
+      currentItem.after(clone);
+
+      // ✅ Reload color dropdown
+      loadColors();
+
+      // ✅ Restore selected color text + value
+      const originalColor = currentItem.querySelector(".color-value").value;
+      if (originalColor) {
+        clone.querySelector(".color-value").value = originalColor;
+        clone.querySelector(".color-text").textContent = originalColor;
+        clone.querySelector(".color-text").classList.remove("text-gray-500");
+      }
+    });
+
     // Remove variation row handler
     function attachRemoveListener(button) {
       button.addEventListener("click", () => {
@@ -693,8 +734,6 @@
               alert("⚠️ Product image upload failed: " + uploadResult.message);
             }
           }
-
-
         }
 
         // STEP 3: ADD SPECS PER VARIATION

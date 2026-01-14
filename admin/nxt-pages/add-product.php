@@ -183,26 +183,35 @@
 /* ---------- COLOR DROPDOWN FIX ---------- */
 
 .color-dropdown {
-  width: 120px;
+  width: 140px; /* little wider */
+  position: relative;
 }
 
-/* Button styling */
 .color-btn {
-  height: 32px;
-  padding: 4px 6px;
-  font-size: 12px;
+  height: 34px;
+  padding: 4px 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   justify-content: flex-start;
+  cursor: pointer;
 }
 
-/* Color dot */
+/* THIS IS THE KEY FIX */
 .color-dot {
+  min-width: 14px;
+  min-height: 14px;
   width: 14px;
   height: 14px;
+  border-radius: 9999px;
+  border: 1px solid #cbd5e1;
+  background-color: transparent; /* default */
 }
 
-/* Text size */
+/* Selected text */
 .color-text {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1;
   white-space: nowrap;
   overflow: hidden;
@@ -211,34 +220,26 @@
 
 /* Dropdown menu */
 .color-menu {
-  max-height: 160px;           /* ✅ FIX HEIGHT */
-  overflow-y: auto;            /* ✅ SCROLL INSIDE */
-  overflow-x: hidden;
+  max-height: 180px;
+  overflow-y: auto;
   width: 100%;
-  scrollbar-width: thin;
+  z-index: 50;
 }
 
 /* Dropdown item */
 .color-menu div {
-  padding: 6px 8px;
-  font-size: 12px;             /* ✅ SMALLER TEXT */
+  padding: 6px 10px;
+  font-size: 13px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
 }
 
-/* Hover */
 .color-menu div:hover {
   background: #f3f4f6;
 }
-
-/* Fix page scroll issue */
-body {
-  overflow-y: auto;
-}
 </style>
-
 
 <!-- Footer -->
 <?php include("../footer.php"); ?>
@@ -335,10 +336,11 @@ body {
           `;
 
           item.onclick = () => {
-            dot.style.background = color.code;
+            dot.style.backgroundColor = color.code;   // ✅ FIX
+            dot.style.borderColor = "#94a3b8";        // subtle border
             text.textContent = color.name;
             text.classList.remove("text-gray-500");
-            input.value = color.name; // ✅ backend-safe
+            input.value = color.name;                 // backend-safe
             menu.classList.add("hidden");
           };
 

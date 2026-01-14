@@ -1299,9 +1299,7 @@
             <p id="mobilePrice" class="text-lg font-bold text-gray-900"></p>
           </div>
 
-          <button
-            class="flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-medium bg-blue-600 text-white"
-          >
+          <button id="mobileAddToCart" class="flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-medium bg-blue-600 text-white">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>

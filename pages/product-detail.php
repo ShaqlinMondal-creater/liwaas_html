@@ -359,7 +359,15 @@
         let currentStock = 0;
         let currentImageIndex = 0;
         const STATIC_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+        let COLOR_MAP = {};
 
+        async function loadColorMap() {
+          const res = await fetch("../inc/color.json");
+          const json = await res.json();
+          json.colors.forEach(c => {
+            COLOR_MAP[c.name.toLowerCase()] = c.code;
+          });
+        }
         // 🔹 Normalize helper (ADD HERE)
         function normalize(v) {
           return String(v).trim().toLowerCase();
@@ -385,7 +393,7 @@
             const size = btn.dataset.size;
 
             const exists = variations.some(v =>
-              normalize(v.size) === normalize(size) &&
+              sizeMatches(v, size) &&
               (!selectedColor || normalize(v.color) === normalize(selectedColor))
             );
 
@@ -432,6 +440,12 @@
           const params = new URLSearchParams(window.location.search);
           return params.get("id"); // id = uid
         }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+          await loadColorMap();
+          await fetchProduct();
+          initUIEvents();
+        });
 
         // 2. Fetch product from API
         async function fetchProduct() {
@@ -503,178 +517,6 @@
           });
         }
 
-        // 3. Bind API data to your EXISTING UI
-        // function bindProduct(data) {
-
-        //   applyVariation(v);
-
-        //   /* ========= BASIC INFO ========= */
-        //   document.querySelector("h1.product_name").innerText = data.name;
-        //   document.querySelector("h3.brand_name").innerText = data.brand?.name || "";
-        //   // Short description (top)
-        //   document.querySelector(".short_desc").innerText = data.description;
-        //   // Mobile description tab
-        //   document.querySelector('.mb_long_desc p').innerText = data.description;
-        //   // Desktop description section
-        //   document.querySelector('.long_desc p').innerText = data.description;
-
-        //   const discountEl = document.querySelector(".discount_percentage");
-        //   const regular = Number(v.regular_price);
-        //   const sell = Number(v.sell_price);
-
-        //   if (regular > sell) {
-        //     const percent = Math.round(((regular - sell) / regular) * 100);
-        //     discountEl.innerText = `${percent}% OFF`;
-        //     discountEl.classList.remove("hidden");
-        //   } else {
-        //     discountEl.classList.add("hidden");
-        //   }
-        //   // ========= REVIEWS (TEMP PLACEHOLDER) =========
-        //   const reviewsTab = document.querySelector('[data-tab-content="reviews"]');
-
-        //   if (reviewsTab) {
-        //     reviewsTab.innerHTML = `
-        //       <p class="text-sm text-gray-500">
-        //         No reviews yet. Be the first to review this product.
-        //       </p>
-        //     `;
-        //   }
-
-        //   /* ========= IMAGES ========= */
-        //   const colors = [...new Set(data.variations.map(v => v.color))];
-
-        //   /* ===== VARIATIONS ===== */
-        //   variations = data.variations; 
-        //   const v = data.selected_variation || variations[0];
-
-        //   /* ========= VARIATIONS ========= */
-        //   variations = data.variations;
-        //   const activeVariation = data.selected_variation || data.variations[0];
-
-        //   selectedColor = activeVariation.color;
-        //   selectedSize  = activeVariation.size;
-
-        //   document.getElementById("selectedColorName").innerText = selectedColor;
-
-
-        //   const colorWrap = document.getElementById("colorOptions");
-
-        //   colorWrap.innerHTML = "";
-
-        //   colors.forEach(color => {
-        //     const isHex = color.startsWith('#');
-
-        //     colorWrap.innerHTML += `
-        //       <button
-        //         data-color="${color}"
-        //         onclick="selectColor('${color}')"
-        //         class="color-btn relative w-10 h-10 rounded-full border border-gray-300
-        //               ${normalize(color) === normalize(selectedColor) ? 'ring-2 ring-blue-500' : ''}"
-        //         style="background-color: ${isHex ? color : '#f3f4f6'};"
-        //         title="${color}"
-        //       >
-        //         ${!isHex ? `<span class="text-[10px] font-medium">${color}</span>` : ``}
-        //       </button>
-        //     `;
-        //   });
-
-        //   const sizeWrap = document.getElementById("sizeOptions");
-        //   sizeWrap.innerHTML = "";
-        //   // Available sizes from API
-        //   const availableSizes = new Set(
-        //     data.variations.map(v => normalize(v.size))
-        //   );
-        //   // Render STATIC sizes in correct order
-        //   STATIC_SIZES.forEach(size => {
-        //     const isAvailable = availableSizes.has(normalize(size));
-
-        //     sizeWrap.innerHTML += `
-        //       <button
-        //         data-size="${size}"
-        //         onclick="selectSize('${size}')"
-        //         class="w-12 h-12 border rounded-md text-sm
-        //           ${isAvailable ? '' : 'opacity-30 cursor-not-allowed'}
-        //           ${normalize(size) === normalize(selectedSize) ? 'ring-2 ring-blue-500' : ''}"
-        //         ${isAvailable ? '' : 'disabled'}
-        //       >
-        //         ${size}
-        //       </button>
-        //     `;
-        //   });
-
-        //   updateAvailability();
-
-        //   /* ========= SPECIFICATIONS ========= */
-        //   const specTable = document.getElementById("specTable");
-
-        //   if (v.specs && Array.isArray(v.specs) && v.specs.length > 0) {
-        //     specTable.innerHTML = "";
-
-        //     v.specs.forEach(spec => {
-        //       specTable.innerHTML += `
-        //         <div class="grid grid-cols-3 px-6 py-4 gap-4 hover:bg-gray-50 transition-colors">
-        //           <div class="col-span-1">
-        //             <h3 class="text-sm font-medium text-gray-500">${spec.spec_name}</h3>
-        //           </div>
-        //           <div class="col-span-2">
-        //             <p class="text-sm text-gray-900">${spec.spec_value}</p>
-        //           </div>
-        //         </div>
-        //       `;
-        //     });
-
-        //     specTable.closest(".bg-white")?.classList.remove("hidden");
-        //   } else {
-        //     // 🔥 IMPORTANT: hide block if specs empty
-        //     specTable.closest(".bg-white")?.classList.add("hidden");
-        //   }
-
-        //   const mobileSpecTab = document.querySelector('[data-tab-content="specifications"]');
-        //   if (mobileSpecTab) {
-        //     if (v.specs && v.specs.length) {
-        //       mobileSpecTab.innerHTML = `
-        //         <ul class="space-y-2 text-sm text-gray-700">
-        //           ${v.specs.map(s => `<li><strong>${s.spec_name}:</strong> ${s.spec_value}</li>`).join("")}
-        //         </ul>
-        //       `;
-        //     } else {
-        //       mobileSpecTab.innerHTML = `<p class="text-sm text-gray-500">No specifications available.</p>`;
-        //     }
-        //   }
-
-
-        //   /* ========= PRICE (default first variation) ========= */
-        //   currentStock = v.stock; // ✅ HERE
-        //   // const v = data.selected_variation || data.variations[0];
-
-        //   // Load ONLY variant images
-        //   renderGallery(v.images || data.upload || []);
-
-        //   // document.getElementById("mobilePrice").innerText = `₹${v.sell_price}`;
-        //   const mobilePriceEl = document.getElementById("mobilePrice");
-        //   if (mobilePriceEl) {
-        //     mobilePriceEl.innerText = `₹${v.sell_price}`;
-        //   }
-        //   document.querySelector(".sale_price").innerText = `₹${v.sell_price}`;
-        //   document.querySelector(".regular_price").innerText = `₹${v.regular_price}`;
-        //   document.getElementById("stockText").innerText = `${v.stock} available`;
-
-        //   /* ========= SKU ========= */
-        //   document.querySelector(".sku_text").innerText = `SKU: ${v.aid}-${v.uid}`;
-
-        //   /* ===== APPLY INITIAL VARIANT ===== */
-        //   applyVariation(v);
-
-        //   showRealContent(); // hide skeleton
-        //   // Thumbnail click (AFTER API render)
-        //   document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
-        //     thumb.addEventListener('click', () => {
-        //       currentImageIndex = index;
-        //       updateMainImage(index);
-        //     });
-        //   });
-        // }
-
         function bindProduct(data) {
 
           /* ================= BASIC PRODUCT INFO ================= */
@@ -706,27 +548,39 @@
           const colors = [...new Set(variations.map(v => v.color))];
 
           colors.forEach(color => {
-            const isHex = color.startsWith("#");
+            const code = COLOR_MAP[color.toLowerCase()] || "#e5e7eb";
 
             colorWrap.innerHTML += `
               <button
                 data-color="${color}"
                 onclick="selectColor('${color}')"
-                class="color-btn w-10 h-10 rounded-full border border-gray-300
+                class="color-btn w-10 h-10 rounded-full border flex items-center justify-center
                 ${normalize(color) === normalize(selectedColor) ? "ring-2 ring-blue-500" : ""}"
-                style="background-color:${isHex ? color : "#f3f4f6"}"
+                style="background:${code}"
                 title="${color}"
               >
-                ${!isHex ? `<span class="text-[10px] font-medium">${color}</span>` : ""}
+                <span class="sr-only">${color}</span>
               </button>
             `;
           });
+
 
           /* ================= SIZE OPTIONS ================= */
           const sizeWrap = document.getElementById("sizeOptions");
           sizeWrap.innerHTML = "";
 
-          const availableSizes = new Set(variations.map(v => normalize(v.size)));
+          function getAllSizes() {
+            const sizes = new Set();
+
+            variations.forEach(v => {
+              if (!v.size) return;
+              v.size.split(",").forEach(s => sizes.add(normalize(s)));
+            });
+
+            return sizes;
+          }
+
+          const availableSizes = getAllSizes();
 
           STATIC_SIZES.forEach(size => {
             const enabled = availableSizes.has(normalize(size));
@@ -745,6 +599,7 @@
             `;
           });
 
+
           /* ================= REVIEWS (PLACEHOLDER) ================= */
           const reviewsTab = document.querySelector('[data-tab-content="reviews"]');
           if (reviewsTab) {
@@ -756,15 +611,14 @@
           }
 
           /* ================= APPLY INITIAL VARIANT ================= */
-          applyVariation(v);
+          applyVariation(v, true);
+          renderSpecs(v.specs || []);
 
           /* ================= SHOW REAL CONTENT ================= */
           showRealContent();
         }
       
         // 4. Init
-        document.addEventListener("DOMContentLoaded", fetchProduct);
-
         function selectColor(color) {
           const btn = [...document.querySelectorAll('.color-btn')]
             .find(b => b.dataset.color === color);
@@ -785,7 +639,7 @@
 
           selectedSize = size;
           updateAvailability();
-          // updateVariation();
+          updateVariation();
         }
 
         let currentAppliedVariation = null;
@@ -795,12 +649,17 @@
           currentAppliedVariation = v;
 
           selectedColor = v.color;
-          selectedSize  = v.size;
+          selectedSize = v.size.split(",")[0];
           currentStock  = v.stock;
+          const discount =  Math.round(((v.regular_price - v.sell_price) / v.regular_price) * 100);
 
+          document.getElementById("mobilePrice").innerText = `₹${v.sell_price}`;
           document.querySelector(".sale_price").innerText = `₹${v.sell_price}`;
           document.querySelector(".regular_price").innerText = `₹${v.regular_price}`;
           document.getElementById("stockText").innerText = `${v.stock} available`;
+        
+          document.querySelector(".discount_percentage").innerText =
+            discount > 0 ? `${discount}% OFF` : "";
 
           // ✅ ONLY reload images when COLOR changes
           if (updateImages) {
@@ -811,12 +670,21 @@
           updateAvailability();
         }
 
+        function sizeMatches(v, size) {
+          if (!v.size || !size) return false;
+
+          return v.size
+            .split(",")
+            .map(s => normalize(s))
+            .includes(normalize(size));
+        }
+
         function updateVariation() {
           if (!selectedColor || !selectedSize) return;
 
           const match = variations.find(v =>
             normalize(v.color) === normalize(selectedColor) &&
-            normalize(v.size) === normalize(selectedSize)
+            sizeMatches(v, selectedSize)
           );
 
           if (!match) return;
@@ -826,6 +694,31 @@
             normalize(currentAppliedVariation.color) !== normalize(match.color);
 
           applyVariation(match, colorChanged);
+        }
+
+        function initUIEvents() {
+          // Image navigation
+          document.getElementById('prevImage')?.addEventListener('click', () => {
+            if (!images.length) return;
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            updateMainImage(currentImageIndex);
+          });
+
+          document.getElementById('nextImage')?.addEventListener('click', () => {
+            if (!images.length) return;
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            updateMainImage(currentImageIndex);
+          });
+
+          // Quantity buttons
+          const qty = document.getElementById('quantity');
+          document.getElementById('decreaseQuantity')?.addEventListener('click', () => {
+            if (+qty.innerText > 1) qty.innerText--;
+          });
+
+          document.getElementById('increaseQuantity')?.addEventListener('click', () => {
+            if (+qty.innerText < currentStock) qty.innerText++;
+          });
         }
       </script>
 
@@ -858,142 +751,168 @@
           });
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-          // Image Gallery
-          const mainImage = document.getElementById('mainImage');
-          // const thumbnails = document.querySelectorAll('.thumbnail');
-          const prevButton = document.getElementById('prevImage');
-          const nextButton = document.getElementById('nextImage');
+        // document.addEventListener('DOMContentLoaded', function() {
+        //   // Image Gallery
+        //   // const mainImage = document.getElementById('mainImage');
+        //   // const thumbnails = document.querySelectorAll('.thumbnail');
+        //   const prevButton = document.getElementById('prevImage');
+        //   const nextButton = document.getElementById('nextImage');
           
-          prevButton.addEventListener('click', () => {
-            if (!images.length) return;   // ✅ ADD
-            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-            updateMainImage(currentImageIndex);
-          });
+        //   prevButton.addEventListener('click', () => {
+        //     if (!images.length) return;   // ✅ ADD
+        //     currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        //     updateMainImage(currentImageIndex);
+        //   });
 
-          nextButton.addEventListener('click', () => {
-            if (!images.length) return;   // ✅ ADD
-            currentImageIndex = (currentImageIndex + 1) % images.length;
-            updateMainImage(currentImageIndex);
-          });
+        //   nextButton.addEventListener('click', () => {
+        //     if (!images.length) return;   // ✅ ADD
+        //     currentImageIndex = (currentImageIndex + 1) % images.length;
+        //     updateMainImage(currentImageIndex);
+        //   });
 
-          // Quantity Controls
-          const quantityInput = document.getElementById('quantity');
-          const decreaseButton = document.getElementById('decreaseQuantity');
-          const increaseButton = document.getElementById('increaseQuantity');
+        //   // Quantity Controls
+        //   const quantityInput = document.getElementById('quantity');
+        //   const decreaseButton = document.getElementById('decreaseQuantity');
+        //   const increaseButton = document.getElementById('increaseQuantity');
           
-          decreaseButton.addEventListener('click', () => {
-            const currentValue = parseInt(quantityInput.textContent);
-            if (currentValue > 1) {
-            quantityInput.textContent = currentValue - 1;
-            }
-          });
+        //   decreaseButton.addEventListener('click', () => {
+        //     const currentValue = parseInt(quantityInput.textContent);
+        //     if (currentValue > 1) {
+        //     quantityInput.textContent = currentValue - 1;
+        //     }
+        //   });
 
-          increaseButton.addEventListener('click', () => {
-            const currentValue = parseInt(quantityInput.textContent);
-            if (currentValue < currentStock) {
-              quantityInput.textContent = currentValue + 1;
-            }
-          });
+        //   increaseButton.addEventListener('click', () => {
+        //     const currentValue = parseInt(quantityInput.textContent);
+        //     if (currentValue < currentStock) {
+        //       quantityInput.textContent = currentValue + 1;
+        //     }
+        //   });
 
-          // Mobile Navigation
-          const tabButtons = document.querySelectorAll('[data-tab]');
-          const tabContents = document.querySelectorAll('[data-tab-content]');
+        //   // Mobile Navigation
+        //   const tabButtons = document.querySelectorAll('[data-tab]');
+        //   const tabContents = document.querySelectorAll('[data-tab-content]');
 
-          tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-              const tabName = button.getAttribute('data-tab');
+        //   tabButtons.forEach(button => {
+        //     button.addEventListener('click', () => {
+        //       const tabName = button.getAttribute('data-tab');
 
-              tabButtons.forEach(b => {
-                if (b.getAttribute('data-tab') === tabName) {
-                  b.classList.add('border-b-2', 'border-blue-600', 'text-blue-600');
-                  b.classList.remove('text-gray-500');
-                } else {
-                  b.classList.remove('border-b-2', 'border-blue-600', 'text-blue-600');
-                  b.classList.add('text-gray-500');
-                }
-              });
+        //       tabButtons.forEach(b => {
+        //         if (b.getAttribute('data-tab') === tabName) {
+        //           b.classList.add('border-b-2', 'border-blue-600', 'text-blue-600');
+        //           b.classList.remove('text-gray-500');
+        //         } else {
+        //           b.classList.remove('border-b-2', 'border-blue-600', 'text-blue-600');
+        //           b.classList.add('text-gray-500');
+        //         }
+        //       });
 
-              tabContents.forEach(content => {
-                if (content.getAttribute('data-tab-content') === tabName) {
-                  content.classList.remove('hidden');
-                } else {
-                  content.classList.add('hidden');
-                }
-              });
-            });
-          });
+        //       tabContents.forEach(content => {
+        //         if (content.getAttribute('data-tab-content') === tabName) {
+        //           content.classList.remove('hidden');
+        //         } else {
+        //           content.classList.add('hidden');
+        //         }
+        //       });
+        //     });
+        //   });
 
-          // Mobile Action Bar
-          const actionBar = document.getElementById('mobileActionBar');
-          const productOptions = document.getElementById('product-options');
+        //   // Mobile Action Bar
+        //   const actionBar = document.getElementById('mobileActionBar');
+        //   const productOptions = document.getElementById('product-options');
 
-          window.addEventListener('scroll', () => {
-            if (window.scrollY > productOptions.offsetTop + 200) {
-            actionBar.classList.remove('translate-y-full');
-            } else {
-            actionBar.classList.add('translate-y-full');
-            }
-          });
+        //   window.addEventListener('scroll', () => {
+        //     if (window.scrollY > productOptions.offsetTop + 200) {
+        //     actionBar.classList.remove('translate-y-full');
+        //     } else {
+        //     actionBar.classList.add('translate-y-full');
+        //     }
+        //   });
 
-          // Share Button
-          const shareButton = document.getElementById('shareButton');
-          shareButton.addEventListener('click', async () => {
-            if (navigator.share) {
-              try {
-            await navigator.share({
-              title: document.querySelector("h1").innerText,
-              text: document.querySelector(".text-gray-700.leading-relaxed").innerText,
-              url: window.location.href
-            });
-              } catch (err) {
-            console.error('Share failed:', err);
-              }
-            } else {
-            // Fallback to copying URL
-            navigator.clipboard.writeText(window.location.href);
-          alert('Link copied to clipboard!');
-            }
-          });
+        //   // Share Button
+        //   const shareButton = document.getElementById('shareButton');
+        //   shareButton.addEventListener('click', async () => {
+        //     if (navigator.share) {
+        //       try {
+        //     await navigator.share({
+        //       title: document.querySelector("h1").innerText,
+        //       text: document.querySelector(".text-gray-700.leading-relaxed").innerText,
+        //       url: window.location.href
+        //     });
+        //       } catch (err) {
+        //     console.error('Share failed:', err);
+        //       }
+        //     } else {
+        //     // Fallback to copying URL
+        //     navigator.clipboard.writeText(window.location.href);
+        //   alert('Link copied to clipboard!');
+        //     }
+        //   });
 
-          // Wishlist Toggle
-          const wishlistButton = document.getElementById('wishlistButton');
-          const wishlistIcon = wishlistButton.querySelector('svg');
+        //   // Wishlist Toggle
+        //   const wishlistButton = document.getElementById('wishlistButton');
+        //   const wishlistIcon = wishlistButton.querySelector('svg');
           
-          wishlistButton.addEventListener('click', () => {
-            wishlistButton.classList.toggle('bg-red-50');
-          wishlistButton.classList.toggle('border-red-200');
-          wishlistButton.classList.toggle('text-red-500');
-          wishlistIcon.classList.toggle('fill-red-500');
-          });
+        //   wishlistButton.addEventListener('click', () => {
+        //     wishlistButton.classList.toggle('bg-red-50');
+        //   wishlistButton.classList.toggle('border-red-200');
+        //   wishlistButton.classList.toggle('text-red-500');
+        //   wishlistIcon.classList.toggle('fill-red-500');
+        //   });
 
-          // Add to Cart Animation
-          const addToCartButton = document.getElementById('addToCartButton');
-          let isAnimating = false;
+        //   // Add to Cart Animation
+        //   const addToCartButton = document.getElementById('addToCartButton');
+        //   let isAnimating = false;
 
-          addToCartButton.addEventListener('click', () => {
-            if (!isAnimating) {
-            isAnimating = true;
-          const originalContent = addToCartButton.innerHTML;
+        //   addToCartButton.addEventListener('click', () => {
+        //     if (!isAnimating) {
+        //     isAnimating = true;
+        //   const originalContent = addToCartButton.innerHTML;
 
-          addToCartButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-          addToCartButton.classList.add('bg-green-600');
-          addToCartButton.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          Added to Cart
+        //   addToCartButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+        //   addToCartButton.classList.add('bg-green-600');
+        //   addToCartButton.innerHTML = `
+        //   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        //     <polyline points="20 6 9 17 4 12"></polyline>
+        //   </svg>
+        //   Added to Cart
+        //   `;
+
+        //       setTimeout(() => {
+        //     addToCartButton.classList.remove('bg-green-600');
+        //   addToCartButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
+        //   addToCartButton.innerHTML = originalContent;
+        //   isAnimating = false;
+        //       }, 2000);
+        //     }
+        //   });
+        // });
+
+        function renderSpecs(specs = []) {
+          const table = document.getElementById("specTable");
+          const mobile = document.querySelector('[data-tab-content="specifications"]');
+
+          if (!specs.length) {
+            table.innerHTML = `<p class="p-6 text-sm text-gray-500">No specifications available</p>`;
+            mobile.innerHTML = table.innerHTML;
+            return;
+          }
+
+          table.innerHTML = specs.map(s => `
+            <div class="flex justify-between px-6 py-3 text-sm">
+              <span class="text-gray-600">${s.spec_name}</span>
+              <span class="font-medium text-gray-900">${s.spec_value}</span>
+            </div>
+          `).join("");
+
+          mobile.innerHTML = `
+            <ul class="space-y-2 text-sm text-gray-700">
+              ${specs.map(s => `
+                <li><strong>${s.spec_name}:</strong> ${s.spec_value}</li>
+              `).join("")}
+            </ul>
           `;
-
-              setTimeout(() => {
-            addToCartButton.classList.remove('bg-green-600');
-          addToCartButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
-          addToCartButton.innerHTML = originalContent;
-          isAnimating = false;
-              }, 2000);
-            }
-          });
-        });
+        }
       </script>
 
       <!-- related product slider -->

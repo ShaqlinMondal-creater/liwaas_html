@@ -366,6 +366,7 @@
         let currentStock = 0;
         let currentImageIndex = 0;
         let currentVariation = null;
+        let currentProductId = null;
 
         // ========== UTILITY FUNCTIONS ==========
         function normalize(value) {
@@ -736,7 +737,7 @@
           document.querySelector(".short_desc").innerText = description;
           document.querySelector(".mb_long_desc p").innerText = description;
           document.querySelector(".long_desc p").innerText = description;
-
+          currentProductId = data.id;
           // Variations
           variations = Array.isArray(data.variations) ? data.variations : [];
           if (!variations.length) {
@@ -1001,7 +1002,7 @@
 
           // Base payload (always required)
           const payload = {
-            products_id: currentVariation.product_id || currentVariation.products_id || null,
+            products_id: currentProductId || null,
             aid: currentVariation.aid,
             uid: currentVariation.uid,
             quantity: getSelectedQuantity()

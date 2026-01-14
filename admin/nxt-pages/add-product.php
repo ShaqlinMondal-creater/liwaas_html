@@ -244,7 +244,7 @@
 
   async function loadColors() {
     try {
-      const res = await fetch("./config/color.json");
+      const res = await fetch("./configs/color.json");
       const data = await res.json();
 
       if (!data.colors || !Array.isArray(data.colors)) return;

@@ -663,19 +663,21 @@
           }
         } else {
           // For simple product, upload images from main image input
+          // ✅ PRODUCT IMAGE UPLOAD (BOTTOM INPUT)
           const imageInput = form.querySelector('input[name="image[]"]');
           const files = imageInput.files;
 
           if (files.length > 0) {
             const uploadForm = new FormData();
+
+            // ✅ ONLY aid (NO uid here)
             uploadForm.append("aid", aid);
-            uploadForm.append("uid", payload.uid);
 
             for (let file of files) {
               uploadForm.append("file[]", file);
             }
 
-            const uploadRes = await fetch("<?= $baseUrl ?>/api/admin/upload/variation-images", {
+            const uploadRes = await fetch("<?= $baseUrl ?>/admin/upload/product-images", {
               method: "POST",
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -684,12 +686,14 @@
             });
 
             const uploadResult = await uploadRes.json();
+
             if (uploadResult.success) {
-              alert("📦 Images uploaded successfully");
+              alert("✅ Product images uploaded successfully");
             } else {
-              alert("⚠️ Product added but image upload failed: " + uploadResult.message);
+              alert("⚠️ Product image upload failed: " + uploadResult.message);
             }
           }
+
 
         }
 

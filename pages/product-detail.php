@@ -349,7 +349,6 @@
         </div>
       </main>
 
-
       <script>
         const BASE_URL = "<?= $baseUrl ?>"; // change to production later
         let images = [];   // ✅ ADD THIS
@@ -360,6 +359,9 @@
         let currentImageIndex = 0;
         const STATIC_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
         let COLOR_MAP = {};
+        let imageNavBound = false;
+        let quantityBound = false;
+        let uiBound = false;
 
         async function loadColorMap() {
           const res = await fetch("../inc/color.json");
@@ -477,7 +479,7 @@
 
         function renderGallery(imageList = []) {
           const mainImage = document.getElementById("mainImage");
-          const thumbContainer = document.querySelector(".flex.gap-2.overflow-x-auto");
+          const thumbContainer = document.querySelector(".flex.gap-2.overflow-x-auto.pb-2");
 
           images = imageList.map(img => ({
             src: img.url,
@@ -651,9 +653,16 @@
           selectedColor = v.color;
           selectedSize = v.size.split(",")[0];
           currentStock  = v.stock;
-          const discount =  Math.round(((v.regular_price - v.sell_price) / v.regular_price) * 100);
+          let discount = 0;
+          if (v.regular_price > 0) {
+            discount = Math.round(((v.regular_price - v.sell_price) / v.regular_price) * 100);
+          }
 
-          document.getElementById("mobilePrice").innerText = `₹${v.sell_price}`;
+          const mobilePrice = document.getElementById("mobilePrice");
+          if (mobilePrice) {
+            mobilePrice.innerText = `₹${v.sell_price}`;
+          }
+
           document.querySelector(".sale_price").innerText = `₹${v.sell_price}`;
           document.querySelector(".regular_price").innerText = `₹${v.regular_price}`;
           document.getElementById("stockText").innerText = `${v.stock} available`;
@@ -723,16 +732,12 @@
       </script>
 
       <script>
-          // Show the real page after data / images are ready
+        // Show the real page after data / images are ready
         function showRealContent() {
           document.getElementById('productSkeleton')?.classList.add('hidden');
           document.getElementById('productContent')?.classList.remove('hidden');
         }
 
-        // DEMO: remove skeleton after 1.2 s
-        document.addEventListener('DOMContentLoaded', () => {
-          // setTimeout(showRealContent, 1200);
-        });
         function updateMainImage(index) {
           if (!images.length || !images[index]) return;
 
@@ -751,142 +756,150 @@
           });
         }
 
-        // document.addEventListener('DOMContentLoaded', function() {
-        //   // Image Gallery
-        //   // const mainImage = document.getElementById('mainImage');
-        //   // const thumbnails = document.querySelectorAll('.thumbnail');
-        //   const prevButton = document.getElementById('prevImage');
-        //   const nextButton = document.getElementById('nextImage');
+        document.addEventListener('DOMContentLoaded', function() {
+          // Image Gallery
+          // const mainImage = document.getElementById('mainImage');
+          // const thumbnails = document.querySelectorAll('.thumbnail');
+          const prevButton = document.getElementById('prevImage');
+          const nextButton = document.getElementById('nextImage');
           
-        //   prevButton.addEventListener('click', () => {
-        //     if (!images.length) return;   // ✅ ADD
-        //     currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-        //     updateMainImage(currentImageIndex);
-        //   });
+          if (!imageNavBound) {
+            prevButton.addEventListener('click', () => {
+              if (!images.length) return;
+              currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+              updateMainImage(currentImageIndex);
+            });
 
-        //   nextButton.addEventListener('click', () => {
-        //     if (!images.length) return;   // ✅ ADD
-        //     currentImageIndex = (currentImageIndex + 1) % images.length;
-        //     updateMainImage(currentImageIndex);
-        //   });
+            nextButton.addEventListener('click', () => {
+              if (!images.length) return;
+              currentImageIndex = (currentImageIndex + 1) % images.length;
+              updateMainImage(currentImageIndex);
+            });
 
-        //   // Quantity Controls
-        //   const quantityInput = document.getElementById('quantity');
-        //   const decreaseButton = document.getElementById('decreaseQuantity');
-        //   const increaseButton = document.getElementById('increaseQuantity');
+            imageNavBound = true;
+          }
+
+          // Quantity Controls
+          const quantityInput = document.getElementById('quantity');
+          const decreaseButton = document.getElementById('decreaseQuantity');
+          const increaseButton = document.getElementById('increaseQuantity');
           
-        //   decreaseButton.addEventListener('click', () => {
-        //     const currentValue = parseInt(quantityInput.textContent);
-        //     if (currentValue > 1) {
-        //     quantityInput.textContent = currentValue - 1;
-        //     }
-        //   });
+          if (!quantityBound) {
+            decreaseButton.addEventListener('click', () => {
+              const currentValue = parseInt(quantityInput.textContent);
+              if (currentValue > 1) {
+                quantityInput.textContent = currentValue - 1;
+              }
+            });
 
-        //   increaseButton.addEventListener('click', () => {
-        //     const currentValue = parseInt(quantityInput.textContent);
-        //     if (currentValue < currentStock) {
-        //       quantityInput.textContent = currentValue + 1;
-        //     }
-        //   });
+            increaseButton.addEventListener('click', () => {
+              const currentValue = parseInt(quantityInput.textContent);
+              if (currentValue < currentStock) {
+                quantityInput.textContent = currentValue + 1;
+              }
+            });
 
-        //   // Mobile Navigation
-        //   const tabButtons = document.querySelectorAll('[data-tab]');
-        //   const tabContents = document.querySelectorAll('[data-tab-content]');
+            quantityBound = true;
+          }
 
-        //   tabButtons.forEach(button => {
-        //     button.addEventListener('click', () => {
-        //       const tabName = button.getAttribute('data-tab');
+          // Mobile Navigation
+          const tabButtons = document.querySelectorAll('[data-tab]');
+          const tabContents = document.querySelectorAll('[data-tab-content]');
 
-        //       tabButtons.forEach(b => {
-        //         if (b.getAttribute('data-tab') === tabName) {
-        //           b.classList.add('border-b-2', 'border-blue-600', 'text-blue-600');
-        //           b.classList.remove('text-gray-500');
-        //         } else {
-        //           b.classList.remove('border-b-2', 'border-blue-600', 'text-blue-600');
-        //           b.classList.add('text-gray-500');
-        //         }
-        //       });
+          tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+              const tabName = button.getAttribute('data-tab');
 
-        //       tabContents.forEach(content => {
-        //         if (content.getAttribute('data-tab-content') === tabName) {
-        //           content.classList.remove('hidden');
-        //         } else {
-        //           content.classList.add('hidden');
-        //         }
-        //       });
-        //     });
-        //   });
+              tabButtons.forEach(b => {
+                if (b.getAttribute('data-tab') === tabName) {
+                  b.classList.add('border-b-2', 'border-blue-600', 'text-blue-600');
+                  b.classList.remove('text-gray-500');
+                } else {
+                  b.classList.remove('border-b-2', 'border-blue-600', 'text-blue-600');
+                  b.classList.add('text-gray-500');
+                }
+              });
 
-        //   // Mobile Action Bar
-        //   const actionBar = document.getElementById('mobileActionBar');
-        //   const productOptions = document.getElementById('product-options');
+              tabContents.forEach(content => {
+                if (content.getAttribute('data-tab-content') === tabName) {
+                  content.classList.remove('hidden');
+                } else {
+                  content.classList.add('hidden');
+                }
+              });
+            });
+          });
 
-        //   window.addEventListener('scroll', () => {
-        //     if (window.scrollY > productOptions.offsetTop + 200) {
-        //     actionBar.classList.remove('translate-y-full');
-        //     } else {
-        //     actionBar.classList.add('translate-y-full');
-        //     }
-        //   });
+          // Mobile Action Bar
+          const actionBar = document.getElementById('mobileActionBar');
+          const productOptions = document.getElementById('product-options');
 
-        //   // Share Button
-        //   const shareButton = document.getElementById('shareButton');
-        //   shareButton.addEventListener('click', async () => {
-        //     if (navigator.share) {
-        //       try {
-        //     await navigator.share({
-        //       title: document.querySelector("h1").innerText,
-        //       text: document.querySelector(".text-gray-700.leading-relaxed").innerText,
-        //       url: window.location.href
-        //     });
-        //       } catch (err) {
-        //     console.error('Share failed:', err);
-        //       }
-        //     } else {
-        //     // Fallback to copying URL
-        //     navigator.clipboard.writeText(window.location.href);
-        //   alert('Link copied to clipboard!');
-        //     }
-        //   });
+          window.addEventListener('scroll', () => {
+            if (window.scrollY > productOptions.offsetTop + 200) {
+            actionBar.classList.remove('translate-y-full');
+            } else {
+            actionBar.classList.add('translate-y-full');
+            }
+          });
 
-        //   // Wishlist Toggle
-        //   const wishlistButton = document.getElementById('wishlistButton');
-        //   const wishlistIcon = wishlistButton.querySelector('svg');
+          // Share Button
+          const shareButton = document.getElementById('shareButton');
+          shareButton.addEventListener('click', async () => {
+            if (navigator.share) {
+              try {
+            await navigator.share({
+              title: document.querySelector("h1").innerText,
+              text: document.querySelector(".text-gray-700.leading-relaxed").innerText,
+              url: window.location.href
+            });
+              } catch (err) {
+            console.error('Share failed:', err);
+              }
+            } else {
+            // Fallback to copying URL
+            navigator.clipboard.writeText(window.location.href);
+          alert('Link copied to clipboard!');
+            }
+          });
+
+          // Wishlist Toggle
+          const wishlistButton = document.getElementById('wishlistButton');
+          const wishlistIcon = wishlistButton.querySelector('svg');
           
-        //   wishlistButton.addEventListener('click', () => {
-        //     wishlistButton.classList.toggle('bg-red-50');
-        //   wishlistButton.classList.toggle('border-red-200');
-        //   wishlistButton.classList.toggle('text-red-500');
-        //   wishlistIcon.classList.toggle('fill-red-500');
-        //   });
+          wishlistButton.addEventListener('click', () => {
+            wishlistButton.classList.toggle('bg-red-50');
+          wishlistButton.classList.toggle('border-red-200');
+          wishlistButton.classList.toggle('text-red-500');
+          wishlistIcon.classList.toggle('fill-red-500');
+          });
 
-        //   // Add to Cart Animation
-        //   const addToCartButton = document.getElementById('addToCartButton');
-        //   let isAnimating = false;
+          // Add to Cart Animation
+          const addToCartButton = document.getElementById('addToCartButton');
+          let isAnimating = false;
 
-        //   addToCartButton.addEventListener('click', () => {
-        //     if (!isAnimating) {
-        //     isAnimating = true;
-        //   const originalContent = addToCartButton.innerHTML;
+          addToCartButton.addEventListener('click', () => {
+            if (!isAnimating) {
+            isAnimating = true;
+          const originalContent = addToCartButton.innerHTML;
 
-        //   addToCartButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-        //   addToCartButton.classList.add('bg-green-600');
-        //   addToCartButton.innerHTML = `
-        //   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        //     <polyline points="20 6 9 17 4 12"></polyline>
-        //   </svg>
-        //   Added to Cart
-        //   `;
+          addToCartButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+          addToCartButton.classList.add('bg-green-600');
+          addToCartButton.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Added to Cart
+          `;
 
-        //       setTimeout(() => {
-        //     addToCartButton.classList.remove('bg-green-600');
-        //   addToCartButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
-        //   addToCartButton.innerHTML = originalContent;
-        //   isAnimating = false;
-        //       }, 2000);
-        //     }
-        //   });
-        // });
+              setTimeout(() => {
+            addToCartButton.classList.remove('bg-green-600');
+          addToCartButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
+          addToCartButton.innerHTML = originalContent;
+          isAnimating = false;
+              }, 2000);
+            }
+          });
+        });
 
         function renderSpecs(specs = []) {
           const table = document.getElementById("specTable");

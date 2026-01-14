@@ -348,7 +348,7 @@
         data.colors.forEach(color => {
           const item = document.createElement("div");
           item.innerHTML = `
-            <span style="background:${color.code}" class="w-10 h-6 rounded-full border"></span>
+            <span style="background:${color.code}" class="w-6 h-4 rounded-full border"></span>
             <span>${color.name}</span>
           `;
 

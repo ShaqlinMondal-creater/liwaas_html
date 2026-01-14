@@ -747,7 +747,7 @@
           // Initial variation
           const initialVariation = data.selected_variation || variations[0];
           selectedColor = initialVariation.color;
-          selectedSize = initialVariation.size.split(",")[0].trim();
+          selectedSize = initialVariation.size ? initialVariation.size.trim() : null;
           document.getElementById("selectedColorName").innerText = selectedColor;
 
           // Render color options

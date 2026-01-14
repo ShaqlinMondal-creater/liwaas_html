@@ -89,7 +89,7 @@
             </div>
 
             <!-- Thumbnails -->
-            <div class="flex gap-2 overflow-x-auto pb-2"></div>
+            <div id="thumbContainer" class="flex gap-2 overflow-x-auto pb-2"></div>
           </div>
 
           <!-- Product Info -->
@@ -361,7 +361,6 @@
         let COLOR_MAP = {};
         let imageNavBound = false;
         let quantityBound = false;
-        let uiBound = false;
 
         async function loadColorMap() {
           const res = await fetch("../inc/color.json");
@@ -446,7 +445,6 @@
         document.addEventListener("DOMContentLoaded", async () => {
           await loadColorMap();
           await fetchProduct();
-          initUIEvents();
         });
 
         // 2. Fetch product from API
@@ -479,7 +477,7 @@
 
         function renderGallery(imageList = []) {
           const mainImage = document.getElementById("mainImage");
-          const thumbContainer = document.querySelector(".flex.gap-2.overflow-x-auto.pb-2");
+          const thumbContainer = document.getElementById("thumbContainer");
 
           images = imageList.map(img => ({
             src: img.url,
@@ -651,7 +649,7 @@
           currentAppliedVariation = v;
 
           selectedColor = v.color;
-          selectedSize = v.size.split(",")[0];
+          selectedSize = v.size ? v.size.split(",")[0].trim() : null;
           currentStock  = v.stock;
           let discount = 0;
           if (v.regular_price > 0) {
@@ -703,31 +701,6 @@
             normalize(currentAppliedVariation.color) !== normalize(match.color);
 
           applyVariation(match, colorChanged);
-        }
-
-        function initUIEvents() {
-          // Image navigation
-          document.getElementById('prevImage')?.addEventListener('click', () => {
-            if (!images.length) return;
-            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-            updateMainImage(currentImageIndex);
-          });
-
-          document.getElementById('nextImage')?.addEventListener('click', () => {
-            if (!images.length) return;
-            currentImageIndex = (currentImageIndex + 1) % images.length;
-            updateMainImage(currentImageIndex);
-          });
-
-          // Quantity buttons
-          const qty = document.getElementById('quantity');
-          document.getElementById('decreaseQuantity')?.addEventListener('click', () => {
-            if (+qty.innerText > 1) qty.innerText--;
-          });
-
-          document.getElementById('increaseQuantity')?.addEventListener('click', () => {
-            if (+qty.innerText < currentStock) qty.innerText++;
-          });
         }
       </script>
 

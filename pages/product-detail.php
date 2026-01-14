@@ -981,15 +981,13 @@
         window.selectSize = selectSize;
       </script>
 
-      <!-- Cart Logic -->
       <script>
         // ============================================
-        // ADD TO CART LOGIC (PRODUCT DETAIL PAGE)
+        // ADVANCED ADD TO CART LOGIC (AUTH + GUEST)
         // ============================================
 
         function getSelectedQuantity() {
-          const qtyEl = document.getElementById("quantity");
-          return Math.max(1, parseInt(qtyEl?.innerText || "1"));
+          return Math.max(1, parseInt(document.getElementById("quantity")?.innerText || "1"));
         }
 
         async function addToCart() {
@@ -998,12 +996,10 @@
             return;
           }
 
-          const authToken = localStorage.getItem("auth_token");
-          if (!authToken) {
-            alert("Please login to add items to cart");
-            return;
-          }
+          const authToken  = localStorage.getItem("auth_token");
+          const guestToken = localStorage.getItem("guest_token");
 
+          // Base payload (always required)
           const payload = {
             products_id: currentVariation.product_id || currentVariation.products_id || null,
             aid: currentVariation.aid,
@@ -1011,27 +1007,46 @@
             quantity: getSelectedQuantity()
           };
 
+          const headers = {
+            "Content-Type": "application/json"
+          };
+
+          // CASE 1: Logged-in user
+          if (authToken) {
+            headers["Authorization"] = `Bearer ${authToken}`;
+          }
+
+          // CASE 2: Guest user with temp_id
+          else if (guestToken) {
+            payload.temp_id = guestToken;
+          }
+
+          // CASE 3: New guest → no token, no temp_id
+          // (payload stays same)
+
           try {
             const res = await fetch(`${BASE_URL}/api/cart/create-cart`, {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${authToken}`
-              },
+              headers,
               body: JSON.stringify(payload)
             });
 
             const json = await res.json();
 
             if (json.success) {
+              // If backend returns temp_id, store it
+              if (json.temp_id && !authToken) {
+                localStorage.setItem("guest_token", json.temp_id);
+              }
+
               showCartSuccess();
             } else {
               showCartError(json.message || "Failed to add to cart");
             }
 
-          } catch (err) {
-            console.error("Add to cart error:", err);
-            showCartError("Something went wrong. Try again.");
+          } catch (error) {
+            console.error("Add to cart error:", error);
+            showCartError("Something went wrong. Please try again.");
           }
         }
 
@@ -1040,25 +1055,26 @@
         // ============================================
 
         function showCartSuccess() {
-          const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
+          const buttons = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
 
-          btns.forEach(btn => {
+          buttons.forEach(btn => {
             if (!btn) return;
 
-            const originalHTML = btn.innerHTML;
+            const original = btn.innerHTML;
             btn.disabled = true;
             btn.classList.remove("bg-blue-600", "hover:bg-blue-700");
             btn.classList.add("bg-green-600");
 
             btn.innerHTML = `
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
               Added to Cart
             `;
 
             setTimeout(() => {
-              btn.innerHTML = originalHTML;
+              btn.innerHTML = original;
               btn.disabled = false;
               btn.classList.remove("bg-green-600");
               btn.classList.add("bg-blue-600", "hover:bg-blue-700");
@@ -1071,15 +1087,12 @@
         }
 
         // ============================================
-        // BUTTON BINDINGS
+        // BUTTON BINDING
         // ============================================
 
         document.addEventListener("DOMContentLoaded", () => {
-          // Desktop button
           document.getElementById("addToCartButton")?.addEventListener("click", addToCart);
-
-          // Mobile bottom button (add id)
-          document.querySelector("#mobileActionBar button")?.addEventListener("click", addToCart);
+          document.getElementById("mobileAddToCart")?.addEventListener("click", addToCart);
         });
       </script>
 

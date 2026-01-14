@@ -468,18 +468,31 @@
             // First, try to keep color and change size
             const availableSizes = getAvailableSizesForColor(selectedColor);
             if (availableSizes.size > 0) {
-              selectedSize = Array.from(availableSizes)[0];
-              const newMatch = findVariation(selectedColor, selectedSize);
-              if (newMatch) {
-                applyVariation(newMatch, true);
-                return;
+              const firstSize = Array.from(availableSizes)[0];
+              // Check if we should use current size or first available
+              if (availableSizes.has(normalize(selectedSize))) {
+                // Current size is available for this color, find the variation
+                const newMatch = findVariation(selectedColor, selectedSize);
+                if (newMatch) {
+                  applyVariation(newMatch, true);
+                  return;
+                }
+              } else {
+                // Current size not available, use first available
+                selectedSize = firstSize;
+                const newMatch = findVariation(selectedColor, selectedSize);
+                if (newMatch) {
+                  applyVariation(newMatch, true);
+                  return;
+                }
               }
             }
             
             // If that fails, try to keep size and change color
             const availableColors = getAvailableColorsForSize(selectedSize);
-            if (availableColors.length > 0) {
+            if (availableColors.length > 0 && !availableColors.includes(selectedColor)) {
               selectedColor = availableColors[0];
+              document.getElementById("selectedColorName").innerText = selectedColor;
               const newMatch = findVariation(selectedColor, selectedSize);
               if (newMatch) {
                 applyVariation(newMatch, true);
@@ -491,10 +504,12 @@
             if (variations.length > 0) {
               const firstVar = variations[0];
               selectedColor = firstVar.color;
-              selectedSize = firstVar.size.split(",")[0].trim();
+              selectedSize = firstVar.size ? firstVar.size.split(",")[0].trim() : null;
+              document.getElementById("selectedColorName").innerText = selectedColor;
               applyVariation(firstVar, true);
             }
           } else {
+            // Found a match - check if color changed to update images
             const colorChanged = !currentVariation || 
               normalize(currentVariation.color) !== normalize(match.color);
             applyVariation(match, colorChanged);
@@ -508,6 +523,16 @@
 
           selectedColor = color;
           document.getElementById("selectedColorName").innerText = color;
+          
+          // Update color button visual state
+          document.querySelectorAll('.color-btn').forEach(b => {
+            b.classList.remove('ring-2', 'ring-blue-500');
+          });
+          btn.classList.add('ring-2', 'ring-blue-500');
+          
+          // Re-render size options for the new color
+          renderSizeOptions();
+          
           autoSelectValidVariation();
         }
 
@@ -516,6 +541,13 @@
           if (!btn || btn.disabled) return;
 
           selectedSize = size;
+          
+          // Update size button visual state
+          document.querySelectorAll('[data-size]').forEach(b => {
+            b.classList.remove('ring-2', 'ring-blue-500');
+          });
+          btn.classList.add('ring-2', 'ring-blue-500');
+          
           autoSelectValidVariation();
         }
 
@@ -524,22 +556,34 @@
 
           currentVariation = variation;
           selectedColor = variation.color;
-          selectedSize = variation.size.split(",")[0].trim();
-          currentStock = variation.stock || 0;
+          
+          // Preserve selected size if it exists in this variation, otherwise use first available
+          const variationSizes = variation.size ? variation.size.split(",").map(s => s.trim()) : [];
+          if (selectedSize && variationSizes.includes(selectedSize)) {
+            // Keep current selected size if it's available in this variation
+          } else if (variationSizes.length > 0) {
+            selectedSize = variationSizes[0];
+          }
+          
+          currentStock = parseInt(variation.stock) || 0;
+
+          // Parse prices (they come as strings from API)
+          const regularPrice = parseFloat(variation.regular_price) || 0;
+          const sellPrice = parseFloat(variation.sell_price) || 0;
 
           // Calculate discount
           let discount = 0;
-          if (variation.regular_price > 0) {
-            discount = Math.round(((variation.regular_price - variation.sell_price) / variation.regular_price) * 100);
+          if (regularPrice > 0) {
+            discount = Math.round(((regularPrice - sellPrice) / regularPrice) * 100);
           }
 
-          // Update price display
-          document.querySelector(".sale_price").innerText = `₹${variation.sell_price}`;
-          document.querySelector(".regular_price").innerText = `₹${variation.regular_price}`;
+          // Update price display (format as integer)
+          document.querySelector(".sale_price").innerText = `₹${Math.round(sellPrice)}`;
+          document.querySelector(".regular_price").innerText = `₹${Math.round(regularPrice)}`;
           
           const mobilePrice = document.getElementById("mobilePrice");
           if (mobilePrice) {
-            mobilePrice.innerText = `₹${variation.sell_price}`;
+            mobilePrice.innerText = `₹${Math.round(sellPrice)}`;
           }
 
           // Update discount
@@ -557,14 +601,34 @@
             renderGallery(variation.images || []);
           }
 
+          // Update specifications
+          renderSpecs(variation.specs || []);
+
           // Update quantity if needed
           const qtyEl = document.getElementById("quantity");
           if (qtyEl && parseInt(qtyEl.innerText) > currentStock) {
             qtyEl.innerText = Math.min(parseInt(qtyEl.innerText), currentStock);
           }
 
-          // Update availability states
+          // Update availability states and button visual states
           updateAvailability();
+          
+          // Update selected button states
+          document.querySelectorAll('.color-btn').forEach(btn => {
+            if (normalize(btn.dataset.color) === normalize(selectedColor)) {
+              btn.classList.add('ring-2', 'ring-blue-500');
+            } else {
+              btn.classList.remove('ring-2', 'ring-blue-500');
+            }
+          });
+          
+          document.querySelectorAll('[data-size]').forEach(btn => {
+            if (normalize(btn.dataset.size) === normalize(selectedSize) && !btn.disabled) {
+              btn.classList.add('ring-2', 'ring-blue-500');
+            } else {
+              btn.classList.remove('ring-2', 'ring-blue-500');
+            }
+          });
         }
 
         // ========== IMAGE GALLERY ==========
@@ -734,7 +798,8 @@
           const sizeWrap = document.getElementById("sizeOptions");
           sizeWrap.innerHTML = "";
 
-          const availableSizes = getAllAvailableSizes();
+          // Get available sizes based on selected color (or all if no color selected)
+          const availableSizes = selectedColor ? getAvailableSizesForColor(selectedColor) : getAllAvailableSizes();
 
           STATIC_SIZES.forEach(size => {
             const isAvailable = availableSizes.has(normalize(size));
@@ -747,7 +812,11 @@
             } ${isAvailable ? "" : "opacity-30 cursor-not-allowed"}`;
             btn.disabled = !isAvailable;
             btn.innerText = size;
-            btn.addEventListener("click", () => selectSize(size));
+            btn.addEventListener("click", () => {
+              if (!btn.disabled) {
+                selectSize(size);
+              }
+            });
             
             sizeWrap.appendChild(btn);
           });

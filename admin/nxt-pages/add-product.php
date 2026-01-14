@@ -677,7 +677,7 @@
             uploadForm.append("file[]", file);
           }
 
-          const uploadRes = await fetch("<?= $baseUrl ?>/admin/upload/product-images", {
+          const uploadRes = await fetch("<?= $baseUrl ?>/api/admin/upload/product-images", {
             method: "POST",
             headers: {
               Authorization: `Bearer ${token}`,

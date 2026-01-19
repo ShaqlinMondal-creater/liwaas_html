@@ -712,6 +712,8 @@
 
           btns.forEach(btn => {
             if (!btn) return;
+            btn.disabled = false;
+            btn.classList.remove("opacity-70", "cursor-not-allowed");
 
             btn.classList.remove("bg-blue-600", "hover:bg-blue-700");
             btn.classList.add("bg-orange-600", "hover:bg-orange-700");
@@ -737,6 +739,9 @@
 
           btns.forEach(btn => {
             if (!btn) return;
+            
+            btn.disabled = false;
+            btn.classList.remove("opacity-70", "cursor-not-allowed");
 
             btn.classList.remove("bg-orange-600", "hover:bg-orange-700");
             btn.classList.add("bg-blue-600", "hover:bg-blue-700");
@@ -1171,6 +1176,11 @@
         }
 
         async function addToCart() {
+
+          const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
+          // 🛡 Prevent double click / double API hit
+          if (btns[0]?.disabled) return;
+
           if (!currentVariation) {
             alert("Please select a valid product variation");
             return;
@@ -1243,7 +1253,6 @@
               // Optional: small success flash (very quick)
               btns.forEach(btn => {
                 if (!btn) return;
-                btn.disabled = false;
                 btn.classList.remove("bg-blue-600");
                 // btn.classList.add("bg-green-600");
                 btn.innerHTML = `

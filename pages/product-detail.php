@@ -1286,7 +1286,7 @@
           }
 
           try {
-            const res = await fetch(`${BASE_URL}/customer/wishlist/get`, {
+            const res = await fetch(`${BASE_URL}/api/customer/wishlist/get`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",

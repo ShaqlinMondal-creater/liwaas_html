@@ -1243,6 +1243,7 @@
               // Optional: small success flash (very quick)
               btns.forEach(btn => {
                 if (!btn) return;
+                btn.disabled = false;
                 btn.classList.remove("bg-blue-600");
                 // btn.classList.add("bg-green-600");
                 btn.innerHTML = `

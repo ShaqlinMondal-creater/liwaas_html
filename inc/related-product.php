@@ -49,7 +49,7 @@
         offset: 0
       };
 
-      const res = await fetch(`${BASE_URL}/products/allProductVariations`, {
+      const res = await fetch(`${BASE_URL}/api/products/allProductVariations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

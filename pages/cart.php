@@ -153,33 +153,60 @@
         async function fetchCart() {
           try {
             let headers = { "Content-Type": "application/json" };
-            let url = `${baseUrl}/api/cart/get-cart`;
+            let body = null;
 
+            // 1️⃣ If logged in user
             if (authToken) {
               headers["Authorization"] = `Bearer ${authToken}`;
-            } else if (guestId) {
-              url += `?temp_id=${guestId}`;
+            }
+            // 2️⃣ Else if guest user
+            else if (guestId) {
+              body = JSON.stringify({ temp_id: guestId });
+            }
+            // 3️⃣ Else no auth, no guest → empty cart
+            else {
+              renderCart(); // this will show empty cart UI
+              skeleton.classList.add("hidden");
+              return;
             }
 
-            const res = await fetch(url, { method: "POST", headers });
-            const result = await res.json();
+            const res = await fetch(`${baseUrl}/api/cart/get-cart`, {
+              method: "POST",
+              headers,
+              body
+            });
+
+            const text = await res.text();   // debug safe
+            let result;
+
+            try {
+              result = JSON.parse(text);
+            } catch (e) {
+              console.error("Not JSON response:", text);
+              return;
+            }
 
             if (result.success) {
               cartData = result.data || [];
+
+              // If backend generated new temp_id for first guest
               if (!authToken && result.temp_id) {
                 localStorage.setItem("guest_token", result.temp_id);
               }
+
               renderCart();
             } else {
               cartList.innerHTML = `<div class="p-6 text-gray-500">No items in your cart.</div>`;
             }
+
           } catch (err) {
             console.error("Error fetching cart:", err);
-            cartList.innerHTML = `<div class="p-6 text-red-500">Failed to load cart. Try again later.</div>`;
+            cartList.innerHTML = `<div class="p-6 text-red-500">Failed to load cart.</div>`;
           } finally {
             skeleton.classList.add("hidden");
           }
         }
+
 
         function checkCartStatus() {
             const checkoutBtn = document.getElementById("checkoutBtn");

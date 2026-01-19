@@ -1395,7 +1395,7 @@
           };
 
           try {
-            const res = await fetch(`${BASE_URL}/customer/wishlist/create`, {
+            const res = await fetch(`${BASE_URL}/api/customer/wishlist/create`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -1443,7 +1443,7 @@
           if (!authToken || !currentWishlistItem) return;
 
           try {
-            const res = await fetch(`${BASE_URL}/customer/wishlist/remove/${currentWishlistItem.id}`, {
+            const res = await fetch(`${BASE_URL}/api/customer/wishlist/remove/${currentWishlistItem.id}`, {
               method: "DELETE",
               headers: {
                 "Authorization": `Bearer ${authToken}`

@@ -459,6 +459,7 @@
 
             if (json.success) {
               cartDataCache = json.data || [];
+              syncVariationWithCart();   // ✅ ADD THIS HERE
             } else {
               cartDataCache = [];
             }
@@ -673,8 +674,6 @@
           });
         }
 
-        syncVariationWithCart();
-
         function syncVariationWithCart() {
           currentCartItem = null;
 
@@ -704,6 +703,7 @@
             setAddMode();
           }
         }
+        syncVariationWithCart();
 
         function setViewCartMode() {
           const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
@@ -730,7 +730,9 @@
         }
         function setAddMode() {
           const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
-
+          const qtyEl = document.getElementById("quantity");
+          if (qtyEl) qtyEl.innerText = 1;   // ✅ Reset
+          
           btns.forEach(btn => {
             if (!btn) return;
 
@@ -1147,8 +1149,8 @@
         // ========== INITIALIZATION ==========
         document.addEventListener("DOMContentLoaded", async () => {
           await loadColorMap();
-          await fetchProduct();
           await fetchCartForProductPage();
+          await fetchProduct();
           initUIEvents();
         });
 
@@ -1263,66 +1265,6 @@
             });
 
             alert("Failed to add to cart. Please try again.");
-          }
-        }
-
-        async function addToCart() {
-          if (!currentVariation) {
-            alert("Please select a valid product variation");
-            return;
-          }
-
-          const authToken  = localStorage.getItem("auth_token");
-          const guestToken = localStorage.getItem("guest_token");
-
-          // Base payload (always required)
-          const payload = {
-            products_id: currentProductId || null,
-            aid: currentVariation.aid,
-            uid: currentVariation.uid,
-            quantity: getSelectedQuantity()
-          };
-
-          const headers = {
-            "Content-Type": "application/json"
-          };
-
-          // CASE 1: Logged-in user
-          if (authToken) {
-            headers["Authorization"] = `Bearer ${authToken}`;
-          }
-
-          // CASE 2: Guest user with temp_id
-          else if (guestToken) {
-            payload.temp_id = guestToken;
-          }
-
-          // CASE 3: New guest → no token, no temp_id
-          // (payload stays same)
-
-          try {
-            const res = await fetch(`${BASE_URL}/api/cart/create-cart`, {
-              method: "POST",
-              headers,
-              body: JSON.stringify(payload)
-            });
-
-            const json = await res.json();
-
-            if (json.success) {
-              // If backend returns temp_id, store it
-              if (json.temp_id && !authToken) {
-                localStorage.setItem("guest_token", json.temp_id);
-              }
-
-              showCartSuccess();
-            } else {
-              showCartError(json.message || "Failed to add to cart");
-            }
-
-          } catch (error) {
-            console.error("Add to cart error:", error);
-            showCartError("Something went wrong. Please try again.");
           }
         }
 

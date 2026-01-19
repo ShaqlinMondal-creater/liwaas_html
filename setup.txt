@@ -21,14 +21,14 @@ profile
 
 ---------------------------------------
 home page: 
-slider section✅
-trending section✅
+slider section
+trending section
 offers section - > render page setting 
 new arrival section -> need modification
 
 ---------------------------------------
 shop page:
-need modification on wishlist, sorting
+need modification on wishlist, sorting -- processing
 
 ---------------------------------------
 profile page:
@@ -40,15 +40,15 @@ need modification on wishlist (full)✅
 
 ---------------------------------------
 cart page:
-need modification (all)✅
+need modification (all done)✅
 
 ---------------------------------------
 checkout page:
-need modification (all)
+need modification (all) -- pending
 
 ---------------------------------------
 product details page:
-need modification (all)
+need modification (all) -- processing
 
 ---------------------------------------
 About page:
@@ -69,3 +69,9 @@ UNIVERSEL SETTING->
 header -->
 footer -->
 color uses
+
+ADMIN:
+
+Add product -> Done ✅
+fetch product -> processing
+

@@ -161,7 +161,7 @@
               url += `?temp_id=${guestId}`;
             }
 
-            const res = await fetch(url, { method: "GET", headers });
+            const res = await fetch(url, { method: "POST", headers });
             const result = await res.json();
 
             if (result.success) {

@@ -221,7 +221,7 @@
             <!-- Action Buttons -->
             <div class="flex gap-4">
               <button
-                id="addToCartButton" type="button"
+                id="addToCartButton"
                 class="flex-1 py-3 px-6 flex items-center justify-center gap-2 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -459,7 +459,7 @@
 
             if (json.success) {
               cartDataCache = json.data || [];
-              // syncVariationWithCart();   // ✅ ADD THIS HERE
+              syncVariationWithCart();   // ✅ ADD THIS HERE
             } else {
               cartDataCache = [];
             }
@@ -1170,14 +1170,7 @@
           return Math.max(1, parseInt(document.getElementById("quantity")?.innerText || "1"));
         }
 
-        async function addToCart(event) {
-          if (event) event.preventDefault();
-
-          const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
-
-          // 🛡 Prevent double execution
-          if (btns[0]?.disabled) return;
-
+        async function addToCart() {
           if (!currentVariation) {
             alert("Please select a valid product variation");
             return;
@@ -1233,39 +1226,38 @@
                 localStorage.setItem("guest_token", json.temp_id);
               }
 
-              // ✅ UPDATE LOCAL CART STATE
+              // ✅ IMPORTANT: UPDATE LOCAL CART STATE
               if (json.data) {
+                // Normalize cart id field
                 const newCartItem = {
                   ...json.data,
-                  cart_id: json.data.id || json.data.cart_id
+                  cart_id: json.data.id || json.data.cart_id   // ensure cart_id exists
                 };
 
+                // Save as current cart item
                 currentCartItem = newCartItem;
+
+                // Push into cart cache
                 cartDataCache.push(newCartItem);
 
-                // 🔥 THIS SWITCHES BUTTON TO VIEW CART
+                // 🔥 Immediately switch UI to View Cart mode
                 syncVariationWithCart();
               }
 
-              // Optional: small success flash (very quick)
+              // 🟢 SUCCESS ANIMATION
               btns.forEach(btn => {
                 if (!btn) return;
-                btn.disabled = false;
                 btn.classList.remove("bg-blue-600");
-                // btn.classList.add("bg-green-600");
+                btn.classList.add("bg-green-600");
                 btn.innerHTML = `
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                       fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
-                  Added
+                  View Cart
                 `;
               });
 
-              // 🔵 AFTER SHORT DELAY, LET syncVariationWithCart CONTROL UI
-              setTimeout(() => {
-                syncVariationWithCart();
-              }, 600);
             } else {
               throw new Error(json.message || "Failed to add to cart");
             }
@@ -1502,7 +1494,7 @@
             <p id="mobilePrice" class="text-lg font-bold text-gray-900"></p>
           </div>
 
-          <button id="mobileAddToCart" type="button" class="flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-medium bg-blue-600 text-white">
+          <button id="mobileAddToCart" class="flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-medium bg-blue-600 text-white">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>

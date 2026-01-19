@@ -992,7 +992,7 @@
               qtyEl.innerText = newQty;
 
               if (currentCartItem) {
-                await updateCartQuantity(currentCartItem.id, newQty);
+                await updateCartQuantity(currentCartItem.cart_id, newQty);
               }
             }
           });
@@ -1006,7 +1006,7 @@
               qtyEl.innerText = newQty;
 
               if (currentCartItem) {
-                await updateCartQuantity(currentCartItem.id, newQty);
+                await updateCartQuantity(currentCartItem.cart_id, newQty);
               }
             }
           });
@@ -1036,7 +1036,7 @@
 
                 // Also update cartDataCache
                 cartDataCache = cartDataCache.map(item =>
-                  item.id === cartId ? { ...item, ...json.data } : item
+                  item.cart_id === cartId ? { ...item, ...json.data } : item
                 );
               } else {
                 alert("Failed to update cart quantity");

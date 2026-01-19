@@ -1226,6 +1226,24 @@
                 localStorage.setItem("guest_token", json.temp_id);
               }
 
+              // ✅ IMPORTANT: UPDATE LOCAL CART STATE
+              if (json.data) {
+                // Normalize cart id field
+                const newCartItem = {
+                  ...json.data,
+                  cart_id: json.data.id || json.data.cart_id   // ensure cart_id exists
+                };
+
+                // Save as current cart item
+                currentCartItem = newCartItem;
+
+                // Push into cart cache
+                cartDataCache.push(newCartItem);
+
+                // 🔥 Immediately switch UI to View Cart mode
+                syncVariationWithCart();
+              }
+              
               // 🟢 SUCCESS ANIMATION
               btns.forEach(btn => {
                 if (!btn) return;

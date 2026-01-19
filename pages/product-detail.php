@@ -943,31 +943,31 @@
 
           // Add to cart
           const addToCartButton = document.getElementById('addToCartButton');
-          if (addToCartButton) {
-            let isAnimating = false;
-            addToCartButton.addEventListener('click', () => {
-              if (isAnimating) return;
+          // if (addToCartButton) {
+          //   let isAnimating = false;
+          //   addToCartButton.addEventListener('click', () => {
+          //     if (isAnimating) return;
               
-              isAnimating = true;
-              const originalContent = addToCartButton.innerHTML;
+          //     isAnimating = true;
+          //     const originalContent = addToCartButton.innerHTML;
 
-              addToCartButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-              addToCartButton.classList.add('bg-green-600');
-              addToCartButton.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Added to Cart
-              `;
+          //     addToCartButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+          //     addToCartButton.classList.add('bg-green-600');
+          //     addToCartButton.innerHTML = `
+          //       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          //         <polyline points="20 6 9 17 4 12"></polyline>
+          //       </svg>
+          //       Added to Cart
+          //     `;
 
-              setTimeout(() => {
-                addToCartButton.classList.remove('bg-green-600');
-                addToCartButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                addToCartButton.innerHTML = originalContent;
-                isAnimating = false;
-              }, 2000);
-            });
-          }
+          //     setTimeout(() => {
+          //       addToCartButton.classList.remove('bg-green-600');
+          //       addToCartButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
+          //       addToCartButton.innerHTML = originalContent;
+          //       isAnimating = false;
+          //     }, 2000);
+          //   });
+          // }
         }
 
         // ========== INITIALIZATION ==========
@@ -989,6 +989,106 @@
 
         function getSelectedQuantity() {
           return Math.max(1, parseInt(document.getElementById("quantity")?.innerText || "1"));
+        }
+
+        async function addToCart() {
+          if (!currentVariation) {
+            alert("Please select a valid product variation");
+            return;
+          }
+
+          const authToken  = localStorage.getItem("auth_token");
+          const guestToken = localStorage.getItem("guest_token");
+
+          const payload = {
+            products_id: currentProductId || null,
+            aid: currentVariation.aid,
+            uid: currentVariation.uid,
+            quantity: getSelectedQuantity()
+          };
+
+          const headers = { "Content-Type": "application/json" };
+
+          if (authToken) {
+            headers["Authorization"] = `Bearer ${authToken}`;
+          } else if (guestToken) {
+            payload.temp_id = guestToken;
+          }
+
+          const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
+
+          // 🔵 Set loading state
+          btns.forEach(btn => {
+            if (!btn) return;
+            btn.disabled = true;
+            btn.classList.add("opacity-70", "cursor-not-allowed");
+            btn.dataset.originalText = btn.innerHTML;
+            btn.innerHTML = `
+              <svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" opacity="0.3"></circle>
+                <path d="M22 12a10 10 0 0 1-10 10"></path>
+              </svg>
+              Adding...
+            `;
+          });
+
+          try {
+            const res = await fetch(`${BASE_URL}/api/cart/create-cart`, {
+              method: "POST",
+              headers,
+              body: JSON.stringify(payload)
+            });
+
+            const json = await res.json();
+
+            if (json.success) {
+              // Save temp_id if new guest
+              if (json.temp_id && !authToken) {
+                localStorage.setItem("guest_token", json.temp_id);
+              }
+
+              // 🟢 SUCCESS ANIMATION
+              btns.forEach(btn => {
+                if (!btn) return;
+                btn.classList.remove("bg-blue-600");
+                btn.classList.add("bg-green-600");
+                btn.innerHTML = `
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Added to Cart
+                `;
+              });
+
+              // After 2 seconds, restore button
+              setTimeout(() => {
+                btns.forEach(btn => {
+                  if (!btn) return;
+                  btn.disabled = false;
+                  btn.classList.remove("bg-green-600", "opacity-70", "cursor-not-allowed");
+                  btn.classList.add("bg-blue-600", "hover:bg-blue-700");
+                  btn.innerHTML = btn.dataset.originalText;
+                });
+              }, 2000);
+
+            } else {
+              throw new Error(json.message || "Failed to add to cart");
+            }
+
+          } catch (error) {
+            console.error("Add to cart error:", error);
+
+            // 🔴 Restore button on error
+            btns.forEach(btn => {
+              if (!btn) return;
+              btn.disabled = false;
+              btn.classList.remove("opacity-70", "cursor-not-allowed");
+              btn.innerHTML = btn.dataset.originalText;
+            });
+
+            alert("Failed to add to cart. Please try again.");
+          }
         }
 
         async function addToCart() {

@@ -735,31 +735,31 @@
           });
         }
 
-        function setViewCartMode() {
+        function setAddMode() {
           const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
+          const qtyEl = document.getElementById("quantity");
+          if (qtyEl) qtyEl.innerText = 1;
 
           btns.forEach(btn => {
             if (!btn) return;
 
-            // 🔥 IMPORTANT FIX
+            // 🔥 Always enable
             btn.disabled = false;
             btn.classList.remove("opacity-70", "cursor-not-allowed");
 
-            btn.classList.remove("bg-blue-600", "hover:bg-blue-700");
-            btn.classList.add("bg-orange-600", "hover:bg-orange-700");
+            btn.classList.remove("bg-orange-600", "hover:bg-orange-700", "bg-green-600");
+            btn.classList.add("bg-blue-600", "hover:bg-blue-700");
 
             btn.innerHTML = `
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                  fill="none" stroke="currentColor" stroke-width="2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
               </svg>
-              View Cart
+              Add to Cart
             `;
 
-            btn.onclick = () => {
-              window.location.href = "pages/cart";
-            };
+            btn.onclick = addToCart;
           });
         }
 
@@ -1230,42 +1230,25 @@
 
             if (json.success) {
 
-  // Save temp_id if new guest
-  if (json.temp_id && !authToken) {
-    localStorage.setItem("guest_token", json.temp_id);
-  }
+              // Save temp_id if new guest
+              if (json.temp_id && !authToken) {
+                localStorage.setItem("guest_token", json.temp_id);
+              }
 
-  if (json.data) {
-    const newCartItem = {
-      ...json.data,
-      cart_id: json.data.id || json.data.cart_id
-    };
+              if (json.data) {
+                const newCartItem = {
+                  ...json.data,
+                  cart_id: json.data.id || json.data.cart_id
+                };
 
-    currentCartItem = newCartItem;
-    cartDataCache.push(newCartItem);
+                currentCartItem = newCartItem;
+                cartDataCache.push(newCartItem);
 
-    // 🔥 This will now correctly switch per-variant
-    syncVariationWithCart();
-  }
-
-  // Re-enable buttons before changing UI
-  btns.forEach(btn => {
-    if (!btn) return;
-    btn.disabled = false;
-    btn.classList.remove("opacity-70", "cursor-not-allowed");
-
-    btn.classList.remove("bg-blue-600");
-    btn.classList.add("bg-green-600");
-    btn.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-          fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-      View Cart
-    `;
-  });
-}
- else {
+                // 🔥 This will now correctly switch per-variant
+                syncVariationWithCart();
+              }
+            } 
+            else {
               throw new Error(json.message || "Failed to add to cart");
             }
 

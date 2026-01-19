@@ -31,7 +31,189 @@
 </div>
 
 <!-- related product slider -->
-<script>
+ <script>
+  // ============================================
+  // DYNAMIC RELATED PRODUCTS (FROM API)
+  // ============================================
+
+  async function fetchRelatedProducts() {
+    if (!currentCategoryId) {
+      console.warn("No category id found for related products");
+      return;
+    }
+
+    try {
+      const payload = {
+        category_id: currentCategoryId,
+        limit: 20,
+        offset: 0
+      };
+
+      const res = await fetch(`${BASE_URL}/products/allProductVariations`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const json = await res.json();
+
+      if (json.success && Array.isArray(json.data)) {
+        renderRelatedProducts(json.data);
+      } else {
+        console.warn("No related products found");
+      }
+
+    } catch (e) {
+      console.error("Failed to fetch related products:", e);
+    }
+  }
+
+  // --------- RENDER RELATED PRODUCTS ----------
+  function renderRelatedProducts(products) {
+    const container = document.getElementById("relatedProductsContainer");
+    if (!container) return;
+
+    // Remove current product from related list (important UX)
+    const filtered = products.filter(p => p.product_id != currentProductId);
+
+    if (!filtered.length) {
+      container.innerHTML = `<p class="text-sm text-gray-500">No related products found.</p>`;
+      return;
+    }
+
+    container.innerHTML = filtered.map(p => {
+      const image = p.images?.[0] || "";
+      const name = p.product_name || p.name || "Product";
+      const price = p.sell_price ? `₹${Math.round(p.sell_price)}` : "";
+      const rating = p.rating || 4.5;
+      const productId = p.product_id || p.id;
+
+      return `
+        <div class="flex-shrink-0 w-48 group" data-product-id="${productId}">
+          <div onclick="redirectToDetail(${productId})"
+               class="cursor-pointer aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3 relative">
+            <img
+              src="${image}"
+              alt="${name}"
+              class="w-full h-full object-cover transition-transform group-hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+
+          <div>
+            <h3 class="font-medium text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+              ${name}
+            </h3>
+            <p class="text-blue-600 font-medium mt-1">${price}</p>
+            <div class="flex items-center gap-1 mt-2">
+              ${renderRatingStars(rating)}
+              <span class="text-xs text-gray-500">(120)</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    initRelatedSlider();
+  }
+
+  // --------- RATING STARS (REUSE YOUR FUNCTION) ----------
+  function renderRatingStars(rating) {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+    let stars = "";
+
+    for (let i = 0; i < fullStars; i++) {
+      stars += `
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-amber-400">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      `;
+    }
+
+    if (hasHalfStar) {
+      stars += `
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-amber-400">
+          <defs>
+            <linearGradient id="half-star-rel" x1="0" x2="100%" y1="0" y2="0">
+              <stop offset="50%" stop-color="currentColor"/>
+              <stop offset="50%" stop-color="#D1D5DB"/>
+            </linearGradient>
+          </defs>
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#half-star-rel)"/>
+        </svg>
+      `;
+    }
+
+    for (let i = 0; i < emptyStars; i++) {
+      stars += `
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-gray-300">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      `;
+    }
+
+    return `<div class="flex">${stars}</div>`;
+  }
+
+  // --------- REDIRECT ----------
+  window.redirectToDetail = function(id) {
+    window.location.href = `pages/product-detail.php?id=${id}`;
+  };
+
+  // --------- SLIDER NAV ----------
+  function initRelatedSlider() {
+    const relatedContainer = document.getElementById('relatedProductsContainer');
+    const relatedPrevBtn = document.querySelector('.related-prev');
+    const relatedNextBtn = document.querySelector('.related-next');
+
+    if (!relatedContainer || !relatedPrevBtn || !relatedNextBtn) return;
+
+    const scrollAmount = 300;
+
+    relatedPrevBtn.onclick = () => {
+      relatedContainer.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    };
+
+    relatedNextBtn.onclick = () => {
+      relatedContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    };
+
+    const updateButtonStates = () => {
+      const maxScroll = relatedContainer.scrollWidth - relatedContainer.clientWidth;
+
+      if (relatedContainer.scrollLeft <= 10) {
+        relatedPrevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        relatedPrevBtn.disabled = true;
+      } else {
+        relatedPrevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        relatedPrevBtn.disabled = false;
+      }
+
+      if (relatedContainer.scrollLeft >= maxScroll - 10) {
+        relatedNextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        relatedNextBtn.disabled = true;
+      } else {
+        relatedNextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        relatedNextBtn.disabled = false;
+      }
+    };
+
+    relatedContainer.addEventListener('scroll', updateButtonStates);
+    window.addEventListener('resize', updateButtonStates);
+    updateButtonStates();
+  }
+
+  // --------- CALL AFTER PRODUCT LOAD ----------
+  // IMPORTANT: call this only AFTER bindProduct runs
+  document.addEventListener("DOMContentLoaded", () => {
+    // We wait until product is loaded, then call from bindProduct
+  });
+</script>
+
+<!-- <script>
 // related-products.js
 document.addEventListener('DOMContentLoaded', function() {
 // Related Products Data
@@ -236,4 +418,4 @@ if (relatedContainer && relatedPrevBtn && relatedNextBtn) {
     window.addEventListener('resize', updateButtonStates);
 }
 });
-</script>
+</script> -->

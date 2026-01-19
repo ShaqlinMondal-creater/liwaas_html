@@ -336,6 +336,7 @@
         let currentImageIndex = 0;
         let currentVariation = null;
         let currentProductId = null;
+        let currentCategoryId = null;
 
         let currentCartItem = null;   // holds cart row if this variation is in cart
         let cartDataCache = [];     // full cart for quick lookup
@@ -838,6 +839,7 @@
           document.querySelector(".mb_long_desc p").innerText = description;
           document.querySelector(".long_desc p").innerText = description;
           currentProductId = data.id;
+          currentCategoryId = data.category_id || data.category?.id || null;
           // Variations
           variations = Array.isArray(data.variations) ? data.variations : [];
           if (!variations.length) {
@@ -867,6 +869,8 @@
           applyVariation(initialVariation, true);
           renderSpecs(initialVariation.specs || []);
           syncVariationWithWishlist();   // 👈 ADD THIS
+          // 🔥 ADD THIS
+          fetchRelatedProducts();
           // Show content
           showRealContent();
         }

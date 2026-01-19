@@ -1226,25 +1226,21 @@
                 localStorage.setItem("guest_token", json.temp_id);
               }
 
-              // ✅ IMPORTANT: UPDATE LOCAL CART STATE
+              // ✅ UPDATE LOCAL CART STATE
               if (json.data) {
-                // Normalize cart id field
                 const newCartItem = {
                   ...json.data,
-                  cart_id: json.data.id || json.data.cart_id   // ensure cart_id exists
+                  cart_id: json.data.id || json.data.cart_id
                 };
 
-                // Save as current cart item
                 currentCartItem = newCartItem;
-
-                // Push into cart cache
                 cartDataCache.push(newCartItem);
 
-                // 🔥 Immediately switch UI to View Cart mode
+                // 🔥 THIS SWITCHES BUTTON TO VIEW CART
                 syncVariationWithCart();
               }
-              
-              // 🟢 SUCCESS ANIMATION
+
+              // Optional: small success flash (very quick)
               btns.forEach(btn => {
                 if (!btn) return;
                 btn.classList.remove("bg-blue-600");
@@ -1254,21 +1250,14 @@
                       fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
-                  Added to Cart
+                  Added
                 `;
               });
 
-              // After 2 seconds, restore button
+              // 🔵 AFTER SHORT DELAY, LET syncVariationWithCart CONTROL UI
               setTimeout(() => {
-                btns.forEach(btn => {
-                  if (!btn) return;
-                  btn.disabled = false;
-                  btn.classList.remove("bg-green-600", "opacity-70", "cursor-not-allowed");
-                  btn.classList.add("bg-blue-600", "hover:bg-blue-700");
-                  btn.innerHTML = btn.dataset.originalText;
-                });
-              }, 2000);
-
+                syncVariationWithCart();
+              }, 600);
             } else {
               throw new Error(json.message || "Failed to add to cart");
             }
@@ -1287,15 +1276,6 @@
             alert("Failed to add to cart. Please try again.");
           }
         }
-
-        // ============================================
-        // BUTTON BINDING
-        // ============================================
-
-        // document.addEventListener("DOMContentLoaded", () => {
-        //   document.getElementById("addToCartButton")?.addEventListener("click", addToCart);
-        //   document.getElementById("mobileAddToCart")?.addEventListener("click", addToCart);
-        // });
       </script>
 
       <!-- related product slider -->

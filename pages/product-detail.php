@@ -1268,6 +1268,220 @@
         }
       </script>
 
+      <script>
+        // ============================================
+        // WISHLIST LOGIC (AUTH ONLY, PER VARIATION)
+        // ============================================
+
+        let wishlistCache = [];
+        let currentWishlistItem = null;
+
+        // --------- FETCH WISHLIST ON LOAD ----------
+        async function fetchWishlist() {
+          const authToken = localStorage.getItem("auth_token");
+
+          if (!authToken) {
+            wishlistCache = [];
+            return;
+          }
+
+          try {
+            const res = await fetch(`${BASE_URL}/customer/wishlist/get`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}`
+              }
+            });
+
+            const json = await res.json();
+
+            if (json.success) {
+              wishlistCache = json.data || [];
+              syncVariationWithWishlist();
+            } else {
+              wishlistCache = [];
+            }
+
+          } catch (e) {
+            console.error("Failed to fetch wishlist:", e);
+            wishlistCache = [];
+          }
+        }
+
+        // --------- SYNC CURRENT VARIATION ----------
+        function syncVariationWithWishlist() {
+          currentWishlistItem = null;
+
+          if (!currentVariation || !wishlistCache.length) {
+            setWishlistInactive();
+            return;
+          }
+
+          const match = wishlistCache.find(item => {
+            const aid = item.variation_aid;
+            const uid = item.variation_uid;
+
+            return aid === currentVariation.aid && uid === String(currentVariation.uid);
+          });
+
+          if (match) {
+            currentWishlistItem = match;
+            setWishlistActive();
+          } else {
+            setWishlistInactive();
+          }
+        }
+
+        // --------- UI STATES ----------
+        function setWishlistActive() {
+          const btn = document.getElementById("wishlistButton");
+          if (!btn) return;
+
+          btn.classList.add("bg-red-50", "border-red-200", "text-red-500");
+
+          const icon = btn.querySelector("svg");
+          if (icon) {
+            icon.classList.add("fill-red-500");
+            icon.classList.remove("stroke-current");
+          }
+
+          btn.title = "Remove from wishlist";
+        }
+
+        function setWishlistInactive() {
+          const btn = document.getElementById("wishlistButton");
+          if (!btn) return;
+
+          btn.classList.remove("bg-red-50", "border-red-200", "text-red-500");
+
+          const icon = btn.querySelector("svg");
+          if (icon) {
+            icon.classList.remove("fill-red-500");
+          }
+
+          btn.title = "Add to wishlist";
+        }
+
+        // --------- ADD TO WISHLIST ----------
+        async function addToWishlist() {
+          const authToken = localStorage.getItem("auth_token");
+
+          if (!authToken) {
+            const goLogin = confirm("You need to log in to use wishlist. Go to login page?");
+            if (goLogin) {
+              window.location.href = "sign-in.php";
+            }
+            return;
+          }
+
+          if (!currentVariation || !currentProductId) {
+            alert("Please select a valid product variation");
+            return;
+          }
+
+          const payload = {
+            products_id: currentProductId,
+            aid: currentVariation.aid,
+            uid: currentVariation.uid
+          };
+
+          try {
+            const res = await fetch(`${BASE_URL}/customer/wishlist/create`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}`
+              },
+              body: JSON.stringify(payload)
+            });
+
+            const json = await res.json();
+
+            if (json.success) {
+              const newItem = json.data;
+
+              // Push into local cache in same shape as GET API
+              wishlistCache.push({
+                id: newItem.id,
+                product_id: String(newItem.products_id),
+                variation_uid: String(newItem.uid),
+                variation_aid: newItem.aid
+              });
+
+              syncVariationWithWishlist();
+            } else {
+              alert(json.message || "Failed to add to wishlist");
+            }
+
+          } catch (e) {
+            console.error("Add to wishlist failed:", e);
+            alert("Error adding to wishlist");
+          }
+        }
+
+        // --------- REMOVE FROM WISHLIST ----------
+        async function removeFromWishlist() {
+          const authToken = localStorage.getItem("auth_token");
+
+          if (!authToken || !currentWishlistItem) return;
+
+          try {
+            const res = await fetch(`${BASE_URL}/customer/wishlist/remove/${currentWishlistItem.id}`, {
+              method: "DELETE",
+              headers: {
+                "Authorization": `Bearer ${authToken}`
+              }
+            });
+
+            const json = await res.json();
+
+            if (json.success) {
+              // Remove from local cache
+              wishlistCache = wishlistCache.filter(item => item.id !== currentWishlistItem.id);
+              currentWishlistItem = null;
+
+              setWishlistInactive();
+            } else {
+              alert(json.message || "Failed to remove from wishlist");
+            }
+
+          } catch (e) {
+            console.error("Remove wishlist failed:", e);
+            alert("Error removing from wishlist");
+          }
+        }
+
+        // --------- TOGGLE HANDLER ----------
+        function initWishlistEvents() {
+          const btn = document.getElementById("wishlistButton");
+          if (!btn) return;
+
+          btn.addEventListener("click", () => {
+            if (currentWishlistItem) {
+              removeFromWishlist();
+            } else {
+              addToWishlist();
+            }
+          });
+        }
+
+        // --------- HOOK INTO YOUR EXISTING FLOW ----------
+
+        // 1. After variation changes, also sync wishlist
+        const originalApplyVariation = applyVariation;
+        applyVariation = function(...args) {
+          originalApplyVariation.apply(this, args);
+          syncVariationWithWishlist();   // 🔥 keep wishlist in sync with variant
+        };
+
+        // 2. On page load, fetch wishlist
+        document.addEventListener("DOMContentLoaded", async () => {
+          await fetchWishlist();
+          initWishlistEvents();
+        });
+      </script>
+      
       <!-- related product slider -->
       <script>
         // related-products.js

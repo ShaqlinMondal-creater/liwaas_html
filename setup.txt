@@ -1,3 +1,11 @@
+Static Setup on Local Storage :
+guest_token -> for temp user token
+auth_token -> for auth user token
+user_id -> for auth user id
+user_email -> for auth user emial
+user_name -> for auth user name
+user_role -> for auth user role
+
 complete pages->
 1. Home
 2. shop

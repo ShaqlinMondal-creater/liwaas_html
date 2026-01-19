@@ -897,7 +897,7 @@
           // Apply initial variation
           applyVariation(initialVariation, true);
           renderSpecs(initialVariation.specs || []);
-
+          syncVariationWithWishlist();   // 👈 ADD THIS
           // Show content
           showRealContent();
         }
@@ -1116,16 +1116,16 @@
           });
 
           // Wishlist toggle
-          const wishlistButton = document.getElementById('wishlistButton');
-          if (wishlistButton) {
-            wishlistButton.addEventListener('click', () => {
-              const icon = wishlistButton.querySelector('svg');
-              wishlistButton.classList.toggle('bg-red-50');
-              wishlistButton.classList.toggle('border-red-200');
-              wishlistButton.classList.toggle('text-red-500');
-              if (icon) icon.classList.toggle('fill-red-500');
-            });
-          }
+          // const wishlistButton = document.getElementById('wishlistButton');
+          // if (wishlistButton) {
+          //   wishlistButton.addEventListener('click', () => {
+          //     const icon = wishlistButton.querySelector('svg');
+          //     wishlistButton.classList.toggle('bg-red-50');
+          //     wishlistButton.classList.toggle('border-red-200');
+          //     wishlistButton.classList.toggle('text-red-500');
+          //     if (icon) icon.classList.toggle('fill-red-500');
+          //   });
+          // }
 
           // Add to cart
           const addToCartButton = document.getElementById('addToCartButton');
@@ -1368,10 +1368,18 @@
           const authToken = localStorage.getItem("auth_token");
 
           if (!authToken) {
-            const goLogin = confirm("You need to log in to use wishlist. Go to login page?");
-            if (goLogin) {
-              window.location.href = "sign-in.php";
-            }
+            Swal.fire({
+              icon: "warning",
+              title: "Login Required",
+              text: "You need to log in to use wishlist.",
+              showCancelButton: true,
+              confirmButtonText: "Go to Login",
+              cancelButtonText: "Cancel"
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.href = "sign-in.php";
+              }
+            });
             return;
           }
 
@@ -1411,12 +1419,20 @@
 
               syncVariationWithWishlist();
             } else {
-              alert(json.message || "Failed to add to wishlist");
+              Swal.fire({
+                icon: "error",
+                title: "Wishlist Error",
+                text: json.message || "Something went wrong"
+              });
             }
 
           } catch (e) {
             console.error("Add to wishlist failed:", e);
-            alert("Error adding to wishlist");
+            Swal.fire({
+              icon: "error",
+              title: "Network Error",
+              text: "Please try again later"
+            });
           }
         }
 
@@ -1443,12 +1459,20 @@
 
               setWishlistInactive();
             } else {
-              alert(json.message || "Failed to remove from wishlist");
+              Swal.fire({
+                icon: "error",
+                title: "Wishlist Error",
+                text: json.message || "Failed to remove from wishlist"
+              });
             }
 
           } catch (e) {
             console.error("Remove wishlist failed:", e);
-            alert("Error removing from wishlist");
+            Swal.fire({
+              icon: "error",
+              title: "Network Error",
+              text: "Error removing from wishlist"
+            });
           }
         }
 

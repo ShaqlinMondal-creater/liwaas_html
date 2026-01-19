@@ -672,6 +672,7 @@
               btn.classList.remove('ring-2', 'ring-blue-500');
             }
           });
+          syncVariationWithCart();   // ✅ ADD HERE
         }
 
         function syncVariationWithCart() {
@@ -683,10 +684,12 @@
           }
 
           // Find matching cart item by aid + uid
-          const match = cartDataCache.find(item => 
-            item.aid === currentVariation.aid &&
-            item.uid === currentVariation.uid
-          );
+          const match = cartDataCache.find(item => {
+            const aid = item.aid || item.variation?.aid;
+            const uid = item.uid || item.variation?.uid;
+
+            return aid === currentVariation.aid && uid === currentVariation.uid;
+          });
 
           if (match) {
             currentCartItem = match;
@@ -703,7 +706,6 @@
             setAddMode();
           }
         }
-        syncVariationWithCart();
 
         function setViewCartMode() {
           const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
@@ -732,7 +734,7 @@
           const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
           const qtyEl = document.getElementById("quantity");
           if (qtyEl) qtyEl.innerText = 1;   // ✅ Reset
-          
+
           btns.forEach(btn => {
             if (!btn) return;
 
@@ -1266,42 +1268,6 @@
 
             alert("Failed to add to cart. Please try again.");
           }
-        }
-
-        // ============================================
-        // UI FEEDBACK
-        // ============================================
-
-        function showCartSuccess() {
-          const buttons = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
-
-          buttons.forEach(btn => {
-            if (!btn) return;
-
-            const original = btn.innerHTML;
-            btn.disabled = true;
-            btn.classList.remove("bg-blue-600", "hover:bg-blue-700");
-            btn.classList.add("bg-green-600");
-
-            btn.innerHTML = `
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                  fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              Added to Cart
-            `;
-
-            setTimeout(() => {
-              btn.innerHTML = original;
-              btn.disabled = false;
-              btn.classList.remove("bg-green-600");
-              btn.classList.add("bg-blue-600", "hover:bg-blue-700");
-            }, 2000);
-          });
-        }
-
-        function showCartError(message) {
-          alert(message);
         }
 
         // ============================================

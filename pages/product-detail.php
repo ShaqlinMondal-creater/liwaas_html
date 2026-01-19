@@ -459,7 +459,7 @@
 
             if (json.success) {
               cartDataCache = json.data || [];
-              syncVariationWithCart();   // ✅ ADD THIS HERE
+              // syncVariationWithCart();   // ✅ ADD THIS HERE
             } else {
               cartDataCache = [];
             }

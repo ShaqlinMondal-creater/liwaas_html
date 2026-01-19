@@ -1244,7 +1244,7 @@
               btns.forEach(btn => {
                 if (!btn) return;
                 btn.classList.remove("bg-blue-600");
-                btn.classList.add("bg-green-600");
+                // btn.classList.add("bg-green-600");
                 btn.innerHTML = `
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                       fill="none" stroke="currentColor" stroke-width="2">

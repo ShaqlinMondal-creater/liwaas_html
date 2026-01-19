@@ -1018,7 +1018,7 @@
         async function loadCarts() {
             try {
                 const authToken = localStorage.getItem("auth_token");
-                const guestId = localStorage.getItem("guest_id");
+                const guestId = localStorage.getItem("guest_token");
 
                 let headers = {
                     "Content-Type": "application/json"

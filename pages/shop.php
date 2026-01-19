@@ -535,7 +535,7 @@
 
         // 🔑 Check authentication
         const authToken = localStorage.getItem("auth_token");
-        const guestId = localStorage.getItem("guest_id");
+        const guestId = localStorage.getItem("guest_token");
 
         let headers = {
             "Content-Type": "application/json"
@@ -555,9 +555,9 @@
         .then(res => res.json())
         .then(res => {
             if (res.success) {
-                // 🛒 Save new guest_id if returned
+                // 🛒 Save new guest_token if returned
                 if (!authToken && res.temp_id) {
-                    localStorage.setItem("guest_id", res.temp_id);
+                    localStorage.setItem("guest_token", res.temp_id);
                 }
 
                 Swal.fire({

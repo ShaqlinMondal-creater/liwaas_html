@@ -401,7 +401,7 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
 
     if (!authToken) {
         // Guest → create user first
-        const guestId = localStorage.getItem("guest_id") || "temp_" + Math.random().toString(36).substr(2, 8);
+        const guestId = localStorage.getItem("guest_token") || "temp_" + Math.random().toString(36).substr(2, 8);
         const makeUserRes = await fetch(`${baseUrl}/make_user`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -409,7 +409,7 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
                 name: payload.name,
                 email: payload.email,
                 mobile: payload.mobile,
-                guest_id: guestId
+                guest_token: guestId
             })
         });
         const makeUserData = await makeUserRes.json();

@@ -69,53 +69,54 @@
   }
 
   // --------- RENDER RELATED PRODUCTS ----------
-  function renderRelatedProducts(products) {
+    function renderRelatedProducts(products) {
     const container = document.getElementById("relatedProductsContainer");
     if (!container) return;
 
-    // Remove current product from related list (important UX)
-    const filtered = products.filter(p => p.product_id != currentProductId);
+    // TEMP: show all (your API currently returns same product only)
+    const filtered = products;
 
     if (!filtered.length) {
-      container.innerHTML = `<p class="text-sm text-gray-500">No related products found.</p>`;
-      return;
+        container.innerHTML = `<p class="text-sm text-gray-500">No related products found.</p>`;
+        return;
     }
 
     container.innerHTML = filtered.map(p => {
-      const image = p.images?.[0] || "";
-      const name = p.product_name || p.name || "Product";
-      const price = p.sell_price ? `₹${Math.round(p.sell_price)}` : "";
-      const rating = p.rating || 4.5;
-      const productId = p.product_id || p.id;
+        const image = p.variation?.images?.[0]?.url || "";
+        const name = p.name || "Product";
+        const price = p.variation?.sell_price ? `₹${p.variation.sell_price}` : "";
+        const rating = parseFloat(p.ratings || 0);
+        const productId = p.product_id;
+        const slug = p.slug;
 
-      return `
+        return `
         <div class="flex-shrink-0 w-48 group" data-product-id="${productId}">
-          <div onclick="redirectToDetail(${productId})"
-               class="cursor-pointer aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3 relative">
+            <div onclick="redirectToDetail(${productId})"
+                class="cursor-pointer aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3 relative">
             <img
-              src="${image}"
-              alt="${name}"
-              class="w-full h-full object-cover transition-transform group-hover:scale-105"
-              loading="lazy"
+                src="${image}"
+                alt="${name}"
+                class="w-full h-full object-cover transition-transform group-hover:scale-105"
+                loading="lazy"
             />
-          </div>
+            </div>
 
-          <div>
+            <div>
             <h3 class="font-medium text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-              ${name}
+                ${name}
             </h3>
             <p class="text-blue-600 font-medium mt-1">${price}</p>
             <div class="flex items-center gap-1 mt-2">
-              ${renderRatingStars(rating)}
-              <span class="text-xs text-gray-500">(120)</span>
+                ${renderRatingStars(rating)}
+                <span class="text-xs text-gray-500">(0)</span>
             </div>
-          </div>
+            </div>
         </div>
-      `;
+        `;
     }).join("");
 
     initRelatedSlider();
-  }
+    }
 
   // --------- RATING STARS (REUSE YOUR FUNCTION) ----------
   function renderRatingStars(rating) {

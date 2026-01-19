@@ -1274,10 +1274,10 @@
         // BUTTON BINDING
         // ============================================
 
-        document.addEventListener("DOMContentLoaded", () => {
-          document.getElementById("addToCartButton")?.addEventListener("click", addToCart);
-          document.getElementById("mobileAddToCart")?.addEventListener("click", addToCart);
-        });
+        // document.addEventListener("DOMContentLoaded", () => {
+        //   document.getElementById("addToCartButton")?.addEventListener("click", addToCart);
+        //   document.getElementById("mobileAddToCart")?.addEventListener("click", addToCart);
+        // });
       </script>
 
       <!-- related product slider -->

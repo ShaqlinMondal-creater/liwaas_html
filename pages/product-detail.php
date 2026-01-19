@@ -730,7 +730,7 @@
             `;
 
             btn.onclick = () => {
-              window.location.href = "pages/cart";
+              window.location.href = "pages/cart.php";
             };
           });
         }

@@ -870,6 +870,7 @@
           renderSpecs(initialVariation.specs || []);
           syncVariationWithWishlist();   // 👈 ADD THIS
           // 🔥 ADD THIS
+          await loadRelatedColorMap();   
           fetchRelatedProducts();
           // Show content
           showRealContent();

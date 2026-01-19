@@ -36,6 +36,25 @@
   // DYNAMIC RELATED PRODUCTS (FROM API)
   // ============================================
 
+  // ---------- LOAD COLOR MAP ----------
+    let RELATED_COLOR_MAP = {};
+
+    async function loadRelatedColorMap() {
+    try {
+        const res = await fetch("../inc/color.json"); // adjust path if needed
+        const json = await res.json();
+
+        json.colors.forEach(c => {
+        RELATED_COLOR_MAP[c.name.toLowerCase()] = c.code;
+        });
+
+        console.log("Related Color Map Loaded:", RELATED_COLOR_MAP);
+    } catch (e) {
+        console.error("Failed to load color.json for related products:", e);
+    }
+    }
+
+
   async function fetchRelatedProducts() {
     if (!currentCategoryId) {
       console.warn("No category id found for related products");
@@ -86,12 +105,16 @@
         const name = p.name || "Product";
         const price = p.variation?.sell_price ? `₹${p.variation.sell_price}` : "";
         const rating = parseFloat(p.ratings || 0);
-        const productId = p.product_id;
+        const productIdRl = p.product_id;
+        const variationUid = p.variation?.uid;
         const slug = p.slug;
+        const colorName = p.variation?.color || "";
+        const size = p.variation?.size || "";
+        const colorCode = RELATED_COLOR_MAP[colorName.toLowerCase()] || "#e5e7eb";
 
         return `
-        <div class="flex-shrink-0 w-48 group" data-product-id="${productId}">
-            <div onclick="redirectToDetail(${productId})"
+        <div class="flex-shrink-0 w-48 group" data-product-id="${variationUid}">
+            <div onclick="redirectToDetail(${variationUid})"
                 class="cursor-pointer aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3 relative">
             <img
                 src="${image}"
@@ -106,10 +129,37 @@
                 ${name}
             </h3>
             <p class="text-blue-600 font-medium mt-1">${price}</p>
-            <div class="flex items-center gap-1 mt-2">
+            <div class="flex flex-col gap-2 mt-2">
+
+            <!-- Ratings -->
+            <div class="flex items-center gap-1">
                 ${renderRatingStars(rating)}
                 <span class="text-xs text-gray-500">(0)</span>
             </div>
+
+            <!-- Color + Size Row -->
+            <div class="flex items-center gap-2 text-xs text-gray-600">
+                
+                <!-- Color Circle -->
+                <div class="flex items-center gap-1">
+                <span class="inline-block w-4 h-4 rounded-full border"
+                        style="background:${colorCode}"
+                        title="${colorName}">
+                </span>
+                <span>${colorName}</span>
+                </div>
+
+                <!-- Separator -->
+                <span class="text-gray-400">|</span>
+
+                <!-- Size -->
+                <div>
+                Size: <span class="font-medium">${size}</span>
+                </div>
+            </div>
+
+            </div>
+
             </div>
         </div>
         `;

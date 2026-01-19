@@ -368,6 +368,10 @@
         let currentVariation = null;
         let currentProductId = null;
 
+        let currentCartItem = null;   // holds cart row if this variation is in cart
+        let cartDataCache = [];     // full cart for quick lookup
+
+
         // ========== UTILITY FUNCTIONS ==========
         function normalize(value) {
           return String(value).trim().toLowerCase();
@@ -426,6 +430,43 @@
             }
           });
           return [...colorSet];
+        }
+
+        async function fetchCartForProductPage() {
+          const authToken  = localStorage.getItem("auth_token");
+          const guestToken = localStorage.getItem("guest_token");
+
+          let headers = { "Content-Type": "application/json" };
+          let body = null;
+
+          if (authToken) {
+            headers["Authorization"] = `Bearer ${authToken}`;
+          } else if (guestToken) {
+            body = JSON.stringify({ temp_id: guestToken });
+          } else {
+            cartDataCache = [];
+            return;
+          }
+
+          try {
+            const res = await fetch(`${BASE_URL}/api/cart/get-cart`, {
+              method: "POST",
+              headers,
+              body
+            });
+
+            const json = await res.json();
+
+            if (json.success) {
+              cartDataCache = json.data || [];
+            } else {
+              cartDataCache = [];
+            }
+
+          } catch (e) {
+            console.error("Failed to fetch cart on product page:", e);
+            cartDataCache = [];
+          }
         }
 
         function updateAvailability() {
@@ -631,6 +672,84 @@
             }
           });
         }
+
+        syncVariationWithCart();
+
+        function syncVariationWithCart() {
+          currentCartItem = null;
+
+          if (!currentVariation || !cartDataCache.length) {
+            setAddMode();
+            return;
+          }
+
+          // Find matching cart item by aid + uid
+          const match = cartDataCache.find(item => 
+            item.aid === currentVariation.aid &&
+            item.uid === currentVariation.uid
+          );
+
+          if (match) {
+            currentCartItem = match;
+
+            // Set quantity from cart
+            const qtyEl = document.getElementById("quantity");
+            if (qtyEl) {
+              qtyEl.innerText = match.quantity;
+            }
+
+            // Switch button to "View Cart"
+            setViewCartMode();
+          } else {
+            setAddMode();
+          }
+        }
+
+        function setViewCartMode() {
+          const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
+
+          btns.forEach(btn => {
+            if (!btn) return;
+
+            btn.classList.remove("bg-blue-600", "hover:bg-blue-700");
+            btn.classList.add("bg-orange-600", "hover:bg-orange-700");
+
+            btn.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+              </svg>
+              View Cart
+            `;
+
+            btn.onclick = () => {
+              window.location.href = "pages/cart";
+            };
+          });
+        }
+        function setAddMode() {
+          const btns = document.querySelectorAll("#addToCartButton, #mobileAddToCart");
+
+          btns.forEach(btn => {
+            if (!btn) return;
+
+            btn.classList.remove("bg-orange-600", "hover:bg-orange-700");
+            btn.classList.add("bg-blue-600", "hover:bg-blue-700");
+
+            btn.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+              Add to Cart
+            `;
+
+            btn.onclick = addToCart;
+          });
+        }
+
 
         // ========== IMAGE GALLERY ==========
         function navigateImage(direction) {
@@ -860,15 +979,70 @@
 
           // Quantity controls
           const qtyEl = document.getElementById('quantity');
-          document.getElementById('decreaseQuantity')?.addEventListener('click', () => {
-            const current = parseInt(qtyEl.innerText);
-            if (current > 1) qtyEl.innerText = current - 1;
+          document.getElementById('decreaseQuantity')?.addEventListener('click', async () => {
+            const qtyEl = document.getElementById('quantity');
+            let current = parseInt(qtyEl.innerText);
+
+            if (current > 1) {
+              const newQty = current - 1;
+              qtyEl.innerText = newQty;
+
+              if (currentCartItem) {
+                await updateCartQuantity(currentCartItem.id, newQty);
+              }
+            }
           });
 
-          document.getElementById('increaseQuantity')?.addEventListener('click', () => {
-            const current = parseInt(qtyEl.innerText);
-            if (current < currentStock) qtyEl.innerText = current + 1;
+          document.getElementById('increaseQuantity')?.addEventListener('click', async () => {
+            const qtyEl = document.getElementById('quantity');
+            let current = parseInt(qtyEl.innerText);
+
+            if (current < currentStock) {
+              const newQty = current + 1;
+              qtyEl.innerText = newQty;
+
+              if (currentCartItem) {
+                await updateCartQuantity(currentCartItem.id, newQty);
+              }
+            }
           });
+
+          async function updateCartQuantity(cartId, quantity) {
+            const authToken  = localStorage.getItem("auth_token");
+            const guestToken = localStorage.getItem("guest_token");
+
+            let headers = { "Content-Type": "application/json" };
+
+            if (authToken) {
+              headers["Authorization"] = `Bearer ${authToken}`;
+            }
+
+            try {
+              const res = await fetch(`${BASE_URL}/api/cart/update-cart/${cartId}`, {
+                method: "POST",
+                headers,
+                body: JSON.stringify({ quantity })
+              });
+
+              const json = await res.json();
+
+              if (json.success) {
+                // Update local cache
+                currentCartItem = { ...currentCartItem, ...json.data };
+
+                // Also update cartDataCache
+                cartDataCache = cartDataCache.map(item =>
+                  item.id === cartId ? { ...item, ...json.data } : item
+                );
+              } else {
+                alert("Failed to update cart quantity");
+              }
+
+            } catch (e) {
+              console.error("Update quantity failed:", e);
+              alert("Error updating cart");
+            }
+          }
 
           // Mobile tabs
           const tabButtons = document.querySelectorAll('[data-tab]');
@@ -974,6 +1148,7 @@
         document.addEventListener("DOMContentLoaded", async () => {
           await loadColorMap();
           await fetchProduct();
+          await fetchCartForProductPage();
           initUIEvents();
         });
 

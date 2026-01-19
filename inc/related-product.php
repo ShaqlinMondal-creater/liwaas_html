@@ -1,59 +1,41 @@
-<div class="mb-12">
-    <div class="bg-white rounded-lg border border-gray-200">
-        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h2 class="text-lg font-semibold text-gray-900">You May Also Like</h2>
+<!-- Related Products Section -->
+        <div class="mb-12">
+            <div class="bg-white rounded-lg border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-lg font-semibold text-gray-900">You May Also Like</h2>
 
-        <!-- Navigation Buttons -->
-        <div class="flex gap-2">
-            <button
-            class="related-prev p-1 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
-            aria-label="Scroll left"
-            >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-            </button>
-            <button
-            class="related-next p-1 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
-            aria-label="Scroll right"
-            >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-            </button>
-        </div>
-        </div>
-        <!-- Products Container (will be populated by JavaScript) -->
-        <div class="px-6 py-4 flex gap-4 overflow-x-auto" id="relatedProductsContainer">
-            <!-- Product cards will be inserted here dynamically -->
-        </div>              
-    </div>
-</div>
+                <!-- Navigation Buttons -->
+                <div class="flex gap-2">
+                    <button
+                    class="related-prev p-1 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
+                    aria-label="Scroll left"
+                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    </button>
+                    <button
+                    class="related-next p-1 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
+                    aria-label="Scroll right"
+                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                    </button>
+                </div>
+                </div>
+                <!-- Products Container (will be populated by JavaScript) -->
+                <div class="px-6 py-4 flex gap-4 overflow-x-auto" id="relatedProductsContainer">
+                    <!-- Product cards will be inserted here dynamically -->
+                </div>              
+            </div>
+        </div> 
 
 <!-- related product slider -->
- <script>
+<script>
   // ============================================
   // DYNAMIC RELATED PRODUCTS (FROM API)
   // ============================================
-
-  // ---------- LOAD COLOR MAP ----------
-    let RELATED_COLOR_MAP = {};
-
-    async function loadRelatedColorMap() {
-    try {
-        const res = await fetch("../inc/color.json"); // adjust path if needed
-        const json = await res.json();
-
-        json.colors.forEach(c => {
-        RELATED_COLOR_MAP[c.name.toLowerCase()] = c.code;
-        });
-
-        console.log("Related Color Map Loaded:", RELATED_COLOR_MAP);
-    } catch (e) {
-        console.error("Failed to load color.json for related products:", e);
-    }
-    }
-
 
   async function fetchRelatedProducts() {
     if (!currentCategoryId) {
@@ -93,7 +75,9 @@
     if (!container) return;
 
     // TEMP: show all (your API currently returns same product only)
-    const filtered = products;
+    const filtered = products.filter(p => {
+      return String(p.variation?.uid) !== String(currentVariation?.uid);
+    });
 
     if (!filtered.length) {
         container.innerHTML = `<p class="text-sm text-gray-500">No related products found.</p>`;
@@ -110,11 +94,11 @@
         const slug = p.slug;
         const colorName = p.variation?.color || "";
         const size = p.variation?.size || "";
-        const colorCode = RELATED_COLOR_MAP[colorName.toLowerCase()] || "#e5e7eb";
+        const colorCode = COLOR_MAP[colorName.toLowerCase()] || "#e5e7eb";
 
         return `
         <div class="flex-shrink-0 w-48 group" data-product-id="${variationUid}">
-            <div onclick="redirectToDetail(${variationUid})"
+            <div onclick="redirectToDetail('${variationUid}')"
                 class="cursor-pointer aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3 relative">
             <img
                 src="${image}"

@@ -682,64 +682,74 @@
         const ul = document.createElement("ul");
         ul.className = "flex items-center space-x-2";
 
-        // Helper to create page button
-        function createPageButton(page, isActive = false) {
+        function createButton(label, page, isActive = false, disabled = false) {
             const li = document.createElement("li");
-            li.innerHTML = `<button class="px-4 py-2 rounded-lg ${
-                isActive ? 'bg-black text-white' : 'border hover:bg-gray-100'
-            }">${page}</button>`;
 
-            li.querySelector("button").addEventListener("click", () => {
-                filters.currentPage = page;
-                filters.offset = (page - 1) * filters.limit;
-                fetchAndRenderProducts();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            });
+            let classes = "px-4 py-2 rounded-lg ";
+            if (isActive) classes += "bg-black text-white";
+            else if (disabled) classes += "border text-gray-400 cursor-not-allowed";
+            else classes += "border hover:bg-gray-100";
+
+            li.innerHTML = `<button class="${classes}" ${disabled ? "disabled" : ""}>${label}</button>`;
+
+            if (!disabled && page !== null) {
+                li.querySelector("button").addEventListener("click", () => {
+                    filters.currentPage = page;
+                    filters.offset = (page - 1) * filters.limit;
+                    fetchAndRenderProducts();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                });
+            }
 
             return li;
         }
 
-        // 🔢 Calculate window (3 pages)
-        let start = Math.max(1, current - 1);
-        let end   = Math.min(total, current + 1);
+        // 🔙 Prev button
+        ul.appendChild(
+            createButton("Prev", current - 1, false, current === 1)
+        );
 
-        // Ensure always 3 numbers when possible
-        if (current === 1) {
-            end = Math.min(total, 3);
-        } else if (current === total) {
+        // 🔢 Calculate sliding window
+        let start = Math.max(1, current - 1);
+        let end = Math.min(total, current + 1);
+
+        if (current <= 2) {
+            start = 1;
+            end = Math.min(3, total);
+        } else if (current >= total - 1) {
+            end = total;
             start = Math.max(1, total - 2);
         }
 
-        // Render page numbers
+        // 👉 Always show first page if needed
+        if (start > 1) {
+            ul.appendChild(createButton(1, 1));
+            if (start > 2) {
+                const dots = document.createElement("li");
+                dots.innerHTML = `<span class="px-2">...</span>`;
+                ul.appendChild(dots);
+            }
+        }
+
+        // 🔢 Middle pages (sliding 3)
         for (let i = start; i <= end; i++) {
-            ul.appendChild(createPageButton(i, i === current));
+            ul.appendChild(createButton(i, i, i === current));
         }
 
-        // 👉 Next button
-        if (current < total) {
-            const nextLi = document.createElement("li");
-            nextLi.innerHTML = `<button class="px-4 py-2 rounded-lg border hover:bg-gray-100">Next</button>`;
-            nextLi.querySelector("button").addEventListener("click", () => {
-                filters.currentPage += 1;
-                filters.offset = (filters.currentPage - 1) * filters.limit;
-                fetchAndRenderProducts();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            });
-            ul.appendChild(nextLi);
+        // 👉 Always show last page if needed
+        if (end < total) {
+            if (end < total - 1) {
+                const dots = document.createElement("li");
+                dots.innerHTML = `<span class="px-2">...</span>`;
+                ul.appendChild(dots);
+            }
+            ul.appendChild(createButton(total, total));
         }
 
-        // 👉 Last page button (always show)
-        if (total > 3 && end < total) {
-            const lastLi = document.createElement("li");
-            lastLi.innerHTML = `<button class="px-4 py-2 rounded-lg border hover:bg-gray-100">${total}</button>`;
-            lastLi.querySelector("button").addEventListener("click", () => {
-                filters.currentPage = total;
-                filters.offset = (total - 1) * filters.limit;
-                fetchAndRenderProducts();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            });
-            ul.appendChild(lastLi);
-        }
+        // 🔜 Next button
+        ul.appendChild(
+            createButton("Next", current + 1, false, current === total)
+        );
 
         paginationContainer.appendChild(ul);
     }

@@ -192,7 +192,7 @@
                 </div>
 
                 <!-- Actual product grid (will be filled via JS) -->
-                <div id="product-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"></div>
+                <div id="product-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 min-h-[600px]"></div>
                 <p id="no-products" class="text-center text-gray-500 hidden mt-8">No products found.</p>
                 <!-- Desktop Pagination -->
                 <div id="pagination-container" class="mt-12 flex items-center justify-between hidden md:flex">
@@ -253,6 +253,40 @@
         totalPages: 1
     };
 
+    function resetAllFiltersExcept(type) {
+        if (type !== "category") filters.category = null;
+        if (type !== "size")     filters.size = null;
+        if (type !== "color")    filters.color = null;
+        if (type !== "price") {
+            filters.min_price = null;
+            filters.max_price = null;
+        }
+
+        filters.currentPage = 1;
+        filters.offset = 0;
+
+        // 🔽 RESET UI STATES
+
+        // Reset category radios
+        if (type !== "category") {
+            document.querySelectorAll('input[name="category"]').forEach(r => r.checked = false);
+        }
+
+        // Reset size buttons
+        if (type !== "size") {
+            document.querySelectorAll(".filters-sizes button").forEach(b => {
+                b.classList.remove("ring-2", "ring-black");
+            });
+        }
+
+        // Reset color buttons
+        if (type !== "color") {
+            document.querySelectorAll(".filters-colors button").forEach(b => {
+                b.classList.remove("ring-2", "ring-black");
+            });
+        }
+    }
+
     let COLOR_MAP = {};
     async function loadColorMap() {
         try {
@@ -302,9 +336,10 @@
                 <span class="ml-2">${cat.name}</span>
             `;
             label.querySelector("input").addEventListener("change", e => {
+                resetAllFiltersExcept("category");
+
                 filters.category = parseInt(e.target.value);
-                filters.currentPage = 1;
-                filters.offset = 0;
+
                 fetchAndRenderProducts();
             });
             container.appendChild(label);
@@ -319,9 +354,10 @@
             btn.className = "py-3 border rounded-lg hover:border-black text-sm px-3";
             btn.textContent = size;
             btn.addEventListener("click", () => {
+                resetAllFiltersExcept("size");
+
                 filters.size = size;
-                filters.currentPage = 1;
-                filters.offset = 0;
+
                 fetchAndRenderProducts();
             });
             container.appendChild(btn);
@@ -342,9 +378,8 @@
                 btn.title = colorName;
 
                 btn.addEventListener("click", () => {
+                    resetAllFiltersExcept("color");
                     filters.color = colorName;
-                    filters.currentPage = 1;
-                    filters.offset = 0;
                     fetchAndRenderProducts();
 
                     // Optional: visual active state
@@ -399,12 +434,14 @@
             });
 
             slider.noUiSlider.on('change', function (values) {
+                resetAllFiltersExcept("price");
+
                 filters.min_price = parseInt(values[0]);
                 filters.max_price = parseInt(values[1]);
-                filters.currentPage = 1;
-                filters.offset = 0;
+
                 fetchAndRenderProducts();
             });
+
         }
 
         // function createSlider(slider, min, max, minInput, maxInput) {
@@ -502,13 +539,15 @@
                 currentIndex = 0;
 
                 if (isMobile) {
-                    productGrid.innerHTML = ""; // clear before appending
+                    productGrid.innerHTML = "";
                     loadNextChunk();
                     setupInfiniteScroll();
+                    paginationContainer.style.display = "none";   // 🔥 hide pagination on mobile
                 } else {
                     renderProducts(allProducts.slice(0, chunkDesktop));
+                    paginationContainer.style.display = "flex";   // 🔥 show pagination on desktop
+                    renderPagination();
                 }
-                renderPagination();
             } else {
                 productGrid.innerHTML = "<p class='text-center w-full'>No products found.</p>";
             }
@@ -675,6 +714,17 @@
     });
 </script>
 
+<style>
+  #pagination-container {
+    margin-top: 40px;
+    justify-content: center;
+  }
+
+  /* Keep pagination always after grid */
+  #product-grid {
+    min-height: 600px;   /* initial height for grid */
+  }
+</style>
 
 <?php include("../footer.php"); ?>
 

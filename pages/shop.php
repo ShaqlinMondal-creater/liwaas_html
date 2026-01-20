@@ -790,10 +790,16 @@
     justify-content: end;
   }
 
+  @media (max-width: 767px) {
+    #product-grid {
+        min-height: 400px;   /* initial height for grid */
+    }
+  }
   /* Keep pagination always after grid */
   #product-grid {
-    min-height: 500px;   /* initial height for grid */
+    min-height: 600px;   /* initial height for grid */
   }
+
 </style>
 
 <?php include("../footer.php"); ?>

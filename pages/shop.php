@@ -792,7 +792,7 @@
 
   /* Keep pagination always after grid */
   #product-grid {
-    min-height: 300px;   /* initial height for grid */
+    min-height: 500px;   /* initial height for grid */
   }
 </style>
 

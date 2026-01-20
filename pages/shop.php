@@ -717,7 +717,7 @@
 <style>
   #pagination-container {
     margin-top: 40px;
-    justify-content: center;
+    justify-content: end;
   }
 
   /* Keep pagination always after grid */

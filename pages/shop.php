@@ -256,7 +256,7 @@
         sort: null,
         min_price: null,
         max_price: null,
-        limit: 3,
+        limit: 5,
         offset: 0,
         currentPage: 1,
         totalPages: 1

@@ -253,16 +253,42 @@
         totalPages: 1
     };
 
-    // FETCH FILTER DATA
-    fetch(filtersEndpoint)
-    .then(res => res.json())
-    .then(data => {
-        console.log("Products API Response:", data);
-        if (data.success) {
-        renderFilterOptions(data);
-        fetchAndRenderProducts();
+    let COLOR_MAP = {};
+    async function loadColorMap() {
+        try {
+            const res = await fetch("../inc/color.json");
+            const json = await res.json();
+            json.colors.forEach(c => {
+                COLOR_MAP[c.name.toLowerCase()] = c.code;
+            });
+            console.log("Color map loaded:", COLOR_MAP);
+        } catch (e) {
+            console.error("Failed to load color map:", e);
         }
+    }
+
+    loadColorMap().then(() => {
+    fetch(filtersEndpoint)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                renderFilterOptions(data);
+                fetchAndRenderProducts();
+            }
+        });
     });
+
+
+    // FETCH FILTER DATA
+    // fetch(filtersEndpoint)
+    // .then(res => res.json())
+    // .then(data => {
+    //     console.log("Products API Response:", data);
+    //     if (data.success) {
+    //     renderFilterOptions(data);
+    //     fetchAndRenderProducts();
+    //     }
+    // });
 
     function renderFilterOptions(data) {
         // CATEGORIES
@@ -305,20 +331,33 @@
         // COLORS
         colorsContainer.forEach(container => {
             container.innerHTML = "";
-            data.colors.forEach(color => {
-            const btn = document.createElement("button");
-            btn.className = `w-10 h-10 rounded-full border ring-1 ring-offset-1`;
-            btn.style.backgroundColor = color.toLowerCase();
-            btn.title = color;
-            btn.addEventListener("click", () => {
-                filters.color = color;
-                filters.currentPage = 1;
-                filters.offset = 0;
-                fetchAndRenderProducts();
-            });
-            container.appendChild(btn);
+
+            data.colors.forEach(colorName => {
+                const key = (colorName || "").toLowerCase();
+                const colorCode = COLOR_MAP[key] || "#e5e7eb"; // fallback grey
+
+                const btn = document.createElement("button");
+                btn.className = "w-10 h-10 rounded-full border ring-1 ring-offset-1 transition-all";
+                btn.style.background = colorCode;
+                btn.title = colorName;
+
+                btn.addEventListener("click", () => {
+                    filters.color = colorName;
+                    filters.currentPage = 1;
+                    filters.offset = 0;
+                    fetchAndRenderProducts();
+
+                    // Optional: visual active state
+                    container.querySelectorAll("button").forEach(b => {
+                        b.classList.remove("ring-2", "ring-black");
+                    });
+                    btn.classList.add("ring-2", "ring-black");
+                });
+
+                container.appendChild(btn);
             });
         });
+
 
         // PRICE RANGE
         const priceSliderDesktop = document.getElementById('price-slider-desktop');

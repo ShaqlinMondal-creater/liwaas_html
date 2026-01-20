@@ -192,7 +192,7 @@
                 </div>
 
                 <!-- Actual product grid (will be filled via JS) -->
-                <div id="product-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 min-h-[600px]"></div>
+                <div id="product-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 min-h-[600px] items-start"></div>
                 <p id="no-products" class="text-center text-gray-500 hidden mt-8">No products found.</p>
                 <!-- Desktop Pagination -->
                 <div id="pagination-container" class="mt-12 flex items-center justify-between hidden md:flex">

@@ -518,10 +518,19 @@
 
         window.addEventListener("scroll", () => {
             if (
-                (window.innerHeight + window.scrollY) >= document.documentElement.offsetHeight - 100 &&
+                (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 100 &&
                 currentIndex < allProducts.length
             ) {
                 loadNextChunk();
+                console.log(
+  "scroll:",
+  window.scrollY,
+  window.innerHeight,
+  document.documentElement.scrollHeight,
+  currentIndex,
+  allProducts.length
+);
+
             }
         });
     }

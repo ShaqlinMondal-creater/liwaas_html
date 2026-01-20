@@ -252,6 +252,10 @@
         currentPage: 1,
         totalPages: 1
     };
+    let allProducts = [];
+    let currentIndex = 0;
+    let scrollInitialized = false;
+
 
     function resetAllFiltersExcept(type) {
         if (type !== "category") filters.category = null;
@@ -509,8 +513,14 @@
     }
 
     function setupInfiniteScroll() {
+        if (scrollInitialized) return;
+        scrollInitialized = true;
+
         window.addEventListener("scroll", () => {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100 && currentIndex < allProducts.length) {
+            if (
+                (window.innerHeight + window.scrollY) >= document.documentElement.offsetHeight - 100 &&
+                currentIndex < allProducts.length
+            ) {
                 loadNextChunk();
             }
         });
@@ -557,7 +567,10 @@
 
     // RENDER PRODUCTS
     function renderProducts(products) {
-        productGrid.innerHTML = "";
+        // 🔥 Only clear grid on DESKTOP (pagination mode)
+        if (!isMobile) {
+            productGrid.innerHTML = "";
+        }
 
         products.forEach(product => {
             const firstImage = product.upload?.[0]?.url || 'assets/brand/li.jpg';
@@ -722,7 +735,7 @@
 
   /* Keep pagination always after grid */
   #product-grid {
-    min-height: 600px;   /* initial height for grid */
+    min-height: 300px;   /* initial height for grid */
   }
 </style>
 

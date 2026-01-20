@@ -234,9 +234,9 @@
     const skeletonLoader = document.getElementById("skeleton-loader");
     const paginationContainer = document.getElementById("pagination-container");
            
-    const chunkDesktop = 3;
+    const chunkDesktop = 2;
     const chunkMobile = 2;
-    const initialMobile = 8;
+    const initialMobile = 2;
     const isMobile = window.innerWidth < 768;
 
     // STATE
@@ -247,7 +247,7 @@
         sort: null,
         min_price: null,
         max_price: null,
-        limit: 9,
+        limit: 2,
         offset: 0,
         currentPage: 1,
         totalPages: 1

@@ -234,8 +234,8 @@
     const skeletonLoader = document.getElementById("skeleton-loader");
     const paginationContainer = document.getElementById("pagination-container");
            
-    const chunkDesktop = 9;
-    const chunkMobile = 5;
+    const chunkDesktop = 3;
+    const chunkMobile = 2;
     const initialMobile = 8;
     const isMobile = window.innerWidth < 768;
 

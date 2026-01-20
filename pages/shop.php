@@ -241,9 +241,6 @@
     
     const loadMoreIndicator = document.getElementById("load-more-indicator");
 
-    // const chunkDesktop = 2;
-    // const chunkMobile = 3;
-    // const initialMobile = 2;
     const isMobile = window.innerWidth < 768;
     let lastScrollTime = 0;
     let isLoadingMore = false;
@@ -679,24 +676,74 @@
 
         paginationContainer.innerHTML = "";
 
+        const total = filters.totalPages;
+        const current = filters.currentPage;
+
         const ul = document.createElement("ul");
         ul.className = "flex items-center space-x-2";
 
-        for (let i = 1; i <= filters.totalPages; i++) {
+        // Helper to create page button
+        function createPageButton(page, isActive = false) {
             const li = document.createElement("li");
-            li.innerHTML = `<button class="px-4 py-2 rounded-lg ${filters.currentPage === i ? 'bg-black text-white' : 'border hover:bg-gray-100'}">${i}</button>`;
+            li.innerHTML = `<button class="px-4 py-2 rounded-lg ${
+                isActive ? 'bg-black text-white' : 'border hover:bg-gray-100'
+            }">${page}</button>`;
+
             li.querySelector("button").addEventListener("click", () => {
-                filters.currentPage = i;
-                filters.offset = (i - 1) * filters.limit;
+                filters.currentPage = page;
+                filters.offset = (page - 1) * filters.limit;
                 fetchAndRenderProducts();
-                // 🔥 Scroll back to top of grid
                 window.scrollTo({ top: 0, behavior: "smooth" });
             });
-            ul.appendChild(li);
+
+            return li;
+        }
+
+        // 🔢 Calculate window (3 pages)
+        let start = Math.max(1, current - 1);
+        let end   = Math.min(total, current + 1);
+
+        // Ensure always 3 numbers when possible
+        if (current === 1) {
+            end = Math.min(total, 3);
+        } else if (current === total) {
+            start = Math.max(1, total - 2);
+        }
+
+        // Render page numbers
+        for (let i = start; i <= end; i++) {
+            ul.appendChild(createPageButton(i, i === current));
+        }
+
+        // 👉 Next button
+        if (current < total) {
+            const nextLi = document.createElement("li");
+            nextLi.innerHTML = `<button class="px-4 py-2 rounded-lg border hover:bg-gray-100">Next</button>`;
+            nextLi.querySelector("button").addEventListener("click", () => {
+                filters.currentPage += 1;
+                filters.offset = (filters.currentPage - 1) * filters.limit;
+                fetchAndRenderProducts();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+            ul.appendChild(nextLi);
+        }
+
+        // 👉 Last page button (always show)
+        if (total > 3 && end < total) {
+            const lastLi = document.createElement("li");
+            lastLi.innerHTML = `<button class="px-4 py-2 rounded-lg border hover:bg-gray-100">${total}</button>`;
+            lastLi.querySelector("button").addEventListener("click", () => {
+                filters.currentPage = total;
+                filters.offset = (total - 1) * filters.limit;
+                fetchAndRenderProducts();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+            ul.appendChild(lastLi);
         }
 
         paginationContainer.appendChild(ul);
     }
+
     document.querySelector("select").addEventListener("change", (e) => {
         const val = e.target.value;
         if (val.includes("Low to High")) filters.sort = "asc";

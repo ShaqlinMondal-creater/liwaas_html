@@ -235,7 +235,7 @@
     const paginationContainer = document.getElementById("pagination-container");
            
     const chunkDesktop = 2;
-    const chunkMobile = 2;
+    const chunkMobile = 3;
     const initialMobile = 2;
     const isMobile = window.innerWidth < 768;
 
@@ -247,7 +247,7 @@
         sort: null,
         min_price: null,
         max_price: null,
-        limit: 2,
+        limit: 3,
         offset: 0,
         currentPage: 1,
         totalPages: 1

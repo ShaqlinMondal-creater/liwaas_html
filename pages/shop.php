@@ -192,7 +192,12 @@
                 </div>
 
                 <!-- Actual product grid (will be filled via JS) -->
-                <div id="product-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 min-h-[600px] items-start"></div>
+                <div id="product-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 min-h-[600px] items-start">
+                    
+                </div>
+                <div id="load-more-indicator" class="hidden text-center py-4 text-gray-500">
+                    Loading more products...
+                </div>
                 <p id="no-products" class="text-center text-gray-500 hidden mt-8">No products found.</p>
                 <!-- Desktop Pagination -->
                 <div id="pagination-container" class="mt-12 flex items-center justify-between hidden md:flex">
@@ -233,11 +238,18 @@
     const productGrid = document.getElementById("product-grid");
     const skeletonLoader = document.getElementById("skeleton-loader");
     const paginationContainer = document.getElementById("pagination-container");
-           
-    const chunkDesktop = 2;
-    const chunkMobile = 3;
-    const initialMobile = 2;
+    
+    const loadMoreIndicator = document.getElementById("load-more-indicator");
+
+    // const chunkDesktop = 2;
+    // const chunkMobile = 3;
+    // const initialMobile = 2;
     const isMobile = window.innerWidth < 768;
+    let lastScrollTime = 0;
+    let isLoadingMore = false;
+    let hasMore = true;
+    let scrollInitialized = false;   // 🔥 ADD THIS
+
 
     // STATE
     let filters = {
@@ -252,9 +264,6 @@
         currentPage: 1,
         totalPages: 1
     };
-    let allProducts = [];
-    let currentIndex = 0;
-    let scrollInitialized = false;
 
 
     function resetAllFiltersExcept(type) {
@@ -315,18 +324,6 @@
             }
         });
     });
-
-
-    // FETCH FILTER DATA
-    // fetch(filtersEndpoint)
-    // .then(res => res.json())
-    // .then(data => {
-    //     console.log("Products API Response:", data);
-    //     if (data.success) {
-    //     renderFilterOptions(data);
-    //     fetchAndRenderProducts();
-    //     }
-    // });
 
     function renderFilterOptions(data) {
         // CATEGORIES
@@ -448,46 +445,6 @@
 
         }
 
-        // function createSlider(slider, min, max, minInput, maxInput) {
-        //     if (!slider || slider.noUiSlider) return;
-
-        //     noUiSlider.create(slider, {
-        //         start: [min, max],
-        //         connect: true,
-        //         step: 10,
-        //         range: { min, max },
-        //         format: {
-        //             to: value => Math.round(value),
-        //             from: value => Number(value)
-        //         }
-        //     });
-
-        //     slider.noUiSlider.on('update', function (values) {
-        //         if (minInput) minInput.value = values[0];
-        //         if (maxInput) maxInput.value = values[1];
-        //     });
-
-        //     slider.noUiSlider.on('change', function (values) {
-        //         filters.min_price = parseInt(values[0]);
-        //         filters.max_price = parseInt(values[1]);
-        //         filters.currentPage = 1;
-        //         filters.offset = 0;
-        //         fetchAndRenderProducts();
-        //     });
-
-        //     if (minInput) {
-        //         minInput.addEventListener('change', () => {
-        //             slider.noUiSlider.set([minInput.value, null]);
-        //         });
-        //     }
-
-        //     if (maxInput) {
-        //         maxInput.addEventListener('change', () => {
-        //             slider.noUiSlider.set([null, maxInput.value]);
-        //         });
-        //     }
-        // }
-
         // Initialize sliders only if price data is available
         if (
             data.price &&
@@ -505,32 +462,59 @@
         }
     }
 
-    function loadNextChunk() {
-        const count = isMobile && currentIndex === 0 ? initialMobile : chunkMobile;
-        const nextProducts = allProducts.slice(currentIndex, currentIndex + count);
-        renderProducts(nextProducts);
-        currentIndex += count;
-    }
+    function loadMoreFromApi() {
+        if (isLoadingMore || !hasMore) return;
 
+        isLoadingMore = true;
+        loadMoreIndicator.classList.remove("hidden");   // 🔥 show loader
+
+        const body = {
+            ...filters,
+            offset: filters.offset,
+            limit: filters.limit
+        };
+
+        fetch(productsEndpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success && Array.isArray(data.data)) {
+
+                renderProducts(data.data);
+                filters.offset += data.data.length;
+
+                if (data.data.length < filters.limit) {
+                    hasMore = false;
+
+                    // 🔥 show "no more products"
+                    loadMoreIndicator.innerText = "No more products";
+                }
+            }
+        })
+        .finally(() => {
+            isLoadingMore = false;
+            loadMoreIndicator.classList.add("hidden");  // 🔥 hide loader
+        });
+    }
     function setupInfiniteScroll() {
         if (scrollInitialized) return;
         scrollInitialized = true;
 
         window.addEventListener("scroll", () => {
-            if (
-                (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 100 &&
-                currentIndex < allProducts.length
-            ) {
-                loadNextChunk();
-                console.log(
-  "scroll:",
-  window.scrollY,
-  window.innerHeight,
-  document.documentElement.scrollHeight,
-  currentIndex,
-  allProducts.length
-);
+            const now = Date.now();
 
+            // 🔥 Throttle: only once every 300ms
+            if (now - lastScrollTime < 300) return;
+            lastScrollTime = now;
+
+            if (
+                (window.innerHeight + window.scrollY) >=
+                document.documentElement.scrollHeight - 150
+            ) {
+                loadMoreFromApi();
             }
         });
     }
@@ -540,13 +524,28 @@
         skeletonLoader.style.display = "grid";
         productGrid.innerHTML = "";
 
+        // Reset mobile scroll state
+        hasMore = true;
+        isLoadingMore = false;
+        scrollInitialized = false;
+
+        // 🔥 If mobile, DO NOT pre-fetch here
+        if (isMobile) {
+            skeletonLoader.style.display = "none";
+            filters.offset = 0;
+            loadMoreIndicator.innerText = "Loading more products...";  // 🔥 RESET TEXT
+            loadMoreFromApi();        // first & only fetch
+            setupInfiniteScroll();
+            paginationContainer.style.display = "none";
+            return;                  // 🔥 VERY IMPORTANT
+        }
+
+        // 🖥️ Desktop: normal API fetch
         const body = { ...filters };
 
         fetch(productsEndpoint, {
             method: "POST",
-            headers: {
-            "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
         })
         .then(res => res.json())
@@ -554,24 +553,14 @@
             skeletonLoader.style.display = "none";
             if (data.success && Array.isArray(data.data)) {
                 filters.totalPages = Math.ceil(data.total / filters.limit);
-                allProducts = data.data; // 👈 Add this line
-                currentIndex = 0;
 
-                if (isMobile) {
-                    productGrid.innerHTML = "";
-                    loadNextChunk();
-                    setupInfiniteScroll();
-                    paginationContainer.style.display = "none";   // 🔥 hide pagination on mobile
-                } else {
-                    renderProducts(allProducts.slice(0, chunkDesktop));
-                    paginationContainer.style.display = "flex";   // 🔥 show pagination on desktop
-                    renderPagination();
-                }
+                renderProducts(data.data);
+                paginationContainer.style.display = "flex";
+                renderPagination();
             } else {
                 productGrid.innerHTML = "<p class='text-center w-full'>No products found.</p>";
             }
         });
-
     }
 
     // RENDER PRODUCTS
@@ -697,9 +686,11 @@
             const li = document.createElement("li");
             li.innerHTML = `<button class="px-4 py-2 rounded-lg ${filters.currentPage === i ? 'bg-black text-white' : 'border hover:bg-gray-100'}">${i}</button>`;
             li.querySelector("button").addEventListener("click", () => {
-            filters.currentPage = i;
-            filters.offset = (i - 1) * filters.limit;
-            fetchAndRenderProducts();
+                filters.currentPage = i;
+                filters.offset = (i - 1) * filters.limit;
+                fetchAndRenderProducts();
+                // 🔥 Scroll back to top of grid
+                window.scrollTo({ top: 0, behavior: "smooth" });
             });
             ul.appendChild(li);
         }

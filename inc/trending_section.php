@@ -202,51 +202,68 @@
             // });
 
             const color = variation.color || 'N/A';
-            const size = variation.size || 'N/A';
+            const size  = variation.size  || 'N/A';
 
             Swal.fire({
-              showConfirmButton: true,
+              showConfirmButton: false,
               showCancelButton: false,
-              confirmButtonText: 'Add to Cart',
+
               customClass: {
-                popup: 'cart_popup_2col',
-                confirmButton: 'swal-add-btn-full'
+                popup: 'cart_popup_2col'
               },
 
               html: `
-                <div class="flex gap-4 w-[600px] max-w-full">
+                <div class="flex w-full h-full">
 
-                  <!-- LEFT IMAGE -->
-                  <div class="w-1/2 h-[420px] bg-gray-100 rounded-lg overflow-hidden">
-                    <img src="${imageUrl}" 
-                        alt="${product.name}" 
+                  <!-- LEFT IMAGE (NO PADDING) -->
+                  <div class="w-1/2 h-[460px] bg-black">
+                    <img src="${imageUrl}"
+                        alt="${product.name}"
                         class="w-full h-full object-cover"/>
                   </div>
 
-                  <!-- RIGHT INFO -->
-                  <div class="w-1/2 flex flex-col justify-between">
+                  <!-- RIGHT CONTENT -->
+                  <div class="w-1/2 p-6 flex flex-col justify-between">
 
                     <div>
-                      <h3 class="text-xl font-semibold text-slate-900">${product.name}</h3>
+                      <h3 class="text-2xl font-semibold text-slate-900">
+                        ${product.name}
+                      </h3>
 
-                      <div class="mt-2 text-sm text-gray-600">
+                      <p class="mt-1 text-sm text-gray-500">
+                        ${product.gender ?? ''}
+                      </p>
+
+                      <div class="mt-4 text-sm text-gray-700 flex gap-6">
                         <p><strong>Color:</strong> ${color}</p>
                         <p><strong>Size:</strong> ${size}</p>
                       </div>
 
-                      <p class="mt-4 text-2xl font-semibold text-slate-900">
+                      <p class="mt-5 text-2xl font-semibold text-slate-900">
                         ₹${price.toFixed(2)}
                       </p>
 
                       <!-- QTY + TOTAL -->
-                      <div class="mt-4 flex items-center justify-between">
+                      <div class="mt-5 flex items-center justify-between">
                         <div class="flex items-center space-x-2">
-                          <button id="qty-decrease" class="w-9 h-9 bg-gray-200 rounded text-xl">−</button>
-                          <input id="qty-input" value="1" class="w-12 text-center border rounded" readonly />
-                          <button id="qty-increase" class="w-9 h-9 bg-gray-200 rounded text-xl">+</button>
+                          <button id="qty-decrease"
+                                  class="w-10 h-10 bg-gray-200 rounded text-xl hover:bg-gray-300">
+                            −
+                          </button>
+
+                          <input id="qty-input"
+                                value="1"
+                                class="w-14 text-center border rounded py-1"
+                                readonly />
+
+                          <button id="qty-increase"
+                                  class="w-10 h-10 bg-gray-200 rounded text-xl hover:bg-gray-300">
+                            +
+                          </button>
                         </div>
 
-                        <div id="total-price" class="text-lg font-medium text-slate-700">
+                        <div id="total-price"
+                            class="text-xl font-medium text-slate-800">
                           ₹${price.toFixed(2)}
                         </div>
                       </div>
@@ -254,7 +271,8 @@
 
                     <!-- ADD TO CART BUTTON -->
                     <div class="mt-6">
-                      <button id="confirm-add-cart" class="w-full bg-slate-900 text-white py-3 rounded-lg hover:bg-yellow-500 transition">
+                      <button id="confirm-add-cart"
+                              class="w-full bg-slate-900 text-white py-3 rounded-lg hover:bg-yellow-500 transition text-lg">
                         Add to Cart
                       </button>
                     </div>
@@ -264,9 +282,9 @@
               `,
 
               didOpen: () => {
-                const qtyInput = Swal.getPopup().querySelector('#qty-input');
-                const incBtn = Swal.getPopup().querySelector('#qty-increase');
-                const decBtn = Swal.getPopup().querySelector('#qty-decrease');
+                const qtyInput  = Swal.getPopup().querySelector('#qty-input');
+                const incBtn    = Swal.getPopup().querySelector('#qty-increase');
+                const decBtn    = Swal.getPopup().querySelector('#qty-decrease');
                 const totalPrice = Swal.getPopup().querySelector('#total-price');
                 const confirmBtn = Swal.getPopup().querySelector('#confirm-add-cart');
 
@@ -318,7 +336,6 @@
                 });
               }
             });
-
           });
 
           // Append card first
@@ -400,14 +417,20 @@
   }
 
 </script>
+
 <style>
-.cart_popup_2col {
-  padding: 1rem !important;
-  border-radius: 14px !important;
+/* Force wider modal */
+.swal2-popup.cart_popup_2col {
+  width: 46em !important;   /* 🔥 requested width */
+  max-width: 95vw !important;
+  padding: 0 !important;   /* 🔥 remove global padding */
+  border-radius: 12px !important;
+  overflow: hidden !important;
 }
 
+/* Hide default confirm button (we use custom) */
 .swal-add-btn-full {
-  display: none !important; /* we use our own button */
+  display: none !important;
 }
 </style>
 

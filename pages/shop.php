@@ -95,10 +95,11 @@
                     <span class="text-sm">Filters</span>
                 </button>
                 <select class="border rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black">
-                    <option>Sort by: Featured</option>
+                    <option>Select: Sort by</option>
                     <option>Price: Low to High</option>
                     <option>Price: High to Low</option>
                     <option>Newest First</option>
+                    <option>Featured</option>
                 </select>
             </div>
         </div>
@@ -756,9 +757,10 @@
 
     document.querySelector("select").addEventListener("change", (e) => {
         const val = e.target.value;
-        if (val.includes("Low to High")) filters.sort = "asc";
-        else if (val.includes("High to Low")) filters.sort = "desc";
+        if (val.includes("Low to High")) filters.sort = "price_asc";
+        else if (val.includes("High to Low")) filters.sort = "price_desc";
         else if (val.includes("Newest")) filters.sort = "newest";
+        else if (val.includes("Featured")) filters.sort = "featured";
         else filters.sort = null;
         filters.currentPage = 1;
         filters.offset = 0;

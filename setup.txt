@@ -36,7 +36,7 @@ new arrival section -> need modification
 
 ---------------------------------------
 shop page:
-need modification on wishlist, sorting -- processing
+need modification on wishlist, sorting -- processing (-- update need on api : filter price range, sorting)
 
 ---------------------------------------
 profile page:

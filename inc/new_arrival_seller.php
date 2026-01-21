@@ -1,20 +1,3 @@
-<section id="best-seller" class="py-8 bg-white">
-  <div class="container mx-auto px-4">
-    <h2 class="text-3xl font-bold mb-4">New Arrival Products</h2>
-    <div class="relative slider-container overflow-hidden">
-      <div id="slider-track" class="slider-track flex transition-transform duration-500 ease-in-out">
-        <!-- Skeleton or Product Cards will be injected here -->
-      </div>
-      <button onclick="slide(-1)" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-200 rounded-full p-2 shadow hover:bg-gray-300 transition-colors z-10">
-        ◀
-      </button>
-      <button onclick="slide(1)" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 rounded-full p-2 shadow hover:bg-gray-300 transition-colors z-10">
-        ▶
-      </button>
-    </div>
-  </div>
-</section>
-
 <script>
   const sliderTrack = document.getElementById('slider-track');
   let currentSlide = 0;
@@ -37,14 +20,14 @@
 
   async function fetchNewArrivalProducts() {
     try {
-      showSkeleton();
+      showSkeleton(4);
 
-      const response = await fetch(`<?= $baseUrl ?>/api/sections/getsections-products`, {
+      const response = await fetch(`<?= $baseUrl ?>/sections/getsections-products`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           section_name: "New Arrival",
-          limit: 10,
+          limit: 20,
           offset: 0,
           status: true
         })
@@ -52,7 +35,7 @@
 
       const result = await response.json();
 
-      if (result.success && result.data.length > 0) {
+      if (result.success && Array.isArray(result.data) && result.data.length > 0) {
         renderSliderItems(result.data);
       } else {
         sliderTrack.innerHTML = `<p class="text-center w-full py-6">No products found.</p>`;
@@ -63,21 +46,32 @@
     }
   }
 
-  function renderSliderItems(products) {
+  function renderSliderItems(items) {
     sliderTrack.innerHTML = ''; // Clear skeleton
 
-    products.forEach(item => {
-      const product = item.product;
+    items.forEach(row => {
+      const product = row.product;
       const variation = product.variation || {};
-      const image = variation.images?.[0]?.upload_url || product.upload?.url || 'https://via.placeholder.com/300x300?text=No+Image';
+
+      const image =
+        variation.images?.[0]?.upload_url ||
+        product.image_url ||
+        'https://via.placeholder.com/300x300?text=No+Image';
+
+      const price = variation.sell_price || "N/A";
+      const productName = product.name;
+      const slug = product.slug;
+      const variationUID = variation.uid;
 
       sliderTrack.innerHTML += `
         <div class="min-w-[300px] rounded-xl overflow-hidden shadow-lg m-2 bg-white">
-          <img src="${image}" alt="${product.name}" class="object-cover w-full h-72">
+          <img src="${image}" alt="${productName}" class="object-cover w-full h-72">
           <div class="p-4 text-center bg-gray-100">
-            <h3 class="font-semibold mb-2">${product.name}</h3>
-            <p class="text-gray-600 text-sm mb-2">Price: ₹${variation.sell_price?.toFixed(2) || 'N/A'}</p>
-            <a href="/product/${product.slug}" class="text-blue-500 hover:underline">Show Details</a>
+            <h3 class="font-semibold mb-1">${productName}</h3>
+            <p class="text-gray-600 text-sm mb-2">₹${price}</p>
+            <a href="pages/product-detail.php?id=${variationUID}" class="text-blue-500 hover:underline text-sm">
+              Show Details
+            </a>
           </div>
         </div>
       `;
@@ -93,7 +87,9 @@
 
     currentSlide += direction;
     if (currentSlide < 0) currentSlide = 0;
-    if (currentSlide > totalSlides - visibleSlides) currentSlide = totalSlides - visibleSlides;
+    if (currentSlide > totalSlides - visibleSlides) {
+      currentSlide = totalSlides - visibleSlides;
+    }
 
     sliderTrack.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
   }
@@ -104,5 +100,6 @@
   }
 
   window.addEventListener('resize', updateVisibleSlides);
+
   fetchNewArrivalProducts();
 </script>

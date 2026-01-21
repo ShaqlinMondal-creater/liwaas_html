@@ -248,7 +248,7 @@
                   </div>
 
                   <!-- RIGHT CONTENT -->
-                  <div class="w-1/2 p-6 flex flex-col justify-between text-justify">
+                  <div class="w-1/2 p-6 flex flex-col justify-evenly text-justify">
 
                     <div>
                       <h3 class="text-2xl font-semibold text-slate-900">
@@ -256,7 +256,7 @@
                       </h3>
 
                       <p class="mt-1 text-sm text-gray-500">
-                        ${product.gender ?? ''}
+                        Description: ${product.gender ?? ''}
                       </p>
 
                       <div class="mt-4 text-sm text-gray-700 flex items-center gap-8">
@@ -281,17 +281,17 @@
 
                       <div class="mt-5">
                         <!-- SELL PRICE -->
-                        <p class="text-3xl font-semibold text-slate-900">
+                        <p class="text-2xl font-semibold text-slate-900">
                           ₹${sellPrice.toFixed(2)}
                         </p>
 
                         <!-- REGULAR PRICE + DISCOUNT -->
                         ${regularPrice > sellPrice ? `
                           <div class="flex items-center gap-3 mt-1">
-                            <span class="text-sm text-gray-500 line-through">
+                            <span class="text-xl text-gray-500 line-through">
                               ₹${regularPrice.toFixed(2)}
                             </span>
-                            <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
+                            <span class="text-xl bg-red-100 text-red-700 px-2 py-0.5 rounded-[5px]">
                               ${discountPercent}% OFF
                             </span>
                           </div>
@@ -323,20 +323,20 @@
                         </div>
 
                         <div id="total-price"
-                            class="text-xl font-medium text-slate-800">
+                            class="text-3xl font-semibold text-red-700">
                           ₹${sellPrice.toFixed(2)}
                         </div>
                       </div>
 
                       <!-- SAVED BADGE -->
                       <div id="saved-badge"
-                          class="inline-block text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full hidden">
+                          class="inline-block text-sm bg-green-100 text-green-700 px-3 py-1 rounded-[10px] hidden">
                         You save ₹0
                       </div>
                     </div>
 
                     <!-- ADD TO CART BUTTON -->
-                    <div class="mt-4">
+                    <div class="mt-0">
                       <button id="confirm-add-cart"
                               class="w-full bg-slate-900 text-white py-3 rounded-lg hover:bg-yellow-500 transition text-lg">
                         Add to Cart

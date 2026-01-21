@@ -12,7 +12,9 @@ complete pages->
     - slider --done✅
     - category
     - gallery
-2. shop
+    - offers
+    - trending - add to cart --done✅
+2. shop 
 3. profile - > cart, wishlist, address
 
 
@@ -36,7 +38,16 @@ home page:
 slider section
 trending section
 offers section - > render page setting 
-new arrival section -> need modification
+gallery - > processing
+
+
+1. Home :
+    - new arrival --done✅  
+    - slider --done✅
+    - category
+    - gallery
+    - offers
+    - trending - add to cart --done✅
 
 ---------------------------------------
 shop page:

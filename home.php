@@ -11,7 +11,7 @@
   <?php include("inc/trending_section.php"); ?>
 
   <!-- Products -->
-  <?php //include("inc/product_gallary_section.php"); ?>
+  <?php include("inc/product_gallary_section.php"); ?>
 
   <!-- Offers2 -->
   <?php include("inc/offers.php"); ?>

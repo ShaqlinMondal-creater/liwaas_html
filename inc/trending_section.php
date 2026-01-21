@@ -241,14 +241,14 @@
                 <div class="flex w-full h-full main_modal_div">
 
                   <!-- LEFT IMAGE (NO PADDING) -->
-                  <div class="w-1/2 h-[460px] bg-black">
+                  <div class="w-1/2 h-[460px] bg-black left_side_modal">
                     <img src="${imageUrl}"
                         alt="${product.name}"
                         class="w-full h-full object-cover"/>
                   </div>
 
                   <!-- RIGHT CONTENT -->
-                  <div class="w-1/2 p-6 flex flex-col justify-evenly text-justify">
+                  <div class="right_side_modal w-1/2 p-6 flex flex-col justify-evenly text-justify">
 
                     <div>
                       <h3 class="text-2xl font-semibold text-slate-900">
@@ -525,6 +525,10 @@
   }
   .cart-btnn{
     margin-top: 24px;
+  }
+  .right_side_modal, .left_side_modal {
+    width: 100% !important;
+    height: auto !important;
   }
 }
 

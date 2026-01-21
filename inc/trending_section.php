@@ -55,6 +55,23 @@
     prevBtn.addEventListener('click', () => slider.scrollBy({ left: -300, behavior: 'smooth' }));
     nextBtn.addEventListener('click', () => slider.scrollBy({ left: 300, behavior: 'smooth' }));
 
+    let COLOR_MAP = {};
+
+    async function loadColorMap() {
+      try {
+        const res = await fetch("../inc/color.json");
+        const json = await res.json();
+        json.colors.forEach(c => {
+          COLOR_MAP[c.name.toLowerCase()] = c.code;
+        });
+      } catch (e) {
+        console.error("Failed to load color map:", e);
+      }
+    }
+
+    loadColorMap();
+
+    // Fetch trending products
     fetch('<?= $baseUrl ?>/api/sections/getsections-products', {
       method: 'POST',
       headers: {
@@ -203,6 +220,14 @@
 
             const color = variation.color || 'N/A';
             const size  = variation.size  || 'N/A';
+            const colorHex = COLOR_MAP[color.toLowerCase()] || '#e5e7eb';
+            const sellPrice = parseFloat(variation.sell_price || 0);
+            const regularPrice = parseFloat(variation.regular_price || sellPrice);
+
+            const discountPercent = regularPrice > sellPrice
+              ? Math.round(((regularPrice - sellPrice) / regularPrice) * 100)
+              : 0;
+
 
             Swal.fire({
               showConfirmButton: false,
@@ -234,38 +259,79 @@
                         ${product.gender ?? ''}
                       </p>
 
-                      <div class="mt-4 text-sm text-gray-700 flex gap-6">
-                        <p><strong>Color:</strong> ${color}</p>
-                        <p><strong>Size:</strong> ${size}</p>
+                      <div class="mt-4 text-sm text-gray-700 flex items-center gap-8">
+                        <!-- COLOR -->
+                        <div class="flex items-center gap-2">
+                          <strong>Color:</strong>
+                          <span class="inline-block w-6 h-6 rounded-full border"
+                                style="background:${colorHex}"
+                                title="${color}">
+                          </span>
+                          <span class="text-xs text-gray-500">${color}</span>
+                        </div>
+
+                        <!-- SIZE -->
+                        <div class="flex items-center gap-2">
+                          <strong>Size:</strong>
+                          <span class="px-3 py-1 border rounded-md text-sm bg-gray-100">
+                            ${size}
+                          </span>
+                        </div>
                       </div>
 
-                      <p class="mt-5 text-2xl font-semibold text-slate-900">
-                        ₹${price.toFixed(2)}
-                      </p>                      
+                      <div class="mt-5">
+                        <!-- SELL PRICE -->
+                        <p class="text-3xl font-semibold text-slate-900">
+                          ₹${sellPrice.toFixed(2)}
+                        </p>
+
+                        <!-- REGULAR PRICE + DISCOUNT -->
+                        ${regularPrice > sellPrice ? `
+                          <div class="flex items-center gap-3 mt-1">
+                            <span class="text-sm text-gray-500 line-through">
+                              ₹${regularPrice.toFixed(2)}
+                            </span>
+                            <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
+                              ${discountPercent}% OFF
+                            </span>
+                          </div>
+                        ` : ``}
+                      </div>
+                     
                     </div>
 
                     <!-- QTY + TOTAL (BOTTOM) -->
-                    <div class="mt-6 flex items-center justify-between">
-                      <div class="flex items-center space-x-2">
-                        <button id="qty-decrease"
-                                class="w-10 h-10 bg-gray-200 rounded text-xl hover:bg-gray-300">
-                          −
-                        </button>
+                    <div class="mt-6 space-y-3">
 
-                        <input id="qty-input"
-                              value="1"
-                              class="w-14 text-center border rounded py-1"
-                              readonly />
+                      <!-- QTY + TOTAL -->
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                          <button id="qty-decrease"
+                                  class="w-10 h-10 bg-gray-200 rounded text-xl hover:bg-gray-300">
+                            −
+                          </button>
 
-                        <button id="qty-increase"
-                                class="w-10 h-10 bg-gray-200 rounded text-xl hover:bg-gray-300">
-                          +
-                        </button>
+                          <input id="qty-input"
+                                value="1"
+                                class="w-14 text-center border rounded py-1"
+                                readonly />
+
+                          <button id="qty-increase"
+                                  class="w-10 h-10 bg-gray-200 rounded text-xl hover:bg-gray-300">
+                            +
+                          </button>
+                        </div>
+
+                        <div id="total-price"
+                            class="text-xl font-medium text-slate-800">
+                          ₹${sellPrice.toFixed(2)}
+                        </div>
                       </div>
 
-                      <div id="total-price"
-                          class="text-xl font-medium text-slate-800">
-                        ₹${price.toFixed(2)}
+                      <!-- SAVED BADGE -->
+                      <div id="saved-badge"
+                          class="inline-block text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full hidden">
+                        You save ₹0
                       </div>
                     </div>
 
@@ -289,7 +355,21 @@
 
                 const updatePrice = () => {
                   const qty = Math.max(1, parseInt(qtyInput.value) || 1);
-                  totalPrice.textContent = `₹${(qty * price).toFixed(2)}`;
+
+                  const totalSell = qty * sellPrice;
+                  const totalRegular = qty * regularPrice;
+                  const saved = Math.max(0, totalRegular - totalSell);
+
+                  totalPrice.textContent = `₹${totalSell.toFixed(2)}`;
+
+                  const savedBadge = Swal.getPopup().querySelector('#saved-badge');
+
+                  if (saved > 0) {
+                    savedBadge.textContent = `You save ₹${saved.toFixed(2)}`;
+                    savedBadge.classList.remove('hidden');
+                  } else {
+                    savedBadge.classList.add('hidden');
+                  }
                 };
 
                 incBtn.addEventListener('click', () => {

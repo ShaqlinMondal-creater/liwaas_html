@@ -116,46 +116,164 @@
           card.querySelector('.cart-btn').addEventListener('click', () => {
             const price = parseFloat(variation.sell_price || 0);
             
+            // Swal.fire({
+            //   title: 'Add to Cart',
+            //   html: `
+            //     <div class="p-1 text-left w-[300px] mx-auto">
+            //       <img src="${imageUrl}" alt="${product.name}" class="w-[300px] h-[250px] object-cover transition-transform duration-700 group-hover:scale-110"/>
+            //       <p class="mt-4 text-lg font-medium text-slate-900 text-center">${product.name}</p>
+            //       <p class="text-xl text-gray-600 text-center">Price: ₹${price.toFixed(2)}</p>
+            //       <div class="flex items-center justify-center mt-2 space-x-2">
+            //         <button id="qty-decrease" class="px-2 py-1 bg-gray-200 rounded text-xl">−</button>
+            //         <input type="text" id="qty-input" value="1" min="1" class="w-12 text-center border rounded" readonly />
+            //         <button id="qty-increase" class="px-2 py-1 bg-gray-200 rounded text-xl">+</button>
+            //       </div>
+            //       <div id="total-price" class="mt-3 text-center font-medium text-slate-700">Total: ₹${price.toFixed(2)}</div>
+            //     </div>
+            //   `,
+            //   customClass: {
+            //     popup: 'cart_popup',
+            //     confirmButton: 'swal-add-btn',
+            //     cancelButton: 'swal-cancel-btn'
+            //   },
+            //   showCancelButton: true,
+            //   confirmButtonText: 'Add to Cart',
+            //   cancelButtonText: 'Cancel',
+            //   reverseButtons: true,
+            //   didOpen: () => {
+            //     const qtyInput = Swal.getPopup().querySelector('#qty-input');
+            //     const incBtn = Swal.getPopup().querySelector('#qty-increase');
+            //     const decBtn = Swal.getPopup().querySelector('#qty-decrease');
+            //     const totalPrice = Swal.getPopup().querySelector('#total-price');
+
+            //     const formatPrice = (num) => {
+            //       return `₹${num.toFixed(2)}`;
+            //     };
+
+            //     const updatePrice = () => {
+            //       const qty = Math.max(1, parseInt(qtyInput.value) || 1);
+            //       const total = qty * price;
+            //       totalPrice.textContent = `Total: ${formatPrice(total)}`;
+            //     };
+
+
+            //     incBtn.addEventListener('click', () => {
+            //       qtyInput.value = parseInt(qtyInput.value || '1') + 1;
+            //       updatePrice();
+            //     });
+
+            //     decBtn.addEventListener('click', () => {
+            //       qtyInput.value = Math.max(1, parseInt(qtyInput.value || '1') - 1);
+            //       updatePrice();
+            //     });
+
+            //     qtyInput.addEventListener('input', updatePrice);
+            //   }
+            // }).then(result => {
+            //   if (result.isConfirmed) {
+            //     const qty = parseInt(Swal.getPopup().querySelector('#qty-input')?.value || '1');
+
+            //     fetch('<?= $baseUrl ?>/api/cart/create-cart', {
+            //       method: 'POST',
+            //       headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': `Bearer ${authToken}`
+            //       },
+            //       body: JSON.stringify({
+            //         products_id: product.id,
+            //         aid: variation.aid,
+            //         uid: variation.uid,
+            //         quantity: qty
+            //       })
+            //     })
+            //     .then(res => res.json())
+            //     .then(resp => {
+            //       Swal.fire({
+            //         icon: resp.success ? 'success' : 'error',
+            //         title: resp.success ? 'Added to Cart' : 'Failed',
+            //         text: resp.message,
+            //         timer: 1000,
+            //       });
+            //     })
+            //     .catch(() => {
+            //       Swal.fire('Error', 'Something went wrong while adding to cart.', 'error');
+            //     });
+            //   }
+            // });
+
+            const color = variation.color || 'N/A';
+            const size = variation.size || 'N/A';
+
             Swal.fire({
-              title: 'Add to Cart',
+              showConfirmButton: true,
+              showCancelButton: false,
+              confirmButtonText: 'Add to Cart',
+              customClass: {
+                popup: 'cart_popup_2col',
+                confirmButton: 'swal-add-btn-full'
+              },
+
               html: `
-                <div class="p-1 text-left w-[300px] mx-auto">
-                  <img src="${imageUrl}" alt="${product.name}" class="w-[300px] h-[250px] object-cover transition-transform duration-700 group-hover:scale-110"/>
-                  <p class="mt-4 text-lg font-medium text-slate-900 text-center">${product.name}</p>
-                  <p class="text-xl text-gray-600 text-center">Price: ₹${price.toFixed(2)}</p>
-                  <div class="flex items-center justify-center mt-2 space-x-2">
-                    <button id="qty-decrease" class="px-2 py-1 bg-gray-200 rounded text-xl">−</button>
-                    <input type="text" id="qty-input" value="1" min="1" class="w-12 text-center border rounded" readonly />
-                    <button id="qty-increase" class="px-2 py-1 bg-gray-200 rounded text-xl">+</button>
+                <div class="flex gap-4 w-[600px] max-w-full">
+
+                  <!-- LEFT IMAGE -->
+                  <div class="w-1/2 h-[420px] bg-gray-100 rounded-lg overflow-hidden">
+                    <img src="${imageUrl}" 
+                        alt="${product.name}" 
+                        class="w-full h-full object-cover"/>
                   </div>
-                  <div id="total-price" class="mt-3 text-center font-medium text-slate-700">Total: ₹${price.toFixed(2)}</div>
+
+                  <!-- RIGHT INFO -->
+                  <div class="w-1/2 flex flex-col justify-between">
+
+                    <div>
+                      <h3 class="text-xl font-semibold text-slate-900">${product.name}</h3>
+
+                      <div class="mt-2 text-sm text-gray-600">
+                        <p><strong>Color:</strong> ${color}</p>
+                        <p><strong>Size:</strong> ${size}</p>
+                      </div>
+
+                      <p class="mt-4 text-2xl font-semibold text-slate-900">
+                        ₹${price.toFixed(2)}
+                      </p>
+
+                      <!-- QTY + TOTAL -->
+                      <div class="mt-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                          <button id="qty-decrease" class="w-9 h-9 bg-gray-200 rounded text-xl">−</button>
+                          <input id="qty-input" value="1" class="w-12 text-center border rounded" readonly />
+                          <button id="qty-increase" class="w-9 h-9 bg-gray-200 rounded text-xl">+</button>
+                        </div>
+
+                        <div id="total-price" class="text-lg font-medium text-slate-700">
+                          ₹${price.toFixed(2)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ADD TO CART BUTTON -->
+                    <div class="mt-6">
+                      <button id="confirm-add-cart" class="w-full bg-slate-900 text-white py-3 rounded-lg hover:bg-yellow-500 transition">
+                        Add to Cart
+                      </button>
+                    </div>
+
+                  </div>
                 </div>
               `,
-              customClass: {
-                popup: 'cart_popup',
-                confirmButton: 'swal-add-btn',
-                cancelButton: 'swal-cancel-btn'
-              },
-              showCancelButton: true,
-              confirmButtonText: 'Add to Cart',
-              cancelButtonText: 'Cancel',
-              reverseButtons: true,
+
               didOpen: () => {
                 const qtyInput = Swal.getPopup().querySelector('#qty-input');
                 const incBtn = Swal.getPopup().querySelector('#qty-increase');
                 const decBtn = Swal.getPopup().querySelector('#qty-decrease');
                 const totalPrice = Swal.getPopup().querySelector('#total-price');
-
-                const formatPrice = (num) => {
-                  return `₹${num.toFixed(2)}`;
-                };
+                const confirmBtn = Swal.getPopup().querySelector('#confirm-add-cart');
 
                 const updatePrice = () => {
                   const qty = Math.max(1, parseInt(qtyInput.value) || 1);
-                  const total = qty * price;
-                  totalPrice.textContent = `Total: ${formatPrice(total)}`;
+                  totalPrice.textContent = `₹${(qty * price).toFixed(2)}`;
                 };
-
 
                 incBtn.addEventListener('click', () => {
                   qtyInput.value = parseInt(qtyInput.value || '1') + 1;
@@ -167,39 +285,40 @@
                   updatePrice();
                 });
 
-                qtyInput.addEventListener('input', updatePrice);
-              }
-            }).then(result => {
-              if (result.isConfirmed) {
-                const qty = parseInt(Swal.getPopup().querySelector('#qty-input')?.value || '1');
+                confirmBtn.addEventListener('click', () => {
+                  const qty = parseInt(qtyInput.value || '1');
 
-                fetch('<?= $baseUrl ?>/api/cart/create-cart', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                  },
-                  body: JSON.stringify({
-                    products_id: product.id,
-                    aid: variation.aid,
-                    uid: variation.uid,
-                    quantity: qty
+                  fetch('<?= $baseUrl ?>/api/cart/create-cart', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                      products_id: product.id,
+                      aid: variation.aid,
+                      uid: variation.uid,
+                      quantity: qty
+                    })
                   })
-                })
-                .then(res => res.json())
-                .then(resp => {
-                  Swal.fire({
-                    icon: resp.success ? 'success' : 'error',
-                    title: resp.success ? 'Added to Cart' : 'Failed',
-                    text: resp.message,
-                    timer: 1000,
+                  .then(res => res.json())
+                  .then(resp => {
+                    Swal.close();
+                    Swal.fire({
+                      icon: resp.success ? 'success' : 'error',
+                      title: resp.success ? 'Added to Cart' : 'Failed',
+                      text: resp.message,
+                      timer: 1200,
+                      showConfirmButton: false
+                    });
+                  })
+                  .catch(() => {
+                    Swal.fire('Error', 'Something went wrong while adding to cart.', 'error');
                   });
-                })
-                .catch(() => {
-                  Swal.fire('Error', 'Something went wrong while adding to cart.', 'error');
                 });
               }
             });
+
           });
 
           // Append card first
@@ -281,4 +400,14 @@
   }
 
 </script>
+<style>
+.cart_popup_2col {
+  padding: 1rem !important;
+  border-radius: 14px !important;
+}
+
+.swal-add-btn-full {
+  display: none !important; /* we use our own button */
+}
+</style>
 

@@ -7,7 +7,11 @@ user_name -> for auth user name
 user_role -> for auth user role
 
 complete pages->
-1. Home
+1. Home :
+    - new arrival --done✅  
+    - slider --done✅
+    - category
+    - gallery
 2. shop
 3. profile - > cart, wishlist, address
 

@@ -79,19 +79,26 @@
           const imageUrl = variation.images?.[0]?.upload_url || 'https://via.placeholder.com/300x400?text=No+Image';
 
           const card = document.createElement('div');
-          card.className = 'min-w-[280px] sm:min-w-[300px] group featured-card cursor-pointer';
+          card.className = 'min-w-[300px] max-w-[300px] flex-shrink-0 group featured-card cursor-pointer';
+
           card.innerHTML = `
-            <div class="relative overflow-hidden rounded-xl shadow hover:shadow-lg transition">
-              <img src="${imageUrl}" alt="${product.name}" class="w-full h-[400px] object-cover transition-transform duration-700 group-hover:scale-110"/>
+            <div class="relative overflow-hidden rounded-xl shadow hover:shadow-lg transition h-[400px] bg-gray-100">
+              <img src="${imageUrl}" 
+                  alt="${product.name}" 
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
               <div class="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
-            <h3 class="mt-4 text-lg font-medium text-slate-900">${product.name}</h3>
+
+            <h3 class="mt-4 text-lg font-medium text-slate-900 line-clamp-2">${product.name}</h3>
+
             <div class="flex justify-between items-center mt-2">
               <span class="text-xl font-semibold text-slate-900">₹${variation.sell_price ?? 'N/A'}</span>
+
               <div class="flex space-x-2">
                 <button class="wishlist-btn w-9 h-9 border border-slate-300 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-200 transition">
                   <i data-lucide="heart" class="w-5 h-5"></i>
                 </button>
+
                 <button class="cart-btn relative w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-yellow-500 transition">
                   <i data-lucide="shopping-cart" class="w-5 h-5"></i>
                 </button>

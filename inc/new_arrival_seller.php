@@ -82,23 +82,27 @@
 
       sliderTrack.innerHTML += `
         <div class="min-w-[300px] max-w-[300px] rounded-xl overflow-hidden shadow-lg m-2 bg-white flex-shrink-0">
-          <div class="w-full h-72 bg-gray-100 overflow-hidden">
+
+          <a href="pages/product-detail.php?id=${variationUID}" 
+            class="block w-full h-72 bg-gray-100 overflow-hidden group">
             <img 
               src="${image}" 
               alt="${productName}" 
-              class="w-full h-full object-cover object-center"
+              class="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
             >
-          </div>
+          </a>
 
           <div class="p-4 text-center bg-gray-100">
             <h3 class="font-semibold mb-1 line-clamp-2">${productName}</h3>
             <p class="text-gray-600 text-sm mb-2">₹${price}</p>
+
             <a href="pages/product-detail.php?id=${variationUID}" 
               class="text-blue-500 hover:underline text-sm">
               Show Details
             </a>
           </div>
+
         </div>
       `;
     });

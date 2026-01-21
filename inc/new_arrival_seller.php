@@ -1,3 +1,20 @@
+<section id="best-seller" class="py-8 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold mb-4">New Arrival Products</h2>
+    <div class="relative slider-container overflow-hidden">
+      <div id="slider-track" class="slider-track flex transition-transform duration-500 ease-in-out">
+        <!-- Skeleton or Product Cards will be injected here -->
+      </div>
+      <button onclick="slide(-1)" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-200 rounded-full p-2 shadow hover:bg-gray-300 transition-colors z-10">
+        ◀
+      </button>
+      <button onclick="slide(1)" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 rounded-full p-2 shadow hover:bg-gray-300 transition-colors z-10">
+        ▶
+      </button>
+    </div>
+  </div>
+</section>
+
 <script>
   const sliderTrack = document.getElementById('slider-track');
   let currentSlide = 0;
@@ -103,3 +120,4 @@
 
   fetchNewArrivalProducts();
 </script>
+

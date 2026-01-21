@@ -17,7 +17,7 @@
   <?php include("inc/offers.php"); ?>
 
   <!-- products cards -->
-  <?php include("inc/home-product-card.php"); ?>
+  <?php //include("inc/home-product-card.php"); ?>
 
   <!-- best seller -->
   <?php include("inc/new_arrival_seller.php"); ?>

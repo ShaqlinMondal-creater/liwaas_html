@@ -146,26 +146,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const image2 = images[1]?.upload_url || image1;
 
       const colorName = (variation.color || '').toLowerCase();
-      const rawColorHex = COLOR_MAP[colorName] || '#111827';
-
-      /* ---------- CONTRAST SAFE BUTTON COLOR ---------- */
-      function isLightColor(hex) {
-        const c = hex.replace('#', '');
-        const r = parseInt(c.substr(0, 2), 16);
-        const g = parseInt(c.substr(2, 2), 16);
-        const b = parseInt(c.substr(4, 2), 16);
-
-        // perceived brightness
-        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-        return brightness > 180; // tweakable threshold
-      }
-
-      const isLight = isLightColor(rawColorHex);
-
-      const buttonBgColor   = rawColorHex;
-      const buttonTextColor = isLight ? '#111111' : '#ffffff';
-      const priceColor      = rawColorHex;
-
+      const colorHex  = COLOR_MAP[colorName] || '#111827';
 
       const sellPrice = parseFloat(variation.sell_price || 0);
       const regularPrice = parseFloat(variation.regular_price || sellPrice);
@@ -174,8 +155,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       card.className = 'relative overflow-hidden group';
 
       card.innerHTML = `
-        <div class="bg-black rounded-xl overflow-hidden">
-          <div class="rounded-2xl overflow-hidden transform transition-transform duration-300 group-hover:scale-[0.98]">
+        <div class="bg-black rounded-3xl overflow-hidden">
+          <div class="rounded-3xl overflow-hidden transform transition-transform duration-300 group-hover:scale-[0.98]">
 
             <div class="relative h-[400px] overflow-hidden rounded-3xl">
 
@@ -205,16 +186,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                   <p class="text-xl font-bold mb-2">${product.category?.name ?? ''}</p>
 
                   <p class="text-3xl font-bold mb-4"
-                    style="color:${priceColor}">
+                     style="color:${colorHex}">
                     ₹${sellPrice.toFixed(2)}
                   </p>
 
-                  <button class="buy-now-btn px-4 py-1 rounded-full font-bold hover:bg-opacity-80 transition"
-                          style="background:${buttonBgColor}; color:${buttonTextColor}"
+                  <button class="buy-now-btn text-white px-4 py-1 rounded-full font-bold hover:bg-opacity-80 transition"
+                          style="background:${colorHex}"
                           data-uid="${variation.uid}">
                     Buy Now
                   </button>
-
                 </div>
               </div>
 

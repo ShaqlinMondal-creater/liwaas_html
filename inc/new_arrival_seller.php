@@ -81,12 +81,21 @@
       const variationUID = variation.uid;
 
       sliderTrack.innerHTML += `
-        <div class="min-w-[300px] rounded-xl overflow-hidden shadow-lg m-2 bg-white">
-          <img src="${image}" alt="${productName}" class="object-cover w-full h-72">
+        <div class="min-w-[300px] max-w-[300px] rounded-xl overflow-hidden shadow-lg m-2 bg-white flex-shrink-0">
+          <div class="w-full h-72 bg-gray-100 overflow-hidden">
+            <img 
+              src="${image}" 
+              alt="${productName}" 
+              class="w-full h-full object-cover object-center"
+              loading="lazy"
+            >
+          </div>
+
           <div class="p-4 text-center bg-gray-100">
-            <h3 class="font-semibold mb-1">${productName}</h3>
+            <h3 class="font-semibold mb-1 line-clamp-2">${productName}</h3>
             <p class="text-gray-600 text-sm mb-2">₹${price}</p>
-            <a href="pages/product-detail.php?id=${variationUID}" class="text-blue-500 hover:underline text-sm">
+            <a href="pages/product-detail.php?id=${variationUID}" 
+              class="text-blue-500 hover:underline text-sm">
               Show Details
             </a>
           </div>

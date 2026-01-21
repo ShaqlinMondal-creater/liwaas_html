@@ -530,10 +530,10 @@
     width: 100% !important;
   }
   .right_side_modal{
-    max-height: 35vh !important;
+    max-height: 45vh !important;
   }
   .left_side_modal {
-    max-height: 45vh !important;
+    max-height: 35vh !important;
   }
 }
 

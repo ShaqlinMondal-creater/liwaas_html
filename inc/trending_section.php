@@ -528,7 +528,7 @@
   }
   .right_side_modal, .left_side_modal {
     width: 100% !important;
-    height: auto !important;
+    height: 45vh !important;
   }
 }
 

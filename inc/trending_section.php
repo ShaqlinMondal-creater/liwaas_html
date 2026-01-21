@@ -223,7 +223,7 @@
                   </div>
 
                   <!-- RIGHT CONTENT -->
-                  <div class="w-1/2 p-6 flex flex-col justify-between">
+                  <div class="w-1/2 p-6 flex flex-col justify-between text-justify">
 
                     <div>
                       <h3 class="text-2xl font-semibold text-slate-900">
@@ -241,42 +241,41 @@
 
                       <p class="mt-5 text-2xl font-semibold text-slate-900">
                         ₹${price.toFixed(2)}
-                      </p>
+                      </p>                      
+                    </div>
 
-                      <!-- QTY + TOTAL -->
-                      <div class="mt-5 flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                          <button id="qty-decrease"
-                                  class="w-10 h-10 bg-gray-200 rounded text-xl hover:bg-gray-300">
-                            −
-                          </button>
+                    <!-- QTY + TOTAL (BOTTOM) -->
+                    <div class="mt-6 flex items-center justify-between">
+                      <div class="flex items-center space-x-2">
+                        <button id="qty-decrease"
+                                class="w-10 h-10 bg-gray-200 rounded text-xl hover:bg-gray-300">
+                          −
+                        </button>
 
-                          <input id="qty-input"
-                                value="1"
-                                class="w-14 text-center border rounded py-1"
-                                readonly />
+                        <input id="qty-input"
+                              value="1"
+                              class="w-14 text-center border rounded py-1"
+                              readonly />
 
-                          <button id="qty-increase"
-                                  class="w-10 h-10 bg-gray-200 rounded text-xl hover:bg-gray-300">
-                            +
-                          </button>
-                        </div>
+                        <button id="qty-increase"
+                                class="w-10 h-10 bg-gray-200 rounded text-xl hover:bg-gray-300">
+                          +
+                        </button>
+                      </div>
 
-                        <div id="total-price"
-                            class="text-xl font-medium text-slate-800">
-                          ₹${price.toFixed(2)}
-                        </div>
+                      <div id="total-price"
+                          class="text-xl font-medium text-slate-800">
+                        ₹${price.toFixed(2)}
                       </div>
                     </div>
 
                     <!-- ADD TO CART BUTTON -->
-                    <div class="mt-6">
+                    <div class="mt-4">
                       <button id="confirm-add-cart"
                               class="w-full bg-slate-900 text-white py-3 rounded-lg hover:bg-yellow-500 transition text-lg">
                         Add to Cart
                       </button>
                     </div>
-
                   </div>
                 </div>
               `,
@@ -427,7 +426,10 @@
   border-radius: 12px !important;
   overflow: hidden !important;
 }
-
+.swal2-html-container{
+  margin: 0 !important;
+  padding: 0 !important;
+}
 /* Hide default confirm button (we use custom) */
 .swal-add-btn-full {
   display: none !important;

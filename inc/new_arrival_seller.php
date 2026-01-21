@@ -22,7 +22,7 @@
     try {
       showSkeleton(4);
 
-      const response = await fetch(`<?= $baseUrl ?>/sections/getsections-products`, {
+      const response = await fetch(`<?= $baseUrl ?>/api/sections/getsections-products`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

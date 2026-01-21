@@ -514,5 +514,74 @@
 .swal-add-btn-full {
   display: none !important;
 }
+
+/* ================================
+   MOBILE RESPONSIVE FIXES ONLY
+================================ */
+
+@media (max-width: 768px) {
+
+  /* Slider cards */
+  .featured-card {
+    min-width: 240px !important;
+    max-width: 240px !important;
+  }
+
+  /* Arrows closer to edges */
+  #featPrev { left: 6px !important; }
+  #featNext { right: 6px !important; }
+
+  /* ===== SweetAlert Modal Mobile ===== */
+  .swal2-popup.cart_popup_2col {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    border-radius: 14px !important;
+  }
+
+  .cart_popup_2col .flex {
+    flex-direction: column !important;
+    height: auto !important;
+  }
+
+  /* Image section */
+  .cart_popup_2col .w-1\/2:first-child {
+    width: 100% !important;
+    height: 260px !important;
+  }
+
+  /* Content section */
+  .cart_popup_2col .w-1\/2:last-child {
+    width: 100% !important;
+    padding: 16px !important;
+  }
+
+  /* Product name */
+  .cart_popup_2col h3 {
+    font-size: 1.25rem !important;
+  }
+
+  /* Price */
+  .cart_popup_2col .text-2xl {
+    font-size: 1.4rem !important;
+  }
+
+  .cart_popup_2col .text-3xl {
+    font-size: 1.6rem !important;
+  }
+
+  /* Qty buttons */
+  .cart_popup_2col #qty-decrease,
+  .cart_popup_2col #qty-increase {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  /* Add to cart button */
+  .cart_popup_2col #confirm-add-cart {
+    padding: 14px !important;
+    font-size: 1rem !important;
+  }
+}
+
 </style>
 

@@ -101,11 +101,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 class="absolute inset-0 bg-black/90 flex items-center justify-center transform translate-x-full transition-transform duration-500">
 
                 <div class="text-center">
-                  <p class="text-xl font-bold mb-2" style="color:${colorHex}">
+                  <p class="text-xl font-bold mb-2 text-white">
                     ${product.name}
                   </p>
 
-                  <p class="text-3xl font-bold mb-4" style="color:${colorHex}">
+                  <p class="text-3xl font-bold mb-4 text-white">
                     ₹${sellPrice.toFixed(2)}
                   </p>
                   <<button class="buy-now-btn bg-black text-white px-4 py-1 rounded-full font-bold hover:bg-gray-900 transition"

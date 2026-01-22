@@ -1,14 +1,6 @@
 
-
   <style>
-    /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap');
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    } */
+    
 
     .gradient-bg {
       position: relative;
@@ -166,7 +158,7 @@
         box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
       }
     }
-
+    
     .read-more-btn {
       padding: 12px 24px;
       border-radius: 6px;
@@ -184,23 +176,46 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     }
 
-    .scontainer {
+    .slider-container {
       position: relative;
       width: 100%;
+      height: 100vh;
       overflow: hidden;
     }
 
-    .slide {
-      opacity: 0;
-      transition: opacity 1s ease;
-      position: absolute;
+    #slides {
+      position: relative;
       width: 100%;
       height: 100%;
     }
 
-    .slide.active {
+    /* FIXED SLIDE STYLES */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(100%);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+    }
+
+    .slide.is-active {
       opacity: 1;
-      position: relative;
+      visibility: visible;
+      transform: translateX(0);
+      z-index: 10;
+    }
+
+    .slide.is-prev {
+      transform: translateX(-100%);
+    }
+
+    .slide.is-next {
+      transform: translateX(100%);
     }
 
     .dots-container {
@@ -215,6 +230,7 @@
 
     .dot {
       height: 4px;
+      width: 12px;
       background: rgba(255, 255, 255, 0.4);
       border-radius: 10px;
       cursor: pointer;
@@ -223,12 +239,13 @@
 
     .dot.active {
       background: white;
-      animation: progressBar 3s linear forwards;
+      width: 40px;
+      animation: progressBar 4s linear forwards;
     }
 
     @keyframes progressBar {
-      0% { width: 0; }
-      100% { width: 100%; }
+      0% { width: 12px; }
+      100% { width: 40px; }
     }
 
     .fade-in {
@@ -248,6 +265,39 @@
 
     .content-section {
       animation: fadeIn 1s ease forwards;
+    }
+
+    /* Navigation Arrows */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 30;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .nav-arrow.prev {
+      left: 30px;
+    }
+
+    .nav-arrow.next {
+      right: 30px;
     }
 
     @media (max-width: 768px) {
@@ -303,6 +353,20 @@
       .dot {
         height: 3px;
       }
+
+      .nav-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+
+      .nav-arrow.prev {
+        left: 15px;
+      }
+
+      .nav-arrow.next {
+        right: 15px;
+      }
     }
 
     @media (max-width: 640px) {
@@ -322,176 +386,253 @@
     }
   </style>
 
-  <div class="slider-container scontainer" style="min-height: 100vh;">
-    <div id="slidess"></div>
+
+<section id="mega-sale" class="relative w-full overflow-hidden">
+  <div class="slider-container">
+    <div id="slides"></div>
+    
+    <!-- Navigation Arrows -->
+    <button class="nav-arrow prev" onclick="prevSlide()">‹</button>
+    <button class="nav-arrow next" onclick="nextSlide()">›</button>
+    
+    <!-- Dots Navigation -->
     <div class="dots-container" id="dotsContainer"></div>
   </div>
+</section>
 
-  <script>
-    // JSON Configuration
-    const sliderConfig = [
-      {
-        title: "MEGA SALE",
-        subtitle: "Clearance Offer",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
-        discount: "60%",
-        image: "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=600",
-        gradient: "linear-gradient(135deg, #7c3aed 0%, #a855f7 30%, #ec4899 60%, #f97316 100%)",
-        diagonalColor: "linear-gradient(45deg, #fbbf24 0%, #fcd34d 50%, #fef08a 100%)",
-        badgeColor: "radial-gradient(circle at 30% 30%, #f472b6, #ec4899, #db2777)",
-        buttonColor: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-        bag1Color: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
-        bag2Color: "linear-gradient(135deg, #ff6b35 0%, #f97316 100%)",
-        bag3Color: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
-        handleColor: "#fbbf24"
-      },
-      {
-        title: "SUMMER SALE",
-        subtitle: "Special Collection",
-        description: "Enjoy amazing discounts on our latest summer collection. Limited time offer with exclusive deals on premium products.",
-        discount: "50%",
-        image: "https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg?auto=compress&cs=tinysrgb&w=600",
-        gradient: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 30%, #10b981 60%, #fbbf24 100%)",
-        diagonalColor: "linear-gradient(45deg, #fca5a5 0%, #fecaca 50%, #fee2e2 100%)",
-        badgeColor: "radial-gradient(circle at 30% 30%, #93c5fd, #60a5fa, #3b82f6)",
-        buttonColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-        bag1Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
-        bag2Color: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
-        bag3Color: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
-        handleColor: "#fbbf24"
-      },
-      {
-        title: "FLASH DEAL",
-        subtitle: "Limited Time Offer",
-        description: "Don't miss out on our biggest flash sale. Grab your favorite items at unbeatable prices before stocks run out.",
-        discount: "75%",
-        image: "https://images.pexels.com/photos/3962286/pexels-photo-3962286.jpeg?auto=compress&cs=tinysrgb&w=600",
-        gradient: "linear-gradient(135deg, #ec4899 0%, #f43f5e 30%, #fb923c 60%, #eab308 100%)",
-        diagonalColor: "linear-gradient(45deg, #c7d2fe 0%, #dbeafe 50%, #e0e7ff 100%)",
-        badgeColor: "radial-gradient(circle at 30% 30%, #fbbf24, #f59e0b, #d97706)",
-        buttonColor: "linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)",
-        bag1Color: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
-        bag2Color: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
-        bag3Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
-        handleColor: "#06b6d4"
-      },
-      {
-        title: "MIDNIGHT SALE",
-        subtitle: "Exclusive Midnight Deals",
-        description: "Shop the best midnight deals with incredible savings. Extended hours available just for you tonight.",
-        discount: "80%",
-        image: "https://images.pexels.com/photos/1452860/pexels-photo-1452860.jpeg?auto=compress&cs=tinysrgb&w=600",
-        gradient: "linear-gradient(135deg, #1e293b 0%, #3b82f6 30%, #8b5cf6 60%, #ec4899 100%)",
-        diagonalColor: "linear-gradient(45deg, #ddd6fe 0%, #e9d5ff 50%, #f3e8ff 100%)",
-        badgeColor: "radial-gradient(circle at 30% 30%, #818cf8, #6366f1, #4f46e5)",
-        buttonColor: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-        bag1Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
-        bag2Color: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
-        bag3Color: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
-        handleColor: "#60a5fa"
-      }
-    ];
+<script>
+// JSON Configuration
+const sliderConfig = [
+  {
+    title: "MEGA SALE",
+    subtitle: "Clearance Offer",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+    discount: "60%",
+    image: "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=600",
+    gradient: "linear-gradient(135deg, #7c3aed 0%, #a855f7 30%, #ec4899 60%, #f97316 100%)",
+    diagonalColor: "linear-gradient(45deg, #fbbf24 0%, #fcd34d 50%, #fef08a 100%)",
+    badgeColor: "radial-gradient(circle at 30% 30%, #f472b6, #ec4899, #db2777)",
+    buttonColor: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+    bag1Color: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
+    bag2Color: "linear-gradient(135deg, #ff6b35 0%, #f97316 100%)",
+    bag3Color: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+    handleColor: "#fbbf24"
+  },
+  {
+    title: "SUMMER SALE",
+    subtitle: "Special Collection",
+    description: "Enjoy amazing discounts on our latest summer collection. Limited time offer with exclusive deals on premium products.",
+    discount: "50%",
+    image: "https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg?auto=compress&cs=tinysrgb&w=600",
+    gradient: "linear-gradient(135deg, #0ea5e9 0%, #06b6d4 30%, #10b981 60%, #fbbf24 100%)",
+    diagonalColor: "linear-gradient(45deg, #fca5a5 0%, #fecaca 50%, #fee2e2 100%)",
+    badgeColor: "radial-gradient(circle at 30% 30%, #93c5fd, #60a5fa, #3b82f6)",
+    buttonColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    bag1Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
+    bag2Color: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+    bag3Color: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+    handleColor: "#fbbf24"
+  },
+  {
+    title: "FLASH DEAL",
+    subtitle: "Limited Time Offer",
+    description: "Don't miss out on our biggest flash sale. Grab your favorite items at unbeatable prices before stocks run out.",
+    discount: "75%",
+    image: "https://images.pexels.com/photos/3962286/pexels-photo-3962286.jpeg?auto=compress&cs=tinysrgb&w=600",
+    gradient: "linear-gradient(135deg, #ec4899 0%, #f43f5e 30%, #fb923c 60%, #eab308 100%)",
+    diagonalColor: "linear-gradient(45deg, #c7d2fe 0%, #dbeafe 50%, #e0e7ff 100%)",
+    badgeColor: "radial-gradient(circle at 30% 30%, #fbbf24, #f59e0b, #d97706)",
+    buttonColor: "linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)",
+    bag1Color: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
+    bag2Color: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
+    bag3Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
+    handleColor: "#06b6d4"
+  },
+  {
+    title: "MIDNIGHT SALE",
+    subtitle: "Exclusive Midnight Deals",
+    description: "Shop the best midnight deals with incredible savings. Extended hours available just for you tonight.",
+    discount: "80%",
+    image: "https://images.pexels.com/photos/1452860/pexels-photo-1452860.jpeg?auto=compress&cs=tinysrgb&w=600",
+    gradient: "linear-gradient(135deg, #1e293b 0%, #3b82f6 30%, #8b5cf6 60%, #ec4899 100%)",
+    diagonalColor: "linear-gradient(45deg, #ddd6fe 0%, #e9d5ff 50%, #f3e8ff 100%)",
+    badgeColor: "radial-gradient(circle at 30% 30%, #818cf8, #6366f1, #4f46e5)",
+    buttonColor: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+    bag1Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
+    bag2Color: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+    bag3Color: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+    handleColor: "#60a5fa"
+  }
+];
 
-    let currentSlide = 0;
-    const totalSlides = sliderConfig.length;
+let currentSlide = 0;
+const totalSlides = sliderConfig.length;
+let autoSlideInterval;
 
-    function createSlides() {
-      const slidesContainer = document.getElementById('slidess');
-      sliderConfig.forEach((config, index) => {
-        const slide = document.createElement('div');
-        slide.className = `slide ${index === 0 ? 'active' : ''} gradient-bg min-h-screen flex items-center justify-center relative`;
-        slide.style.background = config.gradient;
+function createSlides() {
+  const slidesContainer = document.getElementById('slides');
+  sliderConfig.forEach((config, index) => {
+    const slide = document.createElement('div');
+    slide.className = `slide gradient-bg flex items-center justify-center relative ${index === 0 ? 'is-active' : ''}`;
+    slide.style.background = config.gradient;
 
-        slide.innerHTML = `
-          <div class="diagonal-shape" style="background: ${config.diagonalColor}"></div>
+    slide.innerHTML = `
+      <div class="diagonal-shape" style="background: ${config.diagonalColor}"></div>
 
-          <div class="circle-badge pulse-circle" style="background: ${config.badgeColor}">
-            <div class="circle-badge-text">
-              ${config.discount}<span class="off">OFF</span>
-            </div>
-          </div>
+      <div class="circle-badge pulse-circle" style="background: ${config.badgeColor}">
+        <div class="circle-badge-text">
+          ${config.discount}<span class="off">OFF</span>
+        </div>
+      </div>
 
-          <img src="${config.image}" alt="${config.title}" class="product-image">
+      <img src="${config.image}" alt="${config.title}" class="product-image">
 
-          <div class="shopping-bag bag-1 float-animation" style="background: ${config.bag1Color}">
-            <div class="bag-handle" style="background: ${config.handleColor}"></div>
-            <div class="bag-label"></div>
-          </div>
-          <div class="shopping-bag bag-2 float-animation-2" style="background: ${config.bag2Color}">
-            <div class="bag-handle" style="background: ${config.handleColor}"></div>
-            <div class="bag-label"></div>
-          </div>
-          <div class="shopping-bag bag-3 float-animation-3" style="background: ${config.bag3Color}">
-            <div class="bag-handle" style="background: ${config.handleColor}"></div>
-            <div class="bag-label"></div>
-          </div>
+      <div class="shopping-bag bag-1 float-animation" style="background: ${config.bag1Color}">
+        <div class="bag-handle" style="background: ${config.handleColor}"></div>
+        <div class="bag-label"></div>
+      </div>
+      <div class="shopping-bag bag-2 float-animation-2" style="background: ${config.bag2Color}">
+        <div class="bag-handle" style="background: ${config.handleColor}"></div>
+        <div class="bag-label"></div>
+      </div>
+      <div class="shopping-bag bag-3 float-animation-3" style="background: ${config.bag3Color}">
+        <div class="bag-handle" style="background: ${config.handleColor}"></div>
+        <div class="bag-label"></div>
+      </div>
 
-          <div class="relative z-30 container mx-auto px-6 md:px-12 max-w-6xl">
-            <div class="max-w-xl content-section">
-              <h1 class="text-6xl md:text-7xl font-black text-white mb-2 italic tracking-tight">
-                ${config.title}
-              </h1>
-              <h2 class="text-2xl md:text-4xl text-white italic font-light mb-6">
-                ${config.subtitle}
-              </h2>
+      <div class="relative z-30 container mx-auto px-6 md:px-12 max-w-6xl">
+        <div class="max-w-xl content-section">
+          <h1 class="text-6xl md:text-7xl font-black text-white mb-2 italic tracking-tight">
+            ${config.title}
+          </h1>
+          <h2 class="text-2xl md:text-4xl text-white italic font-light mb-6">
+            ${config.subtitle}
+          </h2>
 
-              <p class="text-white text-sm md:text-base leading-relaxed mb-8 opacity-90">
-                ${config.description}
-              </p>
+          <p class="text-white text-sm md:text-base leading-relaxed mb-8 opacity-90">
+            ${config.description}
+          </p>
 
-              <button class="read-more-btn" style="background: ${config.buttonColor}">
-                READ MORE
-              </button>
-            </div>
-          </div>
-        `;
+          <button class="read-more-btn" style="background: ${config.buttonColor}">
+            READ MORE
+          </button>
+        </div>
+      </div>
+    `;
 
-        slidesContainer.appendChild(slide);
-      });
-    }
+    slidesContainer.appendChild(slide);
+  });
+}
 
-    function createDots() {
-      const dotsContainer = document.getElementById('dotsContainer');
-      sliderConfig.forEach((_, index) => {
-        const dot = document.createElement('div');
-        dot.className = `dot ${index === 0 ? 'active' : ''}`;
-        dot.style.width = index === 0 ? '40px' : '12px';
-        dot.onclick = () => goToSlide(index);
-        dotsContainer.appendChild(dot);
-      });
-    }
+function createDots() {
+  const dotsContainer = document.getElementById('dotsContainer');
+  sliderConfig.forEach((_, index) => {
+    const dot = document.createElement('div');
+    dot.className = `dot ${index === 0 ? 'active' : ''}`;
+    dot.onclick = () => goToSlide(index);
+    dotsContainer.appendChild(dot);
+  });
+}
 
-    function goToSlide(index) {
-      const slides = document.querySelectorAll('.slidess');
-      const dots = document.querySelectorAll('.dot');
+function goToSlide(index) {
+  if (index === currentSlide) return;
 
-      slides.forEach(slide => slide.classList.remove('active'));
-      dots.forEach(dot => {
-        dot.classList.remove('active');
-        dot.style.width = '12px';
-      });
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
 
-      slides[index].classList.add('active');
-      dots[index].classList.add('active');
-      dots[index].style.width = '40px';
+  // Remove active class from current slide
+  slides[currentSlide].classList.remove('is-active');
+  
+  // Add active class to new slide
+  slides[index].classList.add('is-active');
 
-      currentSlide = index;
-    }
+  // Update dots
+  dots.forEach(dot => dot.classList.remove('active'));
+  dots[index].classList.add('active');
 
-    function nextSlide() {
-      const nextIndex = (currentSlide + 1) % totalSlides;
-      goToSlide(nextIndex);
-    }
+  currentSlide = index;
+  
+  // Reset auto-slide timer
+  resetAutoSlide();
+}
 
-    function autoSlide() {
+function nextSlide() {
+  const nextIndex = (currentSlide + 1) % totalSlides;
+  goToSlide(nextIndex);
+}
+
+function prevSlide() {
+  const prevIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+  goToSlide(prevIndex);
+}
+
+function startAutoSlide() {
+  autoSlideInterval = setInterval(nextSlide, 4000);
+}
+
+function resetAutoSlide() {
+  clearInterval(autoSlideInterval);
+  startAutoSlide();
+}
+
+function init() {
+  createSlides();
+  createDots();
+  startAutoSlide();
+}
+
+// Touch/Swipe functionality
+document.addEventListener('DOMContentLoaded', () => {
+  let startX = 0;
+  let endX = 0;
+
+  const sliderContainer = document.querySelector('.slider-container');
+
+  if (!sliderContainer) return;
+
+  sliderContainer.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  sliderContainer.addEventListener('touchend', (e) => {
+    endX = e.changedTouches[0].clientX;
+    handleSwipe();
+  });
+
+  sliderContainer.addEventListener('mousedown', (e) => {
+    startX = e.clientX;
+    sliderContainer.classList.add('dragging');
+  });
+
+  sliderContainer.addEventListener('mouseup', (e) => {
+    if (!sliderContainer.classList.contains('dragging')) return;
+    endX = e.clientX;
+    sliderContainer.classList.remove('dragging');
+    handleSwipe();
+  });
+
+  function handleSwipe() {
+    const diff = startX - endX;
+
+    if (Math.abs(diff) < 50) return;
+
+    if (diff > 0) {
       nextSlide();
+    } else {
+      prevSlide();
     }
+  }
 
-    function init() {
-      createSlides();
-      createDots();
-      setInterval(autoSlide, 3000);
-    }
+  // Pause auto-slide on hover
+  sliderContainer.addEventListener('mouseenter', () => {
+    clearInterval(autoSlideInterval);
+  });
 
-    init();
-  </script>
+  sliderContainer.addEventListener('mouseleave', () => {
+    startAutoSlide();
+  });
+
+  init();
+});
+</script>
+

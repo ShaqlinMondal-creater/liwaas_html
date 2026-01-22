@@ -13,6 +13,9 @@
   <!-- Products -->
   <?php include("inc/product_gallary_section.php"); ?>
 
+  <!-- best seller -->
+  <?php include("inc/new_arrival_seller.php"); ?>
+  
   <!-- Offers1 -->
   <?php //include("inc/offers.php"); ?>
   <?php include("inc/offer2.php"); ?>
@@ -22,6 +25,6 @@
   <?php //include("inc/home-product-card.php"); ?>
 
   <!-- best seller -->
-  <?php include("inc/new_arrival_seller.php"); ?>
+  <?php //include("inc/new_arrival_seller.php"); ?>
 
 <?php include("footer.php"); ?>

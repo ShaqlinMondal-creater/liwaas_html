@@ -2,7 +2,7 @@
   <style>
     
 
-    .gradient-bg {
+    .offers_slider .gradient-bg {
       position: relative;
       overflow: hidden;
       transition: background 1s ease;
@@ -190,7 +190,7 @@
     }
 
     /* FIXED SLIDE STYLES */
-    .slide {
+    .offers_slider .slide {
       position: absolute;
       top: 0;
       left: 0;
@@ -203,22 +203,22 @@
       z-index: 1;
     }
 
-    .slide.is-active {
+    .offers_slider .slide.is-active {
       opacity: 1;
       visibility: visible;
       transform: translateX(0);
       z-index: 10;
     }
 
-    .slide.is-prev {
+    .offers_slider .slide.is-prev {
       transform: translateX(-100%);
     }
 
-    .slide.is-next {
+    .offers_slider .slide.is-next {
       transform: translateX(100%);
     }
 
-    .dots-container {
+    .offers_slider .dots-container {
       position: absolute;
       bottom: 30px;
       left: 50%;
@@ -228,7 +228,7 @@
       z-index: 50;
     }
 
-    .dot {
+    .offers_slider .dot {
       height: 4px;
       width: 12px;
       background: rgba(255, 255, 255, 0.4);
@@ -237,7 +237,7 @@
       transition: all 0.3s ease;
     }
 
-    .dot.active {
+    .offers_slider .dot.active {
       background: white;
       width: 40px;
       animation: progressBar 4s linear forwards;
@@ -263,12 +263,12 @@
       }
     }
 
-    .content-section {
+    .offers_slider .content-section {
       animation: fadeIn 1s ease forwards;
     }
 
     /* Navigation Arrows */
-    .nav-arrow {
+    .offers_slider .nav-arrow {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
@@ -287,16 +287,16 @@
       font-size: 1.5rem;
     }
 
-    .nav-arrow:hover {
+    .offers_slider .nav-arrow:hover {
       background: rgba(255, 255, 255, 0.3);
       transform: translateY(-50%) scale(1.1);
     }
 
-    .nav-arrow.prev {
+    .offers_slider.nav-arrow.prev {
       left: 30px;
     }
 
-    .nav-arrow.next {
+    .offers_slider.nav-arrow.next {
       right: 30px;
     }
 
@@ -346,25 +346,25 @@
         right: 20px;
       }
 
-      .dots-container {
+      .offers_slider .dots-container {
         gap: 6px;
       }
 
-      .dot {
+      .offers_slider .dot {
         height: 3px;
       }
 
-      .nav-arrow {
+      .offers_slider .nav-arrow {
         width: 40px;
         height: 40px;
         font-size: 1.2rem;
       }
 
-      .nav-arrow.prev {
+      .offers_slider .nav-arrow.prev {
         left: 15px;
       }
 
-      .nav-arrow.next {
+      .offers_slider .nav-arrow.next {
         right: 15px;
       }
     }
@@ -387,7 +387,7 @@
   </style>
 
 
-<section id="mega-sale" class="relative w-full overflow-hidden">
+<section id="mega-sale" class="relative w-full overflow-hidden offers_slider">
   <div class="slider-container">
     <div id="slides"></div>
     

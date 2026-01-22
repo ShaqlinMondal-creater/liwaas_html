@@ -14,8 +14,8 @@
   <?php include("inc/product_gallary_section.php"); ?>
 
   <!-- Offers1 -->
-  <?php include("inc/offers.php"); ?>
-
+  <?php //include("inc/offers.php"); ?>
+  <?php include("inc/offer2.php"); ?>
   <?php //include("inc/offers_section.php"); ?>
 
   <!-- products cards -->

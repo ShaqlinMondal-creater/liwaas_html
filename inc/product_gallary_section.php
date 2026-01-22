@@ -79,14 +79,13 @@ document.addEventListener('DOMContentLoaded', async () => {
               <div class="skeleton absolute inset-0 bg-gray-300 animate-pulse rounded-3xl"></div>
 
               <!-- IMAGE 1 -->
-              <img src="${image1}"
-                   alt="${product.name}"
-                   class="img-main absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100"/>
+              <img src="${image1}" alt="${product.name}"
+                class="img-main absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0"
+                onload="this.previousElementSibling.style.display='none'; this.classList.remove('opacity-0')" />
 
               <!-- IMAGE 2 (HOVER) -->
-              <img src="${image2}"
-                   alt="${product.name}"
-                   class="img-hover absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0"/>
+              <img src="${image2}" alt="${product.name}"
+                class="img-hover absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0"/>
 
               <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                 <h2 class="text-lg text-white font-bold mb-1">${product.name}</h2>
@@ -98,15 +97,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                    class="absolute inset-0 bg-black/90 flex items-center justify-center text-white transform translate-x-full transition-transform duration-500">
 
                 <div class="text-center">
-                  <p class="text-xl font-bold mb-2">${product.category?.name ?? ''}</p>
-
-                  <p class="text-3xl font-bold mb-4"
-                     style="color:${colorHex}">
-                    ₹${sellPrice.toFixed(2)}
+                  <p class="text-xl font-bold mb-2" style="color:${colorHex}">
+                    ${product.name}
                   </p>
 
-                  <button class="buy-now-btn text-white px-4 py-1 rounded-full font-bold hover:bg-opacity-80 transition"
-                          style="background:${colorHex}"
+                  <p class="text-3xl font-bold mb-4" style="color:${colorHex}">
+                    ₹${sellPrice.toFixed(2)}
+                  </p>
+                  <<button class="buy-now-btn bg-black text-white px-4 py-1 rounded-full font-bold hover:bg-gray-900 transition"
                           data-uid="${variation.uid}">
                     Buy Now
                   </button>

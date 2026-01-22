@@ -13,8 +13,10 @@
   <!-- Products -->
   <?php include("inc/product_gallary_section.php"); ?>
 
-  <!-- Offers2 -->
-  <?php include("inc/offers.php"); ?>
+  <!-- Offers1 -->
+  <?php //include("inc/offers.php"); ?>
+
+  <?php include("inc/offers_section.php"); ?>
 
   <!-- products cards -->
   <?php //include("inc/home-product-card.php"); ?>

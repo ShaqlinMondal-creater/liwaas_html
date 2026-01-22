@@ -76,12 +76,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="relative h-[400px] overflow-hidden rounded-3xl">
 
               <!-- Skeleton -->
-              <div class="skeleton absolute inset-0 bg-gray-300 animate-pulse rounded-3xl"></div>
+              <div class="skeleton-loader absolute inset-0 bg-gray-300 animate-pulse rounded-3xl"></div>
 
               <!-- IMAGE 1 -->
               <img src="${image1}" alt="${product.name}"
                 class="img-main absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0"
-                onload="this.previousElementSibling.style.display='none'; this.classList.remove('opacity-0')" />
+                onload="
+                  const skel = this.parentElement.querySelector('.skeleton-loader');
+                  if (skel) skel.style.display='none';
+                  this.classList.remove('opacity-0');
+                " />
 
               <!-- IMAGE 2 (HOVER) -->
               <img src="${image2}" alt="${product.name}"
@@ -94,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
               <!-- SLIDE PANEL -->
               <div id="slide${index}"
-                   class="absolute inset-0 bg-black/90 flex items-center justify-center text-white transform translate-x-full transition-transform duration-500">
+                class="absolute inset-0 bg-black/90 flex items-center justify-center transform translate-x-full transition-transform duration-500">
 
                 <div class="text-center">
                   <p class="text-xl font-bold mb-2" style="color:${colorHex}">

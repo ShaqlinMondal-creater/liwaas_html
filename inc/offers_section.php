@@ -184,7 +184,7 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     }
 
-    .slider-container {
+    .scontainer {
       position: relative;
       width: 100%;
       overflow: hidden;
@@ -322,8 +322,8 @@
     }
   </style>
 
-  <div class="slider-container" style="min-height: 100vh;">
-    <div id="slides"></div>
+  <div class="slider-container scontainer" style="min-height: 100vh;">
+    <div id="slidess"></div>
     <div class="dots-container" id="dotsContainer"></div>
   </div>
 
@@ -396,7 +396,7 @@
     const totalSlides = sliderConfig.length;
 
     function createSlides() {
-      const slidesContainer = document.getElementById('slides');
+      const slidesContainer = document.getElementById('slidess');
       sliderConfig.forEach((config, index) => {
         const slide = document.createElement('div');
         slide.className = `slide ${index === 0 ? 'active' : ''} gradient-bg min-h-screen flex items-center justify-center relative`;
@@ -462,7 +462,7 @@
     }
 
     function goToSlide(index) {
-      const slides = document.querySelectorAll('.slide');
+      const slides = document.querySelectorAll('.slidess');
       const dots = document.querySelectorAll('.dot');
 
       slides.forEach(slide => slide.classList.remove('active'));

@@ -44,9 +44,9 @@ gallery - > processing
 1. Home :
     - new arrival --done✅  
     - slider --done✅
-    - category
-    - gallery
-    - offers
+    - category --done✅
+    - gallery --done✅
+    - offers -processing  -- set api image url
     - trending - add to cart --done✅
 
 ---------------------------------------

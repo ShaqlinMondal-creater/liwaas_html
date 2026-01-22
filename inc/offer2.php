@@ -465,7 +465,7 @@ const sliderConfig = [
   }
 ];
 
-let currentSlide = 0;
+let currentOfferSlide = 0;
 const totalSlides = sliderConfig.length;
 let autoSlideInterval;
 
@@ -535,13 +535,13 @@ function createDots() {
 }
 
 function goToSlide(index) {
-  if (index === currentSlide) return;
+  if (index === currentOfferSlide) return;
 
   const slides = document.querySelectorAll('.slide');
   const dots = document.querySelectorAll('.dot');
 
   // Remove active class from current slide
-  slides[currentSlide].classList.remove('is-active');
+  slides[currentOfferSlide].classList.remove('is-active');
   
   // Add active class to new slide
   slides[index].classList.add('is-active');
@@ -550,19 +550,19 @@ function goToSlide(index) {
   dots.forEach(dot => dot.classList.remove('active'));
   dots[index].classList.add('active');
 
-  currentSlide = index;
+  currentOfferSlide = index;
   
   // Reset auto-slide timer
   resetAutoSlide();
 }
 
 function nextSlide() {
-  const nextIndex = (currentSlide + 1) % totalSlides;
+  const nextIndex = (currentOfferSlide + 1) % totalSlides;
   goToSlide(nextIndex);
 }
 
 function prevSlide() {
-  const prevIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+  const prevIndex = (currentOfferSlide - 1 + totalSlides) % totalSlides;
   goToSlide(prevIndex);
 }
 

@@ -316,7 +316,7 @@
       }
 
       .circle-badge-text {
-        font-size: 2.5rem;
+        font-size: 3rem;
       }
 
       .circle-badge-text .off {
@@ -372,17 +372,18 @@
 
     @media (max-width: 640px) {
       .circle-badge {
-        width: 160px;
-        height: 160px;
-        right: 5%;
+        width: 220px;
+        height: 220px;
+        right: 10%;
+        top: 20%;
       }
 
       .circle-badge-text {
-        font-size: 2rem;
+        font-size: 5rem;
       }
 
       .circle-badge-text .off {
-        font-size: 1rem;
+        font-size: 2rem;
       }
     }
   </style>

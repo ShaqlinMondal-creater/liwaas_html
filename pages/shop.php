@@ -578,26 +578,66 @@
             const variationAID = product.variations?.[0]?.aid || null;
             const variationUID = product.variations?.[0]?.uid || null;
 
+            const sellPrice = Number(product.variations?.[0]?.sell_price) || 0;
+            const regularPrice = Number(product.variations?.[0]?.regular_price) || sellPrice;
+
+            let discountPercent = 0;
+            if (regularPrice > sellPrice) {
+            discountPercent = Math.round(((regularPrice - sellPrice) / regularPrice) * 100);
+            }
             // Create a wrapper anchor tag for the entire card
             const card = document.createElement("a");
             card.href = `pages/product-detail.php?id=${variationUID}`;
             card.className = "featured-card bg-white rounded-xl shadow-md border overflow-hidden transition-all hover:shadow-lg block group p-0";
 
             card.innerHTML = `
-                <div class="relative group ">
-                    <img src="${firstImage}" alt="${product.name}" class="w-full h-64 object-cover">
-                    <button class="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100">
-                    <i data-lucide="heart" class="w-5 h-5"></i>
+                <div class="glossy-card rounded-2xl overflow-hidden relative">
+
+                    <!-- Image -->
+                    <div class="relative h-64 bg-gray-100 overflow-hidden">
+                    <img 
+                        src="${firstImage}" 
+                        alt="${productName}" 
+                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                    >
+
+                    <!-- Wishlist (KEEP) -->
+                    <button class="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100 wishlist-btn">
+                        <i data-lucide="heart" class="w-5 h-5"></i>
                     </button>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="p-4 bg-white relative">
+                    <h3 class="font-semibold line-clamp-2 mb-2">${productName}</h3>
+                    <p class="text-sm text-gray-500 mb-2">${category}</p>
+
+                    <!-- Price -->
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="text-lg font-bold text-gray-900">₹${sellPrice}</span>
+                        ${
+                        regularPrice > sellPrice
+                            ? `<span class="text-sm text-gray-500 line-through">₹${regularPrice}</span>`
+                            : ``
+                        }
+                    </div>
+
+                    <!-- Add to Cart (KEEP) -->
+                    <button 
+                        class="add-to-cart-btn view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-6 py-2 rounded-l-full text-sm font-semibold">
+                        Add to Cart
+                    </button>
+                    </div>
                 </div>
-                <div class="p-4">
-                    <h3 class="text-base font-semibold">${product.name}</h3>
-                    <p class="text-sm text-gray-500">${category}</p>
-                    <div class="mt-2 flex justify-between items-center">
-                    <span class="text-lg font-bold text-black">₹${price}</span>
-                    <button class="add-to-cart-btn text-blue-600 text-sm hover:underline">Add to Cart</button>
-                </div>
-            </div>`;
+
+                <!-- Discount bar -->
+                ${
+                    discountPercent > 0
+                    ? `<div class="discount-outside">Discount: ${discountPercent}%</div>`
+                    : ``
+                }
+            `;
             // Add to Cart Button Logic
             const addToCartBtn = card.querySelector(".add-to-cart-btn");
             addToCartBtn.addEventListener("click", (e) => {

@@ -233,6 +233,56 @@
 }
 
 
+/* Card */
+.glossy-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.35));
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glossy-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* Button skin (reused for Add to Cart) */
+.view-btn {
+  background: linear-gradient(135deg, #deb64c, #1a1a1a);
+  color: #fff;
+  box-shadow: 0 6px 15px rgba(79, 70, 229, 0.25);
+  transition: all 0.25s ease;
+}
+
+.view-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(241, 190, 60, 0.35);
+  background: linear-gradient(135deg, #f4c134, #0b0b0b);
+}
+
+/* Discount bar */
+.discount-outside {
+  width: 95%;
+  margin: 0 auto;
+  margin-top: -10px;
+  height: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #deb64c, #1a1a1a);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 0 0 14px 14px;
+  transition: height 0.3s ease, padding 0.3s ease;
+}
+
+.group:hover .discount-outside {
+  height: 42px;
+  padding: 10px 0;
+}
+
+
 
 
 /* Mobile styles for search*/

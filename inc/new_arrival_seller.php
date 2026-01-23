@@ -203,7 +203,7 @@ sliderTrack.innerHTML += `
 
 /* Discount bar BELOW card (narrower than card) */
 .discount-outside {
-  width: 90%;                 /* less than card width */
+  width: 95%;                 /* less than card width */
   margin: 0 auto;
   margin-top: -10px;
   height: 0;

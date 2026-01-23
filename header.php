@@ -217,7 +217,7 @@
 
         <!-- ◀︎ Mobile drawer -->
         <div id="mobileMenu" class="mobile-menu md:hidden absolute left-0 right-0 top-full
-         bg-white/95 backdrop-blur shadow-lg px-4 py-3 space-y-2 rounded-b-2xl hidden">
+            bg-white/95 backdrop-blur shadow-lg px-4 py-3 space-y-2 rounded-b-2xl">
             <a href="" class="mobile-link">Home</a>
             <a href="pages/shop" class="mobile-link">Shop</a>
             <a href="#" class="mobile-link">About</a>
@@ -253,7 +253,6 @@
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('open');
             mobileMenu.classList.toggle('open');
-            mobileMenu.classList.toggle('hidden'); // 👈 ADD THIS
         });
 
         /* clear ping after first open */
@@ -481,3 +480,19 @@
         });
     </script>
 
+<style>
+.mobile-menu {
+  transform-origin: top;
+  transform: scaleY(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.mobile-menu.open {
+  transform: scaleY(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+</style>

@@ -189,7 +189,7 @@ sliderTrack.innerHTML += `
 
 /* View button */
 .view-btn {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  background: linear-gradient(135deg,  #deb64c, #1a1a1a);
   color: #fff;
   box-shadow: 0 6px 15px rgba(79, 70, 229, 0.25);
   transition: all 0.25s ease;
@@ -198,18 +198,18 @@ sliderTrack.innerHTML += `
 .view-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
-  background: linear-gradient(135deg, #4338ca, #6d28d9);
+  background: linear-gradient(135deg,  #f4c134, #0b0b0b);
 }
 
 /* Discount bar BELOW card (narrower than card) */
 .discount-outside {
-  width: 85%;                 /* less than card width */
+  width: 90%;                 /* less than card width */
   margin: 0 auto;
   margin-top: -20px;
-  padding-top:15px;
+  padding-top:12px;
   height: 0;
   overflow: hidden;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, #deb64c, #1a1a1a)
   color: #fff;
   font-size: 0.9rem;
   font-weight: 600;

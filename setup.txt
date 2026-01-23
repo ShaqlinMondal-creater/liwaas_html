@@ -46,7 +46,7 @@ gallery - > processing
     - slider --done✅
     - category --done✅
     - gallery --done✅
-    - offers -processing  -- set api image url
+    - offers -processing  --done✅ final touch pending
     - trending - add to cart --done✅
 
 ---------------------------------------

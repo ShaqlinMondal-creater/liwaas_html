@@ -75,30 +75,55 @@
         product.image_url ||
         'https://via.placeholder.com/300x300?text=No+Image';
 
-      const price = variation.sell_price || "N/A";
+      const sellPrice = Number(variation.sell_price) || 0;
+      const regularPrice = Number(variation.regular_price) || sellPrice;
+
+      let discountPercent = 0;
+      if (regularPrice > sellPrice) {
+        discountPercent = Math.round(((regularPrice - sellPrice) / regularPrice) * 100);
+      }
       const productName = product.name;
       const slug = product.slug;
       const variationUID = variation.uid;
 
       sliderTrack.innerHTML += `
-        <div class="min-w-[300px] max-w-[300px] rounded-xl overflow-hidden shadow-lg m-2 bg-white flex-shrink-0">
+        <div class="min-w-[300px] max-w-[300px] glossy-card rounded-2xl overflow-hidden m-2 flex-shrink-0">
 
-          <a href="pages/product-detail.php?id=${variationUID}" 
-            class="block w-full h-72 bg-gray-100 overflow-hidden group">
-            <img 
-              src="${image}" 
-              alt="${productName}" 
-              class="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-              loading="lazy"
-            >
-          </a>
-
-          <div class="p-4 text-center bg-gray-100">
-            <h3 class="font-semibold mb-1 line-clamp-2">${productName}</h3>
-            <p class="text-gray-600 text-sm mb-2">₹${price}</p>
+          <div class="relative">
+            ${
+              discountPercent > 0
+                ? `<span class="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow">
+                    ${discountPercent}% OFF
+                  </span>`
+                : ``
+            }
 
             <a href="pages/product-detail.php?id=${variationUID}" 
-              class="text-blue-500 hover:underline text-sm">
+              class="block w-full h-72 bg-gray-100 overflow-hidden group">
+              <img 
+                src="${image}" 
+                alt="${productName}" 
+                class="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
+              >
+            </a>
+          </div>
+
+          <div class="p-4 text-left backdrop-blur bg-white/70">
+            <h3 class="font-semibold mb-1 line-clamp-2">${productName}</h3>
+
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-lg font-bold text-gray-900">₹${sellPrice}</span>
+
+              ${
+                regularPrice > sellPrice
+                  ? `<span class="text-sm text-gray-500 line-through">₹${regularPrice}</span>`
+                  : ``
+              }
+            </div>
+
+            <a href="pages/product-detail.php?id=${variationUID}" 
+              class="text-blue-500 hover:underline text-sm font-medium">
               Show Details
             </a>
           </div>
@@ -134,3 +159,28 @@
   fetchNewArrivalProducts();
 </script>
 
+<style>
+  /* Glossy glass card */
+.glossy-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.7),
+    rgba(255,255,255,0.35)
+  );
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glossy-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+}
+
+</style>

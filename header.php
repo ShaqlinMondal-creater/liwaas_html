@@ -479,25 +479,3 @@
         }
         });
     </script>
-
-<style>
-.mobile-menu {
-  transform-origin: top;
-  transform: scaleY(0);
-  opacity: 0;
-  overflow: hidden;
-  pointer-events: none;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-}
-
-.mobile-menu.open {
-  transform: scaleY(1);
-  opacity: 1;
-  pointer-events: auto;
-}
-@media (max-width: 767px) {
-    .nav-link:hover, .mobile-link:hover, .dropdown-link:hover {
-        color: #0a0a0000 !important;
-    }
-}
-</style>

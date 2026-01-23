@@ -122,7 +122,7 @@ sliderTrack.innerHTML += `
 
         <!-- View button stuck right -->
         <a href="pages/product-detail.php?id=${variationUID}" 
-           class="view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-3 py-1 rounded-r-full text-xl font-semibold">
+           class="view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-7 py-2 rounded-l-full text-xl font-semibold">
           View
         </a>
       </div>
@@ -205,6 +205,8 @@ sliderTrack.innerHTML += `
 .discount-outside {
   width: 85%;                 /* less than card width */
   margin: 0 auto;
+  margin-top: -20px;
+  padding-top:15px;
   height: 0;
   overflow: hidden;
   background: linear-gradient(135deg, #ef4444, #dc2626);

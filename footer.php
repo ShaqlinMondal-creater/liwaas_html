@@ -99,24 +99,24 @@
             </ul>
           </div>
 
-          <!-- Services -->
+          <!-- Policies -->
           <div class="space-y-4">
-            <h4 class="text-lg font-semibold text-white">Services</h4>
+            <h4 class="text-lg font-semibold text-white">Policies</h4>
             <ul class="space-y-3">
               <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/privacy-policy.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
-                  Web Development
+                  Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/terms-and-conditions.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
-                  Mobile Apps
+                  Terms & Conditions
                 </a>
               </li>
               <li>

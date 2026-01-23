@@ -625,7 +625,7 @@
 
                     <!-- Add to Cart (KEEP) -->
                     <button 
-                        class="add-to-cart-btn view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-6 py-2 rounded-l-full text-sm font-semibold">
+                        class="add-to-cart-btn view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-6 py-2 rounded-l-full text-xl font-semibold">
                         Add to Cart
                     </button>
                     </div>

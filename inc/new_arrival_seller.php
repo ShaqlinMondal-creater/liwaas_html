@@ -87,50 +87,50 @@
       const variationUID = variation.uid;
 
       sliderTrack.innerHTML += `
-        <div class="min-w-[300px] max-w-[300px] glossy-card rounded-2xl overflow-hidden m-2 flex-shrink-0">
+        <div class="min-w-[300px] max-w-[300px] glossy-card rounded-2xl overflow-hidden m-2 flex-shrink-0 group">
 
-          <div class="relative">
-            ${
-              discountPercent > 0
-                ? `<span class="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow">
-                    ${discountPercent}% OFF
-                  </span>`
-                : ``
-            }
-
-            <a href="pages/product-detail.php?id=${variationUID}" 
-              class="block w-full h-72 bg-gray-100 overflow-hidden group">
+          <!-- Image -->
+          <div class="relative h-72 bg-gray-100 overflow-hidden">
+            <a href="pages/product-detail.php?id=${variationUID}" class="block w-full h-full">
               <img 
                 src="${image}" 
                 alt="${productName}" 
-                class="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
               >
             </a>
           </div>
 
-          <div class="p-4 text-left backdrop-blur bg-white/70 flex flex-col gap-2">
-            <h3 class="font-semibold mb-1 line-clamp-2">${productName}</h3>
+          <!-- Info -->
+          <div class="relative p-4 bg-white flex flex-col gap-2">
+            <h3 class="font-semibold line-clamp-2">${productName}</h3>
 
-            <div class="flex items-center gap-2 mb-2">
-              <span class="text-lg font-bold text-gray-900">₹${sellPrice}</span>
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span class="text-lg font-bold text-gray-900">₹${sellPrice}</span>
+                ${
+                  regularPrice > sellPrice
+                    ? `<span class="text-sm text-gray-500 line-through">₹${regularPrice}</span>`
+                    : ``
+                }
+              </div>
 
-              ${
-                regularPrice > sellPrice
-                  ? `<span class="text-sm text-gray-500 line-through">₹${regularPrice}</span>`
-                  : ``
-              }
+              <a href="pages/product-detail.php?id=${variationUID}" 
+                class="view-btn inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold">
+                View
+              </a>
             </div>
 
-            <a href="pages/product-detail.php?id=${variationUID}" 
-              class="view-btn inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold">
-              View
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </a>
+            <!-- Discount bar (collapsed by default) -->
+            ${
+              discountPercent > 0
+                ? `
+                <div class="discount-bar">
+                  Discount: ${discountPercent}%
+                </div>
+                `
+                : ``
+            }
           </div>
 
         </div>
@@ -165,29 +165,46 @@
 </script>
 
 <style>
-  /* Glossy glass card */
+  /* Card hover container */
 .glossy-card {
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.7),
-    rgba(255,255,255,0.35)
-  );
+  position: relative;
+  background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.35));
   border: 1px solid rgba(255,255,255,0.4);
-  box-shadow:
-    0 10px 25px rgba(0,0,0,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.6);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .glossy-card:hover {
   transform: translateY(-6px);
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.7);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.7);
 }
-/* Stylish "View" button */
+
+/* Discount collapse bar */
+.discount-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -40px;              /* hidden initially */
+  height: 40px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: bottom 0.3s ease;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Show on hover */
+.glossy-card:hover .discount-bar {
+  bottom: 0;
+}
+
+/* View button */
 .view-btn {
   background: linear-gradient(135deg, #4f46e5, #7c3aed);
   color: #fff;
@@ -199,11 +216,6 @@
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
   background: linear-gradient(135deg, #4338ca, #6d28d9);
-}
-
-.view-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 5px 12px rgba(79, 70, 229, 0.25);
 }
 
 </style>

@@ -377,7 +377,9 @@
         right: 10%;
         top: 20%;
       }
-
+      .contentss {
+        top: 20%;
+      }
       .circle-badge-text {
         font-size: 5rem;
       }
@@ -506,7 +508,7 @@ function createSlides() {
         <div class="bag-label"></div>
       </div>
 
-      <div class="relative z-30 container mx-auto px-6 md:px-12 max-w-6xl top-1/2 transform -translate-y-1/2 flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-16">
+      <div class="contentss relative z-30 container mx-auto px-6 md:px-12 max-w-6xl">
         <div class="max-w-xl content-section">
           <h1 class="text-6xl md:text-7xl font-black text-white mb-2 italic tracking-tight">
             ${config.title}

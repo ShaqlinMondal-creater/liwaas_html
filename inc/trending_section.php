@@ -99,6 +99,7 @@
           card.className = 'min-w-[300px] max-w-[300px] flex-shrink-0 group featured-card cursor-pointer';
 
           card.innerHTML = `
+          <div class="glossy-card rounded-2xl overflow-hidden relative">
             <div class="relative overflow-hidden rounded-xl shadow hover:shadow-lg transition h-[400px] bg-gray-100">
               <img src="${imageUrl}" 
                   alt="${product.name}" 
@@ -111,7 +112,7 @@
             <div class="flex justify-between items-center mt-2">
               <span class="text-xl font-semibold text-slate-900">₹${variation.sell_price ?? 'N/A'}</span>
 
-              <div class="view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-7 py-2 rounded-l-full text-xl font-semibold space-x-2">
+              <div class="view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-5 py-2 rounded-l-full text-xl font-semibold space-x-2">
                 <button class="wishlist-btn w-9 h-9 border border-slate-300 rounded-full flex items-center justify-center text-slate-600 hover:bg-slate-200 transition">
                   <i data-lucide="heart" class="w-5 h-5"></i>
                 </button>
@@ -121,6 +122,7 @@
                 </button>
               </div>
             </div>
+          </div>
           `;
           
           // Card click → navigate to product detail

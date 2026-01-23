@@ -86,11 +86,11 @@
       const slug = product.slug;
       const variationUID = variation.uid;
 
-      sliderTrack.innerHTML += `
+sliderTrack.innerHTML += `
   <div class="min-w-[300px] max-w-[300px] m-2 flex-shrink-0 group">
 
     <!-- Card -->
-    <div class="glossy-card rounded-2xl overflow-hidden">
+    <div class="glossy-card rounded-2xl overflow-hidden relative">
 
       <!-- Image -->
       <div class="h-72 bg-gray-100 overflow-hidden">
@@ -105,10 +105,10 @@
       </div>
 
       <!-- Info -->
-      <div class="p-4 bg-white">
+      <div class="p-4 bg-white relative">
         <h3 class="font-semibold line-clamp-2 mb-2">${productName}</h3>
 
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between gap-2">
           <!-- Price -->
           <div class="flex items-center gap-2">
             <span class="text-lg font-bold text-gray-900">₹${sellPrice}</span>
@@ -118,17 +118,17 @@
                 : ``
             }
           </div>
-
-          <!-- View -->
-          <a href="pages/product-detail.php?id=${variationUID}" 
-             class="view-btn inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold">
-            View
-          </a>
         </div>
+
+        <!-- View button stuck right -->
+        <a href="pages/product-detail.php?id=${variationUID}" 
+           class="view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-3 py-1 rounded-r-full text-xl font-semibold">
+          View
+        </a>
       </div>
     </div>
 
-    <!-- Discount bar (outside card, collapsed) -->
+    <!-- Discount bar (outside card) -->
     ${
       discountPercent > 0
         ? `
@@ -141,6 +141,7 @@
 
   </div>
 `;
+
 
     });
 
@@ -186,25 +187,6 @@
   box-shadow: 0 18px 40px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.7);
 }
 
-/* Discount bar BELOW card */
-.discount-outside {
-  height: 0;
-  overflow: hidden;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: #fff;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-align: center;
-  border-radius: 0 0 14px 14px;
-  transition: height 0.3s ease, padding 0.3s ease;
-}
-
-/* Expand down on hover */
-.group:hover .discount-outside {
-  height: 40px;
-  padding: 8px 0;
-}
-
 /* View button */
 .view-btn {
   background: linear-gradient(135deg, #4f46e5, #7c3aed);
@@ -218,5 +200,27 @@
   box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
   background: linear-gradient(135deg, #4338ca, #6d28d9);
 }
+
+/* Discount bar BELOW card (narrower than card) */
+.discount-outside {
+  width: 85%;                 /* less than card width */
+  margin: 0 auto;
+  height: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 0 0 14px 14px;
+  transition: height 0.3s ease, padding 0.3s ease;
+}
+
+/* Expand down on hover */
+.group:hover .discount-outside {
+  height: 42px;
+  padding: 10px 0;
+}
+
 
 </style>

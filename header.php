@@ -485,6 +485,7 @@
   transform-origin: top;
   transform: scaleY(0);
   opacity: 0;
+  overflow: hidden;
   pointer-events: none;
   transition: transform 0.25s ease, opacity 0.25s ease;
 }

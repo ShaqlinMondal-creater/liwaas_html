@@ -27,8 +27,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      right: 15%;
-      top: 50%;
+      right: 20%;
+      top: 70%;
       transform: translateY(-50%);
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
       z-index: 10;
@@ -37,16 +37,17 @@
 
     .circle-badge-text {
       text-align: center;
-      font-size: 4rem;
+      font-size: 6rem;
       font-weight: 900;
       color: white;
       line-height: 1;
     }
 
     .circle-badge-text .off {
-      font-size: 2rem;
+      font-size: 3rem;
       display: block;
-      margin-top: -10px;
+      margin-top: -5px;
+      margin-left: 100px;
     }
 
     .product-image {

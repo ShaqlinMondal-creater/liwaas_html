@@ -206,7 +206,7 @@ sliderTrack.innerHTML += `
   width: 90%;                 /* less than card width */
   margin: 0 auto;
   margin-top: -20px;
-  padding-top:12px;
+  padding-top:10px;
   height: 0;
   overflow: hidden;
   background: linear-gradient(135deg, #deb64c, #1a1a1a);

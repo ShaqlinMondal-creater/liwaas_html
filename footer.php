@@ -49,7 +49,7 @@
             <h4 class="text-lg font-semibold text-white">Quick Links</h4>
             <ul class="space-y-3">
               <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="pages/about-us.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
@@ -57,43 +57,27 @@
                 </a>
               </li>
               <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="pages/shop.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
-                  Services
+                  Shop
                 </a>
               </li>
               <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="pages/contact.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
-                  Portfolio
+                  Contact Us
                 </a>
               </li>
               <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="pages/blog.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
                   Blog
-                </a>
-              </li>
-              <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
-                  <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
-                  <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
-                  Contact
                 </a>
               </li>
             </ul>
@@ -141,14 +125,6 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
                   Cancellation Policy
-                </a>
-              </li>
-              <li>
-                <a href="policies/contacts.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
-                  <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
-                  Contacts
                 </a>
               </li>
               <li>

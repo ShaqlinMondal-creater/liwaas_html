@@ -474,7 +474,13 @@ function createSlides() {
   sliderConfig.forEach((config, index) => {
     const slide = document.createElement('div');
     slide.className = `slide gradient-bg flex items-center justify-center relative ${index === 0 ? 'is-active' : ''}`;
-    slide.style.background = config.gradient;
+    // slide.style.background = config.gradient;
+    slide.style.background = `
+        linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
+        ${config.gradient},
+        url(${config.image}) center / cover no-repeat
+      `;
+
 
     slide.innerHTML = `
       <div class="diagonal-shape" style="background: ${config.diagonalColor}"></div>
@@ -484,8 +490,6 @@ function createSlides() {
           ${config.discount}<span class="off">OFF</span>
         </div>
       </div>
-
-      <img src="${config.image}" alt="${config.title}" class="product-image">
 
       <div class="shopping-bag bag-1 float-animation" style="background: ${config.bag1Color}">
         <div class="bag-handle" style="background: ${config.handleColor}"></div>

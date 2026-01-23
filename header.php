@@ -83,7 +83,7 @@
                     <path d="M12 8h.01" />
                 </svg><span class="text-xs">Offers</span>
             </a>
-            <a href="#" class="flex flex-col items-center text-sm hover:text-red-500">
+            <a href="#" id="mobileLogout" class="flex flex-col items-center text-sm hover:text-red-500">
                 <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M17 16l4-4m0 0l-4-4m4 4H7" />
                     <path d="M7 16v1a2 2 0 002 2h4" />
@@ -268,7 +268,7 @@
             const loginLink = avatarMenu?.querySelector('a[href*="sign-in"]');
             const profileLink = avatarMenu?.querySelector('a[href*="profile"]');
             const logoutLink = avatarMenu?.querySelector('a[href="#"]');
-            const mobileLogout = document.querySelector('.mobile-action a:last-child');
+            const mobileLogout = document.getElementById('mobileLogout');
 
             if (!isLoggedIn) {
                 bellBtn?.classList.add('hidden');

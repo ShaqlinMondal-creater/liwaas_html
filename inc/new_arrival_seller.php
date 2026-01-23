@@ -197,7 +197,7 @@ sliderTrack.innerHTML += `
 
 .view-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
+  box-shadow: 0 10px 25px rgba(241, 190, 60, 0.35);
   background: linear-gradient(135deg,  #f4c134, #0b0b0b);
 }
 
@@ -209,7 +209,7 @@ sliderTrack.innerHTML += `
   padding-top:12px;
   height: 0;
   overflow: hidden;
-  background: linear-gradient(135deg, #deb64c, #1a1a1a)
+  background: linear-gradient(135deg, #deb64c, #1a1a1a);
   color: #fff;
   font-size: 0.9rem;
   font-weight: 600;

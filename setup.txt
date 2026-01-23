@@ -75,16 +75,22 @@ need modification (all) -(all done)✅
 
 ---------------------------------------
 About page:
-need modification (all)
+need modification (all) -- processing
 
 ---------------------------------------
 contact page:
-need modification (all)
+need modification (all) -- processing
 
 ---------------------------------------
 blog page:
 need modification (all)
 
+Privacy Policy      -- processing
+Terms & Conditions  -- processing
+Shipping Policy     -- processing
+Refund Policy       -- processing
+Cancellation Policy -- processing
+Disclaimer          -- processing
 
 UNIVERSEL SETTING->
 -------------------

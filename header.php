@@ -125,8 +125,7 @@
 
     <!-- ⛳️ Main navbar -->
     <!-- ╔════════════════════  HEADER  ════════════════════╗ -->
-    <nav class="relative z-50 sticky top-0 bg-white/80 backdrop-blur px-4 py-3
-              shadow-md ring-1 ring-gray-200">
+    <nav class="relative z-50 sticky top-1 mx-0 bg-white/80 backdrop-blur px-4 py-3 shadow-lg ring-1 ring-gray-200 rounded-b-2xl">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
 
             <!-- ◀︎ Logo -->
@@ -217,7 +216,8 @@
         </div>
 
         <!-- ◀︎ Mobile drawer -->
-        <div id="mobileMenu" class="mobile-menu md:hidden mt-2 px-4 space-y-2">
+        <div id="mobileMenu" class="mobile-menu md:hidden absolute left-0 right-0 top-full
+         bg-white/95 backdrop-blur shadow-lg px-4 py-3 space-y-2 rounded-b-2xl hidden">
             <a href="" class="mobile-link">Home</a>
             <a href="pages/shop" class="mobile-link">Shop</a>
             <a href="#" class="mobile-link">About</a>
@@ -253,6 +253,7 @@
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('open');
             mobileMenu.classList.toggle('open');
+            mobileMenu.classList.toggle('hidden'); // 👈 ADD THIS
         });
 
         /* clear ping after first open */
@@ -480,3 +481,21 @@
         });
     </script>
 
+<style>
+    .mobile-menu {
+        transform-origin: top;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .mobile-menu.hidden {
+        transform: scaleY(0);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .mobile-menu.open {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+
+</style>

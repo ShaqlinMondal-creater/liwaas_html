@@ -1,6 +1,22 @@
 <base href="../">
 <?php include("../header.php"); ?>
 
+<!-- SEO Meta -->
+
+<title>About Liwaas – Crafted for You</title>
+<meta name="description" content="Liwaas is an Indian streetwear brand crafting premium oversized T-shirts and everyday apparel. Discover our story, mission, and journey." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Liwaas",
+  "url": "https://liwaas.com",
+  "logo": "https://liwaas.com/assets/brand/logo.png",
+  "description": "Indian streetwear brand crafting premium oversized T-shirts and everyday wear.",
+  "sameAs": ["https://instagram.com/liwaas"]
+}
+</script>
+
 <style>
   .fade-up {opacity:0; transform:translateY(40px); transition:all .8s ease}
   .fade-up.show {opacity:1; transform:translateY(0)}
@@ -10,7 +26,9 @@
 
 <section class="relative bg-gradient-to-br from-black via-orange-900 to-orange-500 text-white py-24 overflow-hidden">
   <div class="absolute inset-0 bg-black/30"></div>
-  <div class="absolute -top-24 -right-24 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl"></div>
+  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-30">
+    <source src="assets/videos/about-banner.mp4" type="video/mp4">
+  </video>
   <div class="relative max-w-7xl mx-auto px-4 text-center fade-up">
     <h1 class="text-5xl md:text-7xl font-bold mb-6">About Liwaas</h1>
     <p class="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto">Crafted for You — where comfort meets contemporary streetwear</p>
@@ -24,22 +42,15 @@
     <div class="grid md:grid-cols-2 gap-16 items-center">
       <div class="fade-up">
         <h2 class="text-4xl font-bold text-gray-800 mb-6">Our Story</h2>
-        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-          Liwaas was born from a simple idea: everyday fashion should feel as good as it looks. Built in India for a new generation, we focus on premium-quality fabrics, modern silhouettes, and thoughtful design that fits real life.
-        </p>
-        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-          What started as a small passion project quickly turned into a growing streetwear label trusted by thousands. From oversized T-shirts to minimal everyday essentials, every piece is designed with comfort, durability, and style in mind.
-        </p>
-        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-          We don’t chase trends. We build staples — clothing that stays relevant, feels premium, and works effortlessly with your lifestyle.
-        </p>
+        <p class="text-lg text-gray-600 mb-6 leading-relaxed">Liwaas was born from a simple idea: everyday fashion should feel as good as it looks. Built in India for a new generation, we focus on premium-quality fabrics, modern silhouettes, and thoughtful design.</p>
+        <p class="text-lg text-gray-600 mb-6 leading-relaxed">What started as a bedroom-side passion project is now a fast-growing streetwear label trusted by thousands across India.</p>
         <div class="flex items-center space-x-8">
           <div class="text-center">
-            <div class="text-3xl font-bold text-orange-600">10K+</div>
+            <div class="text-3xl font-bold text-orange-600 counter" data-target="10000">0</div>
             <div class="text-gray-600">Happy Customers</div>
           </div>
           <div class="text-center">
-            <div class="text-3xl font-bold text-orange-600">150+</div>
+            <div class="text-3xl font-bold text-orange-600 counter" data-target="150">0</div>
             <div class="text-gray-600">Designs</div>
           </div>
           <div class="text-center">
@@ -48,9 +59,8 @@
           </div>
         </div>
       </div>
-      <div class="relative fade-up">
-        <img src="assets/images/about-story.jpg" alt="Liwaas Story" class="rounded-2xl shadow-2xl hover:scale-105 transition duration-500">
-        <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-orange-400 rounded-full opacity-20"></div>
+      <div class="fade-up">
+        <img src="assets/images/about-story.jpg" alt="Liwaas Story" class="rounded-2xl shadow-2xl">
       </div>
     </div>
   </div>
@@ -62,66 +72,24 @@
   <div class="max-w-7xl mx-auto px-4">
     <div class="text-center mb-16 fade-up">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">Why Liwaas?</h2>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto">Because details matter — from fabric to fit</p>
+      <p class="text-xl text-gray-600">Because details matter</p>
     </div>
     <div class="grid md:grid-cols-3 gap-8">
-      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up hover:shadow-2xl transition">
-        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mb-4">🧵</div>
+      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">
+        <svg class="w-10 h-10 text-orange-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M12 8c1.657 0 3-1.343 3-3S13.657 2 12 2s-3 1.343-3 3 1.343 3 3 3z"/></svg>
         <h3 class="text-xl font-bold mb-3">Premium Fabrics</h3>
-        <p class="text-gray-600">High-GSM cotton blends and skin-friendly dyes for all-day comfort.</p>
+        <p class="text-gray-600">High-GSM cotton blends and skin-friendly dyes.</p>
       </div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up hover:shadow-2xl transition">
-        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mb-4">📐</div>
+      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">
+        <svg class="w-10 h-10 text-orange-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M3 7h18"/></svg>
         <h3 class="text-xl font-bold mb-3">Perfect Fit</h3>
-        <p class="text-gray-600">Tailored oversized silhouettes that drape well and move naturally.</p>
+        <p class="text-gray-600">Tailored oversized silhouettes.</p>
       </div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up hover:shadow-2xl transition">
-        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mb-4">🇮🇳</div>
+      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">
+        <svg class="w-10 h-10 text-orange-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M12 2l9 21H3z"/></svg>
         <h3 class="text-xl font-bold mb-3">Made in India</h3>
-        <p class="text-gray-600">Designed and produced locally with strict quality control.</p>
+        <p class="text-gray-600">Locally produced with strict QC.</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- Mission & Vision -->
-
-<section class="py-24 bg-white">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="text-center mb-16 fade-up">
-      <h2 class="text-4xl font-bold text-gray-800 mb-4">Our Mission & Vision</h2>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto">Driven by purpose, designed for everyday wear</p>
-    </div>
-    <div class="grid md:grid-cols-2 gap-12">
-      <div class="bg-gray-50 p-10 rounded-2xl shadow-lg fade-up">
-        <h3 class="text-2xl font-bold text-gray-800 mb-4">Our Mission</h3>
-        <p class="text-gray-600 leading-relaxed">
-          To create high-quality, comfortable apparel that empowers people to express themselves confidently. We aim to make fashion simple, affordable, and reliable for everyday life.
-        </p>
-      </div>
-      <div class="bg-gray-50 p-10 rounded-2xl shadow-lg fade-up">
-        <h3 class="text-2xl font-bold text-gray-800 mb-4">Our Vision</h3>
-        <p class="text-gray-600 leading-relaxed">
-          To become a trusted Indian streetwear brand known for quality, consistency, and customer-first design — inspiring confidence through what people wear every day.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Timeline -->
-
-<section class="py-24 bg-gray-50">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="text-center mb-16 fade-up">
-      <h2 class="text-4xl font-bold text-gray-800 mb-4">Our Journey</h2>
-      <p class="text-xl text-gray-600">Key milestones of Liwaas</p>
-    </div>
-    <div class="space-y-8">
-      <div class="bg-white p-6 rounded-xl shadow fade-up">2022 — Brand idea and first prototype T-shirt</div>
-      <div class="bg-white p-6 rounded-xl shadow fade-up">2023 — Official launch & first 1,000 orders</div>
-      <div class="bg-white p-6 rounded-xl shadow fade-up">2024 — Expanded into oversized streetwear</div>
-      <div class="bg-white p-6 rounded-xl shadow fade-up">2025 — Serving customers across India</div>
     </div>
   </div>
 </section>
@@ -129,71 +97,66 @@
 <!-- Founder -->
 
 <section class="py-24 bg-white">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="grid md:grid-cols-2 gap-16 items-center">
-      <div class="fade-up">
-        <h2 class="text-4xl font-bold text-gray-800 mb-6">Meet the Founder</h2>
-        <p class="text-lg text-gray-600 mb-6">Liwaas was founded by a young entrepreneur passionate about blending fashion, quality, and accessibility.</p>
-        <p class="text-lg text-gray-600 mb-6">What started from a bedroom design board is now a growing apparel brand serving thousands.</p>
-      </div>
-      <div class="fade-up">
-        <img src="assets/images/founder.jpg" alt="Founder" class="rounded-2xl shadow-2xl">
-      </div>
+  <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-center">
+    <div class="fade-up">
+      <h2 class="text-4xl font-bold mb-6">Meet the Founder</h2>
+      <p class="text-gray-600 mb-4">Founded by a young Indian entrepreneur passionate about accessible streetwear.</p>
+      <p class="text-gray-600">From a single T-shirt prototype to thousands of happy customers.</p>
+    </div>
+    <div class="fade-up">
+      <img src="assets/images/founder.jpg" alt="Founder" class="rounded-2xl shadow-2xl">
     </div>
   </div>
 </section>
 
-<!-- Testimonials -->
+<!-- Testimonials Slider -->
 
 <section class="py-24 bg-gray-50">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="text-center mb-16 fade-up">
-      <h2 class="text-4xl font-bold text-gray-800 mb-4">What Our Customers Say</h2>
-      <p class="text-xl text-gray-600">Real love from real people</p>
-    </div>
-    <div class="grid md:grid-cols-3 gap-8">
-      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">"Best quality oversized tee I’ve bought in India." — Aman</div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">"Super comfortable and stylish." — Riya</div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">"Fast delivery and premium feel." — Kunal</div>
-    </div>
-  </div>
-</section>
-
-<!-- Process -->
-
-<section class="py-24 bg-white">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="text-center mb-16 fade-up">
-      <h2 class="text-4xl font-bold text-gray-800 mb-4">How We Create</h2>
-      <p class="text-xl text-gray-600">From concept to your wardrobe</p>
-    </div>
-    <div class="grid md:grid-cols-4 gap-8">
-      <div class="bg-gray-50 p-8 rounded-2xl shadow-lg fade-up">🎨 Design</div>
-      <div class="bg-gray-50 p-8 rounded-2xl shadow-lg fade-up">🧶 Fabric Sourcing</div>
-      <div class="bg-gray-50 p-8 rounded-2xl shadow-lg fade-up">🏭 Production</div>
-      <div class="bg-gray-50 p-8 rounded-2xl shadow-lg fade-up">✅ Quality Check</div>
+  <div class="max-w-7xl mx-auto px-4 text-center fade-up">
+    <h2 class="text-4xl font-bold mb-12">Customer Love</h2>
+    <div id="testimonialSlider" class="relative overflow-hidden">
+      <div class="flex transition-transform duration-500" id="testimonialTrack">
+        <div class="min-w-full bg-white p-8 rounded-2xl shadow-lg">"Best oversized tee in India." — Aman</div>
+        <div class="min-w-full bg-white p-8 rounded-2xl shadow-lg">"Super comfortable and stylish." — Riya</div>
+        <div class="min-w-full bg-white p-8 rounded-2xl shadow-lg">"Premium feel and fast delivery." — Kunal</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Call to Action -->
+<!-- CTA -->
 
 <section class="py-24 bg-black text-white">
   <div class="max-w-7xl mx-auto px-4 text-center fade-up">
     <h2 class="text-4xl font-bold mb-6">Wear Confidence. Wear Liwaas.</h2>
-    <p class="text-xl opacity-90 max-w-3xl mx-auto mb-8">Join thousands who trust Liwaas for everyday style and comfort.</p>
+    <p class="text-xl opacity-90 mb-8">Join thousands who trust Liwaas.</p>
     <a href="shop" class="inline-block bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-full font-semibold transition">Shop Now</a>
   </div>
 </section>
 
 <script>
   const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){ entry.target.classList.add('show'); }
-    });
+    entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('show'); } });
   }, { threshold: 0.15 });
-
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.counter').forEach(counter => {
+    const update = () => {
+      const target = +counter.dataset.target;
+      const count = +counter.innerText;
+      const inc = target / 200;
+      if(count < target){ counter.innerText = Math.ceil(count + inc); setTimeout(update, 20); }
+      else counter.innerText = target;
+    };
+    update();
+  });
+
+  let index = 0;
+  setInterval(() => {
+    const track = document.getElementById('testimonialTrack');
+    index = (index + 1) % 3;
+    track.style.transform = `translateX(-${index * 100}%)`;
+  }, 4000);
 </script>
 
 <?php include("../footer.php"); ?>

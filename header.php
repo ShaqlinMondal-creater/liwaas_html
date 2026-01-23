@@ -219,9 +219,9 @@
         <div id="mobileMenu" class="mobile-menu md:hidden absolute left-0 right-0 top-full
             bg-white/95 backdrop-blur shadow-lg px-4 py-3 space-y-2 rounded-b-2xl">
             <a href="" class="mobile-link">Home</a>
-            <a href="pages/shop" class="mobile-link">Shop</a>
-            <a href="#" class="mobile-link">About</a>
-            <a href="#" class="mobile-link">Contact</a>
+            <a href="pages/shop.php" class="mobile-link">Shop</a>
+            <a href="pages/about.php" class="mobile-link">About</a>
+            <a href="pages/contact.php" class="mobile-link">Contact</a>
         </div>
     </nav>
     <!-- ╚═══════════════════════════════════════════════════════╝ -->
@@ -495,5 +495,9 @@
   opacity: 1;
   pointer-events: auto;
 }
-
+@media (max-width: 767px) {
+    .nav-link:hover, .mobile-link:hover, .dropdown-link:hover {
+        color: #0a0a0000 !important;
+    }
+}
 </style>

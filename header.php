@@ -15,7 +15,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Liwaas - Carfted for You </title>
-
+    <meta name="description" content="Liwaas is an Indian streetwear brand crafting premium oversized T-shirts and everyday apparel. Discover our story, mission, and journey." />
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="assets/brand/fav_icon.png" type="image/svg+xml">

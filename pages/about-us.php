@@ -66,14 +66,17 @@
     </div>
     <div class="grid md:grid-cols-3 gap-8">
       <div class="bg-white p-8 rounded-2xl shadow-lg fade-up hover:shadow-2xl transition">
+        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mb-4">🧵</div>
         <h3 class="text-xl font-bold mb-3">Premium Fabrics</h3>
-        <p class="text-gray-600">We use high-GSM cotton blends and skin-friendly dyes for all-day comfort.</p>
+        <p class="text-gray-600">High-GSM cotton blends and skin-friendly dyes for all-day comfort.</p>
       </div>
       <div class="bg-white p-8 rounded-2xl shadow-lg fade-up hover:shadow-2xl transition">
+        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mb-4">📐</div>
         <h3 class="text-xl font-bold mb-3">Perfect Fit</h3>
         <p class="text-gray-600">Tailored oversized silhouettes that drape well and move naturally.</p>
       </div>
       <div class="bg-white p-8 rounded-2xl shadow-lg fade-up hover:shadow-2xl transition">
+        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mb-4">🇮🇳</div>
         <h3 class="text-xl font-bold mb-3">Made in India</h3>
         <p class="text-gray-600">Designed and produced locally with strict quality control.</p>
       </div>
@@ -106,19 +109,69 @@
   </div>
 </section>
 
-<!-- Process -->
+<!-- Timeline -->
 
 <section class="py-24 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16 fade-up">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">Our Journey</h2>
+      <p class="text-xl text-gray-600">Key milestones of Liwaas</p>
+    </div>
+    <div class="space-y-8">
+      <div class="bg-white p-6 rounded-xl shadow fade-up">2022 — Brand idea and first prototype T-shirt</div>
+      <div class="bg-white p-6 rounded-xl shadow fade-up">2023 — Official launch & first 1,000 orders</div>
+      <div class="bg-white p-6 rounded-xl shadow fade-up">2024 — Expanded into oversized streetwear</div>
+      <div class="bg-white p-6 rounded-xl shadow fade-up">2025 — Serving customers across India</div>
+    </div>
+  </div>
+</section>
+
+<!-- Founder -->
+
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div class="fade-up">
+        <h2 class="text-4xl font-bold text-gray-800 mb-6">Meet the Founder</h2>
+        <p class="text-lg text-gray-600 mb-6">Liwaas was founded by a young entrepreneur passionate about blending fashion, quality, and accessibility.</p>
+        <p class="text-lg text-gray-600 mb-6">What started from a bedroom design board is now a growing apparel brand serving thousands.</p>
+      </div>
+      <div class="fade-up">
+        <img src="assets/images/founder.jpg" alt="Founder" class="rounded-2xl shadow-2xl">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+
+<section class="py-24 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16 fade-up">
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">What Our Customers Say</h2>
+      <p class="text-xl text-gray-600">Real love from real people</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">"Best quality oversized tee I’ve bought in India." — Aman</div>
+      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">"Super comfortable and stylish." — Riya</div>
+      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">"Fast delivery and premium feel." — Kunal</div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+
+<section class="py-24 bg-white">
   <div class="max-w-7xl mx-auto px-4">
     <div class="text-center mb-16 fade-up">
       <h2 class="text-4xl font-bold text-gray-800 mb-4">How We Create</h2>
       <p class="text-xl text-gray-600">From concept to your wardrobe</p>
     </div>
     <div class="grid md:grid-cols-4 gap-8">
-      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">Design</div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">Fabric Sourcing</div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">Production</div>
-      <div class="bg-white p-8 rounded-2xl shadow-lg fade-up">Quality Check</div>
+      <div class="bg-gray-50 p-8 rounded-2xl shadow-lg fade-up">🎨 Design</div>
+      <div class="bg-gray-50 p-8 rounded-2xl shadow-lg fade-up">🧶 Fabric Sourcing</div>
+      <div class="bg-gray-50 p-8 rounded-2xl shadow-lg fade-up">🏭 Production</div>
+      <div class="bg-gray-50 p-8 rounded-2xl shadow-lg fade-up">✅ Quality Check</div>
     </div>
   </div>
 </section>

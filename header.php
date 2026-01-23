@@ -125,7 +125,7 @@
 
     <!-- ⛳️ Main navbar -->
     <!-- ╔════════════════════  HEADER  ════════════════════╗ -->
-    <nav class="relative z-50 sticky top-1 mx-0 bg-white/80 backdrop-blur px-4 py-3 shadow-lg ring-1 ring-gray-200 rounded-b-2xl">
+    <nav class="relative z-50 sticky top-0 mx-0 bg-white/80 backdrop-blur px-4 py-3 shadow-lg ring-1 ring-gray-200">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
 
             <!-- ◀︎ Logo -->
@@ -481,21 +481,3 @@
         });
     </script>
 
-<style>
-    .mobile-menu {
-        transform-origin: top;
-        transition: transform 0.25s ease, opacity 0.25s ease;
-    }
-
-    .mobile-menu.hidden {
-        transform: scaleY(0);
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .mobile-menu.open {
-        transform: scaleY(1);
-        opacity: 1;
-    }
-
-</style>

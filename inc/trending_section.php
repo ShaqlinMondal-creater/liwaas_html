@@ -96,7 +96,7 @@
           const imageUrl = variation.images?.[0]?.upload_url || 'https://via.placeholder.com/300x400?text=No+Image';
 
           const card = document.createElement('div');
-          card.className = 'min-w-[300px] max-w-[300px] flex-shrink-0 group featured-card cursor-pointer';
+          card.className = 'min-w-[350px] max-w-[350px] flex-shrink-0 group featured-card cursor-pointer';
 
           card.innerHTML = `
           <div class="glossy-card rounded-2xl overflow-hidden relative">

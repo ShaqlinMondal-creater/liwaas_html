@@ -87,54 +87,61 @@
       const variationUID = variation.uid;
 
       sliderTrack.innerHTML += `
-        <div class="min-w-[300px] max-w-[300px] glossy-card rounded-2xl overflow-hidden m-2 flex-shrink-0 group">
+  <div class="min-w-[300px] max-w-[300px] m-2 flex-shrink-0 group">
 
-          <!-- Image -->
-          <div class="relative h-72 bg-gray-100 overflow-hidden">
-            <a href="pages/product-detail.php?id=${variationUID}" class="block w-full h-full">
-              <img 
-                src="${image}" 
-                alt="${productName}" 
-                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                loading="lazy"
-              >
-            </a>
-          </div>
+    <!-- Card -->
+    <div class="glossy-card rounded-2xl overflow-hidden">
 
-          <!-- Info -->
-          <div class="relative p-4 bg-white flex flex-col gap-2">
-            <h3 class="font-semibold line-clamp-2">${productName}</h3>
+      <!-- Image -->
+      <div class="h-72 bg-gray-100 overflow-hidden">
+        <a href="pages/product-detail.php?id=${variationUID}" class="block w-full h-full">
+          <img 
+            src="${image}" 
+            alt="${productName}" 
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+          >
+        </a>
+      </div>
 
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-2">
-                <span class="text-lg font-bold text-gray-900">₹${sellPrice}</span>
-                ${
-                  regularPrice > sellPrice
-                    ? `<span class="text-sm text-gray-500 line-through">₹${regularPrice}</span>`
-                    : ``
-                }
-              </div>
+      <!-- Info -->
+      <div class="p-4 bg-white">
+        <h3 class="font-semibold line-clamp-2 mb-2">${productName}</h3>
 
-              <a href="pages/product-detail.php?id=${variationUID}" 
-                class="view-btn inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold">
-                View
-              </a>
-            </div>
-
-            <!-- Discount bar (collapsed by default) -->
+        <div class="flex items-center justify-between">
+          <!-- Price -->
+          <div class="flex items-center gap-2">
+            <span class="text-lg font-bold text-gray-900">₹${sellPrice}</span>
             ${
-              discountPercent > 0
-                ? `
-                <div class="discount-bar">
-                  Discount: ${discountPercent}%
-                </div>
-                `
+              regularPrice > sellPrice
+                ? `<span class="text-sm text-gray-500 line-through">₹${regularPrice}</span>`
                 : ``
             }
           </div>
 
+          <!-- View -->
+          <a href="pages/product-detail.php?id=${variationUID}" 
+             class="view-btn inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold">
+            View
+          </a>
         </div>
-      `;
+      </div>
+    </div>
+
+    <!-- Discount bar (outside card, collapsed) -->
+    ${
+      discountPercent > 0
+        ? `
+        <div class="discount-outside">
+          Discount: ${discountPercent}%
+        </div>
+        `
+        : ``
+    }
+
+  </div>
+`;
+
     });
 
     updateVisibleSlides();
@@ -165,9 +172,8 @@
 </script>
 
 <style>
-  /* Card hover container */
+ /* Card */
 .glossy-card {
-  position: relative;
   background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.35));
   border: 1px solid rgba(255,255,255,0.4);
   box-shadow: 0 10px 25px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
@@ -180,28 +186,23 @@
   box-shadow: 0 18px 40px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.7);
 }
 
-/* Discount collapse bar */
-.discount-bar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -40px;              /* hidden initially */
-  height: 40px;
+/* Discount bar BELOW card */
+.discount-outside {
+  height: 0;
+  overflow: hidden;
   background: linear-gradient(135deg, #ef4444, #dc2626);
   color: #fff;
   font-size: 0.875rem;
   font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: bottom 0.3s ease;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  text-align: center;
+  border-radius: 0 0 14px 14px;
+  transition: height 0.3s ease, padding 0.3s ease;
 }
 
-/* Show on hover */
-.glossy-card:hover .discount-bar {
-  bottom: 0;
+/* Expand down on hover */
+.group:hover .discount-outside {
+  height: 40px;
+  padding: 8px 0;
 }
 
 /* View button */

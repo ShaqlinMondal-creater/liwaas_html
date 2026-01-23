@@ -120,35 +120,43 @@
                 </a>
               </li>
               <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/shipping-policy.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
-                  UI/UX Design
+                  Shipping Policy
                 </a>
               </li>
               <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/refund-policy.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
-                  Digital Marketing
+                  Refund Policy
                 </a>
               </li>
               <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/cancellation-policy.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
-                  Cloud Solutions
+                  Cancellation Policy
                 </a>
               </li>
               <li>
-                <a href="#" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/contacts.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
-                  Consulting
+                  Contacts
+                </a>
+              </li>
+              <li>
+                <a href="policies/disclaimer.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                  <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                  Disclaimer
                 </a>
               </li>
             </ul>

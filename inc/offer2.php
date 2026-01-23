@@ -375,7 +375,7 @@
         width: 220px;
         height: 220px;
         right: 10%;
-        top: 20%;
+        top: 35%;
       }
       .contentss {
         top: 20%;

@@ -62,44 +62,66 @@
     <!-- 📱 Mobile sticky footer nav -->
     <div class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow md:hidden mobile-action">
         <div class="flex justify-around items-center py-2 text-gray-600">
+
             <a href="pages/shop" class="flex flex-col items-center text-sm hover:text-indigo-600">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M3 9l1 11a2 2 0 002 2h12a2 2 0 002-2l1-11" />
-                    <path d="M16 3a4 4 0 00-8 0" />
-                    <path d="M3 9h18" />
-                </svg><span class="text-xs">Shop</span>
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M3 9l1 11a2 2 0 002 2h12a2 2 0 002-2l1-11" />
+                <path d="M16 3a4 4 0 00-8 0" />
+                <path d="M3 9h18" />
+            </svg>
+            <span class="text-xs">Shop</span>
             </a>
+
             <a href="pages/cart" class="flex flex-col items-center text-sm hover:text-indigo-600">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
-                    <circle cx="9" cy="19" r="2" />
-                    <circle cx="17" cy="19" r="2" />
-                </svg><span class="text-xs">Cart</span>
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
+                <circle cx="9" cy="19" r="2" />
+                <circle cx="17" cy="19" r="2" />
+            </svg>
+            <span class="text-xs">Cart</span>
             </a>
+
             <a href="#" class="flex flex-col items-center text-sm hover:text-indigo-600">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M20 12l-8 8-8-8 8-8z" />
-                    <path d="M12 16v-4" />
-                    <path d="M12 8h.01" />
-                </svg><span class="text-xs">Offers</span>
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M20 12l-8 8-8-8 8-8z" />
+                <path d="M12 16v-4" />
+                <path d="M12 8h.01" />
+            </svg>
+            <span class="text-xs">Offers</span>
             </a>
-            <a href="#" id="mobileLogout" class="flex flex-col items-center text-sm hover:text-red-500">
+
+            <!-- Login (guest only) -->
+            <a href="sign-in.php" id="mobileLogin" class="flex flex-col items-center text-sm hover:text-blue-500 hidden">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
+                <path d="M10 17l5-5-5-5" />
+                <path d="M15 12H3" />
+            </svg>
+            <span class="text-xs">Login</span>
+            </a>
+
+            <!-- Account (logged-in only) -->
+            <a href="pages/profile" id="mobileAccount" class="flex flex-col items-center text-sm hover:text-blue-500 hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6 mb-1">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+            <span class="text-xs">Account</span>
+            </a>
+
+            <!-- Logout (logged-in only) -->
+            <a href="#" id="mobileLogout" class="flex flex-col items-center text-sm hover:text-red-500 hidden">
                 <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M17 16l4-4m0 0l-4-4m4 4H7" />
                     <path d="M7 16v1a2 2 0 002 2h4" />
                     <path d="M7 8V7a2 2 0 012-2h4" />
-                </svg><span class="text-xs">Logout</span>
-            </a>
-            <a href="pages/profile" class="flex flex-col items-center text-sm hover:text-blue-500">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                 </svg>
-                <span class="text-xs">Account</span>
+                <span class="text-xs">Logout</span>
             </a>
-
-
         </div>
     </div>
+
 
     <!-- ⛳️ Main navbar -->
     <!-- ╔════════════════════  HEADER  ════════════════════╗ -->
@@ -310,7 +332,27 @@
             }
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const isLoggedIn = localStorage.getItem('auth_token') !== null;
 
+        const mobileLogin   = document.getElementById('mobileLogin');
+        const mobileAccount = document.getElementById('mobileAccount');
+        const mobileLogout  = document.getElementById('mobileLogout');
+
+        if (!isLoggedIn) {
+            // Guest view
+            mobileLogin?.classList.remove('hidden');
+            mobileAccount?.classList.add('hidden');
+            mobileLogout?.classList.add('hidden');
+        } else {
+            // Logged-in view
+            mobileLogin?.classList.add('hidden');
+            mobileAccount?.classList.remove('hidden');
+            mobileLogout?.classList.remove('hidden');
+        }
+        });
+    </script>
 
     <!-- Logout logic with api -->
     <script>

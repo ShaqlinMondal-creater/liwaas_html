@@ -630,13 +630,6 @@
                     </button>
                     </div>
                 </div>
-
-                <!-- Discount bar -->
-                ${
-                    discountPercent > 0
-                    ? `<div class="discount-outside">Discount: ${discountPercent}%</div>`
-                    : ``
-                }
             `;
             // Add to Cart Button Logic
             const addToCartBtn = card.querySelector(".add-to-cart-btn");

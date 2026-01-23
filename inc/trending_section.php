@@ -112,7 +112,7 @@
             <div class="flex justify-between items-center mt-2">
               <span class="text-xl font-semibold text-slate-900">₹${variation.sell_price ?? 'N/A'}</span>
 
-              <div class="view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-5 py-2 rounded-l-full text-xl font-semibold space-x-2">
+              <div class="view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-3 py-2 rounded-l-full text-xl font-semibold space-x-2">
                 <button class="wishlist-btn w-9 h-9 relative rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-yellow-500 transition">
                   <i data-lucide="heart" class="w-5 h-5"></i>
                 </button>

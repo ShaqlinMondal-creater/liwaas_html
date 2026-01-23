@@ -109,7 +109,7 @@
             </a>
           </div>
 
-          <div class="p-4 text-left backdrop-blur bg-white/70">
+          <div class="p-4 text-left backdrop-blur bg-white/70 flex flex-col gap-2">
             <h3 class="font-semibold mb-1 line-clamp-2">${productName}</h3>
 
             <div class="flex items-center gap-2 mb-2">
@@ -123,8 +123,13 @@
             </div>
 
             <a href="pages/product-detail.php?id=${variationUID}" 
-              class="text-blue-500 hover:underline text-sm font-medium">
-              Show Details
+              class="view-btn inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold">
+              View
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
             </a>
           </div>
 
@@ -181,6 +186,24 @@
   box-shadow:
     0 18px 40px rgba(0,0,0,0.12),
     inset 0 1px 0 rgba(255,255,255,0.7);
+}
+/* Stylish "View" button */
+.view-btn {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #fff;
+  box-shadow: 0 6px 15px rgba(79, 70, 229, 0.25);
+  transition: all 0.25s ease;
+}
+
+.view-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
+  background: linear-gradient(135deg, #4338ca, #6d28d9);
+}
+
+.view-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 12px rgba(79, 70, 229, 0.25);
 }
 
 </style>

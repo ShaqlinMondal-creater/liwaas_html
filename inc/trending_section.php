@@ -99,7 +99,6 @@
           card.className = 'min-w-[300px] max-w-[300px] flex-shrink-0 group featured-card cursor-pointer';
 
           card.innerHTML = `
-          <div class="glossy-card rounded-2xl overflow-hidden relative">
             <div class="relative overflow-hidden rounded-xl shadow hover:shadow-lg transition h-[400px] bg-gray-100">
               <img src="${imageUrl}" 
                   alt="${product.name}" 
@@ -122,7 +121,6 @@
                 </button>
               </div>
             </div>
-          </div>
           `;
           
           // Card click → navigate to product detail

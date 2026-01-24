@@ -339,6 +339,14 @@ function renderAddresses(addresses) {
                     <input type="radio" name="address" class="h-4 w-4 text-blue-600" />
                     <span class="ml-2 font-medium">${typeLabel}</span>
                 </div>
+                <div class="flex space-x-2">
+                    <button class="text-gray-400 hover:text-gray-500">
+                        <i data-lucide="edit" class="w-4 h-4"></i>
+                    </button>
+                    <button class="text-gray-400 hover:text-gray-500">
+                        <i data-lucide="trash" class="w-4 h-4"></i>
+                    </button>
+                </div>
             </div>
             <p class="text-sm text-gray-600">${addr.name}</p>
             <p class="text-sm text-gray-600">${addr.address_line_1}, ${addr.address_line_2 || ''}</p>

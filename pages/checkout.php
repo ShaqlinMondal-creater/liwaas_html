@@ -261,40 +261,28 @@
                                 <h2 class="text-xl font-semibold">Order Summary</h2>
                             </div>
                             <div class="p-6 space-y-4">
-                                <div class="space-y-3">
-                                    <div class="flex justify-between text-sm">
-                                        <span>Premium Wool Blend Overcoat</span>
-                                        <span class="font-medium">$299.99</span>
-                                    </div>
-                                    <div class="flex justify-between text-sm">
-                                        <span>Cashmere Scarf</span>
-                                        <span class="font-medium">$79.99</span>
-                                    </div>
-                                </div>
+                                <div class="space-y-3" id="summary-items"></div>
 
                                 <div class="border-t pt-4 space-y-3">
                                     <div class="flex justify-between text-sm">
                                         <span class="text-gray-600">Subtotal</span>
-                                        <span>$379.98</span>
+                                        <span id="summary-subtotal">₹0.00</span>
                                     </div>
                                     <div class="flex justify-between text-sm">
                                         <span class="text-gray-600">Shipping</span>
-                                        <span class="text-green-600">Free</span>
-                                    </div>
-                                    <div class="flex justify-between text-sm">
-                                        <span class="text-gray-600">Tax</span>
-                                        <span>$38.00</span>
+                                        <span id="summary-shipping">₹0.00</span>
                                     </div>
                                 </div>
 
                                 <div class="border-t pt-4">
                                     <div class="flex justify-between items-center">
                                         <span class="font-medium">Total</span>
-                                        <span class="text-xl font-bold">$417.98</span>
+                                        <span id="summary-total" class="text-xl font-bold">₹0.00</span>
                                     </div>
                                 </div>
 
-                                <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700">
+                                <button id="placeOrderBtn"
+                                    class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700">
                                     Place Order
                                 </button>
 
@@ -438,6 +426,101 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
 });
 
 </script>
+
+<script>
+const baseUrl  = "<?= $baseUrl ?>";
+const authToken = localStorage.getItem("auth_token");
+const guestId   = localStorage.getItem("guest_token");
+
+let cartData = [];
+
+async function fetchCheckoutCart() {
+    try {
+        let headers = { "Content-Type": "application/json" };
+        let body = null;
+
+        if (authToken) {
+            headers["Authorization"] = `Bearer ${authToken}`;
+        } else if (guestId) {
+            body = JSON.stringify({ temp_id: guestId });
+        } else {
+            renderSummary();
+            return;
+        }
+
+        const res = await fetch(`${baseUrl}/api/cart/get-cart`, {
+            method: "POST",
+            headers,
+            body
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+            cartData = result.data || [];
+            renderSummary();
+        } else {
+            cartData = [];
+            renderSummary();
+        }
+
+    } catch (err) {
+        console.error("Checkout cart error:", err);
+    }
+}
+
+function renderSummary() {
+    const itemsEl    = document.getElementById("summary-items");
+    const subtotalEl = document.getElementById("summary-subtotal");
+    const shippingEl = document.getElementById("summary-shipping");
+    const totalEl    = document.getElementById("summary-total");
+    const placeBtn   = document.getElementById("placeOrderBtn");
+
+    itemsEl.innerHTML = "";
+
+    if (!cartData.length) {
+        itemsEl.innerHTML = `<p class="text-sm text-gray-500">Your cart is empty.</p>`;
+        subtotalEl.textContent = "₹0.00";
+        shippingEl.textContent = "₹0.00";
+        totalEl.textContent = "₹0.00";
+        placeBtn.disabled = true;
+        placeBtn.classList.add("opacity-50", "cursor-not-allowed");
+        return;
+    }
+
+    let subtotal = 0;
+
+    cartData.forEach(item => {
+        const variation = item.variation || {};
+        const lineTotal = parseFloat(item.total_price) || 0;
+        subtotal += lineTotal;
+
+        const row = document.createElement("div");
+        row.className = "flex justify-between text-sm";
+        row.innerHTML = `
+            <span>${item.product_name} ${variation.size ? `(${variation.size})` : ""} × ${item.quantity}</span>
+            <span class="font-medium">₹${lineTotal.toFixed(2)}</span>
+        `;
+        itemsEl.appendChild(row);
+    });
+
+    // Shipping rule: ₹120 if subtotal > 1000
+    let shipping = subtotal > 1000 ? 120 : 0;
+
+    subtotalEl.textContent = `₹${subtotal.toFixed(2)}`;
+    shippingEl.textContent = shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`;
+    totalEl.textContent = `₹${(subtotal + shipping).toFixed(2)}`;
+
+    placeBtn.disabled = false;
+    placeBtn.classList.remove("opacity-50", "cursor-not-allowed");
+}
+
+// Init
+window.addEventListener("load", () => {
+    fetchCheckoutCart();
+});
+</script>
+
 
     <script>
         // Initialize Lucide icons

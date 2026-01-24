@@ -1,445 +1,378 @@
 <base href="../">
 <?php include("../header.php"); ?>
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 py-8">
-      <!-- ▸▸▸  SKELETON  ◂◂◂ -->
-        <div id="cart-skeleton">
-          <div class="flex flex-col lg:flex-row gap-8 animate-pulse">
 
-            <!-- Skeleton Cart (left column) -->
-            <div class="flex-1 space-y-6">
-              <?php for ($i = 0; $i < 5; $i++): ?>
-              <div class="p-6 flex gap-6 bg-white rounded-lg shadow-sm border border-gray-200">
-                <div class="w-24 h-24 bg-gray-200 rounded-md"></div>
-                <div class="flex-1 space-y-4">
-                  <div class="h-4 bg-gray-200 rounded w-2/3"></div>
-                  <div class="h-4 bg-gray-200 rounded w-1/3"></div>
-                  <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+    <!-- ============  SKELETON  ============ -->
+    <main id="checkout-skeleton" class="max-w-7xl mx-auto px-4 py-12 animate-pulse">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Left column skeleton -->
+            <div class="lg:w-2/3 space-y-8">
+            <!-- Address skeleton -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
+                <div class="h-5 bg-gray-200 rounded w-40"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <?php for ($i=0;$i<2;$i++): ?>
+                <div class="border rounded-lg p-4 space-y-2">
+                    <div class="h-4 bg-gray-200 rounded w-24"></div>
+                    <div class="h-3 bg-gray-200 rounded w-32"></div>
+                    <div class="h-3 bg-gray-200 rounded w-40"></div>
+                    <div class="h-3 bg-gray-200 rounded w-32"></div>
+                    <div class="h-3 bg-gray-200 rounded w-36"></div>
                 </div>
-              </div>
-              <?php endfor; ?>
+                <?php endfor; ?>
+                <div class="h-4 bg-gray-200 rounded w-32 mt-2"></div>
+                </div>
             </div>
 
-            <!-- Skeleton Summary (right column) -->
-            <div class="lg:w-96 space-y-4">
-              <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6 space-y-4">
-                <div class="h-4 bg-gray-200 rounded w-1/3"></div>
-                <div class="space-y-3">
-                  <div class="h-3 bg-gray-200 rounded w-full"></div>
-                  <div class="h-3 bg-gray-200 rounded w-5/6"></div>
-                  <div class="h-3 bg-gray-200 rounded w-full"></div>
+            <!-- Payment skeleton -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
+                <div class="h-5 bg-gray-200 rounded w-40"></div>
+                <?php for ($i=0;$i<3;$i++): ?>
+                <div class="flex items-center p-4 border rounded-lg space-x-4">
+                <div class="h-4 w-4 bg-gray-200 rounded-full"></div>
+                <div class="flex-1 h-4 bg-gray-200 rounded"></div>
+                <div class="h-6 w-6 bg-gray-200 rounded"></div>
                 </div>
-                <div class="h-10 bg-gray-200 rounded"></div>
-              </div>
-              <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
-                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
-                <div class="space-y-3">
-                  <div class="h-3 bg-gray-200 rounded w-5/6"></div>
-                  <div class="h-3 bg-gray-200 rounded w-4/6"></div>
-                  <div class="h-3 bg-gray-200 rounded w-5/6"></div>
-                </div>
-              </div>
+                <?php endfor; ?>
+            </div>
             </div>
 
-          </div>
+            <!-- Right column skeleton -->
+            <div class="lg:w-1/3 space-y-4">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
+                    <div class="h-5 bg-gray-200 rounded w-32"></div>
+                    <div class="space-y-3">
+                    <?php for ($i=0;$i<2;$i++): ?>
+                    <div class="flex justify-between">
+                        <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                        <div class="h-3 bg-gray-200 rounded w-16"></div>
+                    </div>
+                    <?php endfor; ?>
+                    </div>
+                    <div class="border-t pt-4 space-y-3">
+                    <?php for ($i=0;$i<3;$i++): ?>
+                    <div class="flex justify-between">
+                        <div class="h-3 bg-gray-200 rounded w-24"></div>
+                        <div class="h-3 bg-gray-200 rounded w-16"></div>
+                    </div>
+                    <?php endfor; ?>
+                    </div>
+                    <div class="h-10 bg-gray-200 rounded"></div>
+                </div>
+            </div>
+
         </div>
-      <!-- ▸▸▸  END SKELETON  ◂◂◂ -->
-
-
-      <div class="flex flex-col lg:flex-row gap-8">
-        <!-- Cart Items -->
-        <div class="flex-1">
-          <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <div class="p-6 border-b border-gray-200">
-              <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-900">Shopping Cart</h1>
-                <span class="text-sm text-gray-500">
-                  <span data-cart-count>3</span> items
-                </span>
-              </div>
-            </div>
-
-            <!-- Cart Items List -->
-            <div class="divide-y divide-gray-200">
-                <!--  -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Order Summary -->
-        <div class="lg:w-96">
-          <div class="sticky top-20 bg-white rounded-lg shadow-lg border border-gray-200 p-6 space-y-4">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
-              <h2 class="text-lg font-medium text-gray-900">Order Summary</h2>
-              
-              <div class="space-y-3">
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-500">Subtotal</span>
-                  <span class="text-gray-900 font-medium" id="subtotal">₹ 0.00</span>
-                </div>               
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-500">Shipping</span>
-                  <span class="text-green-600 font-medium" id="shipping">Free</span>
-                </div>
-                
-                <div class="pt-3 border-t border-gray-200 flex justify-between">
-                  <span class="text-base font-medium text-gray-900">Total</span>
-                  <span class="text-base font-medium text-gray-900" id="total">₹ 0.00</span>
-                </div>
-              </div>
-              
-              <button id="checkoutBtn" class="w-full py-3 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
-                Proceed to Checkout
-              </button>
-              
-              <div class="pt-4">
-                <div class="flex items-center gap-2 text-sm text-gray-500">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                    <line x1="1" y1="10" x2="23" y2="10"></line>
-                  </svg>
-                  Secure checkout
-                </div>
-              </div>
-            </div>
-            
-            <!-- Shipping Info -->
-            <div class="mt-6 bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
-              <h3 class="font-medium text-gray-900">Shipping Information</h3>
-              
-              <div class="space-y-3 text-sm text-gray-500">
-                <div class="flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                  </svg>
-                  Free shipping on all orders
-                </div>
-                <div class="flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                  </svg>
-                  Secure checkout with SSL
-                </div>
-                <div class="flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                  </svg>
-                  Estimated delivery: 3-5 business days
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </main>
+    <!-- ============  END SKELETON  ============ -->
+    <div id="checkout-content" class="hidden">
+        <!-- Address Modal -->
+        <div id="addressModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg w-full max-w-md relative">
+                <div class="p-4 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-lg font-semibold">Add New Address</h2>
+                        <button onclick="toggleModal()" class="text-gray-400 hover:text-gray-500">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+                <form class="p-4 space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                            <input type="text" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                        <input type="tel" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                        <textarea class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="2"></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                            <input type="text" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                            <input type="text" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
+                        <input type="text" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="defaultAddress" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                        <label for="defaultAddress" class="ml-2 text-sm text-gray-600">Set as default address</label>
+                    </div>
+                    <div class="flex justify-end pt-3">
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 text-sm rounded-lg hover:bg-blue-700">Save Address</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <main class="max-w-7xl mx-auto px-4 py-12">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Left Column - Forms -->
+                <div class="lg:w-2/3 space-y-8">
+                    <!-- Delivery Address -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                        <div class="p-6 border-b border-gray-200">
+                            <h2 class="text-xl font-semibold">Delivery Address</h2>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <!-- Address Cards -->
+                                <div class="border rounded-lg p-4 cursor-pointer hover:border-blue-500" onclick="selectAddress(this, 'address1')">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="flex items-center">
+                                            <input type="radio" name="address" class="h-4 w-4 text-blue-600" />
+                                            <span class="ml-2 font-medium">Home</span>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button class="text-gray-400 hover:text-gray-500">
+                                                <i data-lucide="edit" class="w-4 h-4"></i>
+                                            </button>
+                                            <button class="text-gray-400 hover:text-gray-500">
+                                                <i data-lucide="trash" class="w-4 h-4"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-600">John Doe</p>
+                                    <p class="text-sm text-gray-600">123 Main St, Apt 4B</p>
+                                    <p class="text-sm text-gray-600">New York, NY 10001</p>
+                                    <p class="text-sm text-gray-600">Phone: (555) 123-4567</p>
+                                </div>
+
+                                <div class="border rounded-lg p-4 cursor-pointer hover:border-blue-500" onclick="selectAddress(this, 'address2')">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="flex items-center">
+                                            <input type="radio" name="address" class="h-4 w-4 text-blue-600" />
+                                            <span class="ml-2 font-medium">Office</span>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <button class="text-gray-400 hover:text-gray-500">
+                                                <i data-lucide="edit" class="w-4 h-4"></i>
+                                            </button>
+                                            <button class="text-gray-400 hover:text-gray-500">
+                                                <i data-lucide="trash" class="w-4 h-4"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-600">John Doe</p>
+                                    <p class="text-sm text-gray-600">456 Business Ave, Floor 12</p>
+                                    <p class="text-sm text-gray-600">New York, NY 10002</p>
+                                    <p class="text-sm text-gray-600">Phone: (555) 987-6543</p>
+                                </div>
+                            </div>
+
+                            <button onclick="toggleModal()" class="flex items-center text-blue-600 hover:text-blue-700">
+                                <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
+                                Add New Address
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                        <div class="p-6 border-b border-gray-200">
+                            <h2 class="text-xl font-semibold">Payment Method</h2>
+                        </div>
+                        <div class="p-6">
+                            <div class="space-y-4">
+                                <!-- Razorpay -->
+                                <div class="flex items-center p-4 border rounded-lg cursor-pointer" onclick="selectPayment('razorpay', this)">
+                                    <input type="radio" name="payment" value="razorpay" class="h-4 w-4 text-blue-600" checked />
+                                    <label class="ml-3 flex-1">
+                                        <span class="block font-medium">Razorpay</span>
+                                    </label>
+                                    <i data-lucide="credit-card" class="w-6 h-6 text-gray-400"></i>
+                                </div>
+
+                                <!-- COD -->
+                                <div class="flex items-center p-4 border rounded-lg cursor-pointer" onclick="selectPayment('cod', this)">
+                                    <input type="radio" name="payment" value="cod" class="h-4 w-4 text-blue-600" />
+                                    <label class="ml-3 flex-1">
+                                        <span class="block font-medium">Cash on Delivery</span>
+                                    </label>
+                                    <i data-lucide="wallet" class="w-6 h-6 text-gray-400"></i>
+                                </div>
+
+                                <!-- Card Payment -->
+                                <div class="flex items-center p-4 border rounded-lg cursor-pointer" onclick="selectPayment('card', this)">
+                                    <input type="radio" name="payment" value="card" class="h-4 w-4 text-blue-600" />
+                                    <label class="ml-3 flex-1">
+                                        <span class="block font-medium">Card Payment</span>
+                                    </label>
+                                    <i data-lucide="credit-card" class="w-6 h-6 text-gray-400"></i>
+                                </div>
+
+                                <!-- Payment Details -->
+                                <div id="paymentDetails" class="mt-4">
+                                    <!-- Razorpay Details -->
+                                    <div id="razorpayDetails" class="p-4 bg-gray-50 rounded-lg">
+                                        <p class="text-sm text-gray-600">Pay securely with Razorpay</p>
+                                        <p class="text-xs text-gray-500 mt-1">You will be redirected to Razorpay's secure payment gateway</p>
+                                    </div>
+
+                                    <!-- COD Details (Hidden by default) -->
+                                    <div id="codDetails" class="hidden p-4 bg-gray-50 rounded-lg">
+                                        <p class="text-sm text-gray-600">Pay when you receive your order</p>
+                                        <p class="text-xs text-gray-500 mt-1">Additional fee of $2 will be charged for COD</p>
+                                    </div>
+
+                                    <!-- Card Details (Hidden by default) -->
+                                    <div id="cardDetails" class="hidden space-y-3 p-4 bg-gray-50 rounded-lg">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
+                                            <input type="text" placeholder="1234 5678 9012 3456" class="w-full px-3 py-2 border rounded-lg text-sm" />
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-3">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+                                                <input type="text" placeholder="MM/YY" class="w-full px-3 py-2 border rounded-lg text-sm" />
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+                                                <input type="text" placeholder="123" class="w-full px-3 py-2 border rounded-lg text-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Order Summary -->
+                <div class="lg:w-1/3">
+                    <div class="sticky top-4">
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="p-6 border-b border-gray-200">
+                                <h2 class="text-xl font-semibold">Order Summary</h2>
+                            </div>
+                            <div class="p-6 space-y-4">
+                                <div class="space-y-3">
+                                    <div class="flex justify-between text-sm">
+                                        <span>Premium Wool Blend Overcoat</span>
+                                        <span class="font-medium">$299.99</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm">
+                                        <span>Cashmere Scarf</span>
+                                        <span class="font-medium">$79.99</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-t pt-4 space-y-3">
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-gray-600">Subtotal</span>
+                                        <span>$379.98</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-gray-600">Shipping</span>
+                                        <span class="text-green-600">Free</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-gray-600">Tax</span>
+                                        <span>$38.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-t pt-4">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium">Total</span>
+                                        <span class="text-xl font-bold">$417.98</span>
+                                    </div>
+                                </div>
+
+                                <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700">
+                                    Place Order
+                                </button>
+
+                                <div class="pt-4 space-y-3">
+                                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                                        <i data-lucide="truck" class="w-5 h-5"></i>
+                                        <span>Free shipping on all orders</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                                        <i data-lucide="shield" class="w-5 h-5"></i>
+                                        <span>Secure 256-bit SSL encryption</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                                        <i data-lucide="clock" class="w-5 h-5"></i>
+                                        <span>Delivery within 3-5 business days</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", async function() {
-        const authToken = localStorage.getItem("auth_token");
-        const guestId   = localStorage.getItem("guest_token");
+        // Initialize Lucide icons
+        lucide.createIcons();
 
-        const skeleton  = document.getElementById("cart-skeleton");
-        const cartList  = document.querySelector(".divide-y");
-        const subtotalElement = document.getElementById("subtotal");
-        const totalElement    = document.getElementById("total");
-        const cartCountElements = document.querySelectorAll("[data-cart-count]");
+        // Modal functions
+        function toggleModal() {
+            const modal = document.getElementById('addressModal');
+            modal.classList.toggle('hidden');
+        }
 
-        let cartData = [];
-        const baseUrl = "<?= $baseUrl ?>";
-        /* ---------------- GET CART ---------------- */
-        async function fetchCart() {
-          try {
-            let headers = { "Content-Type": "application/json" };
-            let body = null;
-
-            // 1️⃣ If logged in user
-            if (authToken) {
-              headers["Authorization"] = `Bearer ${authToken}`;
-            }
-            // 2️⃣ Else if guest user
-            else if (guestId) {
-              body = JSON.stringify({ temp_id: guestId });
-            }
-            // 3️⃣ Else no auth, no guest → empty cart
-            else {
-              renderCart(); // this will show empty cart UI
-              skeleton.classList.add("hidden");
-              return;
-            }
-
-            const res = await fetch(`${baseUrl}/api/cart/get-cart`, {
-              method: "POST",
-              headers,
-              body
+        // Address selection
+        function selectAddress(element, addressId) {
+            // Remove selected state from all addresses
+            document.querySelectorAll('[onclick^="selectAddress"]').forEach(addr => {
+                addr.classList.remove('bg-blue-50', 'border-blue-500');
             });
-
-            const text = await res.text();   // debug safe
-            let result;
-
-            try {
-              result = JSON.parse(text);
-            } catch (e) {
-              console.error("Not JSON response:", text);
-              return;
-            }
-
-            if (result.success) {
-              cartData = result.data || [];
-
-              // If backend generated new temp_id for first guest
-              if (!authToken && result.temp_id) {
-                localStorage.setItem("guest_token", result.temp_id);
-              }
-
-              renderCart();
-            } else {
-              cartList.innerHTML = `<div class="p-6 text-gray-500">No items in your cart.</div>`;
-            }
-
-          } catch (err) {
-            console.error("Error fetching cart:", err);
-            cartList.innerHTML = `<div class="p-6 text-red-500">Failed to load cart.</div>`;
-          } finally {
-            skeleton.classList.add("hidden");
-          }
+            
+            // Add selected state to clicked address
+            element.classList.add('bg-blue-50', 'border-blue-500');
+            
+            // Check the radio button
+            element.querySelector('input[type="radio"]').checked = true;
         }
 
-
-        function checkCartStatus() {
-            const checkoutBtn = document.getElementById("checkoutBtn");
-            checkoutBtn.disabled = cartData.length === 0;
-        }
-
-        /* ---------------- RENDER CART ---------------- */
-        function renderCart() {
-          cartList.innerHTML = "";
-          if (!cartData.length) {
-            cartList.innerHTML = `
-                <div class="flex flex-col items-center justify-center py-20 text-center">
-                  <img src="assets/empty_cart.svg" alt="Empty Cart" class="w-40 h-40 mb-6 opacity-80">
-                  <h2 class="text-2xl font-semibold mb-2">Your cart is empty</h2>
-                  <p class="text-gray-500 mb-6">Looks like you haven’t added anything yet.</p>
-                  <a href="pages/shop.php" class="bg-orange-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition">
-                    Start Shopping
-                  </a>
-                </div>
-              `;
-            }
-
-          cartData.forEach(item => {
-            const variation = item.variation || {};
-            let imageUrl = variation.images?.[0] || "assets/placeholder.jpg";
-            imageUrl = imageUrl.replace("http://127.0.0.1:8000/uploads/http://", "http://");
-
-            const html = `
-              <div class="p-6 flex gap-6" data-cart-item data-id="${item.cart_id}">
-                <div class="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden">
-                  <img src="${imageUrl}" alt="${item.product_name}" class="w-full h-full object-cover" />
-                </div>
-                <div class="flex-1 flex flex-col">
-                  <div class="flex justify-between">
-                    <div>
-                      <h3 class="text-sm font-medium text-gray-900">${item.product_name}</h3>
-                      <p class="mt-1 text-sm text-gray-500">Size: ${variation.size || "-"} </p>
-                    </div>
-                    <p class="text-sm font-medium text-gray-900" data-price data-original-price="${item.sell_price}">
-                      ₹${item.total_price}
-                    </p>
-                  </div>
-                  <div class="mt-4 flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                      <div class="flex items-center border border-gray-300 rounded-md" data-quantity-control data-max-quantity="50">
-                        <button data-decrease class="p-2 text-gray-500 hover:bg-gray-50">-</button>
-                        <span data-quantity class="w-10 text-center">${item.quantity}</span>
-                        <button data-increase class="p-2 text-gray-500 hover:bg-gray-50">+</button>
-                      </div>
-                    </div>
-                    <button data-remove-item class="text-sm font-medium text-red-600 hover:text-red-500">
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-            `;
-            cartList.insertAdjacentHTML("beforeend", html);
-          });
-
-          attachEvents();
-          updateCartTotal();
-          updateCartCount();
-          checkCartStatus(); // ✅ Call after rendering cart
-        }       
-
-        /* ---------------- UPDATE QUANTITY ---------------- */
-        async function updateQuantity(cartId, quantity) {
-          try {
-            let headers = { "Content-Type": "application/json" };
-            let body = null;
-
-            if (authToken) {
-              headers["Authorization"] = `Bearer ${authToken}`;
-              body = JSON.stringify({ quantity });
-            } else {
-              body = JSON.stringify({ temp_id: guestId, quantity });
-            }
-
-            const res = await fetch(`${baseUrl}/api/cart/update-cart/${cartId}`, {
-              method: "POST",
-              headers,
-              body
+        // Payment method selection
+        function selectPayment(method, element) {
+            // Update selected payment method style
+            document.querySelectorAll('[onclick^="selectPayment"]').forEach(el => {
+                el.classList.remove('bg-blue-50', 'border-blue-500');
             });
+            element.classList.add('bg-blue-50', 'border-blue-500');
+            
+            // Check the radio button
+            element.querySelector('input[type="radio"]').checked = true;
 
-            const result = await res.json();
-            if (result.success) {
-              // Update local cart data with response
-              const updatedItem = result.data;
-              cartData = cartData.map(i =>
-                i.cart_id === cartId ? { ...i, ...updatedItem } : i
-              );
-              renderCart();
-            } else {
-              console.error("Update failed:", result.message);
+            // Hide all payment details
+            document.getElementById('razorpayDetails').classList.add('hidden');
+            document.getElementById('codDetails').classList.add('hidden');
+            document.getElementById('cardDetails').classList.add('hidden');
+
+            // Show selected payment details
+            document.getElementById(`${method}Details`).classList.remove('hidden');
+        }
+
+        /* skeleton swap */
+        window.onload = () => {
+            document.getElementById('checkout-skeleton').classList.add('hidden');
+            document.getElementById('checkout-content').classList.remove('hidden');
+
+            // re-init icons inside newly revealed DOM
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
             }
-          } catch (err) {
-            console.error("Error updating item:", err);
-          }
-        }
-
-        /* ---------------- REMOVE CART ITEM ---------------- */
-        async function removeCartItem(cartId) {
-          try {
-            let headers = { "Content-Type": "application/json" };
-            let body = null;
-
-            if (authToken) {
-              headers["Authorization"] = `Bearer ${authToken}`;
-            } else {
-              body = JSON.stringify({ temp_id: guestId });
-            }
-
-            const res = await fetch(`${baseUrl}/api/cart/delete-cart/${cartId}`, {
-              method: "DELETE", // assuming API expects POST, not DELETE
-              headers,
-              body
-            });
-
-            const result = await res.json();
-            if (result.success) {
-              // Remove item locally
-              cartData = cartData.filter(i => i.cart_id !== cartId);
-              renderCart();
-            } else {
-              console.error("Remove failed:", result.message);
-            }
-          } catch (err) {
-            console.error("Error removing item:", err);
-          }
-        }
-
-        /* ---------------- EVENTS ---------------- */
-        function attachEvents() {
-          // Quantity controls
-          document.querySelectorAll("[data-quantity-control]").forEach(control => {
-            const decreaseBtn = control.querySelector("[data-decrease]");
-            const increaseBtn = control.querySelector("[data-increase]");
-            const quantityDisplay = control.querySelector("[data-quantity]");
-            const priceElement = control.closest("[data-cart-item]").querySelector("[data-price]");
-            const originalPrice = parseFloat(priceElement.getAttribute("data-original-price"));
-            const cartId = parseInt(control.closest("[data-cart-item]").dataset.id);
-
-            decreaseBtn.onclick = () => {
-              let qty = parseInt(quantityDisplay.textContent);
-              if (qty > 1) {
-                qty--;
-                quantityDisplay.textContent = qty;
-                priceElement.textContent = `₹${(originalPrice * qty).toFixed(2)}`;
-                updateCartTotal();
-                updateQuantity(cartId, qty);
-              }
-            };
-
-            increaseBtn.onclick = () => {
-              let qty = parseInt(quantityDisplay.textContent);
-              qty++;
-              quantityDisplay.textContent = qty;
-              priceElement.textContent = `₹${(originalPrice * qty).toFixed(2)}`;
-              updateCartTotal();
-              updateQuantity(cartId, qty);
-            };
-          });
-
-          // Remove buttons
-          document.querySelectorAll("[data-remove-item]").forEach(button => {
-            const cartId = parseInt(button.closest("[data-cart-item]").dataset.id);
-            button.onclick = () => removeCartItem(cartId);
-          });
-        }
-
-        /* ---------------- UPDATE TOTALS ---------------- */
-        function updateCartTotal() {
-          let subtotal = 0;
-
-          // ✅ Calculate subtotal (sum of item prices)
-          document.querySelectorAll("[data-price]").forEach(el => {
-            subtotal += parseFloat(el.textContent.replace("₹", "")) || 0;
-          });
-
-          // Subtotal display
-          subtotalElement.textContent = `₹${subtotal.toFixed(2)}`;
-
-          // ✅ Shipping calculation
-          const shippingElement = document.getElementById("shipping");
-          let shipping = 0;
-          if (subtotal > 0 && subtotal < 3500) {
-            shipping = 120;
-            shippingElement.textContent = `₹${shipping.toFixed(2)}`;
-            shippingElement.classList.remove("text-green-600");
-            shippingElement.classList.add("text-gray-900");
-          } else if (subtotal >= 3500) {
-            shipping = 0;
-            shippingElement.textContent = "Free";
-            shippingElement.classList.remove("text-gray-900");
-            shippingElement.classList.add("text-green-600");
-          } else {
-            shippingElement.textContent = "₹0.00";
-            shippingElement.classList.remove("text-green-600");
-            shippingElement.classList.add("text-gray-900");
-          }
-
-          // ✅ Total = subtotal + tax + shipping
-          const total = subtotal +  shipping;
-          totalElement.textContent = `₹${total.toFixed(2)}`;
-
-          // ✅ Enable/Disable checkout button
-          const checkoutBtn = document.getElementById("checkoutBtn");
-          if (cartData.length === 0) {
-            checkoutBtn.disabled = true;
-            checkoutBtn.classList.add("opacity-50", "cursor-not-allowed");
-          } else {
-            checkoutBtn.disabled = false;
-            checkoutBtn.classList.remove("opacity-50", "cursor-not-allowed");
-          }
-        }
-
-        function updateCartCount() {
-          cartCountElements.forEach(el => {
-            el.textContent = cartData.length;
-          });
-        }
-
-        /* ---------------- INIT ---------------- */
-        fetchCart();
-      });
-
-      document.getElementById("checkoutBtn").addEventListener("click", () => {
-          if (!document.getElementById("checkoutBtn").disabled) {
-              window.location.href = "pages/checkout";
-          }
-      });
-
+        };
     </script>
-
 <?php include("../footer.php"); ?>

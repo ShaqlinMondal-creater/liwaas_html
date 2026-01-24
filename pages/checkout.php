@@ -320,7 +320,7 @@
         </main>
     </div>
 <script>
-const baseUrl = "http://127.0.0.1:8000/api";
+const baseUrl = "<?= $baseUrl ?>";
 let authToken = localStorage.getItem("auth_token");
 
 // Load addresses on page load
@@ -341,7 +341,7 @@ window.onload = async () => {
 // Fetch addresses
 async function fetchAddresses() {
     try {
-        const res = await fetch(`${baseUrl}/customer/address/getAddressBy-user`, {
+        const res = await fetch(`${baseUrl}/api/customer/address/getAddressBy-user`, {
             headers: { "Authorization": `Bearer ${authToken}` }
         });
         const data = await res.json();

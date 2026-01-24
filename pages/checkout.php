@@ -319,22 +319,25 @@ function renderAddresses(addresses) {
     const container = document.getElementById("addressContainer");
     container.innerHTML = "";
 
-    // ✅ ADD THIS BLOCK HERE
     if (!addresses || !addresses.length) {
         container.innerHTML = `<p class="text-sm text-gray-500">No addresses found.</p>`;
         return;
     }
-    
+
     addresses.forEach(addr => {
         const card = document.createElement("div");
         card.className = "border rounded-lg p-4 cursor-pointer hover:border-blue-500";
         card.onclick = () => selectAddress(card, addr.id);
 
+        const typeLabel = addr.address_type
+            ? addr.address_type.charAt(0).toUpperCase() + addr.address_type.slice(1)
+            : "Home";
+
         card.innerHTML = `
             <div class="flex justify-between items-start mb-2">
                 <div class="flex items-center">
                     <input type="radio" name="address" class="h-4 w-4 text-blue-600" />
-                    <span class="ml-2 font-medium">${addr.address_type || 'Home'}</span>
+                    <span class="ml-2 font-medium">${typeLabel}</span>
                 </div>
             </div>
             <p class="text-sm text-gray-600">${addr.name}</p>
@@ -343,9 +346,16 @@ function renderAddresses(addresses) {
             <p class="text-sm text-gray-600">Phone: ${addr.mobile}</p>
         `;
 
+        // ✅ Auto-select PRIMARY
+        if (addr.address_type === "primary") {
+            card.classList.add("bg-blue-50", "border-blue-500");
+            card.querySelector('input[type="radio"]').checked = true;
+        }
+
         container.appendChild(card);
     });
 }
+
 
 // Handle address form submit
 document.querySelector("#addressModal form").addEventListener("submit", async function (e) {

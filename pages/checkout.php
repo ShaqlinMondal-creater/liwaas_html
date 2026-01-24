@@ -334,7 +334,7 @@ window.onload = async () => {
 // Fetch addresses
 async function fetchAddresses() {
     try {
-        const res = await fetch(`${baseUrl}/customer/address/getAddressBy-user`, {
+        const res = await fetch(`${baseUrl}/api/customer/address/getAddressBy-user`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${authToken}`,
@@ -404,7 +404,7 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
         const guestToken = localStorage.getItem("guest_token") || 
             "temp_" + Math.random().toString(36).substr(2, 12);
 
-        const makeUserRes = await fetch(`${baseUrl}/make_user`, {
+        const makeUserRes = await fetch(`${baseUrl}/api/make_user`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -446,7 +446,7 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
         address_line_2: null
     };
 
-    const addrRes = await fetch(`${baseUrl}/customer/address/create-address`, {
+    const addrRes = await fetch(`${baseUrl}/api/customer/address/create-address`, {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`,

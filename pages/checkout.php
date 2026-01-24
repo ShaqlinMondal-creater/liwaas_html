@@ -310,28 +310,38 @@
 <script>
 const baseUrl = "<?= $baseUrl ?>";
 let authToken = localStorage.getItem("auth_token");
+const guestId   = localStorage.getItem("guest_token");
 
 // Load addresses on page load
 window.onload = async () => {
     document.getElementById('checkout-skeleton').classList.add('hidden');
     document.getElementById('checkout-content').classList.remove('hidden');
-    if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+        lucide.createIcons();
+    }
 
     if (authToken) {
-        // Auth user → fetch address
         fetchAddresses();
     } else {
-        // Guest user → force open modal
         toggleModal();
     }
+
+    fetchCheckoutCart();
 };
+
 
 // Fetch addresses
 async function fetchAddresses() {
     try {
-        const res = await fetch(`${baseUrl}/api/customer/address/getAddressBy-user`, {
-            headers: { "Authorization": `Bearer ${authToken}` }
+        const res = await fetch(`${baseUrl}/customer/address/getAddressBy-user`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${authToken}`,
+                "Content-Type": "application/json"
+            }
         });
+
         const data = await res.json();
 
         if (data.success && data.data.length > 0) {
@@ -341,18 +351,20 @@ async function fetchAddresses() {
         }
     } catch (err) {
         console.error("Error fetching addresses", err);
+        toggleModal();
     }
 }
 
 // Render addresses dynamically
 function renderAddresses(addresses) {
     const container = document.querySelector(".grid.grid-cols-1.md\\:grid-cols-2");
-    container.innerHTML = ""; // clear old dummy cards
+    container.innerHTML = "";
 
     addresses.forEach(addr => {
         const card = document.createElement("div");
         card.className = "border rounded-lg p-4 cursor-pointer hover:border-blue-500";
         card.onclick = () => selectAddress(card, addr.id);
+
         card.innerHTML = `
             <div class="flex justify-between items-start mb-2">
                 <div class="flex items-center">
@@ -365,6 +377,7 @@ function renderAddresses(addresses) {
             <p class="text-sm text-gray-600">${addr.city}, ${addr.state} ${addr.pincode}</p>
             <p class="text-sm text-gray-600">Phone: ${addr.mobile}</p>
         `;
+
         container.appendChild(card);
     });
 }
@@ -374,62 +387,86 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
     e.preventDefault();
 
     const form = e.target;
-    const payload = {
-        name: form.querySelector('input[type="text"]').value,
-        email: form.querySelector('input[type="email"]').value,
-        mobile: form.querySelector('input[type="tel"]').value,
-        address_type: form.querySelector('#defaultAddress').checked ? "primary" : "secondary",
-        state: form.querySelectorAll('input[type="text"]')[1].value,
-        city: form.querySelectorAll('input[type="text"]')[2].value,
-        country: "India",
-        pincode: form.querySelectorAll('input[type="text"]')[3].value,
-        address_line_1: form.querySelector('textarea').value,
-        address_line_2: ""
-    };
 
-    if (!authToken) {
-        // Guest → create user first
-        const guestId = localStorage.getItem("guest_token") || "temp_" + Math.random().toString(36).substr(2, 8);
+    const name    = form.querySelector('input[type="text"]').value;
+    const email   = form.querySelector('input[type="email"]').value;
+    const mobile  = form.querySelector('input[type="tel"]').value;
+    const address = form.querySelector('textarea').value;
+    const state   = form.querySelectorAll('input[type="text"]')[1].value;
+    const city    = form.querySelectorAll('input[type="text"]')[2].value;
+    const pincode = form.querySelectorAll('input[type="text"]')[3].value;
+    const isDefault = form.querySelector('#defaultAddress').checked;
+
+    let token = authToken;
+
+    /* ---------- GUEST → CREATE USER ---------- */
+    if (!token) {
+        const guestToken = localStorage.getItem("guest_token") || 
+            "temp_" + Math.random().toString(36).substr(2, 12);
+
         const makeUserRes = await fetch(`${baseUrl}/make_user`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                name: payload.name,
-                email: payload.email,
-                mobile: payload.mobile,
-                guest_token: guestId
+                name: name,
+                email: email,
+                mobile: mobile,
+                guest_id: guestToken
             })
         });
+
         const makeUserData = await makeUserRes.json();
-        if (makeUserData.success) {
-            // store auth data
-            localStorage.setItem("auth_token", makeUserData.token);
-            localStorage.setItem("user_id", makeUserData.user.id);
-            localStorage.setItem("user_email", makeUserData.user.email);
-            localStorage.setItem("user_name", makeUserData.user.name);
-            localStorage.setItem("user_role", makeUserData.user.role);
-            authToken = makeUserData.token;
+
+        if (!makeUserData.success) {
+            alert("Failed to create user.");
+            return;
         }
+
+        // 🔥 clear and set auth data
+        localStorage.clear();
+        localStorage.setItem("auth_token", makeUserData.token);
+        localStorage.setItem("user_email", makeUserData.user.email);
+        localStorage.setItem("user_name", makeUserData.user.name);
+
+        token = makeUserData.token;
+        authToken = token;
     }
 
-    // Create address
-    await fetch(`${baseUrl}/customer/address/create-address`, {
+    /* ---------- CREATE ADDRESS ---------- */
+    const payload = {
+        name: name,
+        email: email,
+        mobile: mobile,
+        address_type: isDefault ? "primary" : "secondary",
+        state: state,
+        city: city,
+        country: "India",
+        pincode: pincode,
+        address_line_1: address,
+        address_line_2: null
+    };
+
+    const addrRes = await fetch(`${baseUrl}/customer/address/create-address`, {
         method: "POST",
         headers: {
-            "Authorization": `Bearer ${authToken}`,
+            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
         },
         body: JSON.stringify(payload)
     });
 
-    location.reload(); // reload to fetch addresses
+    const addrData = await addrRes.json();
+
+    if (addrData.success) {
+        location.reload();
+    } else {
+        alert("Failed to save address.");
+    }
 });
 
 </script>
 
 <script>
-const guestId   = localStorage.getItem("guest_token");
-
 let cartData = [];
 
 async function fetchCheckoutCart() {
@@ -512,11 +549,6 @@ function renderSummary() {
     placeBtn.disabled = false;
     placeBtn.classList.remove("opacity-50", "cursor-not-allowed");
 }
-
-// Init
-window.addEventListener("load", () => {
-    fetchCheckoutCart();
-});
 </script>
 
 
@@ -563,16 +595,5 @@ window.addEventListener("load", () => {
             // Show selected payment details
             document.getElementById(`${method}Details`).classList.remove('hidden');
         }
-
-        /* skeleton swap */
-        window.onload = () => {
-            document.getElementById('checkout-skeleton').classList.add('hidden');
-            document.getElementById('checkout-content').classList.remove('hidden');
-
-            // re-init icons inside newly revealed DOM
-            if (typeof lucide !== 'undefined' && lucide.createIcons) {
-                lucide.createIcons();
-            }
-        };
     </script>
 <?php include("../footer.php"); ?>

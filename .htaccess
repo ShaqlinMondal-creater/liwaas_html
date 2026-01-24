@@ -1,8 +1,8 @@
 # htdocs/frontend/test/.htaccess
 
 RewriteEngine On
-# RewriteBase /liwaas_html/
-RewriteBase /liwaas.com/
+RewriteBase /liwaas_html/
+# RewriteBase /liwaas.com/
 
 # If file or directory exists, serve it normally
 RewriteCond %{REQUEST_FILENAME} -f [OR]

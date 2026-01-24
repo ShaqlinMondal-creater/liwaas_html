@@ -428,7 +428,6 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
 </script>
 
 <script>
-const baseUrl  = "<?= $baseUrl ?>";
 const authToken = localStorage.getItem("auth_token");
 const guestId   = localStorage.getItem("guest_token");
 

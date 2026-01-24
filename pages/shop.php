@@ -614,18 +614,21 @@
                     <p class="text-sm text-gray-500 mb-2">${category}</p>
 
                     <!-- Price -->
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="text-lg font-bold text-gray-900">₹${sellPrice}</span>
-                        ${
-                        regularPrice > sellPrice
-                            ? `<span class="text-sm text-gray-500 line-through">₹${regularPrice}</span>`
-                            : ``
-                        }
-                    </div>
+                    <div class="flex flex-col mb-3">
+  <span class="text-lg font-bold text-gray-900">₹${sellPrice}</span>
+
+  ${
+    regularPrice > sellPrice
+      ? `<span class="text-sm text-gray-500 line-through">₹${regularPrice}</span>`
+      : ``
+  }
+</div>
 
                     <!-- Add to Cart (KEEP) -->
                     <button 
-                        class="add-to-cart-btn view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-6 py-2 rounded-l-full text-xl font-semibold">
+                        class="add-to-cart-btn view-btn absolute right-0 bottom-4 
+         inline-flex items-center gap-1 px-4 py-2 md:px-6 md:py-2 
+         text-sm md:text-base rounded-l-full font-semibold">
                         Add to Cart
                     </button>
                     </div>

@@ -130,49 +130,8 @@
                             <h2 class="text-xl font-semibold">Delivery Address</h2>
                         </div>
                         <div class="p-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <!-- Address Cards -->
-                                <div class="border rounded-lg p-4 cursor-pointer hover:border-blue-500" onclick="selectAddress(this, 'address1')">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <div class="flex items-center">
-                                            <input type="radio" name="address" class="h-4 w-4 text-blue-600" />
-                                            <span class="ml-2 font-medium">Home</span>
-                                        </div>
-                                        <div class="flex space-x-2">
-                                            <button class="text-gray-400 hover:text-gray-500">
-                                                <i data-lucide="edit" class="w-4 h-4"></i>
-                                            </button>
-                                            <button class="text-gray-400 hover:text-gray-500">
-                                                <i data-lucide="trash" class="w-4 h-4"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <p class="text-sm text-gray-600">John Doe</p>
-                                    <p class="text-sm text-gray-600">123 Main St, Apt 4B</p>
-                                    <p class="text-sm text-gray-600">New York, NY 10001</p>
-                                    <p class="text-sm text-gray-600">Phone: (555) 123-4567</p>
-                                </div>
-
-                                <div class="border rounded-lg p-4 cursor-pointer hover:border-blue-500" onclick="selectAddress(this, 'address2')">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <div class="flex items-center">
-                                            <input type="radio" name="address" class="h-4 w-4 text-blue-600" />
-                                            <span class="ml-2 font-medium">Office</span>
-                                        </div>
-                                        <div class="flex space-x-2">
-                                            <button class="text-gray-400 hover:text-gray-500">
-                                                <i data-lucide="edit" class="w-4 h-4"></i>
-                                            </button>
-                                            <button class="text-gray-400 hover:text-gray-500">
-                                                <i data-lucide="trash" class="w-4 h-4"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <p class="text-sm text-gray-600">John Doe</p>
-                                    <p class="text-sm text-gray-600">456 Business Ave, Floor 12</p>
-                                    <p class="text-sm text-gray-600">New York, NY 10002</p>
-                                    <p class="text-sm text-gray-600">Phone: (555) 987-6543</p>
-                                </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" id="addressContainer">
+                                <!-- dynamic cards will be injected here -->
                             </div>
 
                             <button onclick="toggleModal()" class="flex items-center text-blue-600 hover:text-blue-700">
@@ -357,9 +316,15 @@ async function fetchAddresses() {
 
 // Render addresses dynamically
 function renderAddresses(addresses) {
-    const container = document.querySelector(".grid.grid-cols-1.md\\:grid-cols-2");
+    const container = document.getElementById("addressContainer");
     container.innerHTML = "";
 
+    // ✅ ADD THIS BLOCK HERE
+    if (!addresses || !addresses.length) {
+        container.innerHTML = `<p class="text-sm text-gray-500">No addresses found.</p>`;
+        return;
+    }
+    
     addresses.forEach(addr => {
         const card = document.createElement("div");
         card.className = "border rounded-lg p-4 cursor-pointer hover:border-blue-500";
@@ -396,6 +361,9 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
     const city    = form.querySelectorAll('input[type="text"]')[2].value;
     const pincode = form.querySelectorAll('input[type="text"]')[3].value;
     const isDefault = form.querySelector('#defaultAddress').checked;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Saving...";
 
     let token = authToken;
 
@@ -418,6 +386,8 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
         const makeUserData = await makeUserRes.json();
 
         if (!makeUserData.success) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Save Address";
             alert("Failed to create user.");
             return;
         }
@@ -458,8 +428,17 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
     const addrData = await addrRes.json();
 
     if (addrData.success) {
-        location.reload();
+        submitBtn.textContent = "Saved";
+        setTimeout(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Save Address";
+        }, 800);
+
+        toggleModal();
+        fetchAddresses();
     } else {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Save Address";
         alert("Failed to save address.");
     }
 });

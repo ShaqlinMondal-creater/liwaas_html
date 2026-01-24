@@ -362,11 +362,13 @@ function renderAddresses(addresses) {
 
         container.appendChild(card);
     });
+
     // Re-init icons for dynamically injected cards
     if (typeof lucide !== "undefined" && lucide.createIcons) {
         lucide.createIcons();
     }
 }
+
 
 
 // Handle address form submit

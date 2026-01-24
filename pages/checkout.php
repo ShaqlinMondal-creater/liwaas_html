@@ -428,7 +428,6 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
 </script>
 
 <script>
-const authToken = localStorage.getItem("auth_token");
 const guestId   = localStorage.getItem("guest_token");
 
 let cartData = [];

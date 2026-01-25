@@ -987,7 +987,7 @@ document.getElementById("placeOrderBtn").addEventListener("click", async functio
   }
 
   try {
-    const res = await fetch(`${baseUrl}/api/customer/orders/create`, {
+    const res = await fetch(`${baseUrl}/api/customer/order/create`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${authToken}`,

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function loadColorMap() {
     try {
-      const res = await fetch("../inc/color.json");
+      const res = await fetch("../stat-json/color.json");
       const json = await res.json();
       json.colors.forEach(c => {
         COLOR_MAP[c.name.toLowerCase()] = c.code;

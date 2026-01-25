@@ -120,6 +120,74 @@
                 </form>
             </div>
         </div>
+        <!-- Update Address Modal -->
+        <div id="updateAddressModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg w-full max-w-md relative">
+            <div class="p-4 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-semibold">Update Address</h2>
+                <button onclick="toggleUpdateModal()" class="text-gray-400 hover:text-gray-500">
+                <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            </div>
+
+            <form id="updateAddressForm" class="p-4 space-y-3">
+            <input type="hidden" id="updateAddressId" />
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                <input id="updateName" type="text" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                </div>
+                <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input id="updateEmail" type="email" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                <input id="updateMobile" type="tel" class="w-full px-3 py-2 text-sm border rounded-lg" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                <textarea id="updateAddressLine1" class="w-full px-3 py-2 text-sm border rounded-lg" rows="2"></textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                <input id="updateState" type="text" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                </div>
+                <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                <input id="updateCity" type="text" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
+                <input id="updatePincode" type="text" maxlength="6" class="w-full px-3 py-2 text-sm border rounded-lg" />
+            </div>
+
+            <div class="flex items-center">
+                <input id="updateDefault" type="checkbox" class="rounded border-gray-300 text-blue-600" />
+                <label for="updateDefault" class="ml-2 text-sm text-gray-600">
+                Set as default address
+                </label>
+            </div>
+
+            <div class="flex justify-end pt-3">
+                <button type="submit"
+                class="bg-blue-600 text-white px-4 py-2 text-sm rounded-lg hover:bg-blue-700">
+                Update Address
+                </button>
+            </div>
+            </form>
+        </div>
+        </div>
 
         <main class="max-w-7xl mx-auto px-4 py-12">
             <div class="flex flex-col lg:flex-row gap-8">
@@ -341,7 +409,7 @@ function renderAddresses(addresses) {
                     <span class="ml-2 font-medium">${typeLabel}</span>
                 </div>
                 <div class="flex space-x-2">
-                    <button class="text-gray-400 hover:text-gray-500">
+                    <button onclick='openUpdateModal(${JSON.stringify(addr)})' class="text-gray-400 hover:text-gray-500">
                         <i data-lucide="edit" class="w-4 h-4"></i>
                     </button>
                     <button class="text-gray-400 hover:text-gray-500">
@@ -515,6 +583,75 @@ if (pincodeInput && stateInput && cityInput) {
     });
 }
 </script>
+
+<!-- populate for update address -->
+ <script>
+function toggleUpdateModal() {
+  document.getElementById("updateAddressModal").classList.toggle("hidden");
+}
+
+function openUpdateModal(addr) {
+  document.getElementById("updateAddressId").value = addr.id;
+  document.getElementById("updateName").value = addr.name || "";
+  document.getElementById("updateEmail").value = addr.email || "";
+  document.getElementById("updateMobile").value = addr.mobile || "";
+  document.getElementById("updateAddressLine1").value = addr.address_line_1 || "";
+  document.getElementById("updateState").value = addr.state || "";
+  document.getElementById("updateCity").value = addr.city || "";
+  document.getElementById("updatePincode").value = addr.pincode || "";
+
+  document.getElementById("updateDefault").checked =
+    addr.address_type === "primary";
+
+  toggleUpdateModal();
+}
+</script>
+<script>
+document.getElementById("updateAddressForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const payload = {
+    address_id: document.getElementById("updateAddressId").value,
+    name: document.getElementById("updateName").value,
+    email: document.getElementById("updateEmail").value,
+    mobile: document.getElementById("updateMobile").value,
+    address_type: document.getElementById("updateDefault").checked
+      ? "primary"
+      : "secondary",
+    state: document.getElementById("updateState").value,
+    city: document.getElementById("updateCity").value,
+    country: "India",
+    pincode: document.getElementById("updatePincode").value,
+    address_line_1: document.getElementById("updateAddressLine1").value,
+    address_line_2: null
+  };
+
+  try {
+    const res = await fetch(`${baseUrl}/api/customer/address/update-address`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${authToken}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      toggleUpdateModal();
+      fetchAddresses(); // refresh cards
+    } else {
+      alert("Failed to update address.");
+    }
+
+  } catch (err) {
+    console.error("Update address error:", err);
+    alert("Something went wrong.");
+  }
+});
+</script>
+
 
 
 <script>

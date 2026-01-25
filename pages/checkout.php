@@ -1033,7 +1033,7 @@ function openRazorpay(orderData) {
       await verifyPayment(response);
     },
     theme: {
-      color: "#2563eb"
+      color: "#c7aa28"
     }
   };
 

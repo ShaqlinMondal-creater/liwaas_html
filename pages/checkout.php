@@ -567,16 +567,22 @@ function renderSummary() {
 
         // Address selection
         function selectAddress(element, addressId) {
-            // Remove selected state from all addresses
-            document.querySelectorAll('[onclick^="selectAddress"]').forEach(addr => {
-                addr.classList.remove('bg-blue-50', 'border-blue-500');
+            // Remove selected state from all address cards
+            document.querySelectorAll("#addressContainer > div").forEach(card => {
+                card.classList.remove("bg-blue-50", "border-blue-500");
+                const radio = card.querySelector('input[type="radio"]');
+                if (radio) radio.checked = false;
             });
-            
-            // Add selected state to clicked address
-            element.classList.add('bg-blue-50', 'border-blue-500');
-            
+
+            // Add selected state to clicked card
+            element.classList.add("bg-blue-50", "border-blue-500");
+
             // Check the radio button
-            element.querySelector('input[type="radio"]').checked = true;
+            const radio = element.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+
+            // (optional for later) store selected id
+            // selectedAddressId = addressId;
         }
 
         // Payment method selection

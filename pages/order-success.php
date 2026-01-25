@@ -31,8 +31,8 @@
         <section class="bg-white rounded-3xl shadow-lg ring-1 ring-black/5 mb-12 overflow-hidden">
             <header class="px-6 py-5 border-b flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <p class="text-sm text-gray-500 mb-0.5 font-extrabold">Order&nbsp;#12346</p>
-                    <p class="font-medium text-gray-800">March&nbsp;20,&nbsp;2024</p>
+                    <p class="text-sm text-gray-500 mb-0.5 font-extrabold" id="order-code">.....</p>
+                    <p class="font-medium text-gray-800" id="order-date">.....</p>
                 </div>
                 <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-700">
                     View Order Details →
@@ -40,7 +40,7 @@
             </header>
 
             <!-- Items -->
-            <ul class="px-6 py-5 divide-y">
+            <!-- <ul class="px-6 py-5 divide-y">
                 <li class="flex items-center gap-4 py-4 first:pt-0">
                     <img src="https://images.pexels.com/photos/4066293/pexels-photo-4066293.jpeg"
                          alt=""
@@ -67,26 +67,27 @@
                         <span class="font-medium block">$89.99</span>
                     </div>
                 </li>
-            </ul>
+            </ul> -->
+            <ul class="px-6 py-5 divide-y" id="order-items"></ul>
 
             <!-- Summary -->
             <footer class="px-6 py-5 bg-gray-50">
                 <dl class="space-y-2 text-sm">
                     <div class="flex justify-between">
                         <dt class="text-gray-600">Subtotal</dt>
-                        <dd>$139.98</dd>
+                        <dd id="summary-subtotal">₹0.00</dd>
                     </div>
                     <div class="flex justify-between">
                         <dt class="text-gray-600">Shipping</dt>
-                        <dd class="text-green-600">Free</dd>
+                        <dd id="summary-shipping">₹0.00</dd>
                     </div>
                     <div class="flex justify-between">
                         <dt class="text-gray-600">Tax</dt>
-                        <dd>$14.00</dd>
+                        <dd id="summary-tax">₹0.00</dd>
                     </div>
                     <div class="flex justify-between pt-2 border-t font-semibold text-gray-800">
                         <dt>Total</dt>
-                        <dd>$153.98</dd>
+                        <dd id="summary-total">₹0.00</dd>
                     </div>
                 </dl>
             </footer>
@@ -99,15 +100,15 @@
                 <div class="grid md:grid-cols-2 gap-6 text-sm text-gray-600">
                     <div>
                         <h3 class="font-medium text-gray-700 mb-1">Shipping Address</h3>
-                        <p>John Doe</p>
-                        <p>123 Main St, Apt 4B</p>
-                        <p>New York, NY 10001</p>
-                        <p>United States</p>
+                        <p id="ship-name"></p>
+                        <p id="ship-line1"></p>
+                        <p id="ship-city"></p>
+                        <p id="ship-country"></p>
                     </div>
                     <div>
                         <h3 class="font-medium text-gray-700 mb-1">Shipping Method</h3>
-                        <p>Standard Shipping</p>
-                        <p>Estimated delivery: March 25-27</p>
+                        <p id="shipping-type"></p>
+                        <p id="shipping-status"></p>
                     </div>
                 </div>
             </div>
@@ -120,19 +121,19 @@
                 <div class="grid md:grid-cols-2 gap-6 text-sm text-gray-600">
                     <div>
                         <h3 class="font-medium text-gray-700 mb-1">Payment Method</h3>
-                        <p class="flex items-center gap-2">
+                        <p class="flex items-center gap-2" id="payment-method">
                             <i data-lucide="credit-card" class="w-4 h-4 text-blue-600"></i>
-                            Visa •••• 4242
+                            XXXXXX
                         </p>
                     </div>
                     <div>
                         <h3 class="font-medium text-gray-700 mb-1">Transaction</h3>
-                        <p>ID: <span class="font-medium text-gray-800 font-extrabold">9Q1D23X8P3</span></p>
-                        <p>Status: <span class="text-green-700 font-medium font-extrabold">Paid</span></p>
+                        <p>ID: <span class="font-medium text-gray-800 font-extrabold" id="transaction-id"></span></p>
+                        <p>Status: <span class="text-green-700 font-medium font-extrabold" id="payment-status"></span></p>
                     </div>
                     <div>
                         <h3 class="font-medium text-gray-700 mb-1">Amount Charged</h3>
-                        <p class="font-extrabold">$153.98</p>
+                        <p class="font-extrabold" id="amount-charged"></p>
                     </div>
                 </div>
             </div>
@@ -175,6 +176,117 @@
             </a>
         </div>
     </main>
+
+<script>
+    const baseUrl   = "<?= $baseUrl ?>";
+    const authToken = localStorage.getItem("auth_token");
+
+    // get order_id from ?order_id=3
+    const params  = new URLSearchParams(window.location.search);
+    const orderId = params.get("order_id");
+
+    if (!orderId) {
+        window.location.href = `${baseUrl}/`; // safety redirect
+    }
+</script>
+
+<script>
+async function fetchOrderDetail() {
+  try {
+    const res = await fetch(`${baseUrl}/api/customer/order/get-order-detail`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${authToken}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ order_id: orderId })
+    });
+
+    const result = await res.json();
+
+    if (!result.success) {
+      alert("Failed to load order.");
+      return;
+    }
+
+    renderOrder(result.data);
+
+  } catch (err) {
+    console.error("Order detail error:", err);
+    alert("Something went wrong.");
+  }
+}
+
+fetchOrderDetail();
+</script>
+<script>
+function renderOrder(order) {
+
+  // header
+  document.getElementById("order-code").textContent = order.order_code;
+  document.getElementById("order-date").textContent = order.created_at;
+
+  // items
+  const itemsEl = document.getElementById("order-items");
+  itemsEl.innerHTML = "";
+
+  order.items.forEach(item => {
+    const li = document.createElement("li");
+    li.className = "flex items-center gap-4 py-4 first:pt-0";
+
+    li.innerHTML = `
+      <img src="${baseUrl}${item.image.upload_url}"
+           class="w-20 h-20 rounded-lg object-cover" />
+
+      <div class="flex-1">
+        <h3 class="font-medium">${item.product.name}</h3>
+        <p class="text-sm text-gray-500">
+          ${item.variation.color} • Size ${item.variation.size}
+        </p>
+      </div>
+
+      <div class="text-right space-y-0.5">
+        <span class="text-sm text-gray-500 block">Qty: ${item.quantity}</span>
+        <span class="font-medium block">₹${item.total}</span>
+      </div>
+    `;
+
+    itemsEl.appendChild(li);
+  });
+
+  // summary
+  const subtotal = order.items.reduce((sum, i) => sum + parseFloat(i.total), 0);
+  const shipCharge = parseFloat(order.shipping.shipping_charge || 0);
+
+  document.getElementById("summary-subtotal").textContent = `₹${subtotal.toFixed(2)}`;
+  document.getElementById("summary-shipping").textContent = shipCharge === 0 ? "Free" : `₹${shipCharge.toFixed(2)}`;
+  document.getElementById("summary-tax").textContent = `₹${order.tax_price}`;
+  document.getElementById("summary-total").textContent = `₹${order.grand_total}`;
+
+  // shipping
+    document.getElementById("ship-name").textContent = `Address ID: ${order.shipping.address_id}`;
+    document.getElementById("ship-line1").textContent = "Fetching address...";
+    document.getElementById("ship-city").textContent = "";
+    document.getElementById("ship-country").textContent = "India";
+
+  document.getElementById("shipping-type").textContent = order.shipping.shipping_type;
+  document.getElementById("shipping-status").textContent = order.shipping.shipping_status;
+
+  // payment
+  const paymentEl = document.getElementById("payment-method");
+    paymentEl.innerHTML = `
+        <i data-lucide="credit-card" class="w-4 h-4 text-blue-600"></i>
+        ${order.payment_type}
+        `;
+        lucide.createIcons();
+
+  document.getElementById("transaction-id").textContent =
+    order.invoice_no || "N/A";
+
+  document.getElementById("payment-status").textContent = order.payment_status;
+  document.getElementById("amount-charged").textContent = `₹${order.grand_total}`;
+}
+</script>
 
     <script>
         lucide.createIcons();

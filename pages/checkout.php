@@ -98,11 +98,11 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
-                            <input type="text" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <input type="text" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" disabled/>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                            <input type="text" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <input type="text" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" disabled/>
                         </div>
                     </div>
                     <div>
@@ -369,8 +369,6 @@ function renderAddresses(addresses) {
     }
 }
 
-
-
 // Handle address form submit
 document.querySelector("#addressModal form").addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -466,7 +464,43 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
         alert("Failed to save address.");
     }
 });
+</script>
+<script>
+const pincodeInput = document.querySelector('#addressModal input[type="text"]:nth-of-type(4)');
+const stateInput   = document.querySelector('#addressModal input[type="text"]:nth-of-type(2)');
+const cityInput    = document.querySelector('#addressModal input[type="text"]:nth-of-type(3)');
 
+pincodeInput.addEventListener("input", async function () {
+    const pincode = this.value.trim();
+
+    // reset state + city while typing
+    stateInput.value = "";
+    cityInput.value = "";
+    stateInput.disabled = true;
+    cityInput.disabled = true;
+
+    if (pincode.length !== 6 || isNaN(pincode)) {
+        return;
+    }
+
+    try {
+        const res = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+        const data = await res.json();
+
+        if (data[0].Status === "Success" && data[0].PostOffice.length) {
+            const po = data[0].PostOffice[0];
+
+            // ✅ map fields
+            stateInput.value = po.State;
+            cityInput.value  = po.District;
+
+            stateInput.disabled = false;
+            cityInput.disabled = false;
+        }
+    } catch (err) {
+        console.error("Pincode lookup failed", err);
+    }
+});
 </script>
 
 <script>

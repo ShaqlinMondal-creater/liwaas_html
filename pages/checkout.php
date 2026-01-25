@@ -236,7 +236,7 @@
                                 </div>
 
                                 <!-- Card Payment -->
-                                <div class="flex items-center p-4 border rounded-lg cursor-pointer" onclick="selectPayment('card', this)">
+                                <div class="hidden flex items-center p-4 border rounded-lg cursor-pointer" onclick="selectPayment('card', this)">
                                     <input type="radio" name="payment" value="card" class="h-4 w-4 text-blue-600" />
                                     <label class="ml-3 flex-1">
                                         <span class="block font-medium">Card Payment</span>
@@ -938,10 +938,6 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
 
     // Payment method selection
     function selectPayment(method, element) {
-        if (method === "card") {
-            return; // ❌ disabled for now
-        }
-
         document.querySelectorAll('[onclick^="selectPayment"]').forEach(el => {
             el.classList.remove('bg-blue-50', 'border-blue-500');
         });
@@ -949,31 +945,41 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
         element.classList.add('bg-blue-50', 'border-blue-500');
         element.querySelector('input[type="radio"]').checked = true;
 
-        selectedPaymentMethod = method; // ✅
+        selectedPaymentMethod = method; // "razorpay" or "cod"
 
         document.getElementById('razorpayDetails').classList.add('hidden');
         document.getElementById('codDetails').classList.add('hidden');
-        document.getElementById('cardDetails').classList.add('hidden');
 
         document.getElementById(`${method}Details`).classList.remove('hidden');
     }
+
 </script>
 
 <!-- Place Order Setup -->
 <script>
 document.getElementById("placeOrderBtn").addEventListener("click", async function () {
+  const btn = this;
+  btn.disabled = true;
+  btn.textContent = "Processing...";
+
   if (!authToken) {
     Swal.fire("Login required", "Please add address first.", "warning");
+    btn.disabled = false;
+    btn.textContent = "Place Order";
     return;
   }
 
   if (!selectedAddressId) {
     Swal.fire("Select address", "Please select a delivery address.", "warning");
+    btn.disabled = false;
+    btn.textContent = "Place Order";
     return;
   }
 
   if (!cartData.length) {
     Swal.fire("Empty cart", "Your cart is empty.", "warning");
+    btn.disabled = false;
+    btn.textContent = "Place Order";
     return;
   }
 
@@ -983,7 +989,7 @@ document.getElementById("placeOrderBtn").addEventListener("click", async functio
   };
 
   if (appliedCoupon) {
-    payload.coupon_key = appliedCoupon.code; // ✅ optional
+    payload.coupon_key = appliedCoupon.code;
   }
 
   try {
@@ -1000,21 +1006,25 @@ document.getElementById("placeOrderBtn").addEventListener("click", async functio
 
     if (!res.ok || !result.order_id) {
       Swal.fire("Error", result.message || "Failed to place order.", "error");
+      btn.disabled = false;
+      btn.textContent = "Place Order";
       return;
     }
 
-    // ✅ COD → directly success page
+    // COD → success page
     if (payload.payment_type === "COD") {
       window.location.href = `${baseUrl}/order-success.php?order_id=${result.order_id}`;
       return;
     }
 
-    // ✅ PREPAID → Razorpay
+    // Prepaid → Razorpay
     openRazorpay(result);
 
   } catch (err) {
     console.error("Place order error:", err);
     Swal.fire("Error", "Something went wrong.", "error");
+    btn.disabled = false;
+    btn.textContent = "Place Order";
   }
 });
 </script>
@@ -1026,7 +1036,7 @@ function openRazorpay(orderData) {
     key: "<?= $razorPayKey ?>", // 🔁 replace with your key
     amount: orderData.amount * 100, // Razorpay expects paise
     currency: orderData.currency,
-    name: "Your Store",
+    name: "Liwaas",
     description: "Order Payment",
     order_id: orderData.razorpay_order_id,
     handler: async function (response) {

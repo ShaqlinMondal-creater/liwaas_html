@@ -1062,6 +1062,7 @@ function openRazorpay(orderData) {
     name: "Liwaas",
     description: "Order Payment",
     order_id: orderData.razorpay_order_id,
+    image: "<?= $baseFavicon ?>",
     handler: async function (response) {
       showPageLoader("Verifying payment...");
       await verifyPayment(response);

@@ -279,8 +279,8 @@ function renderOrder(order) {
     document.getElementById("ship-pincode").textContent = `${order.shipping.address.pincode}`;
     document.getElementById("ship-country").textContent = `${order.shipping.address.country}`;
 
-  document.getElementById("shipping-type").textContent = order.delivery_status;
-  document.getElementById("shipping-status").textContent = order.shipping.shipping_status;
+  document.getElementById("shipping-type").textContent = order.shipping_type;
+  document.getElementById("shipping-status").textContent = `Order Status: ${order.delivery_status}`;
 
   // payment
   const paymentEl = document.getElementById("payment-method");

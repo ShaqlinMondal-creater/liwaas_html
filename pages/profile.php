@@ -977,7 +977,7 @@
                 }
 
                 const res = await fetch(url, {
-                    method: "GET",
+                    method: "POST",
                     headers: headers
                 });
 
@@ -1045,28 +1045,7 @@
             }
         }
 
-        // Remove Cart
-        // async function removeFromCart(cartId) {
-        //     try {
-        //         const res = await fetch(`${baseUrl}/api/customer/cart/${cartId}`, {
-        //             method: "DELETE",
-        //             headers: {
-        //                 "Authorization": `Bearer ${authToken}`
-        //             }
-        //         });
-        //         const result = await res.json();
-        //         if (result.success) {
-        //             Swal.fire("Removed!", "Cart item removed successfully.", "success");
-        //             loadWishlist(); // refresh the list
-        //         } else {
-        //             Swal.fire("Oops!", result.message || "Failed to remove item.", "error");
-        //         }
-        //     } catch (err) {
-        //         console.error("Error removing cart item:", err);
-        //         Swal.fire("Error", "Something went wrong.", "error");
-        //     }
-        // }
-
+        // Remove from Cart
         async function removeFromCart(cartId) {
             const confirm = await Swal.fire({
                 title: 'Remove Item?',
@@ -1105,7 +1084,6 @@
                 }
             }
         }
-
     </script>
 
     <!-- Fetch Wishlists -->

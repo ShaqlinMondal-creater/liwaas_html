@@ -171,9 +171,3 @@ sliderTrack.innerHTML += `
 
   fetchNewArrivalProducts();
 </script>
-
-<style>
- 
-
-
-</style>

@@ -357,6 +357,14 @@
             </div>
         </main>
     </div>
+
+<div id="pageLoader" class="hidden fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center">
+  <div class="flex flex-col items-center space-y-4">
+    <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+    <p class="text-white text-sm">Processing your order...</p>
+  </div>
+</div>
+
 <script>
 const baseUrl = "<?= $baseUrl ?>";
 const razorPayKey = "<?= $razorPayKey ?>";
@@ -366,6 +374,17 @@ let selectedAddressId = null;
 let selectedPaymentMethod = "razorpay"; // default
 let appliedCoupon = null;
 let discountAmount = 0;
+
+function showPageLoader(text = "Processing your order...") {
+  const loader = document.getElementById("pageLoader");
+  loader.querySelector("p").textContent = text;
+  loader.classList.remove("hidden");
+}
+
+function hidePageLoader() {
+  document.getElementById("pageLoader").classList.add("hidden");
+}
+
 
 // Load addresses on page load
 window.onload = async () => {
@@ -961,9 +980,11 @@ document.getElementById("placeOrderBtn").addEventListener("click", async functio
   const btn = this;
   btn.disabled = true;
   btn.textContent = "Processing...";
+  showPageLoader();
 
   if (!authToken) {
     Swal.fire("Login required", "Please add address first.", "warning");
+    hidePageLoader();
     btn.disabled = false;
     btn.textContent = "Place Order";
     return;
@@ -971,6 +992,7 @@ document.getElementById("placeOrderBtn").addEventListener("click", async functio
 
   if (!selectedAddressId) {
     Swal.fire("Select address", "Please select a delivery address.", "warning");
+    hidePageLoader();
     btn.disabled = false;
     btn.textContent = "Place Order";
     return;
@@ -978,6 +1000,7 @@ document.getElementById("placeOrderBtn").addEventListener("click", async functio
 
   if (!cartData.length) {
     Swal.fire("Empty cart", "Your cart is empty.", "warning");
+    hidePageLoader();
     btn.disabled = false;
     btn.textContent = "Place Order";
     return;
@@ -1040,7 +1063,14 @@ function openRazorpay(orderData) {
     description: "Order Payment",
     order_id: orderData.razorpay_order_id,
     handler: async function (response) {
+      showPageLoader("Verifying payment...");
       await verifyPayment(response);
+    },
+    modal: {
+        ondismiss: function () {
+            window.location.href =
+            `pages/order-success.php?order_id=${orderData.order_id}`;
+        }
     },
     theme: {
       color: "#c7aa28"
@@ -1074,14 +1104,14 @@ async function verifyPayment(response) {
     const result = await res.json();
 
     if (result.success) {
-      window.location.href = `${baseUrl}/order-success.php?order_id=${result.order_id}`;
+      window.location.href = `pages/order-success.php?order_id=${result.order_id}`;
     } else {
-      Swal.fire("Payment Failed", result.message || "Verification failed.", "error");
+       window.location.href = `pages/order-success.php?order_id=${result.order_id}`;
     }
 
   } catch (err) {
-    console.error("Verify payment error:", err);
-    Swal.fire("Error", "Payment verification failed.", "error");
+    console.error("Payment verification error:", err);
+    window.location.href = `pages/order-success.php?order_id=${result.order_id}`;
   }
 }
 </script>

@@ -176,10 +176,10 @@
 
         <!-- Actions -->
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="/" class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-900 rounded-lg text-sm font-medium hover:bg-gray-100 transition">
+            <a href="pages/shop.php" class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-900 rounded-lg text-sm font-medium hover:bg-gray-100 transition">
                 Continue&nbsp;Shopping
             </a>
-            <a href="/profile.html" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition">
+            <a href="pages/profile.php" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition">
                 View Order History
             </a>
         </div>
@@ -194,7 +194,7 @@
     const orderId = params.get("order_id");
 
     if (!orderId) {
-        window.location.href = `${baseUrl}/`; // safety redirect
+        window.location.href = "/"; // frontend home (liwaas.com)
     }
 </script>
 

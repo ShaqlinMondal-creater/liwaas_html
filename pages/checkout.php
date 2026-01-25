@@ -678,8 +678,15 @@ async function deleteAddress(addressId) {
       const result = await res.json();
 
       if (result.success) {
-        Swal.fire('Deleted!', result.message, 'success');
-        fetchAddresses(); // refresh cards
+        Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: result.message,
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true
+        });
+        fetchAddresses();
       } else {
         Swal.fire('Error', result.message || 'Failed to delete address.', 'error');
       }

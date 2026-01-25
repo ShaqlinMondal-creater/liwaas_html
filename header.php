@@ -10,6 +10,8 @@
     $baseFavicon  = $config['BASE_FAV_ICON'];
     $baseAddress   = $config['BASE_ADDRESS'];
     $baseEmail = $config['BASE_EMAIL'];
+    $basePhone = $config['BASE_PHONE'];
+    $razorPayKey = $config['RAZORPAY_KEY'];
 ?>
 <head>
     <meta charset="UTF-8" />

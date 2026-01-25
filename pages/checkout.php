@@ -359,8 +359,13 @@
     </div>
 <script>
 const baseUrl = "<?= $baseUrl ?>";
+const razorPayKey = "<?= $razorPayKey ?>";
 let authToken = localStorage.getItem("auth_token");
 const guestId   = localStorage.getItem("guest_token");
+let selectedAddressId = null;
+let selectedPaymentMethod = "razorpay"; // default
+let appliedCoupon = null;
+let discountAmount = 0;
 
 // Load addresses on page load
 window.onload = async () => {
@@ -379,7 +384,6 @@ window.onload = async () => {
 
     fetchCheckoutCart();
 };
-
 
 // Fetch addresses
 async function fetchAddresses() {
@@ -449,6 +453,7 @@ function renderAddresses(addresses) {
         if (addr.address_type === "primary") {
             card.classList.add("bg-blue-50", "border-blue-500");
             card.querySelector('input[type="radio"]').checked = true;
+            selectedAddressId = addr.id; // ✅
         }
 
         container.appendChild(card);
@@ -607,7 +612,7 @@ if (pincodeInput && stateInput && cityInput) {
 </script>
 
 <!-- populate for update address -->
- <script>
+<script>
 function toggleUpdateModal() {
   document.getElementById("updateAddressModal").classList.toggle("hidden");
 }
@@ -901,57 +906,174 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
 
 </script>
 
+<script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Modal functions
+    function toggleModal() {
+        const modal = document.getElementById('addressModal');
+        modal.classList.toggle('hidden');
+    }
+
+    // Address selection
+    function selectAddress(element, addressId) {
+        // Remove selected state from all address cards
+        document.querySelectorAll("#addressContainer > div").forEach(card => {
+            card.classList.remove("bg-blue-50", "border-blue-500");
+            const radio = card.querySelector('input[type="radio"]');
+            if (radio) radio.checked = false;
+        });
+
+        // Add selected state to clicked card
+        element.classList.add("bg-blue-50", "border-blue-500");
+
+        // Check the radio button
+        const radio = element.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+
+        // (optional for later) store selected id
+        selectedAddressId = addressId;
+    }
+
+    // Payment method selection
+    function selectPayment(method, element) {
+        if (method === "card") {
+            return; // ❌ disabled for now
+        }
+
+        document.querySelectorAll('[onclick^="selectPayment"]').forEach(el => {
+            el.classList.remove('bg-blue-50', 'border-blue-500');
+        });
+
+        element.classList.add('bg-blue-50', 'border-blue-500');
+        element.querySelector('input[type="radio"]').checked = true;
+
+        selectedPaymentMethod = method; // ✅
+
+        document.getElementById('razorpayDetails').classList.add('hidden');
+        document.getElementById('codDetails').classList.add('hidden');
+        document.getElementById('cardDetails').classList.add('hidden');
+
+        document.getElementById(`${method}Details`).classList.remove('hidden');
+    }
 </script>
 
+<!-- Place Order Setup -->
+<script>
+document.getElementById("placeOrderBtn").addEventListener("click", async function () {
+  if (!authToken) {
+    Swal.fire("Login required", "Please add address first.", "warning");
+    return;
+  }
 
-    <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
+  if (!selectedAddressId) {
+    Swal.fire("Select address", "Please select a delivery address.", "warning");
+    return;
+  }
 
-        // Modal functions
-        function toggleModal() {
-            const modal = document.getElementById('addressModal');
-            modal.classList.toggle('hidden');
-        }
+  if (!cartData.length) {
+    Swal.fire("Empty cart", "Your cart is empty.", "warning");
+    return;
+  }
 
-        // Address selection
-        function selectAddress(element, addressId) {
-            // Remove selected state from all address cards
-            document.querySelectorAll("#addressContainer > div").forEach(card => {
-                card.classList.remove("bg-blue-50", "border-blue-500");
-                const radio = card.querySelector('input[type="radio"]');
-                if (radio) radio.checked = false;
-            });
+  const payload = {
+    shipping_address_id: selectedAddressId,
+    payment_type: selectedPaymentMethod === "cod" ? "COD" : "Prepaid"
+  };
 
-            // Add selected state to clicked card
-            element.classList.add("bg-blue-50", "border-blue-500");
+  if (appliedCoupon) {
+    payload.coupon_key = appliedCoupon.code; // ✅ optional
+  }
 
-            // Check the radio button
-            const radio = element.querySelector('input[type="radio"]');
-            if (radio) radio.checked = true;
+  try {
+    const res = await fetch(`${baseUrl}/api/customer/orders/create`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${authToken}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
 
-            // (optional for later) store selected id
-            // selectedAddressId = addressId;
-        }
+    const result = await res.json();
 
-        // Payment method selection
-        function selectPayment(method, element) {
-            // Update selected payment method style
-            document.querySelectorAll('[onclick^="selectPayment"]').forEach(el => {
-                el.classList.remove('bg-blue-50', 'border-blue-500');
-            });
-            element.classList.add('bg-blue-50', 'border-blue-500');
-            
-            // Check the radio button
-            element.querySelector('input[type="radio"]').checked = true;
+    if (!res.ok || !result.order_id) {
+      Swal.fire("Error", result.message || "Failed to place order.", "error");
+      return;
+    }
 
-            // Hide all payment details
-            document.getElementById('razorpayDetails').classList.add('hidden');
-            document.getElementById('codDetails').classList.add('hidden');
-            document.getElementById('cardDetails').classList.add('hidden');
+    // ✅ COD → directly success page
+    if (payload.payment_type === "COD") {
+      window.location.href = `${baseUrl}/order-success.php?order_id=${result.order_id}`;
+      return;
+    }
 
-            // Show selected payment details
-            document.getElementById(`${method}Details`).classList.remove('hidden');
-        }
-    </script>
+    // ✅ PREPAID → Razorpay
+    openRazorpay(result);
+
+  } catch (err) {
+    console.error("Place order error:", err);
+    Swal.fire("Error", "Something went wrong.", "error");
+  }
+});
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+function openRazorpay(orderData) {
+  const options = {
+    key: "<?= $razorPayKey ?>", // 🔁 replace with your key
+    amount: orderData.amount * 100, // Razorpay expects paise
+    currency: orderData.currency,
+    name: "Your Store",
+    description: "Order Payment",
+    order_id: orderData.razorpay_order_id,
+    handler: async function (response) {
+      await verifyPayment(response);
+    },
+    theme: {
+      color: "#2563eb"
+    }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+}
+</script>
+
+<!-- Verify Payment -->
+<script>
+async function verifyPayment(response) {
+  try {
+    const payload = {
+      razorpay_order_id: response.razorpay_order_id,
+      razorpay_payment_id: response.razorpay_payment_id,
+      razorpay_signature: response.razorpay_signature
+    };
+
+    const res = await fetch(`${baseUrl}/api/customer/payments/verify`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${authToken}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      window.location.href = `${baseUrl}/order-success.php?order_id=${result.order_id}`;
+    } else {
+      Swal.fire("Payment Failed", result.message || "Verification failed.", "error");
+    }
+
+  } catch (err) {
+    console.error("Verify payment error:", err);
+    Swal.fire("Error", "Payment verification failed.", "error");
+  }
+}
+</script>
+
 <?php include("../footer.php"); ?>

@@ -10,4 +10,6 @@ return [
   'BASE_FAV_ICON'    => '../assets/brand/fav_icon.png',
   'BASE_ADDRESS' => 'Dum Dum, Kol-700030',
   'BASE_EMAIL'   => 'business.liwaas.com',
+  'BASE_PHONE'   => '+91 9874563210',
+  'RAZORPAY_KEY' => 'rzp_test_8WG68Pg2DZy2bj', // Replace with your Razorpay Key ID
 ];

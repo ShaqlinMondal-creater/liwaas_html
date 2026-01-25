@@ -107,7 +107,8 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
-                        <input type="text" class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                        <input type="text" maxlength="6" inputmode="numeric" pattern="[0-9]*"
+                            class="w-full px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                     </div>
                     <div class="flex items-center">
                         <input type="checkbox" id="defaultAddress" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
@@ -465,13 +466,17 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
     }
 });
 </script>
+
 <script>
 const pincodeInput = document.querySelector('#addressModal input[type="text"]:nth-of-type(4)');
 const stateInput   = document.querySelector('#addressModal input[type="text"]:nth-of-type(2)');
 const cityInput    = document.querySelector('#addressModal input[type="text"]:nth-of-type(3)');
 
+let lastFetchedPincode = "";
+
 pincodeInput.addEventListener("input", async function () {
-    const pincode = this.value.trim();
+    let pincode = this.value.replace(/\D/g, ""); // only digits
+    this.value = pincode;                        // sanitize input
 
     // reset state + city while typing
     stateInput.value = "";
@@ -479,9 +484,18 @@ pincodeInput.addEventListener("input", async function () {
     stateInput.disabled = true;
     cityInput.disabled = true;
 
-    if (pincode.length !== 6 || isNaN(pincode)) {
+    // only act at EXACTLY 6 digits
+    if (pincode.length !== 6) {
+        lastFetchedPincode = "";
         return;
     }
+
+    // avoid duplicate fetch for same pincode
+    if (pincode === lastFetchedPincode) {
+        return;
+    }
+
+    lastFetchedPincode = pincode;
 
     try {
         const res = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
@@ -502,6 +516,7 @@ pincodeInput.addEventListener("input", async function () {
     }
 });
 </script>
+
 
 <script>
 let cartData = [];

@@ -765,8 +765,8 @@ async function fetchCheckoutCart() {
     }
 }
 
-let appliedCoupon = null;
-let discountAmount = 0;
+// let appliedCoupon = null;
+// let discountAmount = 0;
 
 function renderSummary() {
     const itemsEl    = document.getElementById("summary-items");

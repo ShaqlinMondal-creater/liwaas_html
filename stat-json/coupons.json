@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "code": "WELCOME15",
+        "name": "Welcome Offer",
+        "offer": 15,
+        "type": "percentage",
+        "status": "active"
+    },
+    {
+        "id": 2,
+        "code": "FLAT100",
+        "name": "Flat ₹100 Off",
+        "offer": 100,
+        "type": "flat",
+        "status": "active"
+    },
+    {
+        "id": 3,
+        "code": "FESTIVE18",
+        "name": "Festive Sale",
+        "offer": 18,
+        "type": "percentage",
+        "status": "active"
+    },
+    {
+        "id": 4,
+        "code": "SUMMER50",
+        "name": "Summer Special",
+        "offer": 50,
+        "type": "flat",
+        "status": "inactive"
+    },
+    {
+        "id": 5,
+        "code": "NEWUSER10",
+        "name": "New User Discount",
+        "offer": 10,
+        "type": "percentage",
+        "status": "active"
+    },
+    {
+        "id": 6,
+        "code": "DIWALI500",
+        "name": "Diwali Bonanza",
+        "offer": 500,
+        "type": "flat",
+        "status": "active"
+    }
+]

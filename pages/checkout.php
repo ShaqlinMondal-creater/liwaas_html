@@ -296,9 +296,31 @@
                                         <span class="text-gray-600">Subtotal</span>
                                         <span id="summary-subtotal">₹0.00</span>
                                     </div>
+
                                     <div class="flex justify-between text-sm">
                                         <span class="text-gray-600">Shipping</span>
                                         <span id="summary-shipping">₹0.00</span>
+                                    </div>
+
+                                    <!-- Coupon Section -->
+                                    <div class="border-t pt-3 space-y-2">
+                                        <div class="flex gap-2">
+                                            <input id="couponInput"
+                                                type="text"
+                                                placeholder="Enter coupon code"
+                                                class="flex-1 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+
+                                            <button id="applyCouponBtn"
+                                                class="px-4 py-2 text-sm bg-gray-900 text-white rounded-lg hover:bg-gray-800">
+                                                Apply
+                                            </button>
+                                        </div>
+
+                                        <div id="couponMessage" class="text-sm hidden"></div>
+
+                                        <div id="couponDiscountBadge"
+                                            class="hidden text-sm text-green-700 bg-green-100 px-3 py-1 rounded-lg inline-block">
+                                        </div>
                                     </div>
                                 </div>
 
@@ -738,6 +760,9 @@ async function fetchCheckoutCart() {
     }
 }
 
+let appliedCoupon = null;
+let discountAmount = 0;
+
 function renderSummary() {
     const itemsEl    = document.getElementById("summary-items");
     const subtotalEl = document.getElementById("summary-subtotal");
@@ -775,14 +800,107 @@ function renderSummary() {
 
     // Shipping rule: ₹120 if subtotal > 1000
     let shipping = subtotal > 1000 ? 120 : 0;
+    let finalSubtotal = subtotal;
 
-    subtotalEl.textContent = `₹${subtotal.toFixed(2)}`;
+    if (appliedCoupon && discountAmount > 0) {
+        finalSubtotal = subtotal - discountAmount;
+
+        subtotalEl.innerHTML = `
+            <span class="line-through text-gray-400">₹${subtotal.toFixed(2)}</span>
+            <span class="ml-2 text-green-600">₹${finalSubtotal.toFixed(2)}</span>
+        `;
+    } else {
+        subtotalEl.textContent = `₹${subtotal.toFixed(2)}`;
+    }
     shippingEl.textContent = shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`;
-    totalEl.textContent = `₹${(subtotal + shipping).toFixed(2)}`;
+    totalEl.textContent = `₹${(finalSubtotal + shipping).toFixed(2)}`;
 
     placeBtn.disabled = false;
     placeBtn.classList.remove("opacity-50", "cursor-not-allowed");
 }
+
+document.getElementById("applyCouponBtn").addEventListener("click", async function () {
+    const codeInput = document.getElementById("couponInput");
+    const msgEl = document.getElementById("couponMessage");
+    const badgeEl = document.getElementById("couponDiscountBadge");
+
+    const code = codeInput.value.trim().toUpperCase();
+
+    msgEl.classList.add("hidden");
+    badgeEl.classList.add("hidden");
+
+    if (!code) {
+        msgEl.textContent = "Please enter a coupon code.";
+        msgEl.className = "text-sm text-red-600";
+        msgEl.classList.remove("hidden");
+        return;
+    }
+
+    try {
+        const res = await fetch(`../stat-json/coupons.json`);
+        const coupons = await res.json();
+
+        const coupon = coupons.find(c => c.code === code);
+
+        if (!coupon) {
+            appliedCoupon = null;
+            discountAmount = 0;
+
+            msgEl.textContent = "Invalid coupon code.";
+            msgEl.className = "text-sm text-red-600";
+            msgEl.classList.remove("hidden");
+
+            renderSummary();
+            return;
+        }
+
+        if (coupon.status !== "active") {
+            appliedCoupon = null;
+            discountAmount = 0;
+
+            msgEl.textContent = "This coupon is no longer active.";
+            msgEl.className = "text-sm text-red-600";
+            msgEl.classList.remove("hidden");
+
+            renderSummary();
+            return;
+        }
+
+        appliedCoupon = coupon;
+
+        // calculate discount
+        const subtotal = cartData.reduce((sum, item) => {
+            return sum + (parseFloat(item.total_price) || 0);
+        }, 0);
+
+        if (coupon.type === "percentage") {
+            discountAmount = (subtotal * coupon.offer) / 100;
+        } else if (coupon.type === "flat") {
+            discountAmount = coupon.offer;
+        }
+
+        // clamp discount (never exceed subtotal)
+        discountAmount = Math.min(discountAmount, subtotal);
+
+        badgeEl.textContent = `Coupon applied: -₹${discountAmount.toFixed(2)}`;
+        badgeEl.classList.remove("hidden");
+
+        msgEl.textContent = `Applied "${coupon.code}" successfully.`;
+        msgEl.className = "text-sm text-green-600";
+        msgEl.classList.remove("hidden");
+
+        renderSummary();
+
+    } catch (err) {
+        console.error("Coupon fetch error:", err);
+
+        msgEl.textContent = "Failed to apply coupon.";
+        msgEl.className = "text-sm text-red-600";
+        msgEl.classList.remove("hidden");
+    }
+});
+</script>
+
 </script>
 
 

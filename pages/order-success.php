@@ -101,14 +101,22 @@
                     <div>
                         <h3 class="font-medium text-gray-700 mb-1">Shipping Address</h3>
                         <p id="ship-name"></p>
-                        <p id="ship-line1"></p>
-                        <p id="ship-city"></p>
+                        <p>
+                            <span id="ship-line1"></span>, 
+                            <span id="ship-line2"></span>
+                        </p>
+                        <p>
+                            <span id="ship-city"></span>,
+                            <span id="ship-state"></span>, 
+                            <span id="ship-pincode"></span>
+                        </p>
                         <p id="ship-country"></p>
                     </div>
                     <div>
                         <h3 class="font-medium text-gray-700 mb-1">Shipping Method</h3>
-                        <p id="shipping-type"></p>
-                        <p id="shipping-status"></p>
+                        <p>
+                            <span id="shipping-type"></span> | <span id="shipping-status"></span>                            <span id="shipping-status"></span>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -224,23 +232,7 @@ function renderOrder(order) {
 
   // header
   document.getElementById("order-code").textContent = `Order #${order.order_code}`;
-    const d = new Date(order.created_at);
-    const day = d.getDate();
-    const suffix =
-    day % 10 === 1 && day !== 11 ? "st" :
-    day % 10 === 2 && day !== 12 ? "nd" :
-    day % 10 === 3 && day !== 13 ? "rd" : "th";
-
-    const month = d.toLocaleString("en-IN", { month: "long" });
-    const year  = d.getFullYear();
-
-    const hours   = String(d.getHours()).padStart(2, "0");
-    const minutes = String(d.getMinutes()).padStart(2, "0");
-    const seconds = String(d.getSeconds()).padStart(2, "0");
-
-    document.getElementById("order-date").textContent =
-    `${day}${suffix} ${month}, ${year} ${hours}.${minutes}.${seconds}`;
-
+  document.getElementById("order-date").textContent = `Date: ${order.created_at}`;
 
   // items
   const itemsEl = document.getElementById("order-items");
@@ -251,7 +243,7 @@ function renderOrder(order) {
     li.className = "flex items-center gap-4 py-4 first:pt-0";
 
     li.innerHTML = `
-      <img src="${baseUrl}${item.image.upload_url}"
+      <img src="${item.image.upload_url}"
            class="w-20 h-20 rounded-lg object-cover" />
 
       <div class="flex-1">
@@ -280,12 +272,14 @@ function renderOrder(order) {
   document.getElementById("summary-total").textContent = `₹${order.grand_total}`;
 
   // shipping
-    document.getElementById("ship-name").textContent = `Address ID: ${order.shipping.address_id}`;
-    document.getElementById("ship-line1").textContent = "Fetching address...";
-    document.getElementById("ship-city").textContent = "";
-    document.getElementById("ship-country").textContent = "India";
+    document.getElementById("ship-name").textContent = `Address ID: ${order.shipping.address.id}`;
+    document.getElementById("ship-line1").textContent = `${order.shipping.address.address_line1} , ${order.shipping.address.address_line2 || ""}`;
+    document.getElementById("ship-city").textContent = `${order.shipping.address.city}`;
+    document.getElementById("ship-state").textContent = `${order.shipping.address.state}`;
+    document.getElementById("ship-pincode").textContent = `${order.shipping.address.pincode}`;
+    document.getElementById("ship-country").textContent = `${order.shipping.address.country}`;
 
-  document.getElementById("shipping-type").textContent = order.shipping.shipping_type;
+  document.getElementById("shipping-type").textContent = order.delivery_status;
   document.getElementById("shipping-status").textContent = order.shipping.shipping_status;
 
   // payment
@@ -297,7 +291,7 @@ function renderOrder(order) {
         lucide.createIcons();
 
   document.getElementById("transaction-id").textContent =
-    order.invoice_no || "N/A";
+    order.transaction_payment_id || "N/A";
 
   document.getElementById("payment-status").textContent = order.payment_status;
   document.getElementById("amount-charged").textContent = `₹${order.grand_total}`;

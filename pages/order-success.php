@@ -223,8 +223,24 @@ fetchOrderDetail();
 function renderOrder(order) {
 
   // header
-  document.getElementById("order-code").textContent = order.order_code;
-  document.getElementById("order-date").textContent = order.created_at;
+  document.getElementById("order-code").textContent = `Order #${order.order_code}`;
+    const d = new Date(order.created_at);
+    const day = d.getDate();
+    const suffix =
+    day % 10 === 1 && day !== 11 ? "st" :
+    day % 10 === 2 && day !== 12 ? "nd" :
+    day % 10 === 3 && day !== 13 ? "rd" : "th";
+
+    const month = d.toLocaleString("en-IN", { month: "long" });
+    const year  = d.getFullYear();
+
+    const hours   = String(d.getHours()).padStart(2, "0");
+    const minutes = String(d.getMinutes()).padStart(2, "0");
+    const seconds = String(d.getSeconds()).padStart(2, "0");
+
+    document.getElementById("order-date").textContent =
+    `${day}${suffix} ${month}, ${year} ${hours}.${minutes}.${seconds}`;
+
 
   // items
   const itemsEl = document.getElementById("order-items");

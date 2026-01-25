@@ -953,65 +953,6 @@
         }
     </script>
 
-    <!-- <style>
-        .custom-swal-popup {
-            padding: 0 !important;
-        }
-
-        .custom-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 16px;
-        padding: 16px;
-        text-align: left;
-        }
-
-        .custom-grid .form-group {
-        display: flex;
-        flex-direction: column;
-        }
-
-        .custom-grid .form-group label {
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 2px;
-            color: #f27474;
-        }
-
-        .custom-grid .form-group input {
-        padding: 8px 10px;
-        font-size: 14px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        outline: none;
-        transition: border-color 0.3s;
-        }
-
-        .custom-grid .form-group input:focus {
-        border-color: #000;
-        }
-
-        .swal2-actions .custom-swal-confirm,
-        .swal2-actions .custom-swal-cancel {
-        width: 120px;
-        font-weight: bold;
-        font-size: 14px;
-        border-radius: 6px;
-        padding: 10px 16px;
-        margin-bottom:10px;
-        }
-
-        .custom-swal-confirm {
-        background-color: #eab308 !important; /* dark yellow */
-        color: #000 !important;
-        }
-
-        .custom-swal-cancel {
-        background-color: #dc2626 !important; /* red */
-        color: #fff !important;
-        }
-    </style> -->
-
     <!-- Fetch Cart -->
     <script>
         // Get Carts Data

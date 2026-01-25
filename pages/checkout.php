@@ -412,7 +412,7 @@ function renderAddresses(addresses) {
                     <button onclick='openUpdateModal(${JSON.stringify(addr)})' class="text-gray-400 hover:text-gray-500">
                         <i data-lucide="edit" class="w-4 h-4"></i>
                     </button>
-                    <button class="text-gray-400 hover:text-gray-500">
+                    <button onclick="deleteAddress(${addr.id})" class="text-gray-400 hover:text-gray-500">
                         <i data-lucide="trash" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -652,6 +652,45 @@ document.getElementById("updateAddressForm").addEventListener("submit", async fu
 });
 </script>
 
+<!-- delete address -->
+<script>
+async function deleteAddress(addressId) {
+  const confirm = await Swal.fire({
+    title: 'Delete Address?',
+    text: "Are you sure you want to delete this address?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#dc2626', // red
+    cancelButtonColor: '#6b7280',  // gray
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'Cancel'
+  });
+
+  if (confirm.isConfirmed) {
+    try {
+      const res = await fetch(`${baseUrl}/api/customer/address/delete-address/${addressId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        Swal.fire('Deleted!', result.message, 'success');
+        fetchAddresses(); // refresh cards
+      } else {
+        Swal.fire('Error', result.message || 'Failed to delete address.', 'error');
+      }
+
+    } catch (err) {
+      console.error("Delete error:", err);
+      Swal.fire('Error', 'Something went wrong.', 'error');
+    }
+  }
+}
+</script>
 
 
 <script>

@@ -48,6 +48,8 @@ gallery - > processing
     - gallery --done✅
     - offers -processing  --done✅ final touch pending
     - trending - add to cart --done✅
+    - Brand collection
+    - Premium collection
 
 ---------------------------------------
 shop page:
@@ -67,7 +69,11 @@ need modification (all done)✅
 
 ---------------------------------------
 checkout page:
-need modification (all) -- pending
+need modification (all) --done✅ -- need set with dynamic
+
+---------------------------------------
+order-success page:
+need modification (all) --done✅ -- make payment api create for payment after order connection
 
 ---------------------------------------
 product details page:
@@ -97,7 +103,7 @@ UNIVERSEL SETTING->
 
 header -->
 footer -->
-color uses
+color uses ->
 
 ADMIN:
 

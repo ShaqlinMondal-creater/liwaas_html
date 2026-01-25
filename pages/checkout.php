@@ -487,7 +487,7 @@ function renderAddresses(addresses) {
 // Handle address form submit
 document.querySelector("#addressModal form").addEventListener("submit", async function (e) {
     e.preventDefault();
-
+    showPageLoader("Saving address...");
     const form = e.target;
 
     const name    = form.querySelector('input[type="text"]').value;
@@ -526,6 +526,7 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
             submitBtn.disabled = false;
             submitBtn.textContent = "Save Address";
             alert("Failed to create user.");
+            hidePageLoader();
             return;
         }
 
@@ -565,15 +566,17 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
     const addrData = await addrRes.json();
 
     if (addrData.success) {
+        hidePageLoader();
         submitBtn.textContent = "Saved";
         setTimeout(() => {
             submitBtn.disabled = false;
             submitBtn.textContent = "Save Address";
         }, 800);
-
+        
         toggleModal();
         fetchAddresses();
     } else {
+        hidePageLoader();
         submitBtn.disabled = false;
         submitBtn.textContent = "Save Address";
         alert("Failed to save address.");
@@ -655,6 +658,7 @@ function openUpdateModal(addr) {
 <script>
 document.getElementById("updateAddressForm").addEventListener("submit", async function (e) {
   e.preventDefault();
+  showPageLoader("Updating address...");
 
   const payload = {
     address_id: document.getElementById("updateAddressId").value,
@@ -685,13 +689,16 @@ document.getElementById("updateAddressForm").addEventListener("submit", async fu
     const data = await res.json();
 
     if (data.success) {
+      hidePageLoader();
       toggleUpdateModal();
       fetchAddresses(); // refresh cards
     } else {
+      hidePageLoader();
       alert("Failed to update address.");
     }
 
   } catch (err) {
+    hidePageLoader();
     console.error("Update address error:", err);
     alert("Something went wrong.");
   }

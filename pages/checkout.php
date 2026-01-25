@@ -824,7 +824,7 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
     const msgEl = document.getElementById("couponMessage");
     const badgeEl = document.getElementById("couponDiscountBadge");
 
-    const code = codeInput.value.trim().toUpperCase();
+    const code = codeInput.value.trim(); // ✅ case-sensitive
 
     msgEl.classList.add("hidden");
     badgeEl.classList.add("hidden");
@@ -837,9 +837,10 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
     }
 
     try {
-        const res = await fetch(`../stat-json/coupons.json`);
+        const res = await fetch(`${baseUrl}/stat-json/coupons.json`);
         const coupons = await res.json();
 
+        // ✅ strict match
         const coupon = coupons.find(c => c.code === code);
 
         if (!coupon) {
@@ -868,7 +869,6 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
 
         appliedCoupon = coupon;
 
-        // calculate discount
         const subtotal = cartData.reduce((sum, item) => {
             return sum + (parseFloat(item.total_price) || 0);
         }, 0);
@@ -879,7 +879,6 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
             discountAmount = coupon.offer;
         }
 
-        // clamp discount (never exceed subtotal)
         discountAmount = Math.min(discountAmount, subtotal);
 
         badgeEl.textContent = `Coupon applied: -₹${discountAmount.toFixed(2)}`;
@@ -899,6 +898,7 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
         msgEl.classList.remove("hidden");
     }
 });
+
 </script>
 
 </script>

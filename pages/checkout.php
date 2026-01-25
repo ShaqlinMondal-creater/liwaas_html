@@ -837,7 +837,7 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
     }
 
     try {
-        const res = await fetch(`${baseUrl}/stat-json/coupons.json`);
+        const res = await fetch(`../stat-json/coupons.json`);
         const coupons = await res.json();
 
         // ✅ strict match

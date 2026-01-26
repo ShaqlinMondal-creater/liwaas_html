@@ -874,7 +874,7 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
     }
 
     try {
-        const res = await fetch(`${baseUrl}/coupons/validate-coupon`, {
+        const res = await fetch(`${baseUrl}/api/coupons/validate-coupon`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${authToken}`,

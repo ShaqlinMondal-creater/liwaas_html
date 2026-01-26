@@ -166,6 +166,13 @@
                         </div>
 
                         <div class="menu-item">
+                            <a href="nxt-pages/coupons-table.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('coupons-table.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('coupons-table.php') ?>"></span>
+                                <span class="menu-title text-2sm">Coupons Table</span>
+                            </a>
+                        </div>
+
+                        <div class="menu-item">
                             <a href="nxt-pages/cart-table.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('cart-table.php') ?>">
                                 <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('cart-table.php') ?>"></span>
                                 <span class="menu-title text-2sm">Cart Table</span>

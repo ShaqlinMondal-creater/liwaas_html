@@ -69,15 +69,14 @@ need modification (all done)✅
 
 ---------------------------------------
 checkout page:
-need modification (all) --done✅ -- need set with dynamic
+need modification (all) --done✅ -- need setup with coupon
 
 ---------------------------------------
 order-success page:
-need modification (all) --done✅ -- make payment api create for payment after order connection
-
+need modification (all) --done✅
 ---------------------------------------
 product details page:
-need modification (all) -(all done)✅
+need modification (all) -(all done)✅ -- show the delivery in days through pincode
 
 ---------------------------------------
 About page:
@@ -107,6 +106,9 @@ color uses ->
 
 ADMIN:
 
+Product:
 Add product -> Done ✅
-fetch product -> processing
+fetch product -> Done ✅
+
+Coupons:
 

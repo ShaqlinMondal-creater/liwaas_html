@@ -260,13 +260,113 @@
     });
   });
 
-  function editCoupon(id) {
-    alert("Edit coupon: " + id + " (hook API later)");
+function editCoupon(id) {
+  const token = localStorage.getItem("auth_token");
+  const coupon = currentCouponList.find(c => c.id === id);
+
+  if (!coupon) {
+    Swal.fire("❌ Error", "Coupon not found.", "error");
+    return;
   }
 
-  function deleteCoupon(id) {
-    alert("Delete coupon: " + id + " (hook API later)");
-  }
+  Swal.fire({
+    title: "Edit Coupon",
+    html: `
+      <input id="edit_key_name" class="swal2-input" placeholder="Key Name" value="${coupon.key_name}">
+      <input id="edit_value" type="number" class="swal2-input" placeholder="Value" value="${coupon.value}">
+      
+      <select id="edit_status" class="swal2-select">
+        <option value="active" ${coupon.status === "active" ? "selected" : ""}>Active</option>
+        <option value="inactive" ${coupon.status === "inactive" ? "selected" : ""}>Inactive</option>
+      </select>
+
+      <input id="edit_start_date" type="date" class="swal2-input" value="${coupon.start_date}">
+      <input id="edit_end_date" type="date" class="swal2-input" value="${coupon.end_date}">
+    `,
+    confirmButtonText: "Update Coupon",
+    showCancelButton: true,
+    preConfirm: () => {
+      const key_name = document.getElementById("edit_key_name").value.trim();
+      const value = document.getElementById("edit_value").value.trim();
+      const status = document.getElementById("edit_status").value;
+      const start_date = document.getElementById("edit_start_date").value;
+      const end_date = document.getElementById("edit_end_date").value;
+
+      if (!key_name || !value || !status || !start_date || !end_date) {
+        Swal.showValidationMessage("All fields are required");
+        return false;
+      }
+
+      return fetch(`<?= $baseUrl ?>/api/admin/coupons/update/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          key_name: key_name,
+          value: Number(value),
+          status: status,
+          start_date: start_date,
+          end_date: end_date
+        }),
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (!data.success) {
+          throw new Error(data.message || "Coupon update failed");
+        }
+        return data;
+      });
+    }
+  }).then(result => {
+    if (result.isConfirmed) {
+      Swal.fire("✅ Updated!", "Coupon updated successfully.", "success");
+      fetchCoupons(couponPage); // reload table
+    }
+  }).catch(err => {
+    Swal.fire("❌ Error", err.message || "Coupon update failed", "error");
+  });
+}
+
+function deleteCoupon(id) {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This will delete the coupon permanently!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete it!",
+  }).then(result => {
+    if (result.isConfirmed) {
+      const token = localStorage.getItem("auth_token");
+
+      fetch(`<?= $baseUrl ?>/api/admin/coupons/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          Swal.fire("🗑️ Deleted!", data.message, "success");
+
+          // If last item on page deleted, go back one page safely
+          if (currentCouponList.length === 1 && couponPage > 1) {
+            couponPage--;
+          }
+
+          fetchCoupons(couponPage);
+        } else {
+          Swal.fire("❌ Failed", data.message || "Delete failed", "error");
+        }
+      })
+      .catch(err => {
+        Swal.fire("❌ Error", err.message || "Delete failed", "error");
+      });
+    }
+  });
+}
 </script>
 
 <script>

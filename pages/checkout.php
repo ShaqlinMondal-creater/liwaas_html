@@ -115,7 +115,7 @@
                         <label for="defaultAddress" class="ml-2 text-sm text-gray-600">Set as default address</label>
                     </div>
                     <div class="flex justify-end pt-3">
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 text-sm rounded-lg hover:bg-blue-700">Save Address</button>
+                        <button type="submit" class="grad-btn text-white px-4 py-2 text-sm rounded-lg">Save Address</button>
                     </div>
                 </form>
             </div>
@@ -133,58 +133,57 @@
             </div>
 
             <form id="updateAddressForm" class="p-4 space-y-3">
-            <input type="hidden" id="updateAddressId" />
+                <input type="hidden" id="updateAddressId" />
 
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                <input id="updateName" type="text" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                        <input id="updateName" type="text" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input id="updateEmail" type="email" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                    </div>
                 </div>
+
                 <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input id="updateEmail" type="email" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                    <input id="updateMobile" type="tel" class="w-full px-3 py-2 text-sm border rounded-lg" />
                 </div>
-            </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                <input id="updateMobile" type="tel" class="w-full px-3 py-2 text-sm border rounded-lg" />
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                <textarea id="updateAddressLine1" class="w-full px-3 py-2 text-sm border rounded-lg" rows="2"></textarea>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
                 <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
-                <input id="updateState" type="text" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                    <textarea id="updateAddressLine1" class="w-full px-3 py-2 text-sm border rounded-lg" rows="2"></textarea>
                 </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                        <input id="updateState" type="text" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                        <input id="updateCity" type="text" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                    </div>
+                </div>
+
                 <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                <input id="updateCity" type="text" class="w-full px-3 py-2 text-sm border rounded-lg" />
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
+                    <input id="updatePincode" type="text" maxlength="6" class="w-full px-3 py-2 text-sm border rounded-lg" />
                 </div>
-            </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
-                <input id="updatePincode" type="text" maxlength="6" class="w-full px-3 py-2 text-sm border rounded-lg" />
-            </div>
+                <div class="flex items-center">
+                    <input id="updateDefault" type="checkbox" class="rounded border-gray-300 text-blue-600" />
+                    <label for="updateDefault" class="ml-2 text-sm text-gray-600">
+                        Set as default address
+                    </label>
+                </div>
 
-            <div class="flex items-center">
-                <input id="updateDefault" type="checkbox" class="rounded border-gray-300 text-blue-600" />
-                <label for="updateDefault" class="ml-2 text-sm text-gray-600">
-                Set as default address
-                </label>
-            </div>
-
-            <div class="flex justify-end pt-3">
-                <button type="submit"
-                class="bg-blue-600 text-white px-4 py-2 text-sm rounded-lg hover:bg-blue-700">
-                Update Address
-                </button>
-            </div>
+                <div class="flex justify-end pt-3">
+                    <button type="submit" class="grad-btn text-white px-4 py-2 text-sm rounded-lg">
+                        Update Address
+                    </button>
+                </div>
             </form>
         </div>
         </div>
@@ -255,7 +254,7 @@
                                     <!-- COD Details (Hidden by default) -->
                                     <div id="codDetails" class="hidden p-4 bg-gray-50 rounded-lg">
                                         <p class="text-sm text-gray-600">Pay when you receive your order</p>
-                                        <p class="text-xs text-gray-500 mt-1">Additional fee of $2 will be charged for COD</p>
+                                        <p class="text-xs text-gray-500 mt-1">No Additional fee will be charged for COD</p>
                                     </div>
 
                                     <!-- Card Details (Hidden by default) -->

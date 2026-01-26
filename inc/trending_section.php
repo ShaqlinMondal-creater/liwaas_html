@@ -244,7 +244,7 @@
                         </div>
                       </div>
 
-                      <div class="mt-5">
+                      <div class="mt-5 flex gap-3">
                         <!-- SELL PRICE -->
                         <p class="text-2xl font-semibold text-slate-900">
                           ₹${sellPrice.toFixed(2)}
@@ -303,7 +303,7 @@
                     <!-- ADD TO CART BUTTON -->
                     <div class="mt-0 cart-btnn">
                       <button id="confirm-add-cart"
-                              class="w-full bg-slate-900 text-white py-3 rounded-lg hover:bg-yellow-500 transition text-lg">
+                              class="w-full grad-btn text-white py-3 rounded-lg transition text-lg">
                         Add to Cart
                       </button>
                     </div>
@@ -608,13 +608,13 @@
     flex-direction: column;
   }
   .cart-btnn{
-    margin-top: 24px;
+    margin-top: 5px;
   }
   .right_side_modal, .left_side_modal {
     width: 100% !important;
   }
   .right_side_modal{
-    max-height: 45vh !important;
+    max-height: 55vh !important;
   }
   .left_side_modal {
     max-height: 35vh !important;

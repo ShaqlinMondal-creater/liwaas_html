@@ -866,12 +866,12 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
         return;
     }
 
-    if (!authToken) {
-        msgEl.textContent = "Please login to apply coupon.";
-        msgEl.className = "text-sm text-red-600";
-        msgEl.classList.remove("hidden");
-        return;
-    }
+    // if (!authToken) {
+    //     msgEl.textContent = "Please login to apply coupon.";
+    //     msgEl.className = "text-sm text-red-600";
+    //     msgEl.classList.remove("hidden");
+    //     return;
+    // }
 
     try {
         const res = await fetch(`${baseUrl}/api/coupons/validate-coupon`, {

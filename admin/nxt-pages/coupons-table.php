@@ -6,6 +6,7 @@
   <div class="container-fixed">
     <div class="grid gap-5 lg:gap-7.5">
       <div class="card card-grid min-w-full">
+        
         <div class="card-header flex-wrap gap-2">
           <h3 class="card-title font-medium text-sm">Coupon Details</h3>
 
@@ -21,10 +22,12 @@
               <option value="inactive">Inactive</option>
             </select>
 
-            <label class="input input-sm">
-              <i class="ki-filled ki-magnifier"></i>
-              <input id="coupon_search_input" placeholder="Search Key Name" type="text"/>
-            </label>
+            <div class="flex">
+                <label class="input input-sm">
+                    <i class="ki-filled ki-magnifier"></i>
+                    <input id="coupon_search_input" placeholder="Search Key Name" type="text"/>
+                </label>
+            </div>
 
             <input id="coupon_start_date" type="date" class="input input-sm w-36">
             <input id="coupon_end_date" type="date" class="input input-sm w-36">
@@ -76,7 +79,7 @@
 </main>
 
 <script>
-  const COUPON_API = "<?= $baseUrl ?>/admin/coupons/get-all";
+  const COUPON_API = "<?= $baseUrl ?>/api/admin/coupons/get-all";
 
   let couponPage = 1;
   let couponLimit = 10;

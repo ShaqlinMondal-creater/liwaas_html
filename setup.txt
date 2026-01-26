@@ -69,11 +69,11 @@ need modification (all done)✅
 
 ---------------------------------------
 checkout page:
-need modification (all) --done✅ -- need setup with coupon
+need modification (all) --done✅ -- need setup the tax
 
 ---------------------------------------
 order-success page:
-need modification (all) --done✅
+need modification (all) --done✅ -- need modification with tax and coupon calculation and discount
 ---------------------------------------
 product details page:
 need modification (all) -(all done)✅ -- show the delivery in days through pincode
@@ -111,4 +111,5 @@ Add product -> Done ✅
 fetch product -> Done ✅
 
 Coupons:
-
+Add coupon -> Done ✅
+Fetch Coupons -> Done ✅

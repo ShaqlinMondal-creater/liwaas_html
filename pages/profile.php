@@ -57,7 +57,7 @@
             <div class="bg-white rounded-xl shadow-sm border p-6 mb-2">
                 <div class="flex items-center space-x-4">
                     <!-- Avatar with first letter -->
-                    <div id="avatar" class="w-20 h-20 rounded-full bg-gradient-to-r from-orange-300 to-orange-600 flex items-center justify-center text-5xl font-bold text-gray-300">
+                    <div id="avatar" class="w-20 h-20 rounded-full grad-btn flex items-center justify-center text-5xl font-bold text-gray-300">
                         <!-- JS will inject first letter -->
                     </div>
                     <div>

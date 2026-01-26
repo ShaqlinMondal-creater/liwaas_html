@@ -321,7 +321,7 @@
                     const span = document.createElement('span');
                     span.textContent = initial;
                     span.id = "avatarBtn";
-                    span.className = "h-9 w-9 rounded-full bg-gradient-to-r from-orange-300 to-orange-600 text-white flex items-center justify-center text-sm font-bold cursor-pointer ring-2 ring-white";
+                    span.className = "h-9 w-9 rounded-full grad-btn text-white flex items-center justify-center text-sm font-bold cursor-pointer ring-2 ring-white";
 
                     avatarBtn.replaceWith(span);
                     avatarBtn = document.getElementById('avatarBtn');

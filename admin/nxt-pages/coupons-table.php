@@ -5,7 +5,7 @@
 <main class="grow content pt-5" id="content" role="content">
   <div class="container-fixed">
     <div class="grid gap-5 lg:gap-7.5">
-      <div class="card card-grid min-w-full">
+        <div class="card card-grid min-w-full">
             <div class="card-header flex-wrap gap-2">
                 <h3 class="card-title font-medium text-sm">Coupon Details</h3>
 
@@ -31,47 +31,46 @@
                     <input id="coupon_start_date" type="date" class="input input-sm w-36">
                     <input id="coupon_end_date" type="date" class="input input-sm w-36">
                 </div>
-            </div>
-        </div>  
-        <div class="card-body" id="coupon_table_wrapper">
-          <div id="coupon_table">
-            <div class="scrollable-x-auto">
-              <table class="table table-auto table-border">
-                <thead>
-                  <tr>
-                    <th class="w-[60px] text-center">
-                      <input type="checkbox" class="checkbox checkbox-sm" />
-                    </th>
-                    <th class="min-w-[80px]">ID</th>
-                    <th class="min-w-[150px]">Key Name</th>
-                    <th class="min-w-[120px]">Value</th>
-                    <th class="min-w-[120px]">Status</th>
-                    <th class="min-w-[150px]">Start Date</th>
-                    <th class="min-w-[150px]">End Date</th>
-                    <th class="w-[60px]"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Data injected here -->
-                </tbody>
-              </table>
-            </div>
+            </div>         
+            <div class="card-body" id="coupon_table_wrapper">
+            <div id="coupon_table">
+                <div class="scrollable-x-auto">
+                <table class="table table-auto table-border">
+                    <thead>
+                    <tr>
+                        <th class="w-[60px] text-center">
+                        <input type="checkbox" class="checkbox checkbox-sm" />
+                        </th>
+                        <th class="min-w-[80px]">ID</th>
+                        <th class="min-w-[150px]">Key Name</th>
+                        <th class="min-w-[120px]">Value</th>
+                        <th class="min-w-[120px]">Status</th>
+                        <th class="min-w-[150px]">Start Date</th>
+                        <th class="min-w-[150px]">End Date</th>
+                        <th class="w-[60px]"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Data injected here -->
+                    </tbody>
+                </table>
+                </div>
 
-            <div class="card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
-              <div class="flex items-center gap-2 order-2 md:order-1">
-                Show
-                <select class="select select-sm w-16" id="coupon_per_page"></select>
-                per page
-              </div>
+                <div class="card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
+                <div class="flex items-center gap-2 order-2 md:order-1">
+                    Show
+                    <select class="select select-sm w-16" id="coupon_per_page"></select>
+                    per page
+                </div>
 
-              <div class="flex items-center gap-4 order-1 md:order-2">
-                <span id="coupon_info"></span>
-                <div class="pagination" id="coupon_pagination"></div>
-              </div>
+                <div class="flex items-center gap-4 order-1 md:order-2">
+                    <span id="coupon_info"></span>
+                    <div class="pagination" id="coupon_pagination"></div>
+                </div>
+                </div>
             </div>
-          </div>
-        </div>
-
+            </div>
+        </div> 
       </div>
     </div>
   </div>

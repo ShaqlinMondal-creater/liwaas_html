@@ -829,7 +829,7 @@ function renderSummary() {
     });
 
     // Shipping rule: ₹120 if subtotal > 200
-    let shipping = subtotal > 200 ? 120 : 0;
+    let shipping = subtotal > 200 ? 0 : 120;
     let finalSubtotal = subtotal;
 
     if (appliedCoupon && discountAmount > 0) {

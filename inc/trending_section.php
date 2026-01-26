@@ -252,7 +252,7 @@
 
                         <!-- REGULAR PRICE + DISCOUNT -->
                         ${regularPrice > sellPrice ? `
-                          <div class="flex items-center gap-3 mt-1">
+                          <div class="flex items-center gap-10">
                             <span class="text-xl text-gray-500 line-through">
                               ₹${regularPrice.toFixed(2)}
                             </span>

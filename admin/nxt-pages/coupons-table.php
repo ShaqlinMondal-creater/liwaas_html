@@ -6,34 +6,33 @@
   <div class="container-fixed">
     <div class="grid gap-5 lg:gap-7.5">
       <div class="card card-grid min-w-full">
-        
-        <div class="card-header flex-wrap gap-2">
-          <h3 class="card-title font-medium text-sm">Coupon Details</h3>
+            <div class="card-header flex-wrap gap-2">
+                <h3 class="card-title font-medium text-sm">Coupon Details</h3>
 
-          <div class="flex flex-wrap gap-2 lg:gap-5">
-            <a class="btn btn-sm btn-primary" href="#">
-              Add Coupon
-            </a>
+                <div class="flex flex-wrap gap-2 lg:gap-5">
+                    <a class="btn btn-sm btn-primary" href="#">
+                        Add Coupon
+                    </a>
 
-            <!-- Filters -->
-            <select id="coupon_status_filter" class="select select-sm w-32">
-              <option value="">All</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
+                    <!-- Filters -->
+                    <select id="coupon_status_filter" class="select select-sm w-28">
+                        <option value="">All</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
 
-            <div class="flex">
-                <label class="input input-sm">
-                    <i class="ki-filled ki-magnifier"></i>
-                    <input id="coupon_search_input" placeholder="Search Key Name" type="text"/>
-                </label>
+                    <div class="flex">
+                        <label class="input input-sm">
+                            <i class="ki-filled ki-magnifier"></i>
+                            <input id="coupon_search_input" placeholder="Search Key Name" type="text"/>
+                        </label>
+                    </div>
+
+                    <input id="coupon_start_date" type="date" class="input input-sm w-36">
+                    <input id="coupon_end_date" type="date" class="input input-sm w-36">
+                </div>
             </div>
-
-            <input id="coupon_start_date" type="date" class="input input-sm w-36">
-            <input id="coupon_end_date" type="date" class="input input-sm w-36">
-          </div>
-        </div>
-
+        </div>  
         <div class="card-body" id="coupon_table_wrapper">
           <div id="coupon_table">
             <div class="scrollable-x-auto">

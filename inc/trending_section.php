@@ -51,7 +51,7 @@
     const prevBtn = document.getElementById('featPrev');
     const nextBtn = document.getElementById('featNext');
     const authToken = localStorage.getItem('auth_token');
-
+    let wishlistCache = [];  // Cache for wishlist items  
     function getCartAuthHeadersAndPayload(payload = {}) {
       const authToken  = localStorage.getItem("auth_token");
       const guestToken = localStorage.getItem("guest_token");
@@ -81,8 +81,43 @@
         console.error("Failed to load color map:", e);
       }
     }
-
     loadColorMap();
+
+    async function fetchWishlist() {
+      const authToken = localStorage.getItem("auth_token");
+      if (!authToken) {
+        wishlistCache = [];
+        return;
+      }
+
+      try {
+        const res = await fetch('<?= $baseUrl ?>/api/customer/wishlist/get', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          }
+        });
+
+        const json = await res.json();
+
+        if (json.success) {
+          wishlistCache = (json.data || []).map(item => ({
+            id: item.id,
+            product_id: String(item.product_id),
+            aid: item.variation_aid,
+            uid: String(item.variation_uid)
+          }));
+        } else {
+          wishlistCache = [];
+        }
+
+      } catch (e) {
+        console.error("Failed to fetch wishlist:", e);
+        wishlistCache = [];
+      }
+    }
+    fetchWishlist();
 
     const sectionHeaders = { "Content-Type": "application/json" };
     if (authToken) {
@@ -364,52 +399,108 @@
 
         // Now safely attach wishlist & cart handlers
         document.querySelectorAll('.wishlist-btn').forEach(btn => {
-          btn.addEventListener('click', (e) => {
+          btn.addEventListener('click', async (e) => {
             e.stopPropagation();
+
             const authToken = localStorage.getItem("auth_token");
 
-            // 🔴 GUEST USER → SHOW FLASH ONLY
+            // 🔴 GUEST → LOGIN FLASH
             if (!authToken) {
               showLoginFlash();
               return;
             }
+
             const card = e.target.closest('.featured-card');
             const index = [...slider.children].indexOf(card);
             const data = response.data[index];
             const product = data.product;
             const variation = product.variation || {};
 
-            fetch('<?= $baseUrl ?>/api/customer/wishlist/create', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`
-              },
-              body: JSON.stringify({
-                products_id: product.id,
-                aid: variation.aid,
-                uid: variation.uid
-              })
-            })
-            .then(res => res.json())
-            .then(resp => {
-              const icon = btn.querySelector('svg, i');
-              if (icon) icon.classList.add('text-white-700', 'fill-red-500');
-              btn.classList.add('wishlist-flash');
-              setTimeout(() => btn.classList.remove('wishlist-flash'), 500);
+            const aid = variation.aid;
+            const uid = String(variation.uid);
+            const productId = String(product.id);
 
-              // Show flash message regardless of success
-              if (resp.success) {
+            // 🔍 Check if already in wishlist
+            const existing = wishlistCache.find(w =>
+              w.product_id === productId &&
+              w.aid === aid &&
+              w.uid === uid
+            );
+
+            // =========================
+            // REMOVE FROM WISHLIST
+            // =========================
+            if (existing) {
+              try {
+                const res = await fetch(`<?= $baseUrl ?>/api/customer/wishlist/remove/${existing.id}`, {
+                  method: 'DELETE',
+                  headers: {
+                    'Authorization': `Bearer ${authToken}`
+                  }
+                });
+
+                const json = await res.json();
+
+                if (json.success) {
+                  wishlistCache = wishlistCache.filter(w => w.id !== existing.id);
+
+                  const icon = btn.querySelector('svg, i');
+                  if (icon) icon.classList.remove('fill-red-500');
+
+                  showFlashMessage("Removed from Wishlist 💔");
+                } else {
+                  showFlashMessage("Failed to remove ❌");
+                }
+
+              } catch (err) {
+                console.error("Remove wishlist error:", err);
+                showFlashMessage("Network error ❌");
+              }
+
+              return;
+            }
+
+            // =========================
+            // ADD TO WISHLIST
+            // =========================
+            try {
+              const res = await fetch('<?= $baseUrl ?>/api/customer/wishlist/create', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${authToken}`
+                },
+                body: JSON.stringify({
+                  products_id: product.id,
+                  aid: variation.aid,
+                  uid: variation.uid
+                })
+              });
+
+              const json = await res.json();
+
+              if (json.success) {
+                wishlistCache.push({
+                  id: json.data.id,
+                  product_id: productId,
+                  aid,
+                  uid
+                });
+
+                const icon = btn.querySelector('svg, i');
+                if (icon) icon.classList.add('fill-red-500');
+
                 showFlashMessage("Item added to Wishlist ❤");
-              } else if (resp.message?.includes('already')) {
+              } else if (json.message?.includes("already")) {
                 showFlashMessage("Already in Wishlist ❤️");
               } else {
-                showFlashMessage("Something went wrong ❌");
+                showFlashMessage("Wishlist failed ❌");
               }
-            })
-            .catch(err => {
-              console.error('Wishlist error:', err);
-            });
+
+            } catch (err) {
+              console.error("Add wishlist error:", err);
+              showFlashMessage("Network error ❌");
+            }
           });
         });
 
@@ -451,7 +542,7 @@
     toast.innerHTML = `
       <span>You have to login first.</span>
       <a href="sign-in.php"
-        style="margin-left:8px; text-decoration:underline; font-weight:600;">
+        style="margin-left:10px; text-decoration:underline; font-weight:600;">
         Login
       </a>
     `;
@@ -460,7 +551,7 @@
 
     setTimeout(() => {
       toast.classList.remove('show');
-    }, 8000);   // 🔥 8 seconds
+    }, 8000);
   }
 </script>
 
@@ -484,23 +575,23 @@
 
 #login-flash-toast {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #1f2933;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  background: #111827;
   color: #fff;
-  padding: 14px 18px;
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  padding: 16px 22px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
   opacity: 0;
-  transform: translateY(10px);
   transition: all .3s ease;
   z-index: 99999;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 #login-flash-toast.show {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(-50%, -50%) scale(1);
 }
 
 #login-flash-toast a {

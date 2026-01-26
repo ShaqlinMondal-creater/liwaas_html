@@ -1033,7 +1033,7 @@ document.getElementById("placeOrderBtn").addEventListener("click", async functio
   };
 
   if (appliedCoupon) {
-    payload.coupon_key = appliedCoupon.code;
+    payload.coupon_key = appliedCoupon.key_name;
   }
 
   try {

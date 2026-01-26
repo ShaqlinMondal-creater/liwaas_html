@@ -110,6 +110,8 @@ Product:
 Add product -> Done ✅
 fetch product -> Done ✅
 
-Coupons:
+Coupons: -> need popup setup design
 Add coupon -> Done ✅
 Fetch Coupons -> Done ✅
+Update Coupons -> Done ✅
+Delete Coupons -> Done ✅

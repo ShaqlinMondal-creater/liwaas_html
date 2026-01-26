@@ -332,7 +332,7 @@
                                 </div>
 
                                 <button id="placeOrderBtn"
-                                    class="grad-btn w-full bg-blue-600 text-white py-3 rounded-lg font-medium">
+                                    class="grad-btn w-full py-3 rounded-lg font-medium text-white focus:outline-none focus:ring-2 focus:ring-[#c7aa28] focus:ring-offset-2 transition-all">
                                     Place Order
                                 </button>
 

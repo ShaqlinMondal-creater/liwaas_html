@@ -366,6 +366,13 @@
         document.querySelectorAll('.wishlist-btn').forEach(btn => {
           btn.addEventListener('click', (e) => {
             e.stopPropagation();
+            const authToken = localStorage.getItem("auth_token");
+
+            // 🔴 GUEST USER → SHOW FLASH ONLY
+            if (!authToken) {
+              showLoginFlash();
+              return;
+            }
             const card = e.target.closest('.featured-card');
             const index = [...slider.children].indexOf(card);
             const data = response.data[index];
@@ -432,7 +439,29 @@
       toast.classList.remove('show');
     }, 2000);
   }
+  function showLoginFlash() {
+    let toast = document.getElementById('login-flash-toast');
 
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'login-flash-toast';
+      document.body.appendChild(toast);
+    }
+
+    toast.innerHTML = `
+      <span>You have to login first.</span>
+      <a href="sign-in.php"
+        style="margin-left:8px; text-decoration:underline; font-weight:600;">
+        Login
+      </a>
+    `;
+
+    toast.classList.add('show');
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 8000);   // 🔥 8 seconds
+  }
 </script>
 
 <style>
@@ -451,6 +480,31 @@
 /* Hide default confirm button (we use custom) */
 .swal-add-btn-full {
   display: none !important;
+}
+
+#login-flash-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #1f2933;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all .3s ease;
+  z-index: 99999;
+  font-size: 14px;
+}
+
+#login-flash-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#login-flash-toast a {
+  color: #facc15;
 }
 
 /* ================================

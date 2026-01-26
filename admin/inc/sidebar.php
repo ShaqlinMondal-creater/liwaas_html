@@ -124,7 +124,7 @@
                 </div>
 
                 <!-- TABLES -->
-                <div class="menu-item <?= menuShow(['order-table.php','brand-table.php','category-table.php','product-table.php','cart-table.php','user-table.php','shipping-table.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
+                <div class="menu-item <?= menuShow(['order-table.php','brand-table.php','category-table.php','product-table.php', 'coupons-table.php','cart-table.php','user-table.php','shipping-table.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
                     <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] ps-[10px] pe-[10px] py-[6px]">
                         <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
                             <i class="ki-filled ki-setting-2 text-lg"></i>

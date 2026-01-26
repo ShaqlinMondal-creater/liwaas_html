@@ -56,7 +56,7 @@ shop page:
 need modification on wishlist, sorting -(all done)✅
 
 ---------------------------------------
-profile page:
+profile page: -- need one more verification
 need modification on order (full)✅
 need modification on account details (full)✅
 need modification on address (full)✅

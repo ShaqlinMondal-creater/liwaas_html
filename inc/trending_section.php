@@ -52,6 +52,19 @@
     const nextBtn = document.getElementById('featNext');
     const authToken = localStorage.getItem('auth_token');
 
+    function getCartAuthHeadersAndPayload(payload = {}) {
+      const authToken  = localStorage.getItem("auth_token");
+      const guestToken = localStorage.getItem("guest_token");
+      const headers = { "Content-Type": "application/json" };
+
+      if (authToken) {
+        headers["Authorization"] = `Bearer ${authToken}`;
+      } else if (guestToken) {
+        payload.temp_id = guestToken;   // 🔥 attach guest token
+      }
+      return { headers, payload };
+    }
+
     prevBtn.addEventListener('click', () => slider.scrollBy({ left: -300, behavior: 'smooth' }));
     nextBtn.addEventListener('click', () => slider.scrollBy({ left: 300, behavior: 'smooth' }));
 
@@ -71,13 +84,14 @@
 
     loadColorMap();
 
+    const sectionHeaders = { "Content-Type": "application/json" };
+    if (authToken) {
+      sectionHeaders["Authorization"] = `Bearer ${authToken}`;
+    }
     // Fetch trending products
     fetch('<?= $baseUrl ?>/api/sections/getsections-products', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`
-      },
+      headers: sectionHeaders,
       body: JSON.stringify({
         section_name: "Trending",
         limit: 12,
@@ -135,91 +149,6 @@
           card.querySelector('.cart-btn').addEventListener('click', () => {
             const price = parseFloat(variation.sell_price || 0);
             
-            // Swal.fire({
-            //   title: 'Add to Cart',
-            //   html: `
-            //     <div class="p-1 text-left w-[300px] mx-auto">
-            //       <img src="${imageUrl}" alt="${product.name}" class="w-[300px] h-[250px] object-cover transition-transform duration-700 group-hover:scale-110"/>
-            //       <p class="mt-4 text-lg font-medium text-slate-900 text-center">${product.name}</p>
-            //       <p class="text-xl text-gray-600 text-center">Price: ₹${price.toFixed(2)}</p>
-            //       <div class="flex items-center justify-center mt-2 space-x-2">
-            //         <button id="qty-decrease" class="px-2 py-1 bg-gray-200 rounded text-xl">−</button>
-            //         <input type="text" id="qty-input" value="1" min="1" class="w-12 text-center border rounded" readonly />
-            //         <button id="qty-increase" class="px-2 py-1 bg-gray-200 rounded text-xl">+</button>
-            //       </div>
-            //       <div id="total-price" class="mt-3 text-center font-medium text-slate-700">Total: ₹${price.toFixed(2)}</div>
-            //     </div>
-            //   `,
-            //   customClass: {
-            //     popup: 'cart_popup',
-            //     confirmButton: 'swal-add-btn',
-            //     cancelButton: 'swal-cancel-btn'
-            //   },
-            //   showCancelButton: true,
-            //   confirmButtonText: 'Add to Cart',
-            //   cancelButtonText: 'Cancel',
-            //   reverseButtons: true,
-            //   didOpen: () => {
-            //     const qtyInput = Swal.getPopup().querySelector('#qty-input');
-            //     const incBtn = Swal.getPopup().querySelector('#qty-increase');
-            //     const decBtn = Swal.getPopup().querySelector('#qty-decrease');
-            //     const totalPrice = Swal.getPopup().querySelector('#total-price');
-
-            //     const formatPrice = (num) => {
-            //       return `₹${num.toFixed(2)}`;
-            //     };
-
-            //     const updatePrice = () => {
-            //       const qty = Math.max(1, parseInt(qtyInput.value) || 1);
-            //       const total = qty * price;
-            //       totalPrice.textContent = `Total: ${formatPrice(total)}`;
-            //     };
-
-
-            //     incBtn.addEventListener('click', () => {
-            //       qtyInput.value = parseInt(qtyInput.value || '1') + 1;
-            //       updatePrice();
-            //     });
-
-            //     decBtn.addEventListener('click', () => {
-            //       qtyInput.value = Math.max(1, parseInt(qtyInput.value || '1') - 1);
-            //       updatePrice();
-            //     });
-
-            //     qtyInput.addEventListener('input', updatePrice);
-            //   }
-            // }).then(result => {
-            //   if (result.isConfirmed) {
-            //     const qty = parseInt(Swal.getPopup().querySelector('#qty-input')?.value || '1');
-
-            //     fetch('<?= $baseUrl ?>/api/cart/create-cart', {
-            //       method: 'POST',
-            //       headers: {
-            //         'Content-Type': 'application/json',
-            //         'Authorization': `Bearer ${authToken}`
-            //       },
-            //       body: JSON.stringify({
-            //         products_id: product.id,
-            //         aid: variation.aid,
-            //         uid: variation.uid,
-            //         quantity: qty
-            //       })
-            //     })
-            //     .then(res => res.json())
-            //     .then(resp => {
-            //       Swal.fire({
-            //         icon: resp.success ? 'success' : 'error',
-            //         title: resp.success ? 'Added to Cart' : 'Failed',
-            //         text: resp.message,
-            //         timer: 1000,
-            //       });
-            //     })
-            //     .catch(() => {
-            //       Swal.fire('Error', 'Something went wrong while adding to cart.', 'error');
-            //     });
-            //   }
-            // });
-
             const color = variation.color || 'N/A';
             const size  = variation.size  || 'N/A';
             const colorHex = COLOR_MAP[color.toLowerCase()] || '#e5e7eb';
@@ -229,7 +158,6 @@
             const discountPercent = regularPrice > sellPrice
               ? Math.round(((regularPrice - sellPrice) / regularPrice) * 100)
               : 0;
-
 
             Swal.fire({
               showConfirmButton: false,
@@ -387,22 +315,30 @@
                 confirmBtn.addEventListener('click', () => {
                   const qty = parseInt(qtyInput.value || '1');
 
+                  let payload = {
+                    products_id: product.id,
+                    aid: variation.aid,
+                    uid: variation.uid,
+                    quantity: qty
+                  };
+
+                  const { headers, payload: finalPayload } = getCartAuthHeadersAndPayload(payload);
+
                   fetch('<?= $baseUrl ?>/api/cart/create-cart', {
                     method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({
-                      products_id: product.id,
-                      aid: variation.aid,
-                      uid: variation.uid,
-                      quantity: qty
-                    })
+                    headers,
+                    body: JSON.stringify(finalPayload)
                   })
                   .then(res => res.json())
                   .then(resp => {
+
+                    // 🔥 save temp_id for guest users
+                    if (resp.temp_id && !localStorage.getItem("auth_token")) {
+                      localStorage.setItem("guest_token", resp.temp_id);
+                    }
+
                     Swal.close();
+
                     Swal.fire({
                       icon: resp.success ? 'success' : 'error',
                       title: resp.success ? 'Added to Cart' : 'Failed',

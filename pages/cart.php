@@ -393,7 +393,7 @@
           // ✅ Shipping calculation
           const shippingElement = document.getElementById("shipping");
           let shipping = 0;
-          if (subtotal > 0 && subtotal < 3500) {
+          if (subtotal > 0 && subtotal < 200) {
             shipping = 120;
             shippingElement.textContent = `₹${shipping.toFixed(2)}`;
             shippingElement.classList.remove("text-green-600");

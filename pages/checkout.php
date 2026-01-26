@@ -851,10 +851,10 @@ function renderSummary() {
 
 document.getElementById("applyCouponBtn").addEventListener("click", async function () {
     const codeInput = document.getElementById("couponInput");
-    const msgEl = document.getElementById("couponMessage");
-    const badgeEl = document.getElementById("couponDiscountBadge");
+    const msgEl     = document.getElementById("couponMessage");
+    const badgeEl  = document.getElementById("couponDiscountBadge");
 
-    const code = codeInput.value.trim(); // ✅ case-sensitive
+    const code = codeInput.value.trim();
 
     msgEl.classList.add("hidden");
     badgeEl.classList.add("hidden");
@@ -866,18 +866,30 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
         return;
     }
 
+    if (!authToken) {
+        msgEl.textContent = "Please login to apply coupon.";
+        msgEl.className = "text-sm text-red-600";
+        msgEl.classList.remove("hidden");
+        return;
+    }
+
     try {
-        const res = await fetch(`../stat-json/coupons.json`);
-        const coupons = await res.json();
+        const res = await fetch(`${baseUrl}/coupons/validate-coupon`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${authToken}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ code })
+        });
 
-        // ✅ strict match
-        const coupon = coupons.find(c => c.code === code);
+        const result = await res.json();
 
-        if (!coupon) {
-            appliedCoupon = null;
+        if (!result.success || !result.data) {
+            appliedCoupon  = null;
             discountAmount = 0;
 
-            msgEl.textContent = "Invalid coupon code.";
+            msgEl.textContent = result.message || "Invalid coupon code.";
             msgEl.className = "text-sm text-red-600";
             msgEl.classList.remove("hidden");
 
@@ -885,11 +897,14 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
             return;
         }
 
+        const coupon = result.data;
+
+        // ❌ inactive
         if (coupon.status !== "active") {
-            appliedCoupon = null;
+            appliedCoupon  = null;
             discountAmount = 0;
 
-            msgEl.textContent = "This coupon is no longer active.";
+            msgEl.textContent = "This coupon is not active.";
             msgEl.className = "text-sm text-red-600";
             msgEl.classList.remove("hidden");
 
@@ -903,32 +918,32 @@ document.getElementById("applyCouponBtn").addEventListener("click", async functi
             return sum + (parseFloat(item.total_price) || 0);
         }, 0);
 
-        if (coupon.type === "percentage") {
-            discountAmount = (subtotal * coupon.offer) / 100;
-        } else if (coupon.type === "flat") {
-            discountAmount = coupon.offer;
-        }
+        // API returns value like "20.00"
+        discountAmount = parseFloat(coupon.value) || 0;
 
+        // never exceed subtotal
         discountAmount = Math.min(discountAmount, subtotal);
 
         badgeEl.textContent = `Coupon applied: -₹${discountAmount.toFixed(2)}`;
         badgeEl.classList.remove("hidden");
 
-        msgEl.textContent = `Applied "${coupon.code}" successfully.`;
+        msgEl.textContent = `Applied "${coupon.key_name}" successfully.`;
         msgEl.className = "text-sm text-green-600";
         msgEl.classList.remove("hidden");
 
         renderSummary();
 
     } catch (err) {
-        console.error("Coupon fetch error:", err);
+        console.error("Coupon API error:", err);
+
+        appliedCoupon  = null;
+        discountAmount = 0;
 
         msgEl.textContent = "Failed to apply coupon.";
         msgEl.className = "text-sm text-red-600";
         msgEl.classList.remove("hidden");
     }
 });
-
 </script>
 
 <script>

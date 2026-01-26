@@ -186,6 +186,10 @@
       `;
       tbody.insertAdjacentHTML("beforeend", row);
     });
+    // ✅ RE-INIT MENU DROPDOWNS
+    if (window.KTMenu) {
+        KTMenu.createInstances();
+    }
   }
 
   function setupCouponPagination(total, limit, current) {
@@ -263,6 +267,71 @@
   function deleteCoupon(id) {
     alert("Delete coupon: " + id + " (hook API later)");
   }
+</script>
+
+<script>
+document.querySelector(".btn-primary").addEventListener("click", function (e) {
+  e.preventDefault();
+
+  Swal.fire({
+    title: "Add New Coupon",
+    html: `
+      <input id="new_key_name" class="swal2-input" placeholder="Key Name (e.g. WELCOME15)">
+      <input id="new_value" type="number" class="swal2-input" placeholder="Value (e.g. 15)">
+      
+      <select id="new_status" class="swal2-select">
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+
+      <input id="new_start_date" type="date" class="swal2-input">
+      <input id="new_end_date" type="date" class="swal2-input">
+    `,
+    confirmButtonText: "Create Coupon",
+    showCancelButton: true,
+    preConfirm: () => {
+      const key_name = document.getElementById("new_key_name").value.trim();
+      const value = document.getElementById("new_value").value.trim();
+      const status = document.getElementById("new_status").value;
+      const start_date = document.getElementById("new_start_date").value;
+      const end_date = document.getElementById("new_end_date").value;
+
+      if (!key_name || !value || !status || !start_date || !end_date) {
+        Swal.showValidationMessage("All fields are required");
+        return false;
+      }
+
+      return fetch("<?= $baseUrl ?>/api/admin/coupons/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+        },
+        body: JSON.stringify({
+          key_name: key_name,
+          value: Number(value),
+          status: status,
+          start_date: start_date,
+          end_date: end_date
+        }),
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (!data.success) {
+          throw new Error(data.message || "Coupon creation failed");
+        }
+        return data;
+      });
+    }
+  }).then(result => {
+    if (result.isConfirmed) {
+      Swal.fire("✅ Success!", "Coupon created successfully.", "success");
+      fetchCoupons(couponPage); // reload table
+    }
+  }).catch(err => {
+    Swal.fire("❌ Error", err.message || "Coupon creation failed", "error");
+  });
+});
 </script>
 
 <?php include("../footer.php"); ?>

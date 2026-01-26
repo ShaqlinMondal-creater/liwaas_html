@@ -163,7 +163,7 @@
           <td>${coupon.end_date}</td>
           <td class="text-center">
             <div class="menu flex-inline" data-menu="true">
-              <div class="menu-item" data-menu-item-toggle="dropdown">
+              <div class="menu-item" data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:click">
                 <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
                   <i class="ki-filled ki-dots-vertical"></i>
                 </button>

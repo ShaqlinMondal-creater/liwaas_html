@@ -261,6 +261,23 @@
   background: linear-gradient(135deg, #f4c134, #0b0b0b);
 }
 
+.grad-btn {
+  background: linear-gradient(135deg, #deb64c, #1a1a1a);
+  color: #fff;
+  box-shadow: 0 6px 15px rgba(79, 70, 229, 0.25);
+  transition: all 0.25s ease;
+}
+
+.grad-btn:hover {
+  /* transform: translateY(-2px); */
+  box-shadow: 0 10px 25px rgba(241, 190, 60, 0.35);
+  background: linear-gradient(135deg, #f4c134, #0b0b0b);
+}
+
+.grad-optional {
+  color: #c7aa28;
+}
+
 /* Discount bar */
 .discount-outside {
   width: 95%;

@@ -88,7 +88,7 @@
                 </div>
               </div>
               
-              <button id="checkoutBtn" class="grad-btn w-full py-3 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-[#c7aa28] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+              <button id="checkoutBtn" class="grad-btn w-full py-3 px-4 text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c7aa28] focus:ring-offset-2 transition-all">
                 Proceed to Checkout
               </button>
               

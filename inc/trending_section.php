@@ -575,8 +575,9 @@
 
 #login-flash-toast {
   position: fixed;
-  top: 50%;
+  bottom: 30px;
   left: 50%;
+  bottom:0;
   transform: translate(-50%, -50%) scale(0.95);
   background: #111827;
   color: #fff;

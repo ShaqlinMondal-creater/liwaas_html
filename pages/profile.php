@@ -1021,7 +1021,7 @@
                     const colorCode = getColorCode(variation.color);
 
                     container.innerHTML += `
-                        <div class="bg-white rounded-xl shadow-sm border group overflow-hidden">
+                        <div class="bg-white rounded-xl shadow-sm border group overflow-hidden glossy-card relative">
                             <div class="relative">
                                 <img src="${imageUrl}" alt="${item.product_name}" class="aspect-square object-cover rounded-t-xl"/>
                                 <button onclick="removeFromCart(${item.cart_id})" class="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">

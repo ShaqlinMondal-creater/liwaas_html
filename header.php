@@ -58,9 +58,6 @@
 </head>
 
 <body class="bg-gray-100">
-    <!-- Custom cursor (desktop only) -->
-    <!-- <div id="bubbleCursor" class="hidden md:block"></div> -->
-
     <!-- 📱 Mobile sticky footer nav -->
     <div class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow md:hidden mobile-action">
         <div class="flex justify-around items-center py-2 text-gray-600">

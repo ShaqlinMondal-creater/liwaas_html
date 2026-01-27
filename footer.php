@@ -220,8 +220,6 @@
         </div>
       </div>
     </footer>
-    <!-- <script src="Js/slider_blur.js"></script>
-    <script src="Js/cursor_effect.js"></script> -->
 </body>
 
 </html>

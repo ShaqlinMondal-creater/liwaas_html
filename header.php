@@ -228,50 +228,50 @@
     <!-- ----------  Nav SCRIPT  ---------- -->
     <script>
         (() => {
-        /* helpers */
-        const $ = id => document.getElementById(id);
+            /* helpers */
+            const $ = id => document.getElementById(id);
 
-        const hamburger = $('hamburger');
-        const mobileMenu = $('mobileMenu');
-        const avatarBtn = $('avatarBtn');
-        const avatarMenu = $('avatarMenu');
-        const bellBtn = $('bellBtn');
-        const bellMenu = $('bellMenu');
-        const bellPing = $('bellPing');
+            const hamburger = $('hamburger');
+            const mobileMenu = $('mobileMenu');
+            const avatarBtn = $('avatarBtn');
+            const avatarMenu = $('avatarMenu');
+            const bellBtn = $('bellBtn');
+            const bellMenu = $('bellMenu');
+            const bellPing = $('bellPing');
 
-        /* toggle helpers */
-        const toggle = (btn, menu) => btn.addEventListener('click', e => {
-            e.stopPropagation();                          // keep clicks inside
-            menu.classList.toggle('hidden');
-        });
+            /* toggle helpers */
+            const toggle = (btn, menu) => btn.addEventListener('click', e => {
+                e.stopPropagation();                          // keep clicks inside
+                menu.classList.toggle('hidden');
+            });
 
-        toggle(avatarBtn, avatarMenu);
-        toggle(bellBtn, bellMenu);
+            toggle(avatarBtn, avatarMenu);
+            toggle(bellBtn, bellMenu);
 
-        /* hamburger slide */
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('open');
-            mobileMenu.classList.toggle('open');
-        });
+            /* hamburger slide */
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('open');
+                mobileMenu.classList.toggle('open');
+            });
 
-        /* clear ping after first open */
-        bellBtn.addEventListener('click', () => bellPing?.remove(), { once: true });
+            /* clear ping after first open */
+            bellBtn.addEventListener('click', () => bellPing?.remove(), { once: true });
 
-        /* click‑outside to close */
-        document.addEventListener('click', e => {
-            if (!avatarMenu.contains(e.target) && !avatarBtn.contains(e.target))
-            avatarMenu.classList.add('hidden');
-            if (!bellMenu.contains(e.target) && !bellBtn.contains(e.target))
-            bellMenu.classList.add('hidden');
-        });
+            /* click‑outside to close */
+            document.addEventListener('click', e => {
+                if (!avatarMenu.contains(e.target) && !avatarBtn.contains(e.target))
+                avatarMenu.classList.add('hidden');
+                if (!bellMenu.contains(e.target) && !bellBtn.contains(e.target))
+                bellMenu.classList.add('hidden');
+            });
 
-        /* reset on resize ≥ md */
-        window.addEventListener('resize', () => {
-            if (innerWidth >= 768) {
-            mobileMenu.classList.remove('open');
-            hamburger.classList.remove('open');
-            }
-        });
+            /* reset on resize ≥ md */
+            window.addEventListener('resize', () => {
+                if (innerWidth >= 768) {
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('open');
+                }
+            });
         })();
     </script>
     <!-- ---------- End Nav SCRIPT  ---------- -->
@@ -407,67 +407,103 @@
             console.error('Search inputs or results containers not found');
             return;
         }
+        
+        // function showResults(container, results) {
+        //     if (results.length === 0) {
+        //     container.innerHTML = `<div class="p-2 text-gray-500">No products found.</div>`;
+        //     } else {
+        //     container.innerHTML = results.map(product => `
+        //         <a href="pages/product-detail?id=${product.id}" class="flex items-center gap-5 px-3 py-2 hover:bg-gray-100 border-b last:border-b-0">
+        //             <img src="assets/uploads/t-shirts/${product.image_url}" alt="${product.name}" class="w-12 h-12 object-cover rounded" />
+        //             <div>
+        //                 <p class="font-medium text-gray-900">${product.name}</p>
+        //                 <p class="text-xs text-gray-600">${product.tagline}</p>
+        //                 <p class="text-sm font-semibold">$${(product.price / 100).toFixed(2)}</p>
+        //             </div>
+        //         </a>
+        //     `).join('');
+        //     }
+        //     container.classList.remove('hidden');
+        // }
 
-        let productsCache = null;
         let debounceTimer;
-
-        function filterProducts(products, query) {
-            return products.filter(product => product.name.toLowerCase().includes(query));
-        }
-
-        function showResults(container, results) {
-            if (results.length === 0) {
-            container.innerHTML = `<div class="p-2 text-gray-500">No products found.</div>`;
-            } else {
-            container.innerHTML = results.map(product => `
-                <a href="pages/product-detail?id=${product.id}" class="flex items-center gap-5 px-3 py-2 hover:bg-gray-100 border-b last:border-b-0">
-                    <img src="assets/uploads/t-shirts/${product.image_url}" alt="${product.name}" class="w-12 h-12 object-cover rounded" />
-                    <div>
-                        <p class="font-medium text-gray-900">${product.name}</p>
-                        <p class="text-xs text-gray-600">${product.tagline}</p>
-                        <p class="text-sm font-semibold">$${(product.price / 100).toFixed(2)}</p>
-                    </div>
-                </a>
-            `).join('');
-            }
-            container.classList.remove('hidden');
-        }
-
         function setupSearch(inputElement, resultsContainer) {
             inputElement.addEventListener('input', () => {
-            clearTimeout(debounceTimer);
-            const query = inputElement.value.trim().toLowerCase();
+                clearTimeout(debounceTimer);
+                const query = inputElement.value.trim();
 
-            if (query.length < 3) {
-                resultsContainer.innerHTML = '';
-                resultsContainer.classList.add('hidden');
-                return;
-            }
-
-            debounceTimer = setTimeout(() => {
-                if (productsCache) {
-                showResults(resultsContainer, filterProducts(productsCache, query));
-                } else {
-                fetch('json/exclusiveProducts.json')
-                    .then(res => res.json())
-                    .then(products => {
-                    productsCache = products;
-                    showResults(resultsContainer, filterProducts(products, query));
-                    })
-                    .catch(() => {
-                    resultsContainer.innerHTML = '<div class="p-2 text-gray-500">Failed to load products.</div>';
-                    resultsContainer.classList.remove('hidden');
-                    });
+                if (query.length < 2) {
+                    resultsContainer.innerHTML = '';
+                    resultsContainer.classList.add('hidden');
+                    return;
                 }
-            }, 300);
+
+                debounceTimer = setTimeout(async () => {
+                    try {
+                        const res = await fetch(`${baseUrl}/products/allProducts`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ search: query })
+                        });
+
+                        const result = await res.json();
+
+                        if (!result.success || !Array.isArray(result.data)) {
+                            resultsContainer.innerHTML = `<div class="p-2 text-gray-500">No products found.</div>`;
+                            resultsContainer.classList.remove('hidden');
+                            return;
+                        }
+
+                        renderSearchResults(resultsContainer, result.data);
+                    } catch (err) {
+                        console.error("Search API error:", err);
+                        resultsContainer.innerHTML = `<div class="p-2 text-gray-500">Search failed.</div>`;
+                        resultsContainer.classList.remove('hidden');
+                    }
+                }, 350);
             });
 
             // Hide results when clicking outside
             document.addEventListener('click', e => {
-            if (!resultsContainer.contains(e.target) && e.target !== inputElement) {
-                resultsContainer.classList.add('hidden');
-            }
+                if (!resultsContainer.contains(e.target) && e.target !== inputElement) {
+                    resultsContainer.classList.add('hidden');
+                }
             });
+        }
+
+        function renderSearchResults(container, products) {
+            if (products.length === 0) {
+                container.innerHTML = `<div class="p-2 text-gray-500">No products found.</div>`;
+                container.classList.remove('hidden');
+                return;
+            }
+
+            container.innerHTML = products.map(product => {
+                const variation = product.variations?.[0] || {};
+                const imageUrl  = variation.images?.[0]?.url || "assets/placeholder.jpg";
+                const price     = variation.sell_price || "N/A";
+                const uid       = variation.uid || "";
+
+                return `
+                    <a href="pages/product-detail.php?id=${uid}"
+                    class="flex items-center gap-4 px-3 py-2 hover:bg-gray-100 border-b last:border-b-0">
+                        
+                        <img src="${imageUrl}" 
+                            alt="${product.name}" 
+                            class="w-12 h-12 object-cover rounded" />
+
+                        <div class="flex-1">
+                            <p class="font-medium text-gray-900">${product.name}</p>
+                            <p class="text-xs text-gray-600">${product.category?.name || ""}</p>
+                            <p class="text-sm font-semibold">₹${price}</p>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+
+            container.classList.remove('hidden');
         }
 
         if (mobileSearchInput && mobileResults) {

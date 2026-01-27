@@ -249,11 +249,10 @@
                 </div>
             </div>
         </main>
-
-
     </div>
-    <!-- ═══════════  END REAL CONTENT  ═══════════ -->
 
+
+    <!-- ═══════════  END REAL CONTENT  ═══════════ -->
     <script>
         // Fetch user details from localStorage
         const userName = localStorage.getItem('user_name') || 'Guest';
@@ -269,27 +268,27 @@
     </script>
 
     <script>
-    let COLOR_MAP = {};
+        let COLOR_MAP = {};
 
-    async function loadColorMap() {
-        try {
-        const res = await fetch("../stat-json/color.json");
-        const json = await res.json();
+        async function loadColorMap() {
+            try {
+            const res = await fetch("../stat-json/color.json");
+            const json = await res.json();
 
-        json.colors.forEach(c => {
-            COLOR_MAP[c.name.toLowerCase()] = c.code;
-        });
+            json.colors.forEach(c => {
+                COLOR_MAP[c.name.toLowerCase()] = c.code;
+            });
 
-        console.log("Color map loaded:", COLOR_MAP);
-        } catch (err) {
-        console.error("Failed to load color map:", err);
+            console.log("Color map loaded:", COLOR_MAP);
+            } catch (err) {
+            console.error("Failed to load color map:", err);
+            }
         }
-    }
 
-    function getColorCode(colorName) {
-        if (!colorName) return "#e5e7eb"; // fallback gray
-        return COLOR_MAP[colorName.toLowerCase()] || "#e5e7eb";
-    }
+        function getColorCode(colorName) {
+            if (!colorName) return "#e5e7eb"; // fallback gray
+            return COLOR_MAP[colorName.toLowerCase()] || "#e5e7eb";
+        }
     </script>
 
     <!-- Apis Setup -->
@@ -699,12 +698,6 @@
                 console.error("Error loading orders:", err);
             }
         }
-
-        window.addEventListener("load", () => {
-            document.getElementById("profile-skeleton").classList.add("hidden");
-            document.getElementById("profile-content").classList.remove("hidden");
-            loadOrders();
-        });
     </script>
 
     <!-- Fetch Address --> 
@@ -1235,13 +1228,25 @@
                 Swal.fire("Error", "Something went wrong.", "error");
             }
         }
+
+        function getTabFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const tab = params.get("tab");
+
+            const allowedTabs = ["orders", "addresses", "wishlist", "cart", "settings"];
+
+            return allowedTabs.includes(tab) ? tab : "settings";
+        }
+
         document.addEventListener("DOMContentLoaded", async () => {
             await loadColorMap();
 
             setTimeout(() => {
                 document.getElementById("profile-skeleton").classList.add("hidden");
                 document.getElementById("profile-content").classList.remove("hidden");
-                switchTab("settings");
+                const defaultTab = getTabFromURL();
+                switchTab(defaultTab);
+                // switchTab("settings");
             }, 500);
         });
 
@@ -1251,44 +1256,46 @@
     <script>
         // Initialise icons
         lucide.createIcons();
-
+        
         // === SWITCH TABS Function (Desktop + Mobile) ===
-        // 2️⃣ Then define switchTab
         function switchTab(tabId) {
-            // Hide all content panes
-            ['orders','addresses','wishlist','cart','settings'].forEach(id =>
-                document.getElementById(id).classList.add('hidden')
-            );
-            document.getElementById(tabId).classList.remove('hidden');
+        // 🔹 UPDATE URL when tab changes
+        history.replaceState(null, "", `?tab=${tabId}`);
 
-            // Desktop sidebar active state
-            document.querySelectorAll('.sidebar-btn').forEach(btn => {
-                btn.classList.remove('border-black');
-                btn.classList.add('border-transparent');
-            });
-            const sidebarActive = document.querySelector(`.sidebar-btn[onclick="switchTab('${tabId}')"]`);
-            if (sidebarActive) {
-                sidebarActive.classList.add('border-black');
-                sidebarActive.classList.remove('border-transparent');
-            }
+        // Hide all content panes
+        ['orders','addresses','wishlist','cart','settings'].forEach(id =>
+            document.getElementById(id).classList.add('hidden')
+        );
+        document.getElementById(tabId).classList.remove('hidden');
 
-            // Mobile tab active state
-            document.querySelectorAll('.mobile-tab-button').forEach(btn => {
-                btn.classList.remove('text-black', 'border-t-2', 'border-black');
-                btn.classList.add('text-gray-500');
-            });
-            const mobileActive = document.getElementById('tab-' + tabId);
-            if (mobileActive) {
-                mobileActive.classList.remove('text-gray-500');
-                mobileActive.classList.add('text-black', 'border-t-2', 'border-black');
-            }
+        // Desktop sidebar active state
+        document.querySelectorAll('.sidebar-btn').forEach(btn => {
+            btn.classList.remove('border-black');
+            btn.classList.add('border-transparent');
+        });
+        const sidebarActive = document.querySelector(`.sidebar-btn[onclick="switchTab('${tabId}')"]`);
+        if (sidebarActive) {
+            sidebarActive.classList.add('border-black');
+            sidebarActive.classList.remove('border-transparent');
+        }
 
-            // Load tab data
-            if (tabId === 'orders') loadOrders();
-            else if (tabId === 'addresses') loadAddresses();
-            else if (tabId === 'wishlist') loadWishlist();
-            else if (tabId === 'cart') loadCarts();
-            else if (tabId === 'settings') loadAccountDetails();
+        // Mobile tab active state
+        document.querySelectorAll('.mobile-tab-button').forEach(btn => {
+            btn.classList.remove('text-black', 'border-t-2', 'border-black');
+            btn.classList.add('text-gray-500');
+        });
+        const mobileActive = document.getElementById('tab-' + tabId);
+        if (mobileActive) {
+            mobileActive.classList.remove('text-gray-500');
+            mobileActive.classList.add('text-black', 'border-t-2', 'border-black');
+        }
+
+        // Load tab data
+        if (tabId === 'orders') loadOrders();
+        else if (tabId === 'addresses') loadAddresses();
+        else if (tabId === 'wishlist') loadWishlist();
+        else if (tabId === 'cart') loadCarts();
+        else if (tabId === 'settings') loadAccountDetails();
         }
 
         // 3️⃣ Only call switchTab after all definitions

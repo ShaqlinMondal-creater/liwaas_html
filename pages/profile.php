@@ -1043,7 +1043,7 @@
 
                                 <div class="flex items-center justify-between mt-2">
                                     <span class="font-bold text-base">₹${item.sell_price}</span>
-                                    <button onclick='window.location.href = "pages/product-detail.php?uid=${variation.uid}"' class="px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-black/90">
+                                    <button onclick='window.location.href = "pages/product-detail.php?uid=${variation.uid}"' class="grad-btn absolute right-0 bottom-6 md:bottom-4 inline-flex items-center gap-1 px-4 py-4 md:px-6 md:py-2 text-sm md:text-base rounded-l-full font-semibold">
                                         View Product
                                     </button>
                                 </div>

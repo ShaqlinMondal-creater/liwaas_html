@@ -422,7 +422,7 @@
 
                 debounceTimer = setTimeout(async () => {
                     try {
-                        const res = await fetch(`${baseUrl}/api/products/allProducts`, {
+                        const res = await fetch(`<?php echo $baseUrl; ?>/api/products/allProducts`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"

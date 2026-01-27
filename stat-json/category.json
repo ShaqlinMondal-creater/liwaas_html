@@ -1,0 +1,51 @@
+[
+    {
+      "category_id": "t-shirts",
+      "category_name": "T-Shirts",
+      "sort_number": 1,
+      "icon": "👕"
+    },
+    {
+      "category_id": "shirts",
+      "category_name": "Shirts",
+      "sort_number": 2,
+      "icon": "👔"
+    },
+    {
+      "category_id": "jeans",
+      "category_name": "Jeans",
+      "sort_number": 3,
+      "icon": "👖"
+    },
+    {
+      "category_id": "dresses",
+      "category_name": "Dresses",
+      "sort_number": 4,
+      "icon": "👗"
+    },
+    {
+      "category_id": "jackets",
+      "category_name": "Jackets",
+      "sort_number": 5,
+      "icon": "🧥"
+    },
+    {
+      "category_id": "shoes",
+      "category_name": "Shoes",
+      "sort_number": 6,
+      "icon": "👟"
+    },
+    {
+      "category_id": "bags",
+      "category_name": "Bags",
+      "sort_number": 7,
+      "icon": "👜"
+    },
+    {
+      "category_id": "accessories",
+      "category_name": "Accessories",
+      "sort_number": 8,
+      "icon": "🎩"
+    }
+]
+  

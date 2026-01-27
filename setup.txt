@@ -115,3 +115,11 @@ Add coupon -> Done ✅
 Fetch Coupons -> Done ✅
 Update Coupons -> Done ✅
 Delete Coupons -> Done ✅
+
+Category: -> need popup setup design
+Add Category: 
+Fetch Category:
+
+Brand: -> need popup setup design
+Add Brand: 
+Fetch Brand:

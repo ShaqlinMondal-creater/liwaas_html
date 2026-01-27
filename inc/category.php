@@ -5,7 +5,7 @@
 </section>
   <!-- 📂 Categories -->
   <script>
-    fetch("Json/category.json")
+    fetch("stat-json/category.json")
       .then(r=>r.json())
       .then(cats=>{
         cats.sort((a,b)=>a.sort_number-b.sort_number);

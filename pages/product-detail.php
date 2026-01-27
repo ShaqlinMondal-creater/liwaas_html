@@ -314,7 +314,7 @@
           </div>
         </div>
 
-        <?php include '../inc/related-product'; ?>       
+        <?php include '../inc/related-product.php'; ?>       
       </main>
 
       <script>

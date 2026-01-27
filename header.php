@@ -408,24 +408,6 @@
             return;
         }
         
-        // function showResults(container, results) {
-        //     if (results.length === 0) {
-        //     container.innerHTML = `<div class="p-2 text-gray-500">No products found.</div>`;
-        //     } else {
-        //     container.innerHTML = results.map(product => `
-        //         <a href="pages/product-detail?id=${product.id}" class="flex items-center gap-5 px-3 py-2 hover:bg-gray-100 border-b last:border-b-0">
-        //             <img src="assets/uploads/t-shirts/${product.image_url}" alt="${product.name}" class="w-12 h-12 object-cover rounded" />
-        //             <div>
-        //                 <p class="font-medium text-gray-900">${product.name}</p>
-        //                 <p class="text-xs text-gray-600">${product.tagline}</p>
-        //                 <p class="text-sm font-semibold">$${(product.price / 100).toFixed(2)}</p>
-        //             </div>
-        //         </a>
-        //     `).join('');
-        //     }
-        //     container.classList.remove('hidden');
-        // }
-
         let debounceTimer;
         function setupSearch(inputElement, resultsContainer) {
             inputElement.addEventListener('input', () => {

@@ -88,6 +88,12 @@
                         <i data-lucide="heart" class="w-5 h-5"></i>
                         <span class="text-[10px] leading-none">Wishlist</span>
                     </button>
+                    <button id="tab-notifications"
+                            class="mobile-tab-button flex-1 py-3 flex flex-col items-center gap-1 text-gray-500 hover:bg-gray-50"
+                            onclick="switchTab('notifications')">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                        <span class="text-[10px] leading-none">Alerts</span>
+                    </button>
                     <button id="tab-settings"
                             class="mobile-tab-button flex-1 py-3 flex flex-col items-center gap-1 text-gray-500 hover:bg-gray-50"
                             onclick="switchTab('settings')">
@@ -121,6 +127,12 @@
                             <i data-lucide="settings" class="w-5 h-5"></i>
                             <span>Account Settings</span>
                         </button>
+                        <button onclick="switchTab('notifications')" 
+                                    class="sidebar-btn w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-transparent">
+                            <i data-lucide="bell" class="w-5 h-5"></i>
+                            <span>Notifications</span>
+                        </button>
+
                     </div>
                 </div>
 
@@ -246,6 +258,65 @@
                             </button>
                         </div>
                     </div>
+
+                    <!-- Notifications Section (Hidden by default) -->
+                    <div id="notifications" class="hidden space-y-6">
+                    <h2 class="text-xl font-semibold">Notifications</h2>
+
+                    <div class="bg-white rounded-xl shadow-sm border p-4 max-h-[500px] overflow-y-auto space-y-4">
+
+                        <!-- System Message (Left) -->
+                        <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold">
+                            L
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded-lg max-w-[75%]">
+                            <p class="text-sm text-gray-800">
+                            🎉 Welcome to Liwaas! Your account has been created successfully.
+                            </p>
+                            <span class="text-[10px] text-gray-500 block mt-1">10:02 AM</span>
+                        </div>
+                        </div>
+
+                        <!-- User Message (Right) -->
+                        <div class="flex justify-end">
+                        <div class="bg-black text-white p-3 rounded-lg max-w-[75%]">
+                            <p class="text-sm">
+                            Thanks! Excited to shop here 😍
+                            </p>
+                            <span class="text-[10px] text-gray-300 block mt-1 text-right">10:03 AM</span>
+                        </div>
+                        </div>
+
+                        <!-- System Message -->
+                        <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold">
+                            L
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded-lg max-w-[75%]">
+                            <p class="text-sm text-gray-800">
+                            🚚 Your order <strong>#LIW12345</strong> has been shipped.
+                            </p>
+                            <span class="text-[10px] text-gray-500 block mt-1">Yesterday</span>
+                        </div>
+                        </div>
+
+                        <!-- Promotion -->
+                        <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-yellow-200 flex items-center justify-center text-xs font-bold">
+                            %
+                        </div>
+                        <div class="bg-yellow-100 p-3 rounded-lg max-w-[75%]">
+                            <p class="text-sm text-gray-800">
+                            🔥 Flat 20% OFF on Oversized T-Shirts. Use code <strong>LIWAAS20</strong>
+                            </p>
+                            <span class="text-[10px] text-gray-500 block mt-1">2 days ago</span>
+                        </div>
+                        </div>
+
+                    </div>
+                    </div>
+
                 </div>
             </div>
         </main>
@@ -1229,7 +1300,7 @@
             const params = new URLSearchParams(window.location.search);
             const tab = params.get("tab");
 
-            const allowedTabs = ["orders", "addresses", "wishlist", "cart", "settings"];
+            const allowedTabs = ["orders", "addresses", "wishlist", "cart", "settings", "notifications"];
 
             return allowedTabs.includes(tab) ? tab : "settings";
         }
@@ -1261,7 +1332,7 @@
             history.replaceState(null, "", url.toString());
 
             // Hide all content panes
-            ['orders','addresses','wishlist','cart','settings'].forEach(id =>
+            ['orders','addresses','wishlist','cart','settings','notifications'].forEach(id =>
                 document.getElementById(id).classList.add('hidden')
             );
             document.getElementById(tabId).classList.remove('hidden');
@@ -1294,6 +1365,9 @@
             else if (tabId === 'wishlist') loadWishlist();
             else if (tabId === 'cart') loadCarts();
             else if (tabId === 'settings') loadAccountDetails();
+            else if (tabId === 'notifications') {
+                // static for now – no API call
+            }
         }
 
         // 3️⃣ Only call switchTab after all definitions

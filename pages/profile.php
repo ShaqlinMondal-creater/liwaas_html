@@ -1034,13 +1034,9 @@
                                     <span>Size: ${variation.size}</span> | 
                                     <span class="flex items-center gap-1">
                                         <span class="w-4 h-4 rounded-full border" style="background-color: ${colorCode};"></span>
-                                    </span>
+                                    </span> |
+                                    <span>Color: ${item.quantity}</span>
                                 </p>
-
-                                <div class="mt-3 text-sm text-gray-600">
-                                    Quantity: ${item.quantity}
-                                </div>
-
                                 <div class="flex items-center justify-between mt-2">
                                     <span class="font-bold text-base">₹${item.sell_price}</span>
                                     <button onclick='window.location.href = "pages/product-detail.php?id=${variation.uid}"' class="grad-btn absolute right-0 bottom-6 md:bottom-4 inline-flex items-center gap-1 px-4 py-4 md:px-3 md:py-2 text-sm md:text-base rounded-l-full font-semibold">

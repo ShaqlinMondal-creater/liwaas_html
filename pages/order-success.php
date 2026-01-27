@@ -34,7 +34,7 @@
                     <p class="text-sm text-gray-500 mb-0.5 font-extrabold" id="order-code">.....</p>
                     <p class="font-medium text-gray-800" id="order-date">.....</p>
                 </div>
-                <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-700">
+                <a href="pages/profile?tab=orders" class="text-sm font-medium text-blue-600 hover:text-blue-700">
                     View Order Details →
                 </a>
             </header>
@@ -176,10 +176,10 @@
 
         <!-- Actions -->
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="pages/shop.php" class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-900 rounded-lg text-sm font-medium hover:bg-gray-100 transition">
+            <a href="pages/shop" class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-900 rounded-lg text-sm font-medium hover:bg-gray-100 transition">
                 Continue&nbsp;Shopping
             </a>
-            <a href="pages/profile.php" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition">
+            <a href="pages/profile" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition">
                 View Order History
             </a>
         </div>

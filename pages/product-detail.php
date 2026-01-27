@@ -222,7 +222,7 @@
             <div class="flex gap-4">
               <button
                 id="addToCartButton"
-                class="flex-1 py-3 px-6 flex items-center justify-center gap-2 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all"
+                class="flex-1 py-3 px-6 flex items-center justify-center gap-2 rounded-lg font-medium grad-btn text-white transition-all"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -314,7 +314,7 @@
           </div>
         </div>
 
-        <?php include '../inc/related-product.php'; ?>       
+        <?php include '../inc/related-product'; ?>       
       </main>
 
       <script>
@@ -699,7 +699,7 @@
             `;
 
             btn.onclick = () => {
-              window.location.href = "pages/cart.php";
+              window.location.href = "pages/cart";
             };
           });
         }
@@ -717,7 +717,7 @@
             btn.classList.remove("opacity-70", "cursor-not-allowed");
 
             btn.classList.remove("bg-orange-600", "hover:bg-orange-700", "bg-green-600");
-            btn.classList.add("bg-blue-600", "hover:bg-blue-700");
+            btn.classList.add("grad-btn");
 
             btn.innerHTML = `
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1350,7 +1350,7 @@
               cancelButtonText: "Cancel"
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.href = "sign-in.php";
+                window.location.href = "sign-in";
               }
             });
             return;

@@ -1039,7 +1039,7 @@
                                 </p>
                                 <div class="flex items-center justify-between mt-2">
                                     <span class="font-bold text-base">₹${item.sell_price}</span>
-                                    <button onclick='window.location.href = "pages/product-detail.php?id=${variation.uid}"' class="grad-btn absolute right-0 bottom-6 md:bottom-4 inline-flex items-center gap-1 px-4 py-4 md:px-3 md:py-2 text-sm md:text-base rounded-l-full font-semibold">
+                                    <button onclick='window.location.href = "pages/product-detail?id=${variation.uid}"' class="grad-btn absolute right-0 bottom-6 md:bottom-4 inline-flex items-center gap-1 px-4 py-4 md:px-3 md:py-2 text-sm md:text-base rounded-l-full font-semibold">
                                         View Product
                                     </button>
                                 </div>
@@ -1137,7 +1137,7 @@
                     container.innerHTML += `
                         <div class="bg-white rounded-xl shadow-sm border group overflow-hidden glossy-card relative cursor-pointer">
                             <div class="relative">
-                                <img src="${imageUrl}" alt="${product.name}" class="w-full aspect-square object-cover rounded-t-xl" onclick="window.location.href='pages/product-detail.php?id=${variation.uid}'"/>
+                                <img src="${imageUrl}" alt="${product.name}" class="w-full aspect-square object-cover rounded-t-xl" onclick="window.location.href='pages/product-detail?id=${variation.uid}'"/>
                                 <button onclick="removeFromWishlist(${item.id})" class="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
                                     <i data-lucide="trash" class="w-5 h-5 text-red-500"></i>
                                 </button>

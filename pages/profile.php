@@ -1199,7 +1199,7 @@
         // Add To cart Functionality
         async function addToCart(productId, aid, uid) {
             try {
-                const res = await fetch(`${baseUrl}/api/customer/cart/create-cart`, {
+                const res = await fetch(`${baseUrl}/api/cart/create-cart`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

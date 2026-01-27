@@ -268,6 +268,30 @@
         document.getElementById('avatar').textContent = firstLetter;
     </script>
 
+    <script>
+    let COLOR_MAP = {};
+
+    async function loadColorMap() {
+        try {
+        const res = await fetch("../inc/color.json");
+        const json = await res.json();
+
+        json.colors.forEach(c => {
+            COLOR_MAP[c.name.toLowerCase()] = c.code;
+        });
+
+        console.log("Color map loaded:", COLOR_MAP);
+        } catch (err) {
+        console.error("Failed to load color map:", err);
+        }
+    }
+
+    function getColorCode(colorName) {
+        if (!colorName) return "#e5e7eb"; // fallback gray
+        return COLOR_MAP[colorName.toLowerCase()] || "#e5e7eb";
+    }
+    </script>
+
     <!-- Apis Setup -->
     <script>
         const baseUrl = "<?= $baseUrl ?>"; // already set from PHP config
@@ -488,12 +512,13 @@
                             if (variation.uid) {
                                 uids.push(variation.uid);
                             }
+                            const colorCode = getColorCode(variation.color);
 
                             itemsHtml += `
                             <div class="flex justify-between">
                                 <div class="text-sm mb-2">
                                     <strong>Item${index + 1}:</strong> ${product.name} x ${item.quantity}
-                                    <span class="inline-block w-3 h-3 rounded-full ml-3 border" style="background:${variation.color}"></span> | ${variation.size}
+                                    <span class="inline-block w-3 h-3 rounded-full ml-3 border" style="background:${colorCode}"></span> | ${variation.size}
                                 </div>
                                 <strong>${item.total}</strong> 
                             </div>
@@ -1000,7 +1025,7 @@
                     let imageUrl = variation.images?.[0] || "assets/placeholder.jpg";
                     // imageUrl = imageUrl.replace("http://127.0.0.1:8000/uploads/http://", "http://");
 
-                    const colorValue = variation.color || "#ccc";
+                    const colorCode = getColorCode(variation.color);
 
                     container.innerHTML += `
                         <div class="bg-white rounded-xl shadow-sm border group overflow-hidden">
@@ -1015,7 +1040,7 @@
                                 <p class="text-sm text-gray-500 mt-1 flex items-center gap-2">
                                     <span>Size: ${variation.size}</span> | 
                                     <span class="flex items-center gap-1">
-                                        <span class="w-4 h-4 rounded-full border" style="background-color: ${colorValue};"></span>
+                                        <span class="w-4 h-4 rounded-full border" style="background-color: ${colorCode};"></span>
                                     </span>
                                 </p>
 
@@ -1025,7 +1050,7 @@
 
                                 <div class="flex items-center justify-between mt-2">
                                     <span class="font-bold text-base">₹${item.sell_price}</span>
-                                    <button onclick='window.location.href="pages/product-detail.php?slug=${item.slug || ""}"' class="px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-black/90">
+                                    <button onclick='window.location.href = "pages/product-detail.php?uid=${variation.uid}"' class="px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-black/90">
                                         View Product
                                     </button>
                                 </div>
@@ -1118,12 +1143,12 @@
 
                     // Clean up malformed image URLs
                     let imageUrl = variation.images?.[0] || "assets/placeholder.jpg";
-                    const colorValue = variation.color || "#ccc";
+                    const colorCode = getColorCode(variation.color);
 
                     container.innerHTML += `
                         <div class="bg-white rounded-xl shadow-sm border group overflow-hidden cursor-pointer">
                             <div class="relative">
-                                <img src="${imageUrl}" alt="${product.name}" class="w-full aspect-square object-cover rounded-t-xl" onclick="window.location.href='pages/product-detail.php?slug=${product.slug}'"/>
+                                <img src="${imageUrl}" alt="${product.name}" class="w-full aspect-square object-cover rounded-t-xl" onclick="window.location.href='pages/product-detail.php?uid=${variation.uid}'"/>
                                 <button onclick="removeFromWishlist(${item.id})" class="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
                                     <i data-lucide="trash" class="w-5 h-5 text-red-500"></i>
                                 </button>
@@ -1133,7 +1158,7 @@
                                 <p class="text-sm text-gray-500 mt-1 flex items-center gap-2">
                                     <span>Size: ${variation.size}</span> | 
                                     <span class="flex items-center gap-1">
-                                        <span class="w-4 h-4 rounded-full border" style="background-color: ${variation.color};"></span>
+                                        <span class="w-4 h-4 rounded-full border" style="background-color: ${colorCode};"></span>
                                         
                                     </span>
                                 </p>
@@ -1210,6 +1235,16 @@
                 Swal.fire("Error", "Something went wrong.", "error");
             }
         }
+        document.addEventListener("DOMContentLoaded", async () => {
+            await loadColorMap();
+
+            setTimeout(() => {
+                document.getElementById("profile-skeleton").classList.add("hidden");
+                document.getElementById("profile-content").classList.remove("hidden");
+                switchTab("settings");
+            }, 500);
+        });
+
     </script>
 
     <!-- Static Js -->
@@ -1257,13 +1292,13 @@
         }
 
         // 3️⃣ Only call switchTab after all definitions
-        document.addEventListener("DOMContentLoaded", () => {
-            setTimeout(() => {
-                document.getElementById("profile-skeleton").classList.add("hidden");
-                document.getElementById("profile-content").classList.remove("hidden");
-                switchTab("settings");
-            }, 500);
-        });
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     setTimeout(() => {
+        //         document.getElementById("profile-skeleton").classList.add("hidden");
+        //         document.getElementById("profile-content").classList.remove("hidden");
+        //         switchTab("settings");
+        //     }, 500);
+        // });
     </script>
     
 <?php include("../footer.php"); ?>

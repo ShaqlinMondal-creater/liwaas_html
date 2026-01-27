@@ -717,7 +717,7 @@
             btn.classList.remove("opacity-70", "cursor-not-allowed");
 
             btn.classList.remove("bg-orange-600", "hover:bg-orange-700", "bg-green-600");
-            btn.classList.add("grad-btn");
+            btn.classList.add("bg-blue-600", "hover:bg-blue-700");
 
             btn.innerHTML = `
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1088,45 +1088,8 @@
             }
           });
 
-          // Wishlist toggle
-          // const wishlistButton = document.getElementById('wishlistButton');
-          // if (wishlistButton) {
-          //   wishlistButton.addEventListener('click', () => {
-          //     const icon = wishlistButton.querySelector('svg');
-          //     wishlistButton.classList.toggle('bg-red-50');
-          //     wishlistButton.classList.toggle('border-red-200');
-          //     wishlistButton.classList.toggle('text-red-500');
-          //     if (icon) icon.classList.toggle('fill-red-500');
-          //   });
-          // }
-
           // Add to cart
           const addToCartButton = document.getElementById('addToCartButton');
-          // if (addToCartButton) {
-          //   let isAnimating = false;
-          //   addToCartButton.addEventListener('click', () => {
-          //     if (isAnimating) return;
-              
-          //     isAnimating = true;
-          //     const originalContent = addToCartButton.innerHTML;
-
-          //     addToCartButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-          //     addToCartButton.classList.add('bg-green-600');
-          //     addToCartButton.innerHTML = `
-          //       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          //         <polyline points="20 6 9 17 4 12"></polyline>
-          //       </svg>
-          //       Added to Cart
-          //     `;
-
-          //     setTimeout(() => {
-          //       addToCartButton.classList.remove('bg-green-600');
-          //       addToCartButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
-          //       addToCartButton.innerHTML = originalContent;
-          //       isAnimating = false;
-          //     }, 2000);
-          //   });
-          // }
         }
 
         // ========== INITIALIZATION ==========

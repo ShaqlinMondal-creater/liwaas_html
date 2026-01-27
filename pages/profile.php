@@ -1259,43 +1259,45 @@
         
         // === SWITCH TABS Function (Desktop + Mobile) ===
         function switchTab(tabId) {
-        // 🔹 UPDATE URL when tab changes
-        history.replaceState(null, "", `?tab=${tabId}`);
+            // 🔹 UPDATE URL when tab changes (BASE-HREF SAFE)
+            const url = new URL(window.location.href);
+            url.searchParams.set("tab", tabId);
+            history.replaceState(null, "", url.toString());
 
-        // Hide all content panes
-        ['orders','addresses','wishlist','cart','settings'].forEach(id =>
-            document.getElementById(id).classList.add('hidden')
-        );
-        document.getElementById(tabId).classList.remove('hidden');
+            // Hide all content panes
+            ['orders','addresses','wishlist','cart','settings'].forEach(id =>
+                document.getElementById(id).classList.add('hidden')
+            );
+            document.getElementById(tabId).classList.remove('hidden');
 
-        // Desktop sidebar active state
-        document.querySelectorAll('.sidebar-btn').forEach(btn => {
-            btn.classList.remove('border-black');
-            btn.classList.add('border-transparent');
-        });
-        const sidebarActive = document.querySelector(`.sidebar-btn[onclick="switchTab('${tabId}')"]`);
-        if (sidebarActive) {
-            sidebarActive.classList.add('border-black');
-            sidebarActive.classList.remove('border-transparent');
-        }
+            // Desktop sidebar active state
+            document.querySelectorAll('.sidebar-btn').forEach(btn => {
+                btn.classList.remove('border-black');
+                btn.classList.add('border-transparent');
+            });
+            const sidebarActive = document.querySelector(`.sidebar-btn[onclick="switchTab('${tabId}')"]`);
+            if (sidebarActive) {
+                sidebarActive.classList.add('border-black');
+                sidebarActive.classList.remove('border-transparent');
+            }
 
-        // Mobile tab active state
-        document.querySelectorAll('.mobile-tab-button').forEach(btn => {
-            btn.classList.remove('text-black', 'border-t-2', 'border-black');
-            btn.classList.add('text-gray-500');
-        });
-        const mobileActive = document.getElementById('tab-' + tabId);
-        if (mobileActive) {
-            mobileActive.classList.remove('text-gray-500');
-            mobileActive.classList.add('text-black', 'border-t-2', 'border-black');
-        }
+            // Mobile tab active state
+            document.querySelectorAll('.mobile-tab-button').forEach(btn => {
+                btn.classList.remove('text-black', 'border-t-2', 'border-black');
+                btn.classList.add('text-gray-500');
+            });
+            const mobileActive = document.getElementById('tab-' + tabId);
+            if (mobileActive) {
+                mobileActive.classList.remove('text-gray-500');
+                mobileActive.classList.add('text-black', 'border-t-2', 'border-black');
+            }
 
-        // Load tab data
-        if (tabId === 'orders') loadOrders();
-        else if (tabId === 'addresses') loadAddresses();
-        else if (tabId === 'wishlist') loadWishlist();
-        else if (tabId === 'cart') loadCarts();
-        else if (tabId === 'settings') loadAccountDetails();
+            // Load tab data
+            if (tabId === 'orders') loadOrders();
+            else if (tabId === 'addresses') loadAddresses();
+            else if (tabId === 'wishlist') loadWishlist();
+            else if (tabId === 'cart') loadCarts();
+            else if (tabId === 'settings') loadAccountDetails();
         }
 
         // 3️⃣ Only call switchTab after all definitions

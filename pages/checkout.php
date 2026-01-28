@@ -1057,7 +1057,7 @@ document.getElementById("placeOrderBtn").addEventListener("click", async functio
 
     // COD → success page
     if (payload.payment_type === "COD") {
-      window.location.href = `${baseUrl}/order-success.php?order_id=${result.order_id}`;
+      window.location.href = `pages/order-success.php?order_id=${result.order_id}`;
       return;
     }
 

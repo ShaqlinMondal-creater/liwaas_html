@@ -62,7 +62,7 @@ need modification on account details (full)✅
 need modification on address (full)✅
 need modification on cart (full)✅
 need modification on wishlist (full)✅
-
+need modification on notification -- set this dynamic
 ---------------------------------------
 cart page:
 need modification (all done)✅
@@ -97,12 +97,27 @@ Refund Policy       -- processing
 Cancellation Policy -- processing
 Disclaimer          -- processing
 
+
+shop : empty product showing
+
+cart : empty cart image 
+
+add new address : state and city for undertsanding
+
+remove shipping from backend razorpay order create
+
+Create User Mail = chnage link of login to ..
+
+
 UNIVERSEL SETTING->
 -------------------
 
-header -->
-footer -->
-color uses ->
+header --> Done ✅
+footer --> Done ✅
+color uses -> Done ✅
+
+signin --> Done ✅ -- set google auth 
+signup --> Done ✅ -- set this also with google
 
 ADMIN:
 

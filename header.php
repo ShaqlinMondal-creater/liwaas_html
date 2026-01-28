@@ -166,8 +166,8 @@
                 </div>
 
                 <div class="relative">
-                    <a href="pages/cart" class="flex flex-col items-center text-sm hover:text-indigo-600">
-                        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <a href="pages/cart" class="flex flex-col items-center text-sm text-gray-400 hover:text-indigo-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
                             <circle cx="9" cy="19" r="2" />
                             <circle cx="17" cy="19" r="2" />

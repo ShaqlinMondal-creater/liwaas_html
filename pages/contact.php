@@ -61,7 +61,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-800">Phone Support</h3>
                 </div>
-                <p class="text-gray-600 mb-2"><strong>Phone:</strong> +91-<?php echo $basePhone; ?></p>
+                <p class="text-gray-600 mb-2"><strong>Phone:</strong><?php echo $basePhone; ?></p>
                 <p class="text-gray-600">Monday to Saturday, 10:00 AM – 6:00 PM IST.</p>
             </div>
 
@@ -78,7 +78,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-800">Business Address</h3>
                 </div>
-                <p class="text-gray-600 mb-2"><strong>Address:</strong><?php echo $baseAddress; ?> India</p>
+                <p class="text-gray-600 mb-2"><strong>Address:</strong><?php echo $baseAddress; ?>, India</p>
                 <p class="text-gray-600">Registered business location.</p>
             </div>
 
@@ -300,7 +300,7 @@
                                         d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
                                     </path>
                                 </svg>
-                                <span>+91 <?php echo $basePhone; ?></span>
+                                <span><?php echo $basePhone; ?></span>
                             </div>
                         </div>
                     </div>

@@ -172,7 +172,6 @@
                             <circle cx="9" cy="19" r="2" />
                             <circle cx="17" cy="19" r="2" />
                         </svg>
-                        <span class="text-xs">Cart</span>
                     </a>
                 </div>
 

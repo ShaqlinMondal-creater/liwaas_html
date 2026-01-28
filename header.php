@@ -228,6 +228,7 @@
     <!-- ----------  Nav SCRIPT  ---------- -->
     <script>
         (() => {
+            /* helpers */
             const $ = id => document.getElementById(id);
 
             const hamburger = $('hamburger');
@@ -235,45 +236,44 @@
             const avatarBtn = $('avatarBtn');
             const avatarMenu = $('avatarMenu');
             const bellBtn = $('bellBtn');
+            const bellMenu = $('bellMenu');
             const bellPing = $('bellPing');
 
-            /* avatar toggle */
-            avatarBtn?.addEventListener('click', e => {
-                e.stopPropagation();
-                avatarMenu.classList.toggle('hidden');
+            /* toggle helpers */
+            const toggle = (btn, menu) => btn.addEventListener('click', e => {
+                e.stopPropagation();                          // keep clicks inside
+                menu.classList.toggle('hidden');
             });
 
-            /* 🔔 bell → redirect */
-            bellBtn?.addEventListener('click', () => {
-                window.location.href = 'pages/profile.php?tab=notifications';
-            });
+            toggle(avatarBtn, avatarMenu);
+            toggle(bellBtn, bellMenu);
 
-            /* hamburger */
+            /* hamburger slide */
             hamburger.addEventListener('click', () => {
                 hamburger.classList.toggle('open');
                 mobileMenu.classList.toggle('open');
             });
 
-            /* remove ping once */
-            bellBtn?.addEventListener('click', () => bellPing?.remove(), { once: true });
+            /* clear ping after first open */
+            bellBtn.addEventListener('click', () => bellPing?.remove(), { once: true });
 
-            /* click outside */
+            /* click‑outside to close */
             document.addEventListener('click', e => {
-                if (!avatarMenu.contains(e.target) && !avatarBtn.contains(e.target)) {
-                    avatarMenu.classList.add('hidden');
-                }
+                if (!avatarMenu.contains(e.target) && !avatarBtn.contains(e.target))
+                avatarMenu.classList.add('hidden');
+                if (!bellMenu.contains(e.target) && !bellBtn.contains(e.target))
+                bellMenu.classList.add('hidden');
             });
 
-            /* reset on resize */
+            /* reset on resize ≥ md */
             window.addEventListener('resize', () => {
                 if (innerWidth >= 768) {
-                    mobileMenu.classList.remove('open');
-                    hamburger.classList.remove('open');
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('open');
                 }
             });
         })();
     </script>
-
     <!-- ---------- End Nav SCRIPT  ---------- -->
 
     <!--nav logic with backend  -->

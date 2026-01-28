@@ -72,12 +72,12 @@
             </a>
 
             <a href="pages/cart" class="flex flex-col items-center text-sm hover:text-indigo-600">
-            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
-                <circle cx="9" cy="19" r="2" />
-                <circle cx="17" cy="19" r="2" />
-            </svg>
-            <span class="text-xs">Cart</span>
+                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
+                    <circle cx="9" cy="19" r="2" />
+                    <circle cx="17" cy="19" r="2" />
+                </svg>
+                <span class="text-xs">Cart</span>
             </a>
 
             <a href="#" class="flex flex-col items-center text-sm hover:text-indigo-600">
@@ -90,7 +90,7 @@
             </a>
 
             <!-- Login (guest only) -->
-            <a href="sign-in.php" id="mobileLogin" class="flex flex-col items-center text-sm hover:text-blue-500 hidden">
+            <a href="sign-in" id="mobileLogin" class="flex flex-col items-center text-sm hover:text-blue-500 hidden">
             <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
                 <path d="M10 17l5-5-5-5" />
@@ -165,6 +165,17 @@
                     <div id="desktopSearchResults" class="absolute z-50 left-0 right-0 mt-1 bg-white border rounded-lg shadow max-h-64 overflow-y-auto hidden"></div>
                 </div>
 
+                <div class="relative">
+                    <a href="pages/cart" class="flex flex-col items-center text-sm hover:text-indigo-600">
+                        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
+                            <circle cx="9" cy="19" r="2" />
+                            <circle cx="17" cy="19" r="2" />
+                        </svg>
+                        <span class="text-xs">Cart</span>
+                    </a>
+                </div>
+
                 <!-- Bell -->
                 <div class="relative">
                     <button id="bellBtn" aria-label="Notifications">
@@ -187,7 +198,7 @@
                             <li class="dropdown-item">Price drop on “Stylish Jacket”.</li>
                             <li class="dropdown-item">You earned +50 reward points!</li>
                         </ul>
-                        <a href="pages/profile.php?tab=notifications" class="block text-center text-indigo-600 py-2 hover:bg-gray-50
+                        <a href="pages/profile?tab=notifications" class="block text-center text-indigo-600 py-2 hover:bg-gray-50
                               rounded-b-xl font-medium">View all</a>
                     </div>
                 </div>
@@ -197,10 +208,9 @@
                     <img id="avatarBtn" src="https://i.pravatar.cc/40?img=32" alt="User Avatar"
                         class="h-9 w-9 rounded-full cursor-pointer ring-2 ring-white">
                     <div id="avatarMenu" class="dropdown avatar-menu hidden w-44 right-0 mt-4">
-                        <a href="sign-in.php" class="dropdown-link">Login</a>
+                        <a href="sign-in" class="dropdown-link">Login</a>
                         <a href="#" class="dropdown-link">Logout</a>
-                        <a href="pages/cart.php" class="dropdown-link">Cart</a>
-                        <a href="pages/profile.php" class="dropdown-link">Profile</a>
+                        <a href="pages/profile" class="dropdown-link">Profile</a>
                         <!-- <a href="/account" class="dropdown-link">Account</a> -->
                     </div>
                 </div>
@@ -218,9 +228,9 @@
         <div id="mobileMenu" class="mobile-menu md:hidden absolute left-0 right-0 top-full
             bg-white/95 backdrop-blur shadow-lg px-4 py-3 space-y-2 rounded-b-2xl">
             <a href="" class="mobile-link">Home</a>
-            <a href="pages/shop.php" class="mobile-link">Shop</a>
-            <a href="pages/about.php" class="mobile-link">About</a>
-            <a href="pages/contact.php" class="mobile-link">Contact</a>
+            <a href="pages/shop" class="mobile-link">Shop</a>
+            <a href="pages/about" class="mobile-link">About</a>
+            <a href="pages/contact" class="mobile-link">Contact</a>
         </div>
     </nav>
     <!-- ╚═══════════════════════════════════════════════════════╝ -->
@@ -364,7 +374,7 @@
                     e.preventDefault();
 
                     const token = localStorage.getItem('auth_token');
-                    if (!token) return window.location.href = 'sign-in.php';
+                    if (!token) return window.location.href = 'sign-in';
 
                     try {
                         const response = await fetch('<?php echo $baseUrl; ?>/api/logout', {
@@ -380,7 +390,7 @@
                         if (result.success) {
                             // Clear all user data
                             localStorage.clear();
-                            window.location.href = 'sign-in.php';
+                            window.location.href = 'sign-in';
                         } else {
                             alert(result.message || 'Logout failed.');
                         }
@@ -469,7 +479,7 @@
                 const uid       = variation.uid || "";
 
                 return `
-                    <a href="pages/product-detail.php?id=${uid}"
+                    <a href="pages/product-detail?id=${uid}"
                     class="flex items-center gap-4 px-3 py-2 hover:bg-gray-100 border-b last:border-b-0">
                         
                         <img src="${imageUrl}" 

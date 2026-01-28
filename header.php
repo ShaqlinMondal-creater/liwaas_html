@@ -6,6 +6,7 @@
     // Access values
     $baseUrl   = $config['API_BASE_URL'];
     $baseName = $config['BASE_NAME'];
+    $tagLine = $config['TAG_LINE'];
     $baseLogo  = $config['BASE_LOGO'];
     $baseFavicon  = $config['BASE_FAV_ICON'];
     $baseAddress   = $config['BASE_ADDRESS'];
@@ -16,7 +17,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Liwaas - Carfted for You </title>
+    <title><?= $baseName; ?> - <?= $tagLine; ?> </title>
     <meta name="description" content="Liwaas is an Indian streetwear brand crafting premium oversized T-shirts and everyday apparel. Discover our story, mission, and journey." />
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>

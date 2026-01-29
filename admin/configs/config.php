@@ -13,8 +13,8 @@ return [
   'BASE_EMAIL'   => 'business.liwaas@gmail.com',
   'BASE_PHONE'   => '+91 8927830869',
   'RAZORPAY_KEY' => 'rzp_test_8WG68Pg2DZy2bj', // Replace with your Razorpay Key ID
-
-
+  
+  // Google Auth Setup
   'API_KEY' =>'AIzaSyBhczhhGDgEisFpQfzFbvhpc0vlXuHFVg8',
   'AUTH_DOMAIN' => 'liwaas-001.firebaseapp.com',
   'PROJECT_ID' => 'liwaas-001',

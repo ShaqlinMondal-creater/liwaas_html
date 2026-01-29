@@ -55,10 +55,10 @@
 
             <!-- Sign Up Form -->
             <!-- ================= RIGHT SECTION (SMALL) ================= -->
-            <div class="lg:col-span-2 max-w-md ml-auto">
+            <div class="lg:col-span-2 max-w-lg ml-auto">
                 <div class="glass-effect rounded-2xl p-8 shadow-2xl">
                     <form class="space-y-3" action="#" method="POST" id="signupForm">
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label for="firstName" class="block text-sm font-medium text-white mb-1">First Name</label>
                                 <input id="firstName" name="firstName" type="text" required 
@@ -73,75 +73,84 @@
                             </div>
                         </div>
 
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-white mb-1">Email Address</label>
-                            <input id="email" name="email" type="email" autocomplete="email" required 
-                                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all"
-                                placeholder="john@example.com">
-                            <div id="emailError" class="text-red-300 text-sm mt-1 hidden">Please enter a valid email address</div>
-                        </div>
-
-                        <div>
-                            <label for="phone" class="block text-sm font-medium text-white mb-1">Phone Number</label>
-                            <input id="phone" name="phone" type="tel" required 
-                                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all"
-                                placeholder="+91 98765 43210"
-                                maxlength="11"
-                                oninput="validateIndianMobile()">
-                            <div id="phoneError" class="text-red-300 text-sm mt-1 hidden">
-                                Please enter a valid Indian mobile number (10 digits starting with 6-9)
-                            </div>
-                        </div>
-
-
-                        <div>
-                            <label for="address" class="block text-sm font-medium text-white mb-1">Address <span class="text-white/60">(Optional)</span></label>
-                            <textarea id="address" name="address" rows="3"
-                                    class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all resize-none"
-                                    placeholder="Enter your complete address"></textarea>
-                        </div>
-                        <div>
-                            <label for="password" class="block text-sm font-medium text-white mb-1">Password</label>
-                            <div class="relative">
-                                <input id="password" name="password" type="password" required 
-                                    class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all pr-12"
-                                    placeholder="Create a strong password"
-                                    oninput="checkPasswordStrength()">
-                                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center" onclick="togglePassword('password')">
-                                    <svg id="password-eye-icon" class="h-5 w-5 text-white/60 hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <!-- Password Strength Meter -->
-                            <div class="mt-2">
-                                <div class="flex space-x-1">
-                                    <div id="strength-1" class="strength-meter flex-1 bg-white/20"></div>
-                                    <div id="strength-2" class="strength-meter flex-1 bg-white/20"></div>
-                                    <div id="strength-3" class="strength-meter flex-1 bg-white/20"></div>
-                                    <div id="strength-4" class="strength-meter flex-1 bg-white/20"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Email -->
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-white mb-1">Email Address</label>
+                                <input id="email" name="email" type="email" required
+                                    class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white"
+                                    placeholder="john@example.com">
+                                <div id="emailError" class="text-red-300 text-sm mt-1 hidden">
+                                    Please enter a valid email address
                                 </div>
-                                <p id="strength-text" class="text-xs text-white/60 mt-1">Password strength</p>
+                            </div>
+
+                            <!-- Phone -->
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-white mb-1">Phone Number</label>
+                                <input id="phone" name="phone" type="tel" required 
+                                    class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all"
+                                    placeholder="+91 98765 43210"
+                                    maxlength="11"
+                                    oninput="validateIndianMobile()">
+                                <div id="phoneError" class="text-red-300 text-sm mt-1 hidden">
+                                    Please enter a valid Indian mobile number (10 digits starting with 6-9)
+                                </div>
                             </div>
                         </div>
 
-                        <div>
-                            <label for="confirmPassword" class="block text-sm font-medium text-white mb-1">Confirm Password</label>
-                            <div class="relative">
-                                <input id="confirmPassword" name="confirmPassword" type="password" required 
-                                    class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all pr-12"
-                                    placeholder="Confirm your password"
-                                    oninput="checkPasswordMatch()">
-                                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center" onclick="togglePassword('confirmPassword')">
-                                    <svg id="confirm-eye-icon" class="h-5 w-5 text-white/60 hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                    </svg>
-                                </button>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="password" class="block text-sm font-medium text-white mb-1">Password</label>
+                                <div class="relative">
+                                    <input id="password" name="password" type="password" required 
+                                        class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all pr-12"
+                                        placeholder="Create a strong password"
+                                        oninput="checkPasswordStrength()">
+                                    <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center" onclick="togglePassword('password')">
+                                        <svg id="password-eye-icon" class="h-5 w-5 text-white/60 hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- Password Strength Meter -->
+                                <div class="mt-2">
+                                    <div class="flex space-x-1">
+                                        <div id="strength-1" class="strength-meter flex-1 bg-white/20"></div>
+                                        <div id="strength-2" class="strength-meter flex-1 bg-white/20"></div>
+                                        <div id="strength-3" class="strength-meter flex-1 bg-white/20"></div>
+                                        <div id="strength-4" class="strength-meter flex-1 bg-white/20"></div>
+                                    </div>
+                                    <p id="strength-text" class="text-xs text-white/60 mt-1">Password strength</p>
+                                </div>
                             </div>
-                            <div id="passwordMatch" class="text-sm mt-1 hidden">
-                                <span id="matchText"></span>
+                            <div>
+                                <label for="confirmPassword" class="block text-sm font-medium text-white mb-1">Confirm Password</label>
+                                <div class="relative">
+                                    <input id="confirmPassword" name="confirmPassword" type="password" required 
+                                        class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all pr-12"
+                                        placeholder="Confirm your password"
+                                        oninput="checkPasswordMatch()">
+                                    <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center" onclick="togglePassword('confirmPassword')">
+                                        <svg id="confirm-eye-icon" class="h-5 w-5 text-white/60 hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div id="passwordMatch" class="text-sm mt-1 hidden">
+                                    <span id="matchText"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="address" class="block text-sm font-medium text-white mb-1">Address <span class="text-white/60">(Optional)</span></label>
+                                <textarea id="address" name="address" rows="3"
+                                        class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all resize-none"
+                                        placeholder="Enter your complete address"></textarea>
                             </div>
                         </div>
 

@@ -13,4 +13,14 @@ return [
   'BASE_EMAIL'   => 'business.liwaas@gmail.com',
   'BASE_PHONE'   => '+91 8927830869',
   'RAZORPAY_KEY' => 'rzp_test_8WG68Pg2DZy2bj', // Replace with your Razorpay Key ID
+
+
+  'API_KEY' =>'AIzaSyBhczhhGDgEisFpQfzFbvhpc0vlXuHFVg8',
+  'AUTH_DOMAIN' => 'liwaas-001.firebaseapp.com',
+  'PROJECT_ID' => 'liwaas-001',
+  'STORAGE_BUCKET' => 'liwaas-001.firebasestorage.app',
+  'MESSAGEING_SENDER_ID' => '1084572979566',
+  'APP_ID' => '1:1084572979566:web:0ff41edcb6ec1bfba4b17f',
+  'MEASUREMENT_ID' => 'G-ZFHFRV9NBT'
 ];
+

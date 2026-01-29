@@ -226,10 +226,6 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
     <script>
         function togglePassword(fieldId) {
             const passwordInput = document.getElementById(fieldId);

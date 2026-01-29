@@ -48,10 +48,10 @@
             </div>
 
             <!-- Divider -->
-            <div class="hidden lg:block absolute left-[60%] top-1/2 -translate-y-1/2 h-2/3 w-px bg-white/10"></div>
+            <!-- <div class="hidden lg:block absolute left-[60%] top-1/2 -translate-y-1/2 h-2/3 w-px bg-white/10"></div> -->
 
             <!-- ================= RIGHT (40%) ================= -->
-            <div class="lg:col-span-5 max-w-md ml-auto">
+            <div class="lg:col-span-5 flex flex-col justify-center text-center lg:text-left space-y-6 px-4 lg:pr-12 mt-2 mb-1">
                 <div class="glass-effect rounded-2xl p-8 shadow-2xl">
 
                     <form id="forgotForm" class="space-y-5">

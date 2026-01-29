@@ -111,7 +111,7 @@
 
                             <!-- Social Login -->
                             <div class="grid grid-cols-2 gap-3">
-                                <button type="button" onclick="googleSignIn()" class="w-full inline-flex justify-center py-2 px-4 border border-white/20 rounded-lg bg-white/10 text-sm font-medium text-white hover:bg-white/20 transition-all">
+                                <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-white/20 rounded-lg bg-white/10 text-sm font-medium text-white hover:bg-white/20 transition-all">
                                     <svg class="w-5 h-5" viewBox="0 0 24 24">
                                         <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                                         <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -139,72 +139,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Firebase SDK -->
-        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
-        <script>
-            const firebaseConfig = {
-                apiKey: "<?php echo $config['API_KEY']; ?>",
-                authDomain: "<?php echo $config['AUTH_DOMAIN']; ?>",
-                projectId: "<?php echo $config['PROJECT_ID']; ?>",
-                storageBucket: "<?php echo $config['STORAGE_BUCKET']; ?>",
-                messagingSenderId: "<?php echo $config['MESSAGING_SENDER_ID']; ?>",
-                appId: "<?php echo $config['APP_ID']; ?>",
-                measurementId: "<?php echo $config['MEASUREMENT_ID']; ?>"
-            };
-
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            const auth = firebase.auth();
-
-        </script>
-
-        <script>
-            async function googleSignIn() {
-                const provider = new firebase.auth.GoogleAuthProvider();
-
-                try {
-                    const result = await auth.signInWithPopup(provider);
-                    const user = result.user;
-
-                    const idToken = await user.getIdToken(true);
-
-                    const response = await fetch(
-                        "<?php echo $baseUrl; ?>/api/auth/google",
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Accept": "application/json"
-                            },
-                            body: JSON.stringify({ idToken })
-                        }
-                    );
-
-                    const data = await response.json();
-
-                    if (!data.success) {
-                        alert(data.message || "Google login failed");
-                        return;
-                    }
-
-                    localStorage.setItem("auth_token", data.token);
-                    localStorage.setItem("user_id", data.user.id);
-                    localStorage.setItem("user_email", data.user.email);
-                    localStorage.setItem("user_name", data.user.name);
-                    localStorage.setItem("user_role", data.user.role);
-
-                    window.location.href = "home.php";
-
-                } catch (error) {
-                    console.error("Google Login Error:", error);
-                    alert("Google sign-in failed. Please allow popups and try again.");
-                }
-            }
-        </script>
 
         <script>
             function togglePassword() {

@@ -21,7 +21,7 @@
         .glass-effect {
             backdrop-filter: blur(16px);
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* border: 1px solid rgba(255, 255, 255, 0.2); */
         }
         .strength-meter {
             height: 4px;
@@ -57,16 +57,16 @@
             <!-- ================= RIGHT SECTION (SMALL) ================= -->
             <div class="lg:col-span-2 max-w-md ml-auto">
                 <div class="glass-effect rounded-2xl p-8 shadow-2xl">
-                    <form class="space-y-6" action="#" method="POST" id="signupForm">
+                    <form class="space-y-3" action="#" method="POST" id="signupForm">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label for="firstName" class="block text-sm font-medium text-white mb-2">First Name</label>
+                                <label for="firstName" class="block text-sm font-medium text-white mb-1">First Name</label>
                                 <input id="firstName" name="firstName" type="text" required 
                                     class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all"
                                     placeholder="John">
                             </div>
                             <div>
-                                <label for="lastName" class="block text-sm font-medium text-white mb-2">Last Name</label>
+                                <label for="lastName" class="block text-sm font-medium text-white mb-1">Last Name</label>
                                 <input id="lastName" name="lastName" type="text" required 
                                     class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all"
                                     placeholder="Doe">
@@ -74,7 +74,7 @@
                         </div>
 
                         <div>
-                            <label for="email" class="block text-sm font-medium text-white mb-2">Email Address</label>
+                            <label for="email" class="block text-sm font-medium text-white mb-1">Email Address</label>
                             <input id="email" name="email" type="email" autocomplete="email" required 
                                 class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all"
                                 placeholder="john@example.com">
@@ -82,7 +82,7 @@
                         </div>
 
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-white mb-2">Phone Number</label>
+                            <label for="phone" class="block text-sm font-medium text-white mb-1">Phone Number</label>
                             <input id="phone" name="phone" type="tel" required 
                                 class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all"
                                 placeholder="+91 98765 43210"
@@ -95,13 +95,13 @@
 
 
                         <div>
-                            <label for="address" class="block text-sm font-medium text-white mb-2">Address <span class="text-white/60">(Optional)</span></label>
+                            <label for="address" class="block text-sm font-medium text-white mb-1">Address <span class="text-white/60">(Optional)</span></label>
                             <textarea id="address" name="address" rows="3"
                                     class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all resize-none"
                                     placeholder="Enter your complete address"></textarea>
                         </div>
                         <div>
-                            <label for="password" class="block text-sm font-medium text-white mb-2">Password</label>
+                            <label for="password" class="block text-sm font-medium text-white mb-1">Password</label>
                             <div class="relative">
                                 <input id="password" name="password" type="password" required 
                                     class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all pr-12"
@@ -127,7 +127,7 @@
                         </div>
 
                         <div>
-                            <label for="confirmPassword" class="block text-sm font-medium text-white mb-2">Confirm Password</label>
+                            <label for="confirmPassword" class="block text-sm font-medium text-white mb-1">Confirm Password</label>
                             <div class="relative">
                                 <input id="confirmPassword" name="confirmPassword" type="password" required 
                                     class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all pr-12"

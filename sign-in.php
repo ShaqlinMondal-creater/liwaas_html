@@ -21,7 +21,7 @@
             .glass-effect {
                 backdrop-filter: blur(16px);
                 background: rgba(255, 255, 255, 0.1);
-                border: 1px solid rgba(255, 255, 255, 0.2);
+                /* border: 1px solid rgba(255, 255, 255, 0.2); */
             }
         </style>
     </head>

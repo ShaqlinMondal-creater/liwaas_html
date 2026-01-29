@@ -38,7 +38,7 @@
     <div class="relative z-10 min-h-screen flex items-center justify-center px-6 lg:px-16">
         <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-10 gap-10 items-center">
             <!-- ================= LEFT SECTION (WIDE) ================= -->
-            <div class="lg:col-span-2 max-w-lg ml-auto">
+            <div class="lg:col-span-6 flex flex-col justify-center text-center lg:text-left space-y-6 px-4 lg:pr-12">
                 <div class="mx-auto lg:mx-0 h-24 w-24 rounded-full overflow-hidden shadow-lg border-2 border-white/40">
                     <img src="assets/brand/li.jpg" alt="Liwaas Logo" class="w-full h-full object-cover" />
                 </div>

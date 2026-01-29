@@ -38,7 +38,7 @@
     <div class="relative z-10 min-h-screen flex items-center justify-center px-6 lg:px-16">
         <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-10 gap-10 items-center">
             <!-- ================= LEFT SECTION (WIDE) ================= -->
-            <div class="lg:col-span-6 flex flex-col justify-center text-center lg:text-left space-y-6 px-4 lg:pr-12">
+            <div class="lg:col-span-5 flex flex-col justify-center text-center lg:text-left space-y-6 px-4 lg:pr-12">
                 <div class="mx-auto lg:mx-0 h-24 w-24 rounded-full overflow-hidden shadow-lg border-2 border-white/40">
                     <img src="assets/brand/li.jpg" alt="Liwaas Logo" class="w-full h-full object-cover" />
                 </div>
@@ -56,9 +56,9 @@
             
             <!-- Sign Up Form -->
             <!-- ================= RIGHT SECTION (SMALL) ================= -->
-            <div class="lg:col-span-4 max-w-xl ml-auto">
+            <div class="lg:col-span-5 flex flex-col justify-center text-center lg:text-left space-y-6 px-4 lg:pr-12 mt-2 mb-1">
                 <div class="glass-effect rounded-2xl p-8 shadow-2xl">
-                    <form class="space-y-3" action="#" method="POST" id="signupForm">
+                    <form class="space-y-3 text-left" action="#" method="POST" id="signupForm">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label for="firstName" class="block text-sm font-medium text-white mb-1">First Name</label>
@@ -146,10 +146,10 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
                             <div>
                                 <label for="address" class="block text-sm font-medium text-white mb-1">Address <span class="text-white/60">(Optional)</span></label>
-                                <textarea id="address" name="address" rows="3"
+                                <textarea id="address" name="address" rows="1"
                                         class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all resize-none"
                                         placeholder="Enter your complete address"></textarea>
                             </div>

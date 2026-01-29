@@ -29,11 +29,11 @@
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm z-0"></div>
 
     <!-- Main -->
-    <div class="relative z-10 min-h-screen flex items-center justify-center px-6 lg:px-16">
-        <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-10 gap-10 items-center">
+    <div class="relative z-10 w-full min-h-screen flex items-center justify-center px-6 lg:px-16">
+        <div class="w-full max-w-9xl grid grid-cols-1 lg:grid-cols-10 gap-10 items-center">
 
             <!-- ================= LEFT (60%) ================= -->
-            <div class="lg:col-span-6 flex flex-col justify-center space-y-6 text-center lg:text-left px-4 lg:pr-12">
+            <div class="lg:col-span-5 flex flex-col justify-center space-y-6 text-center lg:text-left px-4 lg:pr-12">
                 <div class="mx-auto lg:mx-0 h-24 w-24 rounded-full overflow-hidden border-2 border-white/40 shadow-lg">
                     <img src="assets/brand/li.jpg" class="w-full h-full object-cover" alt="Liwaas">
                 </div>
@@ -51,7 +51,7 @@
             <div class="hidden lg:block absolute left-[60%] top-1/2 -translate-y-1/2 h-2/3 w-px bg-white/10"></div>
 
             <!-- ================= RIGHT (40%) ================= -->
-            <div class="lg:col-span-4 max-w-md ml-auto">
+            <div class="lg:col-span-5 max-w-md ml-auto">
                 <div class="glass-effect rounded-2xl p-8 shadow-2xl">
 
                     <form id="forgotForm" class="space-y-5">

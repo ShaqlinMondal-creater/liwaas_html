@@ -31,7 +31,7 @@
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm z-0"></div>
 
         <!-- Main Content -->
-        <div class="relative z-10 min-h-screen flex items-center justify-center px-6 lg:px-16">
+        <div class="relative w-full z-10 min-h-screen flex items-center justify-center px-6 lg:px-16">
             <div class="w-full max-w-9xl grid grid-cols-1 lg:grid-cols-10 gap-10 items-center">
 
                 <!-- ================= LEFT SECTION (WIDE) ================= -->

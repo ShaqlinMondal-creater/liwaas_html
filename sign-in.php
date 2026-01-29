@@ -32,10 +32,10 @@
 
         <!-- Main Content -->
         <div class="relative z-10 min-h-screen flex items-center justify-center px-6 lg:px-16">
-            <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-5 gap-10 items-center">
+            <div class="w-full max-w-9xl grid grid-cols-1 lg:grid-cols-10 gap-10 items-center">
 
                 <!-- ================= LEFT SECTION (WIDE) ================= -->
-                <div class="lg:col-span-3 text-center lg:text-left space-y-6 px-4">
+                <div class="lg:col-span-5 flex flex-col justify-center text-center lg:text-left space-y-6 px-4 lg:pr-12">
                     <div class="mx-auto lg:mx-0 h-24 w-24 rounded-full overflow-hidden shadow-lg border-2 border-white/40">
                         <img src="assets/brand/li.jpg" alt="Liwaas Logo" class="w-full h-full object-cover" />
                     </div>
@@ -50,7 +50,7 @@
                 </div>
 
                 <!-- ================= RIGHT SECTION (SMALL) ================= -->
-                <div class="lg:col-span-2">
+                <div class="lg:col-span-5 flex flex-col justify-center text-center lg:text-left space-y-6 px-4 lg:pr-12 mt-2 mb-1">
                     <!-- Sign In Form -->
                     <div class="glass-effect rounded-2xl p-8 shadow-2xl">
                         <form id="sign_in_form" class="space-y-6" method="POST">

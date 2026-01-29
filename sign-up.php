@@ -52,7 +52,7 @@
                 </p>
             </div>
 
-            <div class="hidden lg:block absolute left-[60%] top-1/2 -translate-y-1/2 h-2/3 w-px bg-white/10"></div>
+            <!-- <div class="hidden lg:block absolute left-[60%] top-1/2 -translate-y-1/2 h-2/3 w-px bg-white/10"></div> -->
             
             <!-- Sign Up Form -->
             <!-- ================= RIGHT SECTION (SMALL) ================= -->

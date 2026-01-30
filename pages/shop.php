@@ -558,28 +558,22 @@
 
     function showNoProducts() {
         productGrid.innerHTML = `
-            <div class="col-span-full flex flex-col items-center justify-center py-20">
+            <div class="col-span-full flex items-center justify-center min-h-[500px] md:min-h-[600px]">
 
-                <!-- Desktop Image -->
-                <img src="../assets/cooming_soon_desktop.png" 
-                    alt="No Products"
-                    class="hidden md:block w-[500px] opacity-95 mb-6">
+                <!-- Desktop -->
+                <img src="assets/cooming_soon_desktop.png"
+                    alt="Coming Soon"
+                    class="hidden md:block w-full max-w-5xl object-contain">
 
-                <!-- Mobile Image -->
-                <img src="../assets/cooming_soon_mobile.png" 
-                    alt="No Products"
-                    class="block md:hidden w-72 opacity-95 mb-6">
+                <!-- Mobile -->
+                <img src="assets/cooming_soon_mobile.png"
+                    alt="Coming Soon"
+                    class="block md:hidden w-full object-contain">
 
-                <h2 class="text-xl font-semibold text-gray-700 mb-2">
-                    No Products Found
-                </h2>
-
-                <p class="text-gray-500 text-sm text-center px-4">
-                    Please check back later or try different filters.
-                </p>
             </div>
         `;
     }
+
 
     // FETCH PRODUCTS
     function fetchAndRenderProducts() {

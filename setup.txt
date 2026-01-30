@@ -97,10 +97,6 @@ Refund Policy       -- processing
 Cancellation Policy -- processing
 Disclaimer          -- processing
 
-cart : empty cart image 
-
-add new address : state and city for undertsanding
-
 remove shipping from backend razorpay order create
 
 Create User Mail = chnage link of login to ..

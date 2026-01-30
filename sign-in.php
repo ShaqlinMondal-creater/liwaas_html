@@ -83,7 +83,7 @@
                                     <label for="remember-me" class="ml-2 block text-sm text-white/80">Remember me</label>
                                 </div>
                                 <div class="text-sm">
-                                    <a href="#" class="text-white/80 hover:text-white transition-colors">Forgot password?</a>
+                                    <a href="forget-password" class="text-white/80 hover:text-white transition-colors">Forgot password?</a>
                                 </div>
                             </div>
 

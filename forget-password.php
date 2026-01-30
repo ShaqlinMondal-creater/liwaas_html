@@ -29,7 +29,7 @@
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm z-0"></div>
 
     <!-- Main -->
-    <div class="relative z-10 w-full min-h-screen flex items-center justify-center px-6 lg:px-16">
+    <div class="relative z-10 w-full min-h-screen flex items-center justify-center px-0 lg:px-16">
         <div class="w-full max-w-9xl grid grid-cols-1 lg:grid-cols-10 gap-10 items-center">
 
             <!-- ================= LEFT (60%) ================= -->
@@ -42,7 +42,7 @@
                     Forgot Password?
                 </h2>
 
-                <p class="text-lg text-white/80 max-w-md mx-auto lg:mx-0">
+                <p class="text-lg text-left text-white/80 max-w-md mx-auto lg:mx-0">
                     Don’t worry. We’ll help you reset your password securely and get you back to Liwaas.
                 </p>
             </div>

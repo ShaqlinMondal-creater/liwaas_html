@@ -109,7 +109,7 @@ signin --> Done ✅
 signup --> Done ✅
 
 ADMIN:
-SHIPPING ADD after ORDER is more than : 10000
+SHIPPING ADD after ORDER is more than : 10000  ✅
 
 Product:
 Add product -> Done ✅

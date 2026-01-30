@@ -107,6 +107,10 @@ color uses -> Done ✅
 
 signin --> Done ✅
 signup --> Done ✅
+forget-password -> setup with api 
+home page cart : add more size available for the popup
+glarry section : on hover after 2 second open the slider 
+nav show the cart count
 
 ADMIN:
 SHIPPING ADD after ORDER is more than : 10000  ✅

@@ -129,14 +129,14 @@
         <div class="max-w-7xl mx-auto flex items-center justify-between">
 
             <!-- ◀︎ Logo -->
-            <a href="" class="flex items-center space-x-2">
+            <a href="/" class="flex items-center space-x-2">
                 <img src="assets/brand/liwaas_logo_white_png.png" alt="Logo" class="h-10 md:h-14">
                 <!-- <span class="hidden sm:inline text-xl font-bold text-indigo-600">Brand</span> -->
             </a>
 
             <!-- ◀︎ Desktop NAV -->
             <ul class="hidden md:flex items-center space-x-8 font-semibold tracking-wide">
-                <li><a href="" class="nav-link">Home</a></li>
+                <li><a href="/" class="nav-link">Home</a></li>
                 <li><a href="pages/shop" class="nav-link">Shop</a></li>
                 <li><a href="pages/about-us" class="nav-link">About</a></li>
                 <li><a href="pages/blogs" class="nav-link">Blogs</a></li>
@@ -227,9 +227,9 @@
         <!-- ◀︎ Mobile drawer -->
         <div id="mobileMenu" class="mobile-menu md:hidden absolute left-0 right-0 top-full
             bg-white/95 backdrop-blur shadow-lg px-4 py-3 space-y-2 rounded-b-2xl">
-            <a href="" class="mobile-link">Home</a>
+            <a href="/" class="mobile-link">Home</a>
             <a href="pages/shop" class="mobile-link">Shop</a>
-            <a href="pages/about" class="mobile-link">About</a>
+            <a href="pages/about-us" class="mobile-link">About</a>
             <a href="pages/contact" class="mobile-link">Contact</a>
         </div>
     </nav>

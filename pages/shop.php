@@ -478,25 +478,46 @@
             body: JSON.stringify(body)
         })
         .then(res => res.json())
+        // .then(data => {
+        //     if (data.success && Array.isArray(data.data)) {
+
+        //         renderProducts(data.data);
+        //         filters.offset += data.data.length;
+
+        //         // if (data.data.length < filters.limit) {
+        //         //     hasMore = false;
+
+        //         //     // 🔥 show "no more products"
+        //         //     loadMoreIndicator.innerText = "No more products";
+        //         // }
+        //         // 🔥 First load and no products
+
+        //         // ✅ FIRST LOAD & NO PRODUCTS
+        //         if (filters.offset === 0 && data.data.length === 0) {
+        //             hasMore = false;
+        //             showNoProducts();
+        //             loadMoreIndicator.classList.add("hidden");
+        //             return;
+        //         }
+
+        //         // ✅ Normal rendering
+        //         renderProducts(data.data);
+        //         filters.offset += data.data.length;
+
+        //         // ✅ No more pages
+        //         if (data.data.length < filters.limit) {
+        //             hasMore = false;
+        //         }
+            
+        //     }
+        // })
         .then(data => {
             if (data.success && Array.isArray(data.data)) {
-
-                renderProducts(data.data);
-                filters.offset += data.data.length;
-
-                // if (data.data.length < filters.limit) {
-                //     hasMore = false;
-
-                //     // 🔥 show "no more products"
-                //     loadMoreIndicator.innerText = "No more products";
-                // }
-                // 🔥 First load and no products
 
                 // ✅ FIRST LOAD & NO PRODUCTS
                 if (filters.offset === 0 && data.data.length === 0) {
                     hasMore = false;
                     showNoProducts();
-                    loadMoreIndicator.classList.add("hidden");
                     return;
                 }
 
@@ -504,11 +525,10 @@
                 renderProducts(data.data);
                 filters.offset += data.data.length;
 
-                // ✅ No more pages
+                // ✅ Stop infinite scroll if last page
                 if (data.data.length < filters.limit) {
                     hasMore = false;
                 }
-            
             }
         })
         .finally(() => {
@@ -593,15 +613,31 @@
         .then(res => res.json())
         .then(data => {
             skeletonLoader.style.display = "none";
+            // if (data.success && Array.isArray(data.data)) {
+            //     filters.totalPages = Math.ceil(data.total / filters.limit);
+
+            //     renderProducts(data.data);
+            //     paginationContainer.style.display = "flex";
+            //     renderPagination();
+            // } else {
+            //     showNoProducts();
+            // }
             if (data.success && Array.isArray(data.data)) {
+
+                // ✅ If empty array
+                if (data.data.length === 0) {
+                    showNoProducts();
+                    paginationContainer.style.display = "none";
+                    return;
+                }
+
                 filters.totalPages = Math.ceil(data.total / filters.limit);
 
                 renderProducts(data.data);
                 paginationContainer.style.display = "flex";
                 renderPagination();
-            } else {
-                showNoProducts();
             }
+
         });
     }
 

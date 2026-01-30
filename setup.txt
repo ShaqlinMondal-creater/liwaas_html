@@ -97,10 +97,6 @@ Refund Policy       -- processing
 Cancellation Policy -- processing
 Disclaimer          -- processing
 
-remove shipping from backend razorpay order create
-
-Create User Mail = chnage link of login to ..
-
 
 UNIVERSEL SETTING->
 -------------------
@@ -113,6 +109,7 @@ signin --> Done ✅
 signup --> Done ✅
 
 ADMIN:
+SHIPPING ADD after ORDER is more than : 10000
 
 Product:
 Add product -> Done ✅

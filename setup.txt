@@ -116,8 +116,8 @@ header --> Done ✅
 footer --> Done ✅
 color uses -> Done ✅
 
-signin --> Done ✅ -- set google auth 
-signup --> Done ✅ -- set this also with google
+signin --> Done ✅
+signup --> Done ✅
 
 ADMIN:
 

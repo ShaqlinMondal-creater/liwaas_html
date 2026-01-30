@@ -484,12 +484,31 @@
                 renderProducts(data.data);
                 filters.offset += data.data.length;
 
+                // if (data.data.length < filters.limit) {
+                //     hasMore = false;
+
+                //     // 🔥 show "no more products"
+                //     loadMoreIndicator.innerText = "No more products";
+                // }
+                // 🔥 First load and no products
+
+                // ✅ FIRST LOAD & NO PRODUCTS
+                if (filters.offset === 0 && data.data.length === 0) {
+                    hasMore = false;
+                    showNoProducts();
+                    loadMoreIndicator.classList.add("hidden");
+                    return;
+                }
+
+                // ✅ Normal rendering
+                renderProducts(data.data);
+                filters.offset += data.data.length;
+
+                // ✅ No more pages
                 if (data.data.length < filters.limit) {
                     hasMore = false;
-
-                    // 🔥 show "no more products"
-                    loadMoreIndicator.innerText = "No more products";
                 }
+            
             }
         })
         .finally(() => {
@@ -515,6 +534,31 @@
                 loadMoreFromApi();
             }
         });
+    }
+
+    function showNoProducts() {
+        productGrid.innerHTML = `
+            <div class="col-span-full flex flex-col items-center justify-center py-20">
+
+                <!-- Desktop Image -->
+                <img src="../assets/cooming_soon_desktop.png" 
+                    alt="No Products"
+                    class="hidden md:block w-[500px] opacity-95 mb-6">
+
+                <!-- Mobile Image -->
+                <img src="../assets/cooming_soon_mobile.png" 
+                    alt="No Products"
+                    class="block md:hidden w-72 opacity-95 mb-6">
+
+                <h2 class="text-xl font-semibold text-gray-700 mb-2">
+                    No Products Found
+                </h2>
+
+                <p class="text-gray-500 text-sm text-center px-4">
+                    Please check back later or try different filters.
+                </p>
+            </div>
+        `;
     }
 
     // FETCH PRODUCTS
@@ -556,7 +600,7 @@
                 paginationContainer.style.display = "flex";
                 renderPagination();
             } else {
-                productGrid.innerHTML = "<p class='text-center w-full'>No products found.</p>";
+                showNoProducts();
             }
         });
     }

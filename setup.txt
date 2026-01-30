@@ -97,9 +97,6 @@ Refund Policy       -- processing
 Cancellation Policy -- processing
 Disclaimer          -- processing
 
-
-shop : empty product showing
-
 cart : empty cart image 
 
 add new address : state and city for undertsanding

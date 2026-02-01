@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
               <!-- SLIDE PANEL -->
               <div id="slide${index}"
-                class="absolute inset-0 bg-black/90 flex items-center justify-center transform translate-x-full transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
+                class="absolute inset-0 bg-black/90 flex items-center justify-center transform translate-x-full transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] pointer-events-none">
 
                 <div class="text-center">
                   <p class="text-xl font-bold mb-2 text-white">
@@ -114,21 +114,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                   </button>
                 </div>
               </div>
-
-              <!-- TOGGLE BUTTON -->
-              <button data-index="${index}"
-                class="toggle-btn absolute top-1/2 right-2 transform -translate-y-1/2 bg-white p-1 rounded-full shadow">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="w-5 h-5"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-                  <path d="m15 18-6-6 6-6"/>
-                </svg>
-              </button>
-
             </div>
           </div>
         </div>

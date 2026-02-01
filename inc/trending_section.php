@@ -237,10 +237,8 @@
 
                         <!-- SIZE -->
                         <div class="flex items-center gap-2">
-                          <strong>Size:</strong>
-                          <span class="px-3 py-1 border rounded-md text-sm bg-gray-100">
-                            ${size}
-                          </span>
+                          <strong class="block mb-2">Select Size:</strong>
+                          <div id="size-options" class="flex gap-3 flex-wrap"></div>
                         </div>
                       </div>
 
@@ -318,6 +316,45 @@
                 const totalPrice = Swal.getPopup().querySelector('#total-price');
                 const confirmBtn = Swal.getPopup().querySelector('#confirm-add-cart');
 
+                // 🔥 ALL VARIATIONS
+                const allVariations = product.variations || [variation];
+                let selectedVariation = allVariations[0];
+                const sizeContainer = Swal.getPopup().querySelector('#size-options');
+
+                // Render sizes
+                allVariations.forEach((v, index) => {
+                  const sizeBtn = document.createElement('button');
+                  sizeBtn.textContent = v.size;
+                  sizeBtn.className =
+                    "px-4 py-2 border rounded-md text-sm hover:bg-black hover:text-white transition";
+
+                  if (index === 0) {
+                    sizeBtn.classList.add("bg-black", "text-white");
+                  }
+
+                  sizeBtn.addEventListener('click', () => {
+                    // remove active from others
+                    sizeContainer.querySelectorAll('button').forEach(btn =>
+                      btn.classList.remove("bg-black", "text-white")
+                    );
+
+                    sizeBtn.classList.add("bg-black", "text-white");
+
+                    selectedVariation = v;
+
+                    // update price
+                    const newSell = parseFloat(v.sell_price || 0);
+                    const newRegular = parseFloat(v.regular_price || newSell);
+
+                    qtyInput.value = 1;
+                    totalPrice.textContent = `₹${newSell.toFixed(2)}`;
+
+                  });
+
+                  sizeContainer.appendChild(sizeBtn);
+                });
+
+
                 const updatePrice = () => {
                   const qty = Math.max(1, parseInt(qtyInput.value) || 1);
 
@@ -352,8 +389,8 @@
 
                   let payload = {
                     products_id: product.id,
-                    aid: variation.aid,
-                    uid: variation.uid,
+                    aid: selectedVariation.aid,
+                    uid: selectedVariation.uid,
                     quantity: qty
                   };
 

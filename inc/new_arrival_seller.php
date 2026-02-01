@@ -6,10 +6,10 @@
         <!-- Skeleton or Product Cards will be injected here -->
       </div>
       <button onclick="slide(-1)" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-200 rounded-full p-2 shadow hover:bg-gray-300 transition-colors z-10">
-        ◀
+        <i data-lucide="arrow-left" class="w-6 h-6"></i>
       </button>
       <button onclick="slide(1)" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 rounded-full p-2 shadow hover:bg-gray-300 transition-colors z-10">
-        ▶
+        <i data-lucide="arrow-right" class="w-6 h-6"></i>
       </button>
     </div>
   </div>

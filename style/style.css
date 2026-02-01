@@ -223,7 +223,7 @@
 /* Featured Products */
 #featured-products {
   /* background: #fff; */
-  background: orange;
+  background: radial-gradient(#0a0a00, #fff, #deb64c);
 }
 
 .featured-card {

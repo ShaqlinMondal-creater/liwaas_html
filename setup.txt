@@ -108,7 +108,7 @@ color uses -> Done ✅
 signin --> Done ✅
 signup --> Done ✅
 forget-password -> setup with api 
-home page cart : add more size available for the popup
+home page cart : add more size available for the popup -> Done ✅
 glarry section : on hover after 2 second open the slider 
 nav show the cart count
 

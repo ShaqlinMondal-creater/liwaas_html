@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   <p class="text-3xl font-bold mb-4 text-white">
                     ₹${sellPrice.toFixed(2)}
                   </p>
-                  <<button class="buy-now-btn bg-black text-white px-4 py-1 rounded-full font-bold hover:bg-gray-900 transition"
+                  <button class="buy-now-btn bg-black text-white px-4 py-1 rounded-full font-bold hover:bg-gray-900 transition"
                           data-uid="${variation.uid}">
                     Buy Now
                   </button>
@@ -154,14 +154,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     /* ========== Slide Toggle + Color Bind ========== */
-    document.querySelectorAll('.toggle-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const index = btn.dataset.index;
-        const slide = document.getElementById(`slide${index}`);
-        slide.classList.toggle('translate-x-full');
+    // document.querySelectorAll('.toggle-btn').forEach(btn => {
+    //   btn.addEventListener('click', (e) => {
+    //     e.stopPropagation();
+    //     const index = btn.dataset.index;
+    //     const slide = document.getElementById(`slide${index}`);
+    //     slide.classList.toggle('translate-x-full');
+    //   });
+    // });
+    /* ========== Auto Slide After 2s Hover ========== */
+    document.querySelectorAll('#product-grid .group').forEach((card, index) => {
+
+      const slide = document.getElementById(`slide${index}`);
+      let hoverTimer;
+
+      card.addEventListener('mouseenter', () => {
+        hoverTimer = setTimeout(() => {
+          slide.classList.remove('translate-x-full');
+        }, 2000); // 2 seconds delay
       });
+
+      card.addEventListener('mouseleave', () => {
+        clearTimeout(hoverTimer);
+        slide.classList.add('translate-x-full');
+      });
+
     });
+
 
     /* ========== Buy Now Redirect ========== */
     document.querySelectorAll('.buy-now-btn').forEach(btn => {

@@ -347,19 +347,22 @@
                     const newRegular = parseFloat(v.regular_price || newSell);
 
                     qtyInput.value = 1;
-                    totalPrice.textContent = `₹${newSell.toFixed(2)}`;
+                    // totalPrice.textContent = `₹${newSell.toFixed(2)}`;
+                    updatePrice();
 
                   });
 
                   sizeContainer.appendChild(sizeBtn);
                 });
 
-
                 const updatePrice = () => {
                   const qty = Math.max(1, parseInt(qtyInput.value) || 1);
 
-                  const totalSell = qty * sellPrice;
-                  const totalRegular = qty * regularPrice;
+                  const sell = parseFloat(selectedVariation.sell_price || 0);
+                  const regular = parseFloat(selectedVariation.regular_price || sell);
+
+                  const totalSell = qty * sell;
+                  const totalRegular = qty * regular;
                   const saved = Math.max(0, totalRegular - totalSell);
 
                   totalPrice.textContent = `₹${totalSell.toFixed(2)}`;
@@ -373,6 +376,25 @@
                     savedBadge.classList.add('hidden');
                   }
                 };
+
+                // const updatePrice = () => {
+                //   const qty = Math.max(1, parseInt(qtyInput.value) || 1);
+
+                //   const totalSell = qty * sellPrice;
+                //   const totalRegular = qty * regularPrice;
+                //   const saved = Math.max(0, totalRegular - totalSell);
+
+                //   totalPrice.textContent = `₹${totalSell.toFixed(2)}`;
+
+                //   const savedBadge = Swal.getPopup().querySelector('#saved-badge');
+
+                //   if (saved > 0) {
+                //     savedBadge.textContent = `You save ₹${saved.toFixed(2)}`;
+                //     savedBadge.classList.remove('hidden');
+                //   } else {
+                //     savedBadge.classList.add('hidden');
+                //   }
+                // };
 
                 incBtn.addEventListener('click', () => {
                   qtyInput.value = parseInt(qtyInput.value || '1') + 1;
@@ -451,7 +473,8 @@
             const index = [...slider.children].indexOf(card);
             const data = response.data[index];
             const product = data.product;
-            const variation = product.variation || {};
+            // const variation = product.variation || {};
+            const variation = product.variations?.[0] || product.variation || {};
 
             const aid = variation.aid;
             const uid = String(variation.uid);

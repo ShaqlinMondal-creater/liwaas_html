@@ -42,7 +42,7 @@
     try {
       showBrandSkeleton(4); // show skeleton immediately
 
-      const response = await fetch(`<?= $baseUrl ?>/products/cat-products/2`, {
+      const response = await fetch(`<?= $baseUrl ?>/api/products/cat-products/2`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });

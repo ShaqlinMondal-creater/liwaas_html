@@ -25,6 +25,9 @@
   <?php include("inc/new_arrival_seller.php"); ?>
 
   <!-- Brand collections -->
-   <?php include("inc/brand_collection.php"); ?>
+  <?php include("inc/brand_collections.php"); ?>
+
+  <!-- Premium collections -->
+  <?php include("inc/premium_collections.php"); ?>
 
 <?php include("footer.php"); ?>

@@ -1,6 +1,6 @@
 
 <section id="product-showcase" class="py-6 bg-white">
-  <h2 class="text-3xl font-bold text-gray-800 mb-4 px-4">Product Gallary</h2>
+  <h2 class="text-3xl font-bold text-gray-800 mb-4 px-4">Collections Gallary</h2>
   <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
     <!-- Dynamic Product Cards will be injected here -->
   </div>

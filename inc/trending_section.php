@@ -1,6 +1,6 @@
 
 <section id="featured-products" class="py-4 overflow-hidden">
-  <h2 class="text-3xl font-bold text-center text-white-800 mb-4 px-4">Trending Products</h2>
+  <h2 class="text-3xl font-bold text-center text-white-800 mb-4 px-4">Trending Collections</h2>
 
   <div class="relative mt-6 mb-6">
     <!-- arrows overlay -->

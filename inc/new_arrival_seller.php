@@ -1,6 +1,6 @@
 <section id="best-seller" class="py-8 bg-white">
   <div class="container mx-auto px-4">
-    <h2 class="text-3xl font-bold mb-4">New Arrival Products</h2>
+    <h2 class="text-3xl font-bold mb-4">New Arrival Collections</h2>
     <div class="relative slider-containers overflow-hidden">
       <div id="slider-track" class="slider-track flex transition-transform duration-500 ease-in-out">
         <!-- Skeleton or Product Cards will be injected here -->

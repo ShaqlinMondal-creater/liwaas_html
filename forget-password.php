@@ -145,7 +145,7 @@
 
     <!-- JS -->
     <script>
-        const baseUrl = "<?php echo $baseUrl; ?>";
+        const baseUrl = "<?php echo $baseUrl; ?>/api";
 
         const form = document.getElementById('forgotForm');
         const emailInput = document.getElementById('email');

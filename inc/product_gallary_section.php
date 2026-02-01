@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         hoverTimer = setTimeout(() => {
           slide.classList.remove('translate-x-full');
           isOpen = true;
-        }, 2000);
+        }, 1000);
       });
 
       card.addEventListener('mouseleave', () => {

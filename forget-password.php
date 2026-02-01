@@ -68,6 +68,7 @@
 
                         <!-- OTP SECTION (HIDDEN) -->
                         <div id="otp-section" class="hidden space-y-4">
+
                             <label class="block text-sm font-medium text-white">
                                 Enter 6 Digit OTP
                             </label>
@@ -80,6 +81,19 @@
                                 <input maxlength="1" class="otp-box" />
                                 <input maxlength="1" class="otp-box" />
                             </div>
+
+                            <!-- Attempts + Timer -->
+                            <div class="flex justify-between items-center text-sm text-white/80 mt-2">
+                                <span id="attemptInfo">Attempts left: 5</span>
+                                <span id="otpTimer">07:00</span>
+                            </div>
+
+                            <!-- Resend -->
+                            <p id="resendOtp"
+                            class="text-sm text-white/60 cursor-not-allowed mt-2">
+                            Resend OTP (10s)
+                            </p>
+
                         </div>
 
                         <!-- PASSWORD SECTION (HIDDEN) -->
@@ -153,210 +167,281 @@
     </div>
 
     <!-- JS -->
-    <script>
-        const baseUrl = "<?php echo $baseUrl; ?>/api";
+<script>
+const baseUrl = "<?php echo $baseUrl; ?>/api";
 
-        const form = document.getElementById('forgotForm');
-        const emailInput = document.getElementById('email');
-        const otpSection = document.getElementById('otp-section');
-        const passwordSection = document.getElementById('password-section');
-        const mainBtn = document.getElementById('mainBtn');
+const form = document.getElementById('forgotForm');
+const emailInput = document.getElementById('email');
+const otpSection = document.getElementById('otp-section');
+const passwordSection = document.getElementById('password-section');
+const mainBtn = document.getElementById('mainBtn');
 
-        let currentStep = 1;
-        let savedOTP = '';
+let currentStep = 1;
+let savedOTP = '';
+let attemptsLeft = 5;
+let otpInterval;
+let resendInterval;
 
-        function disableBtn() {
-            mainBtn.disabled = true;
-            mainBtn.classList.add("opacity-60", "cursor-not-allowed");
+/* ================= BUTTON CONTROL ================= */
+function disableBtn() {
+    mainBtn.disabled = true;
+    mainBtn.classList.add("opacity-60", "cursor-not-allowed");
+}
+
+function enableBtn() {
+    mainBtn.disabled = false;
+    mainBtn.classList.remove("opacity-60", "cursor-not-allowed");
+}
+
+/* ================= OTP TIMER (7 MINUTES) ================= */
+function startOtpTimer() {
+
+    let timeLeft = 7 * 60;
+
+    clearInterval(otpInterval);
+
+    otpInterval = setInterval(() => {
+
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+
+        document.getElementById("otpTimer").textContent =
+            `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        if (timeLeft <= 0) {
+            clearInterval(otpInterval);
+            document.getElementById("otpTimer").textContent = "Expired";
         }
 
-        function enableBtn() {
-            mainBtn.disabled = false;
-            mainBtn.classList.remove("opacity-60", "cursor-not-allowed");
+        timeLeft--;
+
+    }, 1000);
+}
+
+/* ================= RESEND COOLDOWN (10 SEC) ================= */
+function startResendCooldown() {
+
+    const resendBtn = document.getElementById("resendOtp");
+
+    resendBtn.style.pointerEvents = "none";
+    resendBtn.classList.add("cursor-not-allowed");
+
+    let timeLeft = 10;
+    resendBtn.textContent = `Resend OTP (${timeLeft}s)`;
+
+    clearInterval(resendInterval);
+
+    resendInterval = setInterval(() => {
+
+        timeLeft--;
+        resendBtn.textContent = `Resend OTP (${timeLeft}s)`;
+
+        if (timeLeft <= 0) {
+            clearInterval(resendInterval);
+            resendBtn.textContent = "Resend OTP";
+            resendBtn.style.pointerEvents = "auto";
+            resendBtn.classList.remove("cursor-not-allowed");
         }
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    }, 1000);
+}
 
-            disableBtn();
+/* ================= FORM SUBMIT ================= */
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    disableBtn();
 
-            const email = emailInput.value.trim();
+    const email = emailInput.value.trim();
 
-            try {
+    try {
 
-                // ================= STEP 1: SEND OTP =================
-                if (currentStep === 1) {
+        /* ===== STEP 1: SEND OTP ===== */
+        if (currentStep === 1) {
 
-                    const res = await fetch(`${baseUrl}/forgot-password`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ email })
+            const res = await fetch(`${baseUrl}/forgot-password`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+
+                emailInput.setAttribute("readonly", true);
+                emailInput.classList.add("opacity-60");
+
+                otpSection.classList.remove('hidden');
+
+                attemptsLeft = 5;
+                document.getElementById("attemptInfo").textContent =
+                    `Attempts left: ${attemptsLeft}`;
+
+                startOtpTimer();
+                startResendCooldown();
+
+                mainBtn.textContent = "Verify OTP";
+                currentStep = 2;
+
+                Swal.fire({
+                    icon: 'success',
+                    title: result.message,
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: 'rgba(30,30,30,0.95)',
+                    color: '#fff'
+                });
+
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: result.message,
+                    timer: 1800,
+                    showConfirmButton: false,
+                    background: 'rgba(30,30,30,0.95)',
+                    color: '#fff'
+                });
+            }
+
+            enableBtn();
+        }
+
+        /* ===== STEP 2: VERIFY OTP ===== */
+        else if (currentStep === 2) {
+
+            const otp = [...document.querySelectorAll('.otp-box')]
+                .map(i => i.value).join('');
+
+            if (otp.length !== 6) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Enter complete OTP',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: 'rgba(30,30,30,0.95)',
+                    color: '#fff'
+                });
+                enableBtn();
+                return;
+            }
+
+            const res = await fetch(`${baseUrl}/verify-otp`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, otp })
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+
+                savedOTP = otp;
+
+                clearInterval(otpInterval);
+
+                passwordSection.classList.remove('hidden');
+                mainBtn.textContent = "Reset Password";
+                currentStep = 3;
+
+            } else {
+
+                attemptsLeft--;
+                document.getElementById("attemptInfo").textContent =
+                    `Attempts left: ${attemptsLeft}`;
+
+                if (attemptsLeft <= 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Maximum attempts reached',
+                        timer: 1800,
+                        showConfirmButton: false,
+                        background: 'rgba(30,30,30,0.95)',
+                        color: '#fff'
                     });
 
-                    const result = await res.json();
-
-                    if (result.success) {
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: result.message,
-                            timer: 1500,
-                            showConfirmButton: false,
-                            background: 'rgba(30,30,30,0.95)',
-                            color: '#fff'
-                        });
-
-                        emailInput.setAttribute("readonly", true);
-                        emailInput.classList.add("opacity-60");
-
-                        otpSection.classList.remove('hidden');
-                        mainBtn.textContent = "Verify OTP";
-                        currentStep = 2;
-
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: result.message,
-                            timer: 1800,
-                            showConfirmButton: false,
-                            background: 'rgba(30,30,30,0.95)',
-                            color: '#fff'
-                        });
-                    }
-
-                    enableBtn();
+                    mainBtn.disabled = true;
+                    return;
                 }
-
-                // ================= STEP 2: VERIFY OTP =================
-                else if (currentStep === 2) {
-
-                    const otp = [...document.querySelectorAll('.otp-box')]
-                        .map(i => i.value).join('');
-
-                    if (otp.length !== 6) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Enter complete OTP',
-                            timer: 1500,
-                            showConfirmButton: false,
-                            background: 'rgba(30,30,30,0.95)',
-                            color: '#fff'
-                        });
-                        enableBtn();
-                        return;
-                    }
-
-                    const res = await fetch(`${baseUrl}/verify-otp`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ email, otp })
-                    });
-
-                    const result = await res.json();
-
-                    if (result.success) {
-
-                        savedOTP = otp;
-
-                        passwordSection.classList.remove('hidden');
-                        mainBtn.textContent = "Reset Password";
-                        currentStep = 3;
-
-                    } else {
-
-                        Swal.fire({
-                            icon: 'error',
-                            title: result.message,
-                            timer: 1800,
-                            showConfirmButton: false,
-                            background: 'rgba(30,30,30,0.95)',
-                            color: '#fff'
-                        });
-
-                        // Clear OTP
-                        document.querySelectorAll('.otp-box').forEach(box => box.value = '');
-                        document.querySelector('.otp-box').focus();
-                    }
-
-                    enableBtn();
-                }
-
-                // ================= STEP 3: RESET PASSWORD =================
-                else if (currentStep === 3) {
-
-                    const password = document.getElementById('newPassword').value;
-                    const confirmPassword = document.getElementById('confirmPassword').value;
-
-                    if (password !== confirmPassword) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Passwords do not match',
-                            timer: 1500,
-                            showConfirmButton: false,
-                            background: 'rgba(30,30,30,0.95)',
-                            color: '#fff'
-                        });
-                        enableBtn();
-                        return;
-                    }
-
-                    if (password.length < 6) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Password must be at least 6 characters',
-                            timer: 1500,
-                            showConfirmButton: false,
-                            background: 'rgba(30,30,30,0.95)',
-                            color: '#fff'
-                        });
-                        enableBtn();
-                        return;
-                    }
-
-                    const res = await fetch(`${baseUrl}/reset-password`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            email,
-                            otp: savedOTP,
-                            password,
-                            password_confirmation: confirmPassword
-                        })
-                    });
-
-                    const result = await res.json();
-
-                    if (result.success) {
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Password reset successful',
-                            timer: 2000,
-                            showConfirmButton: false,
-                            background: 'rgba(30,30,30,0.95)',
-                            color: '#fff'
-                        }).then(() => {
-                            window.location.href = "sign-in.php";
-                        });
-
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: result.message,
-                            timer: 1800,
-                            showConfirmButton: false,
-                            background: 'rgba(30,30,30,0.95)',
-                            color: '#fff'
-                        });
-                        enableBtn();
-                    }
-                }
-
-            } catch (error) {
 
                 Swal.fire({
                     icon: 'error',
-                    title: 'Something went wrong',
+                    title: result.message,
+                    timer: 1800,
+                    showConfirmButton: false,
+                    background: 'rgba(30,30,30,0.95)',
+                    color: '#fff'
+                });
+
+                document.querySelectorAll('.otp-box').forEach(box => box.value = '');
+                document.querySelector('.otp-box').focus();
+            }
+
+            enableBtn();
+        }
+
+        /* ===== STEP 3: RESET PASSWORD ===== */
+        else if (currentStep === 3) {
+
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Passwords do not match',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: 'rgba(30,30,30,0.95)',
+                    color: '#fff'
+                });
+                enableBtn();
+                return;
+            }
+
+            if (password.length < 6) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Password must be at least 6 characters',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: 'rgba(30,30,30,0.95)',
+                    color: '#fff'
+                });
+                enableBtn();
+                return;
+            }
+
+            const res = await fetch(`${baseUrl}/reset-password`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email,
+                    otp: savedOTP,
+                    password,
+                    password_confirmation: confirmPassword
+                })
+            });
+
+            const result = await res.json();
+
+            if (result.success) {
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Password reset successful',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    background: 'rgba(30,30,30,0.95)',
+                    color: '#fff'
+                }).then(() => {
+                    window.location.href = "sign-in.php";
+                });
+
+            } else {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: result.message,
                     timer: 1800,
                     showConfirmButton: false,
                     background: 'rgba(30,30,30,0.95)',
@@ -365,43 +450,125 @@
 
                 enableBtn();
             }
-        });
-
-        // OTP Auto Focus + Numeric Only
-        document.querySelectorAll('.otp-box').forEach((box, index, boxes) => {
-
-            box.addEventListener('input', () => {
-
-                box.value = box.value.replace(/[^0-9]/g, '');
-
-                if (box.value && index < boxes.length - 1) {
-                    boxes[index + 1].focus();
-                }
-            });
-
-            box.addEventListener('keydown', (e) => {
-                if (e.key === "Backspace" && !box.value && index > 0) {
-                    boxes[index - 1].focus();
-                }
-            });
-
-        });
-    </script>
-
-    <script>
-        function togglePassword(fieldId, btn) {
-            const input = document.getElementById(fieldId);
-            const svg = btn.querySelector('svg');
-
-            if (input.type === "password") {
-                input.type = "text";
-                svg.classList.add("text-white");
-            } else {
-                input.type = "password";
-                svg.classList.remove("text-white");
-            }
         }
-    </script>
+
+    } catch (error) {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Something went wrong',
+            timer: 1800,
+            showConfirmButton: false,
+            background: 'rgba(30,30,30,0.95)',
+            color: '#fff'
+        });
+
+        enableBtn();
+    }
+});
+
+/* ================= RESEND CLICK ================= */
+document.getElementById("resendOtp").addEventListener("click", async () => {
+
+    if (attemptsLeft <= 0) return;
+
+    const email = emailInput.value.trim();
+
+    const res = await fetch(`${baseUrl}/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+
+        attemptsLeft = 5;
+        document.getElementById("attemptInfo").textContent =
+            `Attempts left: ${attemptsLeft}`;
+
+        startOtpTimer();
+        startResendCooldown();
+
+        Swal.fire({
+            icon: 'success',
+            title: 'OTP Resent',
+            timer: 1500,
+            showConfirmButton: false,
+            background: 'rgba(30,30,30,0.95)',
+            color: '#fff'
+        });
+    }
+});
+/* ================= OTP UX ================= */
+document.querySelectorAll('.otp-box').forEach((box, index, boxes) => {
+
+    box.addEventListener('input', () => {
+        box.value = box.value.replace(/[^0-9]/g, '');
+
+        if (box.value && index < boxes.length - 1) {
+            boxes[index + 1].focus();
+        }
+    });
+
+    box.addEventListener('keydown', (e) => {
+        if (e.key === "Backspace" && !box.value && index > 0) {
+            boxes[index - 1].focus();
+        }
+    });
+
+    box.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pasteData = e.clipboardData.getData('text').replace(/\D/g, '');
+
+        if (pasteData.length === 6) {
+            boxes.forEach((b, i) => {
+                b.value = pasteData[i] || '';
+            });
+        }
+    });
+
+});
+/* ================= TOGGLE PASSWORD ================= */
+function togglePassword(fieldId, btn) {
+
+    const input = document.getElementById(fieldId);
+
+    if (input.type === "password") {
+        input.type = "text";
+        btn.innerHTML = `
+            <svg class="h-5 w-5 text-white"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19
+                       c-4.478 0-8.268-2.943-9.542-7
+                       a9.956 9.956 0 012.293-3.95M6.223 6.223
+                       A9.956 9.956 0 0112 5
+                       c4.478 0 8.268 2.943 9.542 7
+                       a9.956 9.956 0 01-4.293 5.774M15 12
+                       a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+        `;
+    } else {
+        input.type = "password";
+        btn.innerHTML = `
+            <svg class="h-5 w-5 text-white/60"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5
+                       c4.478 0 8.268 2.943 9.542 7
+                       -1.274 4.057-5.064 7-9.542 7
+                       -4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+        `;
+    }
+}
+
+</script>
+
 
     <style>
         .otp-box {

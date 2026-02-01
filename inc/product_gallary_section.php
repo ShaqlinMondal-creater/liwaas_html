@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
               <!-- SLIDE PANEL -->
               <div id="slide${index}"
-                class="absolute inset-0 bg-black/90 flex items-center justify-center transform translate-x-full transition-transform duration-500">
+                class="absolute inset-0 bg-black/90 flex items-center justify-center transform translate-x-full transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
 
                 <div class="text-center">
                   <p class="text-xl font-bold mb-2 text-white">
@@ -162,24 +162,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     //     slide.classList.toggle('translate-x-full');
     //   });
     // });
-    /* ========== Auto Slide After 2s Hover ========== */
+
+    /* ========== Auto Slide After 2s Hover (Stable Version) ========== */
     document.querySelectorAll('#product-grid .group').forEach((card, index) => {
 
       const slide = document.getElementById(`slide${index}`);
       let hoverTimer;
+      let isOpen = false;
 
       card.addEventListener('mouseenter', () => {
         hoverTimer = setTimeout(() => {
           slide.classList.remove('translate-x-full');
-        }, 2000); // 2 seconds delay
+          isOpen = true;
+        }, 2000);
       });
 
       card.addEventListener('mouseleave', () => {
         clearTimeout(hoverTimer);
-        slide.classList.add('translate-x-full');
+
+        if (isOpen) {
+          slide.classList.add('translate-x-full');
+          isOpen = false;
+        }
       });
 
     });
+
 
 
     /* ========== Buy Now Redirect ========== */

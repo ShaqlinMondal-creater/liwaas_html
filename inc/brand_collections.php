@@ -25,23 +25,24 @@
   let brandCurrentSlide = 0;
   const brandSlideWidth = 316;
 
+  /* ---------------- Skeleton Loader ---------------- */
   function showBrandSkeleton(count = 4) {
     brandSliderTrack.innerHTML = '';
     for (let i = 0; i < count; i++) {
       brandSliderTrack.innerHTML += `
-        <div class="min-w-[300px] h-[350px] rounded-xl m-2 bg-white animate-pulse">
-          <div class="w-full h-72 bg-gray-300"></div>
-          <div class="h-4 bg-gray-200 m-4 rounded"></div>
+        <div class="min-w-[300px] h-[420px] rounded-2xl overflow-hidden shadow-lg m-2 bg-white animate-pulse">
+          <div class="w-full h-full bg-gray-300"></div>
         </div>
       `;
     }
   }
 
+  /* ---------------- Fetch Products ---------------- */
   async function fetchBrandCollections() {
     try {
-      showBrandSkeleton();
+      showBrandSkeleton(4); // show skeleton immediately
 
-      const response = await fetch(`<?= $baseUrl ?>/api/products/cat-products/2`, {
+      const response = await fetch(`<?= $baseUrl ?>/products/cat-products/2`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -51,14 +52,17 @@
       if (result.success && Array.isArray(result.data)) {
         renderBrandProducts(result.data);
       } else {
-        brandSliderTrack.innerHTML = `<p class="text-center w-full py-6">No products found.</p>`;
+        brandSliderTrack.innerHTML =
+          `<p class="text-center w-full py-6">No products found.</p>`;
       }
     } catch (error) {
       console.error("Brand collection fetch error:", error);
-      brandSliderTrack.innerHTML = `<p class="text-center w-full text-red-500 py-6">Error loading products.</p>`;
+      brandSliderTrack.innerHTML =
+        `<p class="text-center w-full text-red-500 py-6">Error loading products.</p>`;
     }
   }
 
+  /* ---------------- Render Products ---------------- */
   function renderBrandProducts(products) {
     brandSliderTrack.innerHTML = '';
 
@@ -76,22 +80,27 @@
       brandSliderTrack.innerHTML += `
         <div class="min-w-[300px] max-w-[300px] m-2 flex-shrink-0 group">
 
-          <div class="rounded-2xl overflow-hidden bg-white shadow-lg hover:shadow-xl transition">
+          <div class="rounded-2xl overflow-hidden relative h-[420px] shadow-lg">
 
-            <div class="h-72 bg-gray-100 overflow-hidden">
-              <a href="pages/product-detail.php?id=${variationUID}" class="block w-full h-full">
-                <img 
-                  src="${image}" 
-                  alt="${productName}" 
-                  class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  loading="lazy"
-                >
-              </a>
-            </div>
+            <!-- Image -->
+            <a href="pages/product-detail.php?id=${variationUID}" 
+               class="block w-full h-full">
+              <img 
+                src="${image}" 
+                alt="${productName}" 
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+              >
 
-            <div class="p-4 text-center">
-              <h3 class="font-semibold line-clamp-2">${productName}</h3>
-            </div>
+              <!-- Hover Overlay -->
+              <div class="absolute bottom-0 left-0 w-full bg-black bg-opacity-80 
+                          text-white text-center py-3 px-4
+                          translate-y-full group-hover:translate-y-0
+                          transition-transform duration-300">
+                <h3 class="font-semibold">${productName}</h3>
+              </div>
+
+            </a>
 
           </div>
         </div>
@@ -101,6 +110,7 @@
     brandUpdateVisible();
   }
 
+  /* ---------------- Slider Controls ---------------- */
   function brandSlide(direction) {
     const totalSlides = brandSliderTrack.children.length;
     const container = document.querySelector('.brand-slider-container');
@@ -126,3 +136,4 @@
 
   fetchBrandCollections();
 </script>
+

@@ -226,106 +226,6 @@
                 }
             }
 
-            // function renderTable(products) {
-            //     tableBody.innerHTML = '';
-
-            //     products.forEach(product => {
-            //         const baseImage = product.upload?.[0]?.url || 'assets/media/avatars/300-1.png';
-
-            //         product.variations.forEach(variation => {
-            //             const variationImage = variation.images?.[0]?.url || baseImage;
-            //             const statusBadge = badge(product.product_status);
-            //             const customDesignBadge = badge(product.custom_design);
-
-            //             const row = `
-            //                 <tr>
-            //                     <td class="text-center"><input class="checkbox checkbox-sm" type="checkbox" value="${product.id}" /></td>
-            //                     <td class="text-center">
-            //                         <div class="menu flex-inline" data-menu="true">
-            //                             <div class="menu-item" data-menu-item-offset="0, 10px"
-            //                                 data-menu-item-placement="bottom-end"
-            //                                 data-menu-item-placement-rtl="bottom-start"
-            //                                 data-menu-item-toggle="dropdown"
-            //                                 data-menu-item-trigger="click|lg:click">
-            //                                 <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
-            //                                     <i class="ki-filled ki-dots-vertical"></i>
-            //                                 </button>
-            //                                 <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
-            //                                     <div class="menu-item">
-            //                                         <a class="menu-link mark-product" data-section="Trending" data-uid="${variation.uid}">
-            //                                             <i class="ki-filled ki-search-list me-2"></i>As Trending
-            //                                         </a>
-            //                                     </div>
-            //                                     <div class="menu-separator"></div>
-            //                                     <div class="menu-item">
-            //                                         <a class="menu-link mark-product" data-section="New Arrival" data-uid="${variation.uid}">
-            //                                             <i class="ki-filled ki-file-up me-2"></i>As New Arrival
-            //                                         </a>
-            //                                     </div>
-            //                                     <div class="menu-separator"></div>
-            //                                     <div class="menu-item">
-            //                                         <a class="menu-link mark-product" data-section="Gallery" data-uid="${variation.uid}">
-            //                                             <i class="ki-filled ki-copy me-2"></i>As Gallery
-            //                                         </a>
-            //                                     </div>
-            //                                 </div>
-            //                             </div>
-            //                         </div>
-            //                     </td>
-            //                     <td>
-            //                         <div class="flex items-center gap-2">
-            //                             <img class="rounded-full size-9" src="${variationImage}" alt="${product.name}" />
-            //                             <div class="flex flex-col">
-            //                                 <span class="text-sm font-medium text-gray-900">${product.name}</span>
-            //                                 <div class="rating">${renderStars(product.ratings)}</div>
-            //                             </div>
-            //                         </div>
-            //                     </td>
-            //                     <td class="text-gray-800 font-normal">${product.brand?.name || ''}</td>
-            //                     <td>${statusBadge}</td>
-            //                     <td class="text-gray-800 font-normal">${product.category?.name || ''}</td>
-            //                     <td class="text-gray-800 font-normal">
-            //                         <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs bg-gray-50 p-2 rounded-md">
-            //                             <div><strong>AID:</strong> ${variation.aid}</div>
-            //                             <div><strong>UID:</strong> ${variation.uid}</div>
-            //                             <div><strong>Color:</strong> ${variation.color}</div>
-            //                             <div><strong>Size:</strong> ${variation.size}</div>
-            //                             <div><strong>Regular:</strong> ₹${variation.regular_price}</div>
-            //                             <div><strong>Sell:</strong> ₹${variation.sell_price}</div>
-            //                             <div><strong>Stock:</strong> ${variation.stock}</div>
-            //                         </div>
-            //                     </td>
-            //                     <td>${customDesignBadge}</td>
-            //                     <td class="text-center">
-            //                         <div class="menu flex-inline" data-menu="true">
-            //                             <div class="menu-item" data-menu-item-offset="0, 10px"
-            //                                 data-menu-item-placement="bottom-end"
-            //                                 data-menu-item-placement-rtl="bottom-start"
-            //                                 data-menu-item-toggle="dropdown"
-            //                                 data-menu-item-trigger="click|lg:click">
-            //                                 <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
-            //                                     <i class="ki-filled ki-dots-vertical"></i>
-            //                                 </button>
-            //                                 <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
-            //                                     <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-search-list me-2"></i>View</a></div>
-            //                                     <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-file-up me-2"></i>Export</a></div>
-            //                                     <div class="menu-separator"></div>
-            //                                     <div class="menu-item"><a class="menu-link" href="nxt-pages/update-product.php?name=${product.slug}"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
-            //                                     <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-copy me-2"></i>Make a copy</a></div>
-            //                                     <div class="menu-separator"></div>
-            //                                     <div class="menu-item"><a class="menu-link text-danger" href="#"><i class="ki-filled ki-trash me-2"></i>Remove</a></div>
-            //                                 </div>
-            //                             </div>
-            //                         </div>
-            //                     </td>
-            //                 </tr>
-            //             `;
-
-            //             tableBody.insertAdjacentHTML('beforeend', row);
-            //         });
-            //     });
-            // }
-
 function renderTable(products) {
     tableBody.innerHTML = '';
 
@@ -374,10 +274,8 @@ function renderTable(products) {
                             <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
                                 <div class="menu-item">
                                     <a class="menu-link mark-product" 
-                                       data-section="Trending" 
-                                       data-uid="${firstUID}">
-                                       As Trending
-                                    </a>
+                                        data-section="Trending"
+                                        data-variations='${JSON.stringify(product.variations)}'>
                                 </div>
                                 <div class="menu-item">
                                     <a class="menu-link mark-product" 
@@ -522,25 +420,57 @@ function renderTable(products) {
 
             document.addEventListener('click', (e) => {
                 const target = e.target.closest('.mark-product');
-                if (target) {
-                    e.preventDefault();
-                    const uid = target.dataset.uid;
-                    const section = target.dataset.section;
+                if (!target) return;
 
-                    Swal.fire({
-                        title: `Mark as ${section.replace('_', ' ')}?`,
-                        text: "This will mark the product in selected section.",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3B82F6',
-                        cancelButtonColor: '#EF4444',
-                        confirmButtonText: 'Yes, mark it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            markSectionProduct(uid, section);
-                        }
-                    });
+                e.preventDefault();
+
+                const section = target.dataset.section;
+                const variations = JSON.parse(target.dataset.variations || '[]');
+
+                if (!variations.length) {
+                    Swal.fire('Error', 'No variations found.', 'error');
+                    return;
                 }
+
+                // Build variation selection HTML
+                let variationOptions = '';
+
+                variations.forEach((v, index) => {
+                    variationOptions += `
+                        <div class="text-left mb-2">
+                            <label style="cursor:pointer;">
+                                <input type="radio" name="variation_uid" value="${v.uid}" ${index === 0 ? 'checked' : ''}>
+                                <strong>${v.color}</strong> | ${v.size} 
+                                (Stock: ${v.stock})
+                            </label>
+                        </div>
+                    `;
+                });
+
+                Swal.fire({
+                    title: `Mark as ${section}?`,
+                    html: `
+                        <div style="text-align:left">
+                            <p class="mb-2">Select variation:</p>
+                            ${variationOptions}
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Mark Now',
+                    confirmButtonColor: '#3B82F6',
+                    preConfirm: () => {
+                        const selected = document.querySelector('input[name="variation_uid"]:checked');
+                        if (!selected) {
+                            Swal.showValidationMessage('Please select a variation');
+                            return false;
+                        }
+                        return selected.value;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        markSectionProduct(result.value, section);
+                    }
+                });
             });
 
             // Initial Load

@@ -1,9 +1,6 @@
 <base href="../">
 <?php include("../header.php"); ?>
 
-<base href="../">
-<?php include("../header.php"); ?>
-
 <main class="grow content py-8 bg-gray-50 min-h-screen">
   <div class="container mx-auto max-w-7xl">
 
@@ -97,9 +94,6 @@
     </div>
   </div>
 </main>
-
-<?php include("../footer.php"); ?>
-
 
 <script>
   document.addEventListener("DOMContentLoaded", async () => {

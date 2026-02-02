@@ -226,105 +226,213 @@
                 }
             }
 
-            function renderTable(products) {
-                tableBody.innerHTML = '';
+            // function renderTable(products) {
+            //     tableBody.innerHTML = '';
 
-                products.forEach(product => {
-                    const baseImage = product.upload?.[0]?.url || 'assets/media/avatars/300-1.png';
+            //     products.forEach(product => {
+            //         const baseImage = product.upload?.[0]?.url || 'assets/media/avatars/300-1.png';
 
-                    product.variations.forEach(variation => {
-                        const variationImage = variation.images?.[0]?.url || baseImage;
-                        const statusBadge = badge(product.product_status);
-                        const customDesignBadge = badge(product.custom_design);
+            //         product.variations.forEach(variation => {
+            //             const variationImage = variation.images?.[0]?.url || baseImage;
+            //             const statusBadge = badge(product.product_status);
+            //             const customDesignBadge = badge(product.custom_design);
 
-                        const row = `
-                            <tr>
-                                <td class="text-center"><input class="checkbox checkbox-sm" type="checkbox" value="${product.id}" /></td>
-                                <td class="text-center">
-                                    <div class="menu flex-inline" data-menu="true">
-                                        <div class="menu-item" data-menu-item-offset="0, 10px"
-                                            data-menu-item-placement="bottom-end"
-                                            data-menu-item-placement-rtl="bottom-start"
-                                            data-menu-item-toggle="dropdown"
-                                            data-menu-item-trigger="click|lg:click">
-                                            <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
-                                                <i class="ki-filled ki-dots-vertical"></i>
-                                            </button>
-                                            <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
-                                                <div class="menu-item">
-                                                    <a class="menu-link mark-product" data-section="Trending" data-uid="${variation.uid}">
-                                                        <i class="ki-filled ki-search-list me-2"></i>As Trending
-                                                    </a>
-                                                </div>
-                                                <div class="menu-separator"></div>
-                                                <div class="menu-item">
-                                                    <a class="menu-link mark-product" data-section="New Arrival" data-uid="${variation.uid}">
-                                                        <i class="ki-filled ki-file-up me-2"></i>As New Arrival
-                                                    </a>
-                                                </div>
-                                                <div class="menu-separator"></div>
-                                                <div class="menu-item">
-                                                    <a class="menu-link mark-product" data-section="Gallery" data-uid="${variation.uid}">
-                                                        <i class="ki-filled ki-copy me-2"></i>As Gallery
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="flex items-center gap-2">
-                                        <img class="rounded-full size-9" src="${variationImage}" alt="${product.name}" />
-                                        <div class="flex flex-col">
-                                            <span class="text-sm font-medium text-gray-900">${product.name}</span>
-                                            <div class="rating">${renderStars(product.ratings)}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-gray-800 font-normal">${product.brand?.name || ''}</td>
-                                <td>${statusBadge}</td>
-                                <td class="text-gray-800 font-normal">${product.category?.name || ''}</td>
-                                <td class="text-gray-800 font-normal">
-                                    <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs bg-gray-50 p-2 rounded-md">
-                                        <div><strong>AID:</strong> ${variation.aid}</div>
-                                        <div><strong>UID:</strong> ${variation.uid}</div>
-                                        <div><strong>Color:</strong> ${variation.color}</div>
-                                        <div><strong>Size:</strong> ${variation.size}</div>
-                                        <div><strong>Regular:</strong> ₹${variation.regular_price}</div>
-                                        <div><strong>Sell:</strong> ₹${variation.sell_price}</div>
-                                        <div><strong>Stock:</strong> ${variation.stock}</div>
-                                    </div>
-                                </td>
-                                <td>${customDesignBadge}</td>
-                                <td class="text-center">
-                                    <div class="menu flex-inline" data-menu="true">
-                                        <div class="menu-item" data-menu-item-offset="0, 10px"
-                                            data-menu-item-placement="bottom-end"
-                                            data-menu-item-placement-rtl="bottom-start"
-                                            data-menu-item-toggle="dropdown"
-                                            data-menu-item-trigger="click|lg:click">
-                                            <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
-                                                <i class="ki-filled ki-dots-vertical"></i>
-                                            </button>
-                                            <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
-                                                <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-search-list me-2"></i>View</a></div>
-                                                <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-file-up me-2"></i>Export</a></div>
-                                                <div class="menu-separator"></div>
-                                                <div class="menu-item"><a class="menu-link" href="nxt-pages/update-product.php?name=${product.slug}"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
-                                                <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-copy me-2"></i>Make a copy</a></div>
-                                                <div class="menu-separator"></div>
-                                                <div class="menu-item"><a class="menu-link text-danger" href="#"><i class="ki-filled ki-trash me-2"></i>Remove</a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        `;
+            //             const row = `
+            //                 <tr>
+            //                     <td class="text-center"><input class="checkbox checkbox-sm" type="checkbox" value="${product.id}" /></td>
+            //                     <td class="text-center">
+            //                         <div class="menu flex-inline" data-menu="true">
+            //                             <div class="menu-item" data-menu-item-offset="0, 10px"
+            //                                 data-menu-item-placement="bottom-end"
+            //                                 data-menu-item-placement-rtl="bottom-start"
+            //                                 data-menu-item-toggle="dropdown"
+            //                                 data-menu-item-trigger="click|lg:click">
+            //                                 <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
+            //                                     <i class="ki-filled ki-dots-vertical"></i>
+            //                                 </button>
+            //                                 <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
+            //                                     <div class="menu-item">
+            //                                         <a class="menu-link mark-product" data-section="Trending" data-uid="${variation.uid}">
+            //                                             <i class="ki-filled ki-search-list me-2"></i>As Trending
+            //                                         </a>
+            //                                     </div>
+            //                                     <div class="menu-separator"></div>
+            //                                     <div class="menu-item">
+            //                                         <a class="menu-link mark-product" data-section="New Arrival" data-uid="${variation.uid}">
+            //                                             <i class="ki-filled ki-file-up me-2"></i>As New Arrival
+            //                                         </a>
+            //                                     </div>
+            //                                     <div class="menu-separator"></div>
+            //                                     <div class="menu-item">
+            //                                         <a class="menu-link mark-product" data-section="Gallery" data-uid="${variation.uid}">
+            //                                             <i class="ki-filled ki-copy me-2"></i>As Gallery
+            //                                         </a>
+            //                                     </div>
+            //                                 </div>
+            //                             </div>
+            //                         </div>
+            //                     </td>
+            //                     <td>
+            //                         <div class="flex items-center gap-2">
+            //                             <img class="rounded-full size-9" src="${variationImage}" alt="${product.name}" />
+            //                             <div class="flex flex-col">
+            //                                 <span class="text-sm font-medium text-gray-900">${product.name}</span>
+            //                                 <div class="rating">${renderStars(product.ratings)}</div>
+            //                             </div>
+            //                         </div>
+            //                     </td>
+            //                     <td class="text-gray-800 font-normal">${product.brand?.name || ''}</td>
+            //                     <td>${statusBadge}</td>
+            //                     <td class="text-gray-800 font-normal">${product.category?.name || ''}</td>
+            //                     <td class="text-gray-800 font-normal">
+            //                         <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs bg-gray-50 p-2 rounded-md">
+            //                             <div><strong>AID:</strong> ${variation.aid}</div>
+            //                             <div><strong>UID:</strong> ${variation.uid}</div>
+            //                             <div><strong>Color:</strong> ${variation.color}</div>
+            //                             <div><strong>Size:</strong> ${variation.size}</div>
+            //                             <div><strong>Regular:</strong> ₹${variation.regular_price}</div>
+            //                             <div><strong>Sell:</strong> ₹${variation.sell_price}</div>
+            //                             <div><strong>Stock:</strong> ${variation.stock}</div>
+            //                         </div>
+            //                     </td>
+            //                     <td>${customDesignBadge}</td>
+            //                     <td class="text-center">
+            //                         <div class="menu flex-inline" data-menu="true">
+            //                             <div class="menu-item" data-menu-item-offset="0, 10px"
+            //                                 data-menu-item-placement="bottom-end"
+            //                                 data-menu-item-placement-rtl="bottom-start"
+            //                                 data-menu-item-toggle="dropdown"
+            //                                 data-menu-item-trigger="click|lg:click">
+            //                                 <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
+            //                                     <i class="ki-filled ki-dots-vertical"></i>
+            //                                 </button>
+            //                                 <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
+            //                                     <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-search-list me-2"></i>View</a></div>
+            //                                     <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-file-up me-2"></i>Export</a></div>
+            //                                     <div class="menu-separator"></div>
+            //                                     <div class="menu-item"><a class="menu-link" href="nxt-pages/update-product.php?name=${product.slug}"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
+            //                                     <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-copy me-2"></i>Make a copy</a></div>
+            //                                     <div class="menu-separator"></div>
+            //                                     <div class="menu-item"><a class="menu-link text-danger" href="#"><i class="ki-filled ki-trash me-2"></i>Remove</a></div>
+            //                                 </div>
+            //                             </div>
+            //                         </div>
+            //                     </td>
+            //                 </tr>
+            //             `;
 
-                        tableBody.insertAdjacentHTML('beforeend', row);
-                    });
-                });
-            }
+            //             tableBody.insertAdjacentHTML('beforeend', row);
+            //         });
+            //     });
+            // }
+
+function renderTable(products) {
+    tableBody.innerHTML = '';
+
+    products.forEach(product => {
+        const baseImage = product.upload?.[0]?.url || 'assets/media/avatars/300-1.png';
+        const firstVariation = product.variations?.[0]; // ✅ First variation
+        const firstUID = firstVariation?.uid || '';
+
+        const statusBadge = badge(product.product_status);
+        const customDesignBadge = badge(product.custom_design);
+
+        // Build all variations HTML inside single column
+        let variationsHTML = '';
+
+        product.variations.forEach(variation => {
+            variationsHTML += `
+                <div class="border-b last:border-0 pb-2 mb-2 last:mb-0">
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                        <div><strong>AID:</strong> ${variation.aid}</div>
+                        <div><strong>UID:</strong> ${variation.uid}</div>
+                        <div><strong>Color:</strong> ${variation.color}</div>
+                        <div><strong>Size:</strong> ${variation.size}</div>
+                        <div><strong>Regular:</strong> ₹${variation.regular_price}</div>
+                        <div><strong>Sell:</strong> ₹${variation.sell_price}</div>
+                        <div><strong>Stock:</strong> ${variation.stock}</div>
+                    </div>
+                </div>
+            `;
+        });
+
+        const row = `
+            <tr>
+                <td class="text-center">
+                    <input class="checkbox checkbox-sm" type="checkbox" value="${product.id}" />
+                </td>
+
+                <!-- Mark Product Column -->
+                <td class="text-center">
+                    <div class="menu flex-inline" data-menu="true">
+                        <div class="menu-item"
+                            data-menu-item-toggle="dropdown"
+                            data-menu-item-trigger="click|lg:click">
+                            <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
+                                <i class="ki-filled ki-dots-vertical"></i>
+                            </button>
+                            <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
+                                <div class="menu-item">
+                                    <a class="menu-link mark-product" 
+                                       data-section="Trending" 
+                                       data-uid="${firstUID}">
+                                       As Trending
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a class="menu-link mark-product" 
+                                       data-section="New Arrival" 
+                                       data-uid="${firstUID}">
+                                       As New Arrival
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a class="menu-link mark-product" 
+                                       data-section="Gallery" 
+                                       data-uid="${firstUID}">
+                                       As Gallery
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+                <!-- Product -->
+                <td>
+                    <div class="flex items-center gap-2">
+                        <img class="rounded-full size-9" src="${baseImage}" />
+                        <div class="flex flex-col">
+                            <span class="text-sm font-medium text-gray-900">${product.name}</span>
+                            <div class="rating">${renderStars(product.ratings)}</div>
+                        </div>
+                    </div>
+                </td>
+
+                <td>${product.brand?.name || ''}</td>
+                <td>${statusBadge}</td>
+                <td>${product.category?.name || ''}</td>
+
+                <!-- All Variations in Single Cell -->
+                <td class="bg-gray-50 p-3 rounded-md">
+                    ${variationsHTML}
+                </td>
+
+                <td>${customDesignBadge}</td>
+
+                <!-- Actions -->
+                <td class="text-center">
+                    <a href="nxt-pages/update-product.php?name=${product.slug}"
+                       class="btn btn-sm btn-light">
+                        Edit
+                    </a>
+                </td>
+            </tr>
+        `;
+
+        tableBody.insertAdjacentHTML('beforeend', row);
+    });
+}
 
             function renderStars(count) {
                 const full = Math.floor(count);

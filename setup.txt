@@ -107,7 +107,7 @@ color uses -> Done ✅
 
 signin --> Done ✅
 signup --> Done ✅
-forget-password -> setup with api 
+forget-password -> setup with api -> Done ✅
 home page cart : add more size available for the popup -> Done ✅
 glarry section : on hover after 2 second open the slider 
 nav show the cart count
@@ -115,9 +115,7 @@ nav show the cart count
 ADMIN:
 SHIPPING ADD after ORDER is more than : 10000  ✅
 
-Product:
-Add product -> Done ✅
-fetch product -> Done ✅
+Dashboard : api setup with frontend 
 
 Coupons: -> need popup setup design
 Add coupon -> Done ✅
@@ -126,9 +124,64 @@ Update Coupons -> Done ✅
 Delete Coupons -> Done ✅
 
 Category: -> need popup setup design
-Add Category: 
-Fetch Category:
+Add Category -> Done ✅
+Fetch Category -> Done ✅
+Delete Category -> Done ✅
+Update Category -> Done ✅
 
 Brand: -> need popup setup design
-Add Brand: 
-Fetch Brand:
+Add Brand -> Done ✅
+Fetch Brand -> Done ✅
+Delete Brand -> Done ✅
+Update Brand -> Done ✅
+
+Coupons:
+Add Coupons -> Done ✅
+Fetch Coupons -> Done ✅
+Delete Coupons -> Done ✅
+Update Coupons -> Done ✅
+
+Products:
+Add product -> Done ✅  -> need more modification
+Fetch product -> Done ✅ -> need more modification
+View product
+Delete Product 
+Update Product 
+
+Carts:
+Add Carts 
+Fetch Carts 
+Delete Carts 
+Update Carts 
+
+Wishlists:
+Add Wishlist 
+Fetch Wishlist 
+Delete Wishlist 
+Update Wishlist 
+
+Users:
+Add User 
+Fetch User 
+Delete User 
+Update User 
+
+Orders:
+View Order
+Fetch Order 
+Cancel Order 
+Update Order 
+Delete Order 
+
+Uploads:
+View Upload
+Fetch Upload 
+Update Upload 
+Delete Upload 
+
+Notification:
+Create Messege notification
+Fetch Messege notification 
+Update Messege notification 
+Delete Messege notification
+

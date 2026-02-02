@@ -99,7 +99,8 @@
             <label class="block text-sm font-medium mb-1">Variant #${index + 1}</label>
             <div class="flex flex-wrap gap-4 items-center mb-4">
             <input type="text" value="${variant.aid}" disabled name="aid[]" class="input input-sm w-[120px] bg-gray-100" placeholder="AID" />
-            <input type="number" value="${variant.uid}" disabled name="uid[]" class="input input-sm w-[100px] bg-gray-100" placeholder="UID" />
+            <input type="hidden" name="uid[]" value="${variant.uid}" />
+            <input type="text" value="${variant.uid}" disabled class="input input-sm w-[100px] bg-gray-100" placeholder="UID" />
             <input type="number" value="${variant.regular_price}" name="regular_price[]" class="input input-sm w-[140px]" placeholder="Regular Price" />
             <input type="number" value="${variant.sell_price}" name="sell_price[]" class="input input-sm w-[140px]" placeholder="Sale Price" />
             <input type="text" value="${variant.size}" name="size[]" class="input input-sm w-[80px]" placeholder="Size" />
@@ -224,19 +225,61 @@ async function deleteVariationImage(imageId, uid) {
   }
 }
 // DELETE VARIATION BY UID (actual API or just remove DOM)
-function deleteVariation(uid) {
-  const confirmDelete = confirm(`Are you sure you want to remove variant UID ${uid}?`);
-  if (!confirmDelete) return;
+async function deleteVariation(uid) {
+  if (!uid) {
+    Swal.fire('Error', 'Invalid variation UID', 'error');
+    return;
+  }
 
-  // OPTIONAL: Make API call to delete from backend if needed
-  const variantItems = document.querySelectorAll("#variant_list .variation-item-wrapper");
-  variantItems.forEach(wrapper => {
-    const uidInput = wrapper.querySelector("input[placeholder='UID']");
-    if (uidInput && Number(uidInput.value) === uid) {
-      wrapper.remove();
-    }
+  const confirm = await Swal.fire({
+    title: 'Delete Variation?',
+    text: `UID: ${uid}`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#EF4444',
+    cancelButtonColor: '#6B7280',
+    confirmButtonText: 'Yes, Delete'
   });
+
+  if (!confirm.isConfirmed) return;
+
+  const token = localStorage.getItem("auth_token");
+
+  try {
+    const response = await fetch(`<?= $baseUrl ?>/api/admin/products/variation-delete/${uid}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Deleted!',
+        text: result.message || 'Variation removed successfully'
+      });
+
+      // Remove from DOM without reload
+      const wrappers = document.querySelectorAll("#variant_list > div");
+      wrappers.forEach(wrapper => {
+        const uidInput = wrapper.querySelector("input[name='uid[]']");
+        if (uidInput && Number(uidInput.value) === Number(uid)) {
+          wrapper.remove();
+        }
+      });
+
+    } else {
+      Swal.fire('Failed!', result.message || 'Delete failed', 'error');
+    }
+
+  } catch (err) {
+    Swal.fire('Error!', err.message, 'error');
+  }
 }
+
 // ADD NEW VARIATION DYNAMICALLY
 function addNewVariation() {
   const container = document.getElementById("variant_list");

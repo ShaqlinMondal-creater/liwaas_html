@@ -53,7 +53,7 @@
                                         <label class="input input-sm">
                                             <i class="ki-filled ki-magnifier">
                                             </i>
-                                            <input data-datatable-search="#team_crew_table" placeholder="Search users"
+                                            <input data-datatable-search="#order_table" placeholder="Search users"
                                                 type="text" value="">
                                             </input>
                                         </label>
@@ -90,7 +90,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div data-datatable-state-save="false" id="team_crew_table">
+                                <div data-datatable-state-save="false" id="order_table">
                                     <div class="scrollable-x-auto">
                                         <table class="table table-auto table-border" data-datatable-table="true">
                                             <thead>

@@ -276,18 +276,20 @@ function renderTable(products) {
                                     <a class="menu-link mark-product" 
                                         data-section="Trending"
                                         data-variations='${JSON.stringify(product.variations)}'>
+                                        As Trending
+                                    </a>
                                 </div>
                                 <div class="menu-item">
                                     <a class="menu-link mark-product" 
                                        data-section="New Arrival" 
-                                       data-uid="${firstUID}">
+                                       data-variations='${JSON.stringify(product.variations)}'>
                                        As New Arrival
                                     </a>
                                 </div>
                                 <div class="menu-item">
                                     <a class="menu-link mark-product" 
                                        data-section="Gallery" 
-                                       data-uid="${firstUID}">
+                                       data-variations='${JSON.stringify(product.variations)}'>
                                        As Gallery
                                     </a>
                                 </div>

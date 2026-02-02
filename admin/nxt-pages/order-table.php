@@ -40,14 +40,21 @@
                                         <label class="input input-sm">
                                             <i class="ki-filled ki-magnifier">
                                             </i>
-                                            <input data-datatable-search="#order_table" placeholder="Search users"
+                                            <input id="search_user" data-datatable-search="#order_table" placeholder="Search Customer Name"
+                                                type="text" value="">
+                                            </input>
+                                        </label>
+                                    </div>
+                                    <div class="flex">
+                                        <label class="input input-sm">
+                                            <i class="ki-filled ki-magnifier">
+                                            </i>
+                                            <input id="search_order" data-datatable-search="#order_tables" placeholder="Search Customer Name"
                                                 type="text" value="">
                                             </input>
                                         </label>
                                     </div>
                                     <div class="flex flex-wrap gap-2.5">
-                                        <input id="search_order" placeholder="Search Order Code" type="text">
-                                        <input id="search_user" placeholder="Search Customer Name" type="text">
                                         <button id="apply_filters" class="btn btn-sm btn-outline btn-primary">
                                             Apply Filters
                                         </button>

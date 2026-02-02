@@ -338,7 +338,12 @@
                                             <div class="menu-item"><a class="menu-link" href="nxt-pages/update-product.php?name=${product.slug}"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
                                             <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-copy me-2"></i>Make a copy</a></div>
                                             <div class="menu-separator"></div>
-                                            <div class="menu-item"><a class="menu-link text-danger" data-aid="${product.variations?.[0]?.aid}"><i class="ki-filled ki-trash me-2"></i>Remove</a></div>
+                                            <div class="menu-item">
+                                                <a class="menu-link text-danger delete-product" href="#" 
+                                                    data-aid="${product.variations?.[0]?.aid}">
+                                                    <i class="ki-filled ki-trash me-2"></i>Remove
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

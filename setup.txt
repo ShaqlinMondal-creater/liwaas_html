@@ -145,26 +145,26 @@ Products:
 Add product -> Done ✅  -> need more modification
 Fetch product -> Done ✅ -> need more modification
 View product
-Delete Product 
+Delete Product -> Done ✅
 Update Product 
 
 Carts:
 Add Carts 
 Fetch Carts 
-Delete Carts 
+Delete Carts  
 Update Carts 
 
 Wishlists:
 Add Wishlist 
-Fetch Wishlist 
+Fetch Wishlist  ->  need to create api
 Delete Wishlist 
 Update Wishlist 
 
 Users:
-Add User 
-Fetch User 
-Delete User 
-Update User 
+Add User ->  need to create api
+Fetch User -> Done ✅
+Delete User ->  need to create api
+Update User ->  need to create api
 
 Orders:
 View Order

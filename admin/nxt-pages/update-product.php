@@ -1,44 +1,105 @@
 <base href="../">
 <?php include("../header.php"); ?>
 
-<main class="grow content pt-5" id="content" role="content">
-  <div class="container-fixed">
-    <div class="card min-w-full">
-      <form id="update_product_form" class="card-body flex flex-col gap-5 p-10">
-        <h3 class="text-lg font-medium text-gray-900 leading-none">Update Product</h3>
-        <div class="text-sm text-gray-700">Modify the fields as needed and save changes</div>
+<base href="../">
+<?php include("../header.php"); ?>
 
-        <!-- Basic Fields -->
-        <div class="flex gap-10 items-center">
+<main class="grow content py-8 bg-gray-50 min-h-screen">
+  <div class="container mx-auto max-w-7xl">
+
+    <div class="bg-white rounded-xl shadow-md p-8">
+
+      <form id="update_product_form" class="space-y-10">
+
+        <!-- Header -->
+        <div>
+          <h2 class="text-2xl font-semibold text-gray-800">Update Product</h2>
+          <p class="text-sm text-gray-500 mt-1">Modify product details and manage variations</p>
+        </div>
+
+        <!-- ================= BASIC INFORMATION ================= -->
+        <div class="border rounded-lg p-6">
+          <h3 class="text-lg font-medium text-gray-700 mb-6">Basic Information</h3>
+
           <input type="hidden" name="slug" id="slug" />
-          <input type="text" class="input input-sm w-[240px]" name="name" id="name" placeholder="Product Name" />
-          <input type="text" class="input input-sm w-[240px]" name="aid" id="aid" placeholder="AID" />
-          <input type="number" class="input input-sm w-[240px]" name="brand" id="brand" placeholder="Brand ID" />
-          <input type="number" class="input input-sm w-[240px]" name="category" id="category" placeholder="Category ID" />
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <div>
+              <label class="label">Product Name</label>
+              <input type="text" id="name" name="name" class="input input-bordered w-full" />
+            </div>
+
+            <div>
+              <label class="label">AID</label>
+              <input type="text" id="aid" name="aid" class="input input-bordered w-full" />
+            </div>
+
+            <div>
+              <label class="label">Brand ID</label>
+              <input type="number" id="brand" name="brand" class="input input-bordered w-full" />
+            </div>
+
+            <div>
+              <label class="label">Category ID</label>
+              <input type="number" id="category" name="category" class="input input-bordered w-full" />
+            </div>
+
+            <div>
+              <label class="label">Gender</label>
+              <input type="text" id="gender" name="gender" class="input input-bordered w-full" />
+            </div>
+
+            <div>
+              <label class="label">Keyword</label>
+              <input type="text" id="keyword" name="keyword" class="input input-bordered w-full" />
+            </div>
+
+            <div class="md:col-span-3">
+              <label class="label">Description</label>
+              <textarea id="description" name="description" class="textarea textarea-bordered w-full h-24"></textarea>
+            </div>
+
+            <div class="md:col-span-3">
+              <label class="label">Specification</label>
+              <textarea id="specification" name="specification" class="textarea textarea-bordered w-full h-24"></textarea>
+            </div>
+
+          </div>
         </div>
 
-        <!-- Info Fields -->
-        <div class="flex gap-10 items-center">
-          <input type="text" class="input input-sm w-[240px]" name="gender" id="gender" placeholder="Gender" />
-          <input type="text" class="input input-sm w-[240px]" name="keyword" id="keyword" placeholder="Keyword" />
-          <input type="text" class="input input-sm w-[240px]" name="description" id="description" placeholder="Description" />
-          <input type="text" class="input input-sm w-[240px]" name="specification" id="specification" placeholder="Specification" />
+
+        <!-- ================= VARIATIONS ================= -->
+        <div class="border rounded-lg p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-lg font-medium text-gray-700">Product Variations</h3>
+            <button type="button"
+              onclick="addNewVariation()"
+              class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
+              + Add Variation
+            </button>
+          </div>
+
+          <div id="variant_list" class="grid md:grid-cols-2 gap-6"></div>
         </div>
 
-        <!-- Product Variants Section -->
-        <div class="flex flex-col gap-3 border p-4 rounded bg-gray-50">
-            <h4 class="text-md font-medium mb-2">Product Variants</h4>
-            <div id="variant_list" class="flex flex-row flex-wrap gap-6"></div>
-            <button type="button" onclick="addNewVariation()" class="mt-4 btn btn-outline w-max bg-blue-100 hover:bg-blue-200 text-sm px-4 py-1 rounded">+ Add Variation</button>
-        </div>
 
-        <!-- This will only be used for non-variant images if needed -->
-        <div id="uploaded_images" class="flex flex-wrap gap-3 pt-4"></div>
+        <!-- ================= SAVE BUTTON ================= -->
+        <div class="flex justify-end">
+          <button type="submit"
+            class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+            Save Changes
+          </button>
+        </div>
 
       </form>
+
     </div>
   </div>
 </main>
+
+<?php include("../footer.php"); ?>
+
 
 <script>
   document.addEventListener("DOMContentLoaded", async () => {
@@ -96,29 +157,55 @@
         `).join('');
 
         div.innerHTML = `
-            <label class="block text-sm font-medium mb-1">Variant #${index + 1}</label>
-            <div class="flex flex-wrap gap-4 items-center mb-4">
-            <input type="text" value="${variant.aid}" disabled name="aid[]" class="input input-sm w-[120px] bg-gray-100" placeholder="AID" />
-            <input type="hidden" name="uid[]" value="${variant.uid}" />
-            <input type="text" value="${variant.uid}" disabled class="input input-sm w-[100px] bg-gray-100" placeholder="UID" />
-            <input type="number" value="${variant.regular_price}" name="regular_price[]" class="input input-sm w-[140px]" placeholder="Regular Price" />
-            <input type="number" value="${variant.sell_price}" name="sell_price[]" class="input input-sm w-[140px]" placeholder="Sale Price" />
-            <input type="text" value="${variant.size}" name="size[]" class="input input-sm w-[80px]" placeholder="Size" />
-            <input type="text" value="${variant.color}" name="color[]" class="input input-sm w-[120px]" placeholder="Color" />
-            <input type="number" value="${variant.stock}" name="stock[]" class="input input-sm w-[100px]" placeholder="Stock" />
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-medium text-gray-700">Variant #${index + 1}</h4>
+            <button type="button"
+              class="text-red-500 hover:text-red-700 text-sm"
+              onclick="deleteVariation(${variant.uid})">
+              Delete
+            </button>
+          </div>
+
+          <input type="hidden" name="uid[]" value="${variant.uid}" />
+
+          <div class="grid grid-cols-2 gap-4">
+
+            <input type="number" name="regular_price[]" value="${variant.regular_price}"
+              class="input input-bordered w-full" placeholder="Regular Price" />
+
+            <input type="number" name="sell_price[]" value="${variant.sell_price}"
+              class="input input-bordered w-full" placeholder="Sale Price" />
+
+            <input type="text" name="size[]" value="${variant.size}"
+              class="input input-bordered w-full" placeholder="Size" />
+
+            <input type="text" name="color[]" value="${variant.color}"
+              class="input input-bordered w-full" placeholder="Color" />
+
+            <input type="number" name="stock[]" value="${variant.stock}"
+              class="input input-bordered w-full col-span-2" placeholder="Stock" />
+
+          </div>
+
+          <div class="mt-4">
+            <div class="flex flex-wrap gap-3 mb-3">
+              ${imagesHTML || '<span class="text-gray-400 text-sm">No images uploaded</span>'}
             </div>
 
-            <div class="flex flex-wrap gap-3 mb-3">${imagesHTML || '<span class="text-gray-400">No images</span>'}</div>
+            <button type="button"
+              class="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+              onclick="document.getElementById('upload_input_${variant.uid}').click()">
+              + Add Image
+            </button>
 
-            <div class="flex gap-3">
-                <button type="button" class="btn btn-secondary text-sm" onclick="document.getElementById('upload_input_${variant.uid}').click()">+ Add Image</button>
-                <input type="file" id="upload_input_${variant.uid}" class="hidden" multiple accept="image/*"
-                    onchange="handleImageUpload(event, '${variant.aid}', ${variant.uid})" />
-                <button type="button" class="btn btn-danger text-sm bg-red-500 text-white px-3 py-1 rounded" onclick="deleteVariation(${variant.uid})">🗑️ Delete Variation</button>
-            </div>
-
+            <input type="file"
+              id="upload_input_${variant.uid}"
+              class="hidden"
+              multiple
+              accept="image/*"
+              onchange="handleImageUpload(event, '${variant.aid}', ${variant.uid})" />
+          </div>
         `;
-
         variantList.appendChild(div);
       });
 

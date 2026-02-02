@@ -338,7 +338,7 @@
                                             <div class="menu-item"><a class="menu-link" href="nxt-pages/update-product.php?name=${product.slug}"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
                                             <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-copy me-2"></i>Make a copy</a></div>
                                             <div class="menu-separator"></div>
-                                            <div class="menu-item"><a class="menu-link text-danger" href="#"><i class="ki-filled ki-trash me-2"></i>Remove</a></div>
+                                            <div class="menu-item"><a class="menu-link text-danger" href="#" data-aid="${product.variations?.[0]?.aid}"><i class="ki-filled ki-trash me-2"></i>Remove</a></div>
                                         </div>
                                     </div>
                                 </div>
@@ -474,6 +474,74 @@
                     }
                 });
             });
+
+            document.addEventListener('click', (e) => {
+                const target = e.target.closest('.delete-product');
+                if (!target) return;
+
+                e.preventDefault();
+
+                const aid = target.dataset.aid;
+
+                if (!aid) {
+                    Swal.fire('Error', 'Product AID not found.', 'error');
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This product will be permanently deleted!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#EF4444',
+                    cancelButtonColor: '#6B7280',
+                    confirmButtonText: 'Yes, Delete it!'
+                }).then(async (result) => {
+                    if (!result.isConfirmed) return;
+
+                    try {
+                        const response = await fetch(`<?= $baseUrl ?>/api/admin/products/product-delete/${aid}`, {
+                            method: 'DELETE', // If your API uses POST change to POST
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
+                            }
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: data.message || 'Product deleted successfully.',
+                                confirmButtonColor: '#10B981'
+                            });
+
+                            // Reload table
+                            fetchProducts(currentPage);
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failed!',
+                                text: data.message || 'Unable to delete product.',
+                                confirmButtonColor: '#EF4444'
+                            });
+                        }
+
+                    } catch (error) {
+                        console.error(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Server error. Please try again.',
+                            confirmButtonColor: '#EF4444'
+                        });
+                    }
+                });
+            });
+
 
             // Initial Load
             fetchProducts(currentPage);

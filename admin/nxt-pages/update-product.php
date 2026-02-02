@@ -1,539 +1,791 @@
 <base href="../">
 <?php include("../header.php"); ?>
 
-<main class="grow content py-8 bg-gray-50 min-h-screen">
-  <div class="container mx-auto max-w-7xl">
-    <div class="bg-white rounded-xl shadow-md p-8">
-      <form id="updateProductForm" class="space-y-10">
-
+<main class="grow content pt-5" id="content" role="content">
+  <div class="container-fixed">
+    <div class="card min-w-full">
+      <form id="update_product_form" class="card-body flex flex-col gap-5 p-5" method="post" enctype="multipart/form-data">
+        <!-- Title -->
         <div>
-          <h2 class="text-2xl font-semibold text-gray-800">Update Product</h2>
-          <p class="text-sm text-gray-500 mt-1">Modify product details and manage variations</p>
+          <h3 class="text-lg font-medium text-gray-900 leading-none">Update Product</h3>
+          <div class="text-2sm text-gray-700">Modify product details and manage variations</div>
         </div>
 
-        <!-- BASIC INFORMATION SECTION -->
-        <div class="border rounded-lg p-6">
-          <h3 class="text-lg font-medium text-gray-700 mb-6">Basic Information</h3>
+        <!-- Row: Basic Fields -->
+        <div class="flex gap-10 items-center">
+          <input type="hidden" id="product_slug" name="slug" />
 
-          <input type="hidden" name="slug" id="productSlug" />
+          <div class="flex flex-col gap-1 flex-grow">
+            <label class="form-label text-gray-900">Product Name</label>
+            <input class="input input-sm w-[240px]" type="text" id="product_name" name="name" placeholder="Casual T-Shirt" />
+          </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label class="label">Product Name</label>
-              <input type="text" id="productName" name="name" class="input input-bordered w-full" required />
-            </div>
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">AID</label>
+            <input class="input input-sm w-[240px]" type="text" id="product_aid" name="aid" placeholder="A-210" readonly />
+          </div>
 
-            <div>
-              <label class="label">AID</label>
-              <input type="text" id="productAid" name="aid" class="input input-bordered w-full" required />
-            </div>
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Brand</label>
+            <select name="brand_select" id="brand_select" class="input input-sm w-[240px]">
+              <option value="">Select Brand</option>
+            </select>
+          </div>
 
-            <div>
-              <label class="label">Brand ID</label>
-              <input type="number" id="brandId" name="brand" class="input input-bordered w-full" required />
-            </div>
-
-            <div>
-              <label class="label">Category ID</label>
-              <input type="number" id="categoryId" name="category" class="input input-bordered w-full" required />
-            </div>
-
-            <div>
-              <label class="label">Gender</label>
-              <input type="text" id="gender" name="gender" class="input input-bordered w-full" />
-            </div>
-
-            <div>
-              <label class="label">Keyword</label>
-              <input type="text" id="keyword" name="keyword" class="input input-bordered w-full" />
-            </div>
-
-            <div class="md:col-span-3">
-              <label class="label">Description</label>
-              <textarea id="description" name="description" class="textarea textarea-bordered w-full h-24"></textarea>
-            </div>
-
-            <div class="md:col-span-3">
-              <label class="label">Specification</label>
-              <textarea id="specification" name="specification" class="textarea textarea-bordered w-full h-24"></textarea>
-            </div>
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Category</label>
+            <select name="category_select" id="category_select" class="input input-sm w-[240px]">
+              <option value="">Select Category</option>
+            </select>
           </div>
         </div>
 
-        <!-- VARIATIONS SECTION -->
-        <div class="border rounded-lg p-6">
-          <div class="flex justify-between items-center mb-6">
-            <h3 class="text-lg font-medium text-gray-700">Product Variations</h3>
-            <button type="button" id="addVariationBtn" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">
-              + Add Variation
+        <!-- Row: Info Fields -->
+        <div class="flex gap-10 items-center">
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Gender</label>
+            <select name="gender_select" id="gender_select" class="input input-sm w-[240px]">
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="unisex">Unisex</option>
+            </select>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Keyword</label>
+            <input class="input input-sm w-[240px]" type="text" id="keyword" name="keyword" placeholder="Grey shirt, fit" />
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Description</label>
+            <input class="input input-sm w-[240px]" type="text" id="description" name="description" placeholder="Soft and comfortable" />
+          </div>
+        </div>
+
+        <!-- Row: Availability Options -->
+        <div class="flex gap-10 items-center">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="cod_checkbox" class="h-4 w-4" />
+            <label for="cod_checkbox" class="form-label text-gray-900">Cash on Delivery (COD)</label>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="custom_design_checkbox" class="h-4 w-4" />
+            <label for="custom_design_checkbox" class="form-label text-gray-900">Custom Design Available</label>
+          </div>
+        </div>
+
+        <!-- Row: Product Type (Read-only for updates) -->
+        <div class="flex gap-10 items-center">
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Product Type</label>
+            <input type="text" id="product_type_display" class="input input-sm w-[240px]" readonly />
+            <input type="hidden" id="product_type" name="product_type" />
+          </div>
+        </div>
+
+        <!-- Row: Simple Fields -->
+        <div id="simple_fields" class="flex gap-4 items-center">
+          <input class="input input-sm w-[120px]" type="number" id="uid_simple" name="uid" placeholder="UID" readonly />
+          <input class="input input-sm w-[140px]" type="number" id="regular_price_simple" name="regular_price" placeholder="Regular Price" />
+          <input class="input input-sm w-[140px]" type="number" id="sale_price_simple" name="sale_price" placeholder="Sale Price" />
+          <input class="input input-sm w-[120px]" type="text" id="size_simple" name="size" placeholder="Size" />
+          <div class="color-dropdown relative w-[120px]">
+            <input type="hidden" id="color_simple" name="color" class="color-value" />
+            <button type="button" class="color-btn">
+              <span class="color-dot"></span>
+              <span class="color-text">Select Color</span>
             </button>
+            <div class="color-menu hidden absolute z-50 bg-white border rounded shadow w-full mt-1"></div>
           </div>
-          <div id="variationContainer" class="grid md:grid-cols-2 gap-6"></div>
+          <input class="input input-sm w-[100px]" type="number" id="stock_simple" name="stock" placeholder="Stock" />
         </div>
 
-        <!-- SUBMIT BUTTON -->
-        <div class="flex justify-end gap-3">
-          <button type="button" id="cancelBtn" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
-            Cancel
-          </button>
-          <button type="submit" id="saveBtn" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-            Save Changes
-          </button>
+        <!-- Variant Fields -->
+        <div id="variant_fields" class="hidden flex flex-col gap-3 border rounded bg-gray-50">
+          <div class="variation-item flex flex-col gap-3 border p-3 rounded bg-white">
+            <div class="flex gap-4 items-center">
+              <input type="number" placeholder="UID" class="input input-sm w-[120px]" readonly />
+              <input type="number" placeholder="Regular Price" class="input input-sm w-[140px]" />
+              <input type="number" placeholder="Sale Price" class="input input-sm w-[140px]" />
+              <input type="text" placeholder="Size" class="input input-sm w-[120px]" />
+              <div class="color-dropdown relative w-[120px]">
+                <input type="hidden" class="color-value" />
+                <button type="button" class="color-btn input input-sm w-full flex items-center gap-2">
+                  <span class="color-dot w-4 h-4 rounded-full border"></span>
+                  <span class="color-text text-gray-500">Select Color</span>
+                </button>
+                <div class="color-menu hidden absolute z-50 bg-white border rounded shadow w-full mt-1"></div>
+              </div>
+              <input type="number" placeholder="Stock" class="input input-sm w-[100px]" />
+              <button type="button" class="remove-variation-btn btn btn-sm bg-red-500 text-white">✕</button>
+            </div>
+
+            <!-- Images Section -->
+            <div class="images-wrapper flex flex-wrap gap-3 mb-3"></div>
+
+            <div class="flex gap-3 items-center">
+              <input type="file" class="variation-image-input input input-sm w-[240px]" accept="image/*" multiple />
+              <button type="button" class="upload-images-btn btn btn-sm bg-blue-500 text-white">Upload Images</button>
+            </div>
+
+            <!-- SPECIFICATIONS -->
+            <div class="specs-wrapper flex flex-col gap-2 mt-2">
+              <div class="spec-row flex gap-2 items-center">
+                <select class="input input-sm w-[180px] spec-name">
+                  <option value="">Select Spec</option>
+                  <option value="Material">Material</option>
+                  <option value="Fit">Fit</option>
+                  <option value="Country of Origin">Country of Origin</option>
+                  <option value="Color">Color</option>
+                  <option value="Wash">Wash</option>
+                </select>
+                <input type="text" class="input input-sm w-[240px] spec-value" placeholder="Spec value" />
+                <button type="button" class="remove-spec btn btn-xs bg-gray-300">✕</button>
+              </div>
+            </div>
+
+            <button type="button" class="add-spec btn btn-xs btn-secondary w-max">+ Add Specification</button>
+          </div>
+
+          <button type="button" id="add_variation_btn" class="btn btn-secondary w-max mt-2">+ Add Variation</button>
         </div>
 
+        <!-- Product Images Section -->
+        <div class="flex flex-col gap-3">
+          <div>
+            <label class="form-label text-gray-900">Product Images</label>
+            <div id="product_images_wrapper" class="flex flex-wrap gap-3 mb-3"></div>
+          </div>
+
+          <div class="flex gap-10 items-center">
+            <div class="flex flex-col gap-1">
+              <input class="input input-sm w-[240px]" type="file" id="product_images" name="image[]" accept="image/*" multiple />
+              <span class="text-gray-400 italic">Use Format: jpeg,png,jpg (Max: 8mb)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row: Submit -->
+        <div class="flex gap-10 items-center mb-5">
+          <div class="flex gap-3">
+            <button type="button" id="cancel_btn" class="btn btn-secondary h-8">Cancel</button>
+            <button type="submit" class="btn btn-primary h-8 mt-0">Update Product</button>
+          </div>
+        </div>
       </form>
     </div>
   </div>
 </main>
 
+<style>
+  .color-dropdown {
+    width: 150px;
+    position: relative;
+    font-size: 13px;
+  }
+
+  .color-btn {
+    width: 120px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .color-dot {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    min-height: 14px;
+    border-radius: 9999px;
+    border: 1px solid #94a3b8;
+    background-color: transparent;
+  }
+
+  .color-text {
+    font-size: 13px;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .color-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 120px;
+    margin-top: 4px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 999;
+  }
+
+  .color-menu div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+  .color-menu div span {
+    min-width: 16px;
+  }
+
+  .color-menu div:hover {
+    background: #f3f4f6;
+  }
+
+  .image-card {
+    position: relative;
+    width: 100px;
+    height: 100px;
+  }
+
+  .image-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .image-card .delete-image-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+</style>
+
+<?php include("../footer.php"); ?>
+
 <script>
-  // ===================== CONFIGURATION =====================
-  const CONFIG = {
-    baseUrl: '<?= $baseUrl ?>',
-    api: {
-      getProduct: '/api/products/get-product-byslug/',
-      uploadImages: '/api/admin/upload/variation-images',
-      deleteImage: '/api/admin/delete-image/',
-      deleteVariation: '/api/admin/products/variation-delete/',
-      updateProduct: '/api/admin/products/update'
-    },
-    selectors: {
-      form: '#updateProductForm',
-      slug: '#productSlug',
-      name: '#productName',
-      aid: '#productAid',
-      brand: '#brandId',
-      category: '#categoryId',
-      gender: '#gender',
-      keyword: '#keyword',
-      description: '#description',
-      specification: '#specification',
-      variationContainer: '#variationContainer',
-      addVariationBtn: '#addVariationBtn',
-      saveBtn: '#saveBtn',
-      cancelBtn: '#cancelBtn'
-    }
-  };
+  const baseUrl = "<?= $baseUrl ?>";
+  const token = localStorage.getItem("auth_token");
+  let currentProduct = null;
 
-  // ===================== UTILITY FUNCTIONS =====================
-  const Utils = {
-    getAuthToken: () => localStorage.getItem('auth_token'),
-
-    getUrlParam: (param) => new URLSearchParams(window.location.search).get(param),
-
-    showNotification: (message, type = 'info') => {
-      if (window.Swal) {
-        Swal.fire({
-          icon: type,
-          title: type === 'success' ? 'Success' : type === 'error' ? 'Error' : 'Info',
-          text: message,
-          timer: 3000
+  function fetchBrands() {
+    fetch(`${baseUrl}/api/allBrands`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ limit: 100, offset: 0 })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success && Array.isArray(data.data)) {
+        const brandSelect = document.getElementById("brand_select");
+        brandSelect.innerHTML = `<option value="">Select Brand</option>`;
+        data.data.forEach(brand => {
+          const option = document.createElement("option");
+          option.value = brand.id;
+          option.textContent = brand.name;
+          brandSelect.appendChild(option);
         });
-      } else {
-        alert(message);
+        if (currentProduct) {
+          brandSelect.value = currentProduct.brand?.id || "";
+        }
       }
-    },
+    })
+    .catch(err => console.error("Brand fetch error:", err));
+  }
 
-    showConfirm: async (title, text) => {
-      if (!window.Swal) {
-        return confirm(text);
+  function fetchCategories() {
+    fetch(`${baseUrl}/api/allCategories`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ limit: 100, offset: 0 })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success && Array.isArray(data.data)) {
+        const categorySelect = document.getElementById("category_select");
+        categorySelect.innerHTML = `<option value="">Select Category</option>`;
+        data.data.forEach(category => {
+          const option = document.createElement("option");
+          option.value = category.id;
+          option.textContent = category.name;
+          categorySelect.appendChild(option);
+        });
+        if (currentProduct) {
+          categorySelect.value = currentProduct.category?.id || "";
+        }
       }
-      const result = await Swal.fire({
-        title,
-        text,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#EF4444',
-        cancelButtonColor: '#6B7280',
-        confirmButtonText: 'Yes, Delete'
+    })
+    .catch(err => console.error("Category fetch error:", err));
+  }
+
+  async function loadColors() {
+    try {
+      const res = await fetch("./configs/color.json");
+      const data = await res.json();
+
+      document.querySelectorAll(".color-dropdown").forEach(dropdown => {
+        const menu = dropdown.querySelector(".color-menu");
+        const btn = dropdown.querySelector(".color-btn");
+        const dot = dropdown.querySelector(".color-dot");
+        const text = dropdown.querySelector(".color-text");
+        const input = dropdown.querySelector(".color-value");
+
+        menu.innerHTML = "";
+
+        data.colors.forEach(color => {
+          const item = document.createElement("div");
+          item.innerHTML = `
+            <span style="background:${color.code}" class="w-6 h-4 rounded-full border"></span>
+            <span>${color.name}</span>
+          `;
+
+          item.onclick = () => {
+            dot.style.backgroundColor = color.code;
+            dot.style.borderColor = "#64748b";
+            text.textContent = color.name;
+            text.classList.remove("text-gray-500");
+            input.value = color.name;
+            menu.classList.add("hidden");
+          };
+
+          menu.appendChild(item);
+        });
+
+        btn.onclick = () => menu.classList.toggle("hidden");
       });
-      return result.isConfirmed;
-    },
+    } catch (err) {
+      console.error("Color load error:", err);
+    }
+  }
 
-    generateTempId: () => `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-  };
+  function createImageCard(imageId, imageUrl, onDelete) {
+    const card = document.createElement("div");
+    card.className = "image-card";
+    card.innerHTML = `
+      <img src="${imageUrl}" alt="Product image" />
+      <button type="button" class="delete-image-btn" data-image-id="${imageId}">✕</button>
+    `;
 
-  // ===================== API SERVICE =====================
-  const ApiService = {
-    async request(endpoint, options = {}) {
-      const { method = 'GET', body = null, headers = {} } = options;
-      const token = Utils.getAuthToken();
+    card.querySelector(".delete-image-btn").addEventListener("click", (e) => {
+      e.preventDefault();
+      onDelete(imageId);
+    });
 
-      if (!token) {
-        throw new Error('Authentication token not found');
+    return card;
+  }
+
+  async function deleteProductImage(imageId) {
+    const confirmed = confirm("Are you sure you want to delete this image?");
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch(`${baseUrl}/api/admin/delete-image/${imageId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        alert("Image deleted successfully");
+        location.reload();
+      } else {
+        alert("Failed to delete image");
       }
+    } catch (err) {
+      alert("Error deleting image: " + err.message);
+    }
+  }
 
-      const defaultHeaders = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        ...headers
-      };
+  async function deleteVariationImage(imageId) {
+    const confirmed = confirm("Are you sure you want to delete this image?");
+    if (!confirmed) return;
 
-      const config = {
-        method,
-        headers: defaultHeaders
-      };
+    try {
+      const res = await fetch(`${baseUrl}/api/admin/delete-image/${imageId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
-      if (body && method !== 'GET') {
-        config.body = typeof body === 'string' ? body : JSON.stringify(body);
+      const result = await res.json();
+      if (result.success) {
+        alert("Image deleted successfully");
+        location.reload();
+      } else {
+        alert("Failed to delete image");
       }
+    } catch (err) {
+      alert("Error deleting image: " + err.message);
+    }
+  }
 
-      const response = await fetch(`${CONFIG.baseUrl}${endpoint}`, config);
+  async function uploadVariationImages(aid, uid, files) {
+    if (!files.length) return;
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+    const formData = new FormData();
+    formData.append("aid", aid);
+    formData.append("uid", uid);
 
-      return response.json();
-    },
+    for (let file of files) {
+      formData.append("file[]", file);
+    }
 
-    async getProduct(slug) {
-      return this.request(CONFIG.api.getProduct + slug, { method: 'POST' });
-    },
-
-    async uploadVariationImages(aid, uid, formData) {
-      const token = Utils.getAuthToken();
-      const response = await fetch(`${CONFIG.baseUrl}${CONFIG.api.uploadImages}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
+    try {
+      const res = await fetch(`${baseUrl}/api/admin/upload/variation-images`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
         body: formData
       });
-      return response.json();
-    },
 
-    async deleteImage(imageId) {
-      return this.request(CONFIG.api.deleteImage + imageId, { method: 'DELETE' });
-    },
-
-    async deleteVariation(uid) {
-      return this.request(CONFIG.api.deleteVariation + uid, { method: 'DELETE' });
-    }
-  };
-
-  // ===================== DOM HELPERS =====================
-  const DOM = {
-    getElement: (selector) => document.querySelector(selector),
-    getElements: (selector) => document.querySelectorAll(selector),
-
-    setFieldValue: (selector, value) => {
-      const el = DOM.getElement(selector);
-      if (el) el.value = value || '';
-    },
-
-    getFieldValue: (selector) => {
-      const el = DOM.getElement(selector);
-      return el ? el.value : '';
-    },
-
-    createVariationCard: (variant, index) => {
-      const imagesHTML = variant.images.map(img => `
-        <div class="relative group">
-          <img src="${img.url}" class="w-24 h-24 object-cover rounded border" alt="Variant image" />
-          <button type="button" class="absolute top-1 right-1 bg-red-600 text-white rounded-full text-xs px-1 py-0.5 hidden group-hover:block"
-            data-action="deleteImage" data-image-id="${img.id}" data-variant-uid="${variant.uid}">✕</button>
-        </div>
-      `).join('');
-
-      const div = document.createElement('div');
-      div.className = 'border p-4 rounded bg-white shadow variation-card';
-      div.dataset.uid = variant.uid;
-
-      div.innerHTML = `
-        <div class="flex justify-between items-center mb-4">
-          <h4 class="font-medium text-gray-700">Variant #${index + 1}</h4>
-          <button type="button" class="text-red-500 hover:text-red-700 text-sm" data-action="deleteVariation" data-uid="${variant.uid}">
-            Delete
-          </button>
-        </div>
-
-        <input type="hidden" name="uid[]" value="${variant.uid}" />
-
-        <div class="grid grid-cols-2 gap-4 mb-4">
-          <input type="number" name="regular_price[]" value="${variant.regular_price}" class="input input-bordered w-full" placeholder="Regular Price" required />
-          <input type="number" name="sell_price[]" value="${variant.sell_price}" class="input input-bordered w-full" placeholder="Sale Price" required />
-          <input type="text" name="size[]" value="${variant.size}" class="input input-bordered w-full" placeholder="Size" />
-          <input type="text" name="color[]" value="${variant.color}" class="input input-bordered w-full" placeholder="Color" />
-          <input type="number" name="stock[]" value="${variant.stock}" class="input input-bordered w-full col-span-2" placeholder="Stock" required />
-        </div>
-
-        <div class="mt-4">
-          <div class="flex flex-wrap gap-3 mb-3">
-            ${imagesHTML || '<span class="text-gray-400 text-sm">No images uploaded</span>'}
-          </div>
-
-          <button type="button" class="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300" data-action="uploadImage" data-uid="${variant.uid}">
-            + Add Image
-          </button>
-
-          <input type="file" class="hidden variant-file-input" data-uid="${variant.uid}" multiple accept="image/*" />
-        </div>
-      `;
-
-      return div;
-    },
-
-    createNewVariationCard: (tempId) => {
-      const div = document.createElement('div');
-      div.className = 'border p-4 rounded bg-white shadow variation-card';
-      div.dataset.uid = tempId;
-
-      div.innerHTML = `
-        <label class="block text-sm font-medium mb-4">New Variant</label>
-
-        <input type="hidden" name="uid[]" value="${tempId}" />
-        <input type="hidden" name="aid[]" value="" />
-
-        <div class="grid grid-cols-2 gap-4 mb-4">
-          <input type="number" name="regular_price[]" class="input input-bordered w-full" placeholder="Regular Price" required />
-          <input type="number" name="sell_price[]" class="input input-bordered w-full" placeholder="Sale Price" required />
-          <input type="text" name="size[]" class="input input-bordered w-full" placeholder="Size" />
-          <input type="text" name="color[]" class="input input-bordered w-full" placeholder="Color" />
-          <input type="number" name="stock[]" class="input input-bordered w-full col-span-2" placeholder="Stock" required />
-        </div>
-
-        <div class="flex flex-wrap gap-3 mb-3 text-gray-500 text-sm">
-          No images yet
-        </div>
-
-        <div class="flex gap-3">
-          <button type="button" class="btn btn-sm bg-blue-500 text-white rounded" data-action="uploadImage" data-uid="${tempId}">
-            + Add Image
-          </button>
-          <button type="button" class="btn btn-sm bg-red-500 text-white rounded" data-action="deleteVariation" data-uid="${tempId}">
-            Delete Variation
-          </button>
-          <input type="file" class="hidden variant-file-input" data-uid="${tempId}" multiple accept="image/*" />
-        </div>
-      `;
-
-      return div;
-    }
-  };
-
-  // ===================== EVENT HANDLERS =====================
-  const EventHandlers = {
-    async handleImageUpload(e, aid, uid) {
-      const files = e.target.files;
-      if (!files.length) return;
-
-      const formData = new FormData();
-      formData.append('aid', aid);
-      formData.append('uid', uid);
-
-      Array.from(files).forEach(file => {
-        formData.append('file[]', file);
-      });
-
-      try {
-        const result = await ApiService.uploadVariationImages(aid, uid, formData);
-
-        if (result.success) {
-          Utils.showNotification('Image(s) uploaded successfully', 'success');
-          location.reload();
-        } else {
-          Utils.showNotification('Failed to upload: ' + result.message, 'error');
-        }
-      } catch (err) {
-        Utils.showNotification('Error uploading: ' + err.message, 'error');
+      const result = await res.json();
+      if (result.success) {
+        alert("Images uploaded successfully");
+        location.reload();
+      } else {
+        alert("Failed to upload images: " + result.message);
       }
-
-      e.target.value = '';
-    },
-
-    async handleDeleteImage(imageId, uid) {
-      const confirmed = await Utils.showConfirm('Delete Image', 'Are you sure you want to delete this image?');
-      if (!confirmed) return;
-
-      try {
-        const result = await ApiService.deleteImage(imageId);
-
-        if (result.success) {
-          Utils.showNotification('Image deleted successfully', 'success');
-          location.reload();
-        } else {
-          Utils.showNotification('Failed to delete image', 'error');
-        }
-      } catch (err) {
-        Utils.showNotification('Error: ' + err.message, 'error');
-      }
-    },
-
-    async handleDeleteVariation(uid) {
-      const confirmed = await Utils.showConfirm('Delete Variation', `Delete this variation?`);
-      if (!confirmed) return;
-
-      try {
-        const result = await ApiService.deleteVariation(uid);
-
-        if (result.success) {
-          Utils.showNotification('Variation deleted successfully', 'success');
-
-          const card = DOM.getElement(`.variation-card[data-uid="${uid}"]`);
-          if (card) card.remove();
-        } else {
-          Utils.showNotification('Failed to delete variation', 'error');
-        }
-      } catch (err) {
-        Utils.showNotification('Error: ' + err.message, 'error');
-      }
-    },
-
-    handleAddVariation() {
-      const container = DOM.getElement(CONFIG.selectors.variationContainer);
-      const tempId = Utils.generateTempId();
-      const card = DOM.createNewVariationCard(tempId);
-      container.appendChild(card);
-    },
-
-    async handleFormSubmit(e) {
-      e.preventDefault();
-
-      const form = e.target;
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData);
-
-      // Combine array fields
-      const variations = [];
-      const uids = formData.getAll('uid[]');
-      const regularPrices = formData.getAll('regular_price[]');
-      const sellPrices = formData.getAll('sell_price[]');
-      const sizes = formData.getAll('size[]');
-      const colors = formData.getAll('color[]');
-      const stocks = formData.getAll('stock[]');
-
-      uids.forEach((uid, index) => {
-        variations.push({
-          uid,
-          regular_price: regularPrices[index],
-          sell_price: sellPrices[index],
-          size: sizes[index],
-          color: colors[index],
-          stock: stocks[index]
-        });
-      });
-
-      const payload = {
-        slug: data.slug,
-        name: data.name,
-        aid: data.aid,
-        brand: data.brand,
-        category: data.category,
-        gender: data.gender,
-        keyword: data.keyword,
-        description: data.description,
-        specification: data.specification,
-        variations
-      };
-
-      try {
-        const saveBtn = DOM.getElement(CONFIG.selectors.saveBtn);
-        saveBtn.disabled = true;
-        saveBtn.textContent = 'Saving...';
-
-        const result = await ApiService.request(CONFIG.api.updateProduct, {
-          method: 'POST',
-          body: payload
-        });
-
-        if (result.success) {
-          Utils.showNotification('Product updated successfully', 'success');
-          setTimeout(() => window.history.back(), 2000);
-        } else {
-          Utils.showNotification('Failed to update product: ' + result.message, 'error');
-        }
-      } catch (err) {
-        Utils.showNotification('Error: ' + err.message, 'error');
-      } finally {
-        const saveBtn = DOM.getElement(CONFIG.selectors.saveBtn);
-        saveBtn.disabled = false;
-        saveBtn.textContent = 'Save Changes';
-      }
+    } catch (err) {
+      alert("Error uploading images: " + err.message);
     }
-  };
+  }
 
-  // ===================== EVENT DELEGATION =====================
-  document.addEventListener('click', (e) => {
-    const action = e.target.dataset.action;
+  async function loadProduct() {
+    const slug = new URLSearchParams(window.location.search).get("name");
 
-    if (action === 'deleteImage') {
-      const imageId = e.target.dataset.imageId;
-      const uid = e.target.dataset.variantUid;
-      EventHandlers.handleDeleteImage(imageId, uid);
-    }
-
-    if (action === 'deleteVariation') {
-      e.preventDefault();
-      const uid = e.target.dataset.uid;
-      EventHandlers.handleDeleteVariation(uid);
-    }
-
-    if (action === 'uploadImage') {
-      e.preventDefault();
-      const uid = e.target.dataset.uid;
-      const fileInput = DOM.getElement(`.variant-file-input[data-uid="${uid}"]`);
-      fileInput?.click();
-    }
-  });
-
-  document.addEventListener('change', (e) => {
-    if (e.target.classList.contains('variant-file-input')) {
-      const uid = e.target.dataset.uid;
-      const aid = DOM.getElement(`.variation-card[data-uid="${uid}"] input[name="aid[]"]`)?.value || '';
-      EventHandlers.handleImageUpload(e, aid, uid);
-    }
-  });
-
-  // ===================== INITIALIZATION =====================
-  async function initializeForm() {
-    const productSlug = Utils.getUrlParam('name');
-
-    if (!productSlug) {
-      Utils.showNotification('Product slug is missing in URL', 'error');
+    if (!slug) {
+      alert("Product slug is missing in URL");
       return;
     }
 
     try {
-      const { data: product, success, message } = await ApiService.getProduct(productSlug);
+      const res = await fetch(`${baseUrl}/api/products/get-product-byslug/${slug}`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const { data: product, success, message } = await res.json();
 
       if (!success) {
-        Utils.showNotification('Failed to fetch product: ' + message, 'error');
+        alert("Failed to fetch product: " + message);
         return;
       }
 
-      // Populate form fields
-      DOM.setFieldValue(CONFIG.selectors.slug, product.slug);
-      DOM.setFieldValue(CONFIG.selectors.name, product.name);
-      DOM.setFieldValue(CONFIG.selectors.aid, product.aid);
-      DOM.setFieldValue(CONFIG.selectors.brand, product.brand?.id);
-      DOM.setFieldValue(CONFIG.selectors.category, product.category?.id);
-      DOM.setFieldValue(CONFIG.selectors.gender, product.gender);
-      DOM.setFieldValue(CONFIG.selectors.keyword, product.keyword);
-      DOM.setFieldValue(CONFIG.selectors.description, product.description);
-      DOM.setFieldValue(CONFIG.selectors.specification, product.specification);
+      currentProduct = product;
 
-      // Render variations
-      const container = DOM.getElement(CONFIG.selectors.variationContainer);
-      container.innerHTML = '';
+      // Fill basic fields
+      document.getElementById("product_slug").value = product.slug || "";
+      document.getElementById("product_name").value = product.name || "";
+      document.getElementById("product_aid").value = product.aid || "";
+      document.getElementById("keyword").value = product.keyword || "";
+      document.getElementById("description").value = product.description || "";
+      document.getElementById("gender_select").value = product.gender || "";
+      document.getElementById("cod_checkbox").checked = product.cod === "available";
+      document.getElementById("custom_design_checkbox").checked = product.custom_design === "available";
 
-      product.variations?.forEach((variant, index) => {
-        const card = DOM.createVariationCard(variant, index);
-        container.appendChild(card);
-      });
+      // Determine product type
+      const isVariant = Array.isArray(product.variations) && product.variations.length > 0;
+      const productTypeDisplay = isVariant ? "Variant Product" : "Simple Product";
+      document.getElementById("product_type_display").value = productTypeDisplay;
+      document.getElementById("product_type").value = isVariant ? "variant" : "simple";
 
-      // Attach event listeners
-      DOM.getElement(CONFIG.selectors.addVariationBtn).addEventListener('click', EventHandlers.handleAddVariation);
-      DOM.getElement(CONFIG.selectors.form).addEventListener('submit', EventHandlers.handleFormSubmit);
-      DOM.getElement(CONFIG.selectors.cancelBtn).addEventListener('click', () => window.history.back());
+      // Load brands and categories
+      fetchBrands();
+      fetchCategories();
+      loadColors();
+
+      if (isVariant) {
+        // Show variant fields
+        document.getElementById("simple_fields").classList.add("hidden");
+        document.getElementById("variant_fields").classList.remove("hidden");
+
+        // Clear and populate variants
+        const variantFields = document.getElementById("variant_fields");
+        const firstItem = variantFields.querySelector(".variation-item");
+        firstItem.parentElement.querySelectorAll(".variation-item").forEach((item, idx) => {
+          if (idx > 0) item.remove();
+        });
+
+        product.variations.forEach((variant, index) => {
+          let variantItem;
+
+          if (index === 0) {
+            variantItem = firstItem;
+          } else {
+            variantItem = firstItem.cloneNode(true);
+            variantFields.insertBefore(variantItem, document.getElementById("add_variation_btn"));
+          }
+
+          variantItem.querySelector("input[placeholder='UID']").value = variant.uid;
+          variantItem.querySelector("input[placeholder='Regular Price']").value = variant.regular_price;
+          variantItem.querySelector("input[placeholder='Sale Price']").value = variant.sell_price;
+          variantItem.querySelector("input[placeholder='Size']").value = variant.size;
+          variantItem.querySelector(".color-value").value = variant.color;
+          variantItem.querySelector(".color-text").textContent = variant.color;
+          variantItem.querySelector(".color-text").classList.remove("text-gray-500");
+          variantItem.querySelector(".color-dot").style.backgroundColor = "#94a3b8";
+          variantItem.querySelector("input[placeholder='Stock']").value = variant.stock;
+
+          // Load images
+          const imagesWrapper = variantItem.querySelector(".images-wrapper");
+          imagesWrapper.innerHTML = "";
+          if (variant.images && variant.images.length > 0) {
+            variant.images.forEach(img => {
+              const imageCard = createImageCard(img.id, img.url, deleteVariationImage);
+              imagesWrapper.appendChild(imageCard);
+            });
+          }
+
+          // Attach upload button
+          const uploadBtn = variantItem.querySelector(".upload-images-btn");
+          const fileInput = variantItem.querySelector(".variation-image-input");
+
+          uploadBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (fileInput.files.length > 0) {
+              uploadVariationImages(product.aid, variant.uid, fileInput.files);
+            } else {
+              alert("Please select images to upload");
+            }
+          });
+
+          // Attach remove button
+          const removeBtn = variantItem.querySelector(".remove-variation-btn");
+          removeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const items = variantFields.querySelectorAll(".variation-item");
+            if (items.length > 1) {
+              variantItem.remove();
+            } else {
+              alert("At least one variation is required");
+            }
+          });
+        });
+
+      } else {
+        // Show simple fields
+        document.getElementById("simple_fields").classList.remove("hidden");
+        document.getElementById("variant_fields").classList.add("hidden");
+
+        document.getElementById("uid_simple").value = product.uid || "";
+        document.getElementById("regular_price_simple").value = product.regular_price || "";
+        document.getElementById("sale_price_simple").value = product.sale_price || "";
+        document.getElementById("size_simple").value = product.size || "";
+        document.getElementById("color_simple").value = product.color || "";
+        document.getElementById("stock_simple").value = product.stock || "";
+
+        // Set color dot
+        const colorDot = document.querySelector("#simple_fields .color-dot");
+        const colorText = document.querySelector("#simple_fields .color-text");
+        if (product.color) {
+          colorText.textContent = product.color;
+          colorText.classList.remove("text-gray-500");
+        }
+      }
+
+      // Load product images
+      const imagesWrapper = document.getElementById("product_images_wrapper");
+      imagesWrapper.innerHTML = "";
+      if (product.upload && product.upload.length > 0) {
+        product.upload.forEach(img => {
+          const imageCard = createImageCard(img.id, img.url, deleteProductImage);
+          imagesWrapper.appendChild(imageCard);
+        });
+      }
 
     } catch (err) {
-      Utils.showNotification('Error: ' + err.message, 'error');
+      alert("Error: " + err.message);
     }
   }
 
-  // Initialize on page load
-  document.addEventListener('DOMContentLoaded', initializeForm);
-</script>
+  document.addEventListener("DOMContentLoaded", () => {
+    loadProduct();
 
-<?php include("../footer.php"); ?>
+    const form = document.getElementById("update_product_form");
+    const cancelBtn = document.getElementById("cancel_btn");
+    const addVariationBtn = document.getElementById("add_variation_btn");
+
+    // Cancel button
+    cancelBtn.addEventListener("click", () => window.history.back());
+
+    // Add variation button
+    addVariationBtn.addEventListener("click", () => {
+      const variantFields = document.getElementById("variant_fields");
+      const firstItem = variantFields.querySelector(".variation-item");
+      const clone = firstItem.cloneNode(true);
+
+      clone.querySelectorAll("input, select").forEach(input => {
+        if (input.type !== "file" && !input.classList.contains("color-value")) {
+          input.value = "";
+        }
+      });
+
+      clone.querySelector(".images-wrapper").innerHTML = "";
+      clone.querySelector(".variation-image-input").value = "";
+
+      variantFields.insertBefore(clone, addVariationBtn);
+
+      const removeBtn = clone.querySelector(".remove-variation-btn");
+      removeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const items = variantFields.querySelectorAll(".variation-item");
+        if (items.length > 1) {
+          clone.remove();
+        }
+      });
+
+      const uploadBtn = clone.querySelector(".upload-images-btn");
+      const fileInput = clone.querySelector(".variation-image-input");
+      uploadBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (fileInput.files.length > 0) {
+          const uid = clone.querySelector("input[placeholder='UID']").value;
+          uploadVariationImages(currentProduct.aid, uid, fileInput.files);
+        } else {
+          alert("Please select images to upload");
+        }
+      });
+
+      loadColors();
+    });
+
+    // Add spec row
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("add-spec")) {
+        const wrapper = e.target.previousElementSibling;
+        const firstRow = wrapper.querySelector(".spec-row");
+        const clone = firstRow.cloneNode(true);
+        clone.querySelector(".spec-name").value = "";
+        clone.querySelector(".spec-value").value = "";
+        wrapper.appendChild(clone);
+      }
+
+      if (e.target.classList.contains("remove-spec")) {
+        const wrapper = e.target.closest(".specs-wrapper");
+        const rows = wrapper.querySelectorAll(".spec-row");
+        if (rows.length > 1) {
+          e.target.closest(".spec-row").remove();
+        }
+      }
+    });
+
+    // Form submission
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const isVariant = document.getElementById("product_type").value === "variant";
+      const codCheckbox = document.getElementById("cod_checkbox");
+      const customDesignCheckbox = document.getElementById("custom_design_checkbox");
+
+      const payload = {
+        slug: formData.get("slug"),
+        name: formData.get("name"),
+        aid: formData.get("aid"),
+        brand: Number(formData.get("brand_select")),
+        category: Number(formData.get("category_select")),
+        gender: formData.get("gender_select"),
+        keyword: formData.get("keyword"),
+        description: formData.get("description"),
+        cod: codCheckbox.checked ? "available" : "not available",
+        custom_design: customDesignCheckbox.checked ? "available" : "not available"
+      };
+
+      if (isVariant) {
+        payload.variations = [];
+        const variantFields = document.getElementById("variant_fields");
+        variantFields.querySelectorAll(".variation-item").forEach((row) => {
+          const uid = row.querySelector("input[placeholder='UID']").value;
+          const regular_price = row.querySelector("input[placeholder='Regular Price']").value;
+          const sale_price = row.querySelector("input[placeholder='Sale Price']").value;
+          const size = row.querySelector("input[placeholder='Size']").value;
+          const color = row.querySelector(".color-value").value;
+          const stock = row.querySelector("input[placeholder='Stock']").value;
+
+          payload.variations.push({
+            uid: Number(uid),
+            regular_price: Number(regular_price),
+            sale_price: Number(sale_price),
+            size,
+            color,
+            stock: Number(stock)
+          });
+        });
+      } else {
+        payload.uid = Number(formData.get("uid"));
+        payload.size = formData.get("size");
+        payload.color = formData.get("color");
+        payload.stock = Number(formData.get("stock"));
+        payload.regular_price = Number(formData.get("regular_price"));
+        payload.sale_price = Number(formData.get("sale_price"));
+      }
+
+      try {
+        const updateRes = await fetch(`${baseUrl}/api/admin/products/update`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await updateRes.json();
+
+        if (!result.success) {
+          alert("Failed to update product: " + result.message);
+          return;
+        }
+
+        alert("Product updated successfully");
+
+        // Upload product images if selected
+        const productImageInput = form.querySelector('input[name="image[]"]');
+        if (productImageInput.files.length > 0) {
+          const uploadForm = new FormData();
+          uploadForm.append("aid", payload.aid);
+
+          for (let file of productImageInput.files) {
+            uploadForm.append("file[]", file);
+          }
+
+          await fetch(`${baseUrl}/api/admin/upload/product-images`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+            body: uploadForm
+          });
+        }
+
+        setTimeout(() => window.history.back(), 1500);
+
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
+    });
+  });
+</script>

@@ -226,129 +226,129 @@
                 }
             }
 
-function renderTable(products) {
-    tableBody.innerHTML = '';
+            function renderTable(products) {
+                tableBody.innerHTML = '';
 
-    products.forEach(product => {
-        const baseImage = product.upload?.[0]?.url || 'assets/media/avatars/300-1.png';
-        const firstVariation = product.variations?.[0]; // ✅ First variation
-        const firstUID = firstVariation?.uid || '';
+                products.forEach(product => {
+                    const baseImage = product.upload?.[0]?.url || 'assets/media/avatars/300-1.png';
+                    const firstVariation = product.variations?.[0]; // ✅ First variation
+                    const firstUID = firstVariation?.uid || '';
 
-        const statusBadge = badge(product.product_status);
-        const customDesignBadge = badge(product.custom_design);
+                    const statusBadge = badge(product.product_status);
+                    const customDesignBadge = badge(product.custom_design);
 
-        // Build all variations HTML inside single column
-        let variationsHTML = '';
+                    // Build all variations HTML inside single column
+                    let variationsHTML = '';
 
-        product.variations.forEach(variation => {
-            variationsHTML += `
-                <div class="border-b last:border-0 pb-2 mb-2 last:mb-0">
-                    <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-                        <div><strong>AID:</strong> ${variation.aid}</div>
-                        <div><strong>UID:</strong> ${variation.uid}</div>
-                        <div><strong>Color:</strong> ${variation.color}</div>
-                        <div><strong>Size:</strong> ${variation.size}</div>
-                        <div><strong>Regular:</strong> ₹${variation.regular_price}</div>
-                        <div><strong>Sell:</strong> ₹${variation.sell_price}</div>
-                        <div><strong>Stock:</strong> ${variation.stock}</div>
-                    </div>
-                </div>
-            `;
-        });
-
-        const row = `
-            <tr>
-                <td class="text-center">
-                    <input class="checkbox checkbox-sm" type="checkbox" value="${product.id}" />
-                </td>
-
-                <!-- Mark Product Column -->
-                <td class="text-center">
-                    <div class="menu flex-inline" data-menu="true">
-                        <div class="menu-item"
-                            data-menu-item-toggle="dropdown"
-                            data-menu-item-trigger="click|lg:click">
-                            <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
-                                <i class="ki-filled ki-dots-vertical"></i>
-                            </button>
-                            <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
-                                <div class="menu-item">
-                                    <a class="menu-link mark-product" 
-                                        data-section="Trending"
-                                        data-variations='${JSON.stringify(product.variations)}'>
-                                        As Trending
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link mark-product" 
-                                       data-section="New Arrival" 
-                                       data-variations='${JSON.stringify(product.variations)}'>
-                                       As New Arrival
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link mark-product" 
-                                       data-section="Gallery" 
-                                       data-variations='${JSON.stringify(product.variations)}'>
-                                       As Gallery
-                                    </a>
+                    product.variations.forEach(variation => {
+                        variationsHTML += `
+                            <div class="border-b last:border-0 pb-2 mb-2 last:mb-0">
+                                <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                                    <div><strong>AID:</strong> ${variation.aid}</div>
+                                    <div><strong>UID:</strong> ${variation.uid}</div>
+                                    <div><strong>Color:</strong> ${variation.color}</div>
+                                    <div><strong>Size:</strong> ${variation.size}</div>
+                                    <div><strong>Regular:</strong> ₹${variation.regular_price}</div>
+                                    <div><strong>Sell:</strong> ₹${variation.sell_price}</div>
+                                    <div><strong>Stock:</strong> ${variation.stock}</div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </td>
+                        `;
+                    });
 
-                <!-- Product -->
-                <td>
-                    <div class="flex items-center gap-2">
-                        <img class="rounded-full size-9" src="${baseImage}" />
-                        <div class="flex flex-col">
-                            <span class="text-sm font-medium text-gray-900">${product.name}</span>
-                            <div class="rating">${renderStars(product.ratings)}</div>
-                        </div>
-                    </div>
-                </td>
+                    const row = `
+                        <tr>
+                            <td class="text-center">
+                                <input class="checkbox checkbox-sm" type="checkbox" value="${product.id}" />
+                            </td>
 
-                <td>${product.brand?.name || ''}</td>
-                <td>${statusBadge}</td>
-                <td>${product.category?.name || ''}</td>
+                            <!-- Mark Product Column -->
+                            <td class="text-center">
+                                <div class="menu flex-inline" data-menu="true">
+                                    <div class="menu-item"
+                                        data-menu-item-toggle="dropdown"
+                                        data-menu-item-trigger="click|lg:click">
+                                        <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
+                                            <i class="ki-filled ki-dots-vertical"></i>
+                                        </button>
+                                        <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
+                                            <div class="menu-item">
+                                                <a class="menu-link mark-product" 
+                                                    data-section="Trending"
+                                                    data-variations='${JSON.stringify(product.variations)}'>
+                                                    As Trending
+                                                </a>
+                                            </div>
+                                            <div class="menu-item">
+                                                <a class="menu-link mark-product" 
+                                                data-section="New Arrival" 
+                                                data-variations='${JSON.stringify(product.variations)}'>
+                                                As New Arrival
+                                                </a>
+                                            </div>
+                                            <div class="menu-item">
+                                                <a class="menu-link mark-product" 
+                                                data-section="Gallery" 
+                                                data-variations='${JSON.stringify(product.variations)}'>
+                                                As Gallery
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
 
-                <!-- All Variations in Single Cell -->
-                <td class="bg-gray-50 p-3 rounded-md">
-                    ${variationsHTML}
-                </td>
+                            <!-- Product -->
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <img class="rounded-full size-9" src="${baseImage}" />
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-medium text-gray-900">${product.name}</span>
+                                        <div class="rating">${renderStars(product.ratings)}</div>
+                                    </div>
+                                </div>
+                            </td>
 
-                <td>${customDesignBadge}</td>
+                            <td>${product.brand?.name || ''}</td>
+                            <td>${statusBadge}</td>
+                            <td>${product.category?.name || ''}</td>
 
-                <!-- Actions -->
-                <td class="text-center">
-                    <div class="menu flex-inline" data-menu="true">
-                        <div class="menu-item" data-menu-item-offset="0, 10px"
-                            data-menu-item-placement="bottom-end"
-                            data-menu-item-placement-rtl="bottom-start"
-                            data-menu-item-toggle="dropdown"
-                            data-menu-item-trigger="click|lg:click">
-                            <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
-                                <i class="ki-filled ki-dots-vertical"></i>
-                            </button>
-                            <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
-                                <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-search-list me-2"></i>View</a></div>
-                                <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-file-up me-2"></i>Export</a></div>
-                                <div class="menu-separator"></div>
-                                <div class="menu-item"><a class="menu-link" href="nxt-pages/update-product.php?name=${product.slug}"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
-                                <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-copy me-2"></i>Make a copy</a></div>
-                                <div class="menu-separator"></div>
-                                <div class="menu-item"><a class="menu-link text-danger" href="#"><i class="ki-filled ki-trash me-2"></i>Remove</a></div>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        `;
+                            <!-- All Variations in Single Cell -->
+                            <td class="bg-gray-50 p-3 rounded-md">
+                                ${variationsHTML}
+                            </td>
 
-        tableBody.insertAdjacentHTML('beforeend', row);
-    });
-}
+                            <td>${customDesignBadge}</td>
+
+                            <!-- Actions -->
+                            <td class="text-center">
+                                <div class="menu flex-inline" data-menu="true">
+                                    <div class="menu-item" data-menu-item-offset="0, 10px"
+                                        data-menu-item-placement="bottom-end"
+                                        data-menu-item-placement-rtl="bottom-start"
+                                        data-menu-item-toggle="dropdown"
+                                        data-menu-item-trigger="click|lg:click">
+                                        <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
+                                            <i class="ki-filled ki-dots-vertical"></i>
+                                        </button>
+                                        <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
+                                            <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-search-list me-2"></i>View</a></div>
+                                            <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-file-up me-2"></i>Export</a></div>
+                                            <div class="menu-separator"></div>
+                                            <div class="menu-item"><a class="menu-link" href="nxt-pages/update-product.php?name=${product.slug}"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
+                                            <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-copy me-2"></i>Make a copy</a></div>
+                                            <div class="menu-separator"></div>
+                                            <div class="menu-item"><a class="menu-link text-danger" href="#"><i class="ki-filled ki-trash me-2"></i>Remove</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+            }
 
             function renderStars(count) {
                 const full = Math.floor(count);
@@ -442,7 +442,7 @@ function renderTable(products) {
                         <div class="text-left mb-2">
                             <label style="cursor:pointer;">
                                 <input type="radio" name="variation_uid" value="${v.uid}" ${index === 0 ? 'checked' : ''}>
-                                <strong>${v.color}</strong> | ${v.size} 
+                                <strong>${v.color}</strong> | ${v.size} | <strong>${v.uid}</strong>
                                 (Stock: ${v.stock})
                             </label>
                         </div>

@@ -150,13 +150,13 @@ Update Product
 
 Carts:
 Add Carts 
-Fetch Carts 
+Fetch Carts -> Done ✅
 Delete Carts  
 Update Carts 
 
 Wishlists:
 Add Wishlist 
-Fetch Wishlist  ->  need to create api
+Fetch Wishlist 
 Delete Wishlist 
 Update Wishlist 
 
@@ -168,7 +168,7 @@ Update User ->  need to create api
 
 Orders:
 View Order
-Fetch Order 
+Fetch Order -> Done ✅
 Cancel Order 
 Update Order 
 Delete Order 

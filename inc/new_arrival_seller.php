@@ -68,7 +68,8 @@
 
     items.forEach(row => {
       const product = row.product;
-      const variation = product.variation || {};
+      // const variation = product.variation || {};
+      const variation = product.variations?.[0] || {};
 
       const image =
         variation.images?.[0]?.upload_url ||
@@ -84,7 +85,7 @@
       }
       const productName = product.name;
       const slug = product.slug;
-      const variationUID = variation.uid;
+      const variationUID = variation.uid || '';
 
       sliderTrack.innerHTML += `
         <div class="min-w-[300px] max-w-[300px] m-2 flex-shrink-0 group">

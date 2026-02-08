@@ -413,7 +413,7 @@
           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-          image_id: imageId,
+          ids: imageId,
           aid: currentProduct.aid
         })
       });
@@ -444,7 +444,7 @@
           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-          image_id: imageId,
+          ids: imageId,
           uid: uid
         })
       });

@@ -174,9 +174,9 @@ Update Order
 Delete Order 
 
 Uploads:
-View Upload
-Fetch Upload 
-Update Upload 
+View Upload -> Done ✅
+Fetch Upload -> Done ✅
+Update Upload with chose product 
 Delete Upload 
 
 Notification:

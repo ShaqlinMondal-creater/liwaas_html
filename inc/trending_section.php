@@ -141,7 +141,8 @@
 
         response.data.forEach(item => {
           const product = item.product;
-          const variation = product.variation || {};
+          // const variation = product.variation || {};
+          const variation = product.variations?.[0] || {};
           const imageUrl = variation.images?.[0]?.upload_url || 'https://via.placeholder.com/300x400?text=No+Image';
 
           const card = document.createElement('div');
@@ -474,7 +475,8 @@
             const data = response.data[index];
             const product = data.product;
             // const variation = product.variation || {};
-            const variation = product.variations?.[0] || product.variation || {};
+            // const variation = product.variations?.[0] || product.variation || {};
+            const variation = product.variations?.[0] || {};
 
             const aid = variation.aid;
             const uid = String(variation.uid);

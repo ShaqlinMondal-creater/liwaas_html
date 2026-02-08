@@ -476,7 +476,7 @@
   }
 
   async function loadProduct() {
-    const AID = new URLSearchParams(window.location.search).get("aid");
+    const AID = new URLSearchParams(window.location.search).get("AID");
 
     if (!AID) {
       alert("Product AID is missing in URL");

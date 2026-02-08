@@ -806,25 +806,24 @@ async function deleteVariationImage(imageId, uid) {
 
       const formData = new FormData(form);
       const isVariant = document.getElementById("product_type").value === "variant";
-      const codCheckbox = document.getElementById("cod_checkbox");
-      const customDesignCheckbox = document.getElementById("custom_design_checkbox");
 
       const payload = {
-        slug: formData.get("slug"),
-        name: formData.get("name"),
         aid: formData.get("aid"),
         brand: Number(formData.get("brand_select")),
         category: Number(formData.get("category_select")),
+        cod: document.getElementById("cod_checkbox").checked ? "available" : "not available",
+        custom_design: document.getElementById("custom_design_checkbox").checked ? "available" : "not available",
+        description: formData.get("description"),
         gender: formData.get("gender_select"),
         keyword: formData.get("keyword"),
-        description: formData.get("description"),
-        cod: codCheckbox.checked ? "available" : "not available",
-        custom_design: customDesignCheckbox.checked ? "available" : "not available"
+        name: formData.get("name"),
+        slug: formData.get("slug"),
+        variations: []
       };
 
       if (isVariant) {
-        payload.variations = [];
         const variantFields = document.getElementById("variant_fields");
+
         variantFields.querySelectorAll(".variation-item").forEach((row) => {
           const uid = row.querySelector("input[placeholder='UID']").value;
           const regular_price = row.querySelector("input[placeholder='Regular Price']").value;
@@ -842,17 +841,10 @@ async function deleteVariationImage(imageId, uid) {
             stock: Number(stock)
           });
         });
-      } else {
-        payload.uid = Number(formData.get("uid"));
-        payload.size = formData.get("size");
-        payload.color = formData.get("color");
-        payload.stock = Number(formData.get("stock"));
-        payload.regular_price = Number(formData.get("regular_price"));
-        payload.sale_price = Number(formData.get("sale_price"));
       }
 
       try {
-        const updateRes = await fetch(`${baseUrl}/api/admin/products/update`, {
+        const updateRes = await fetch(`${baseUrl}/api/admin/products/update-product`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -868,13 +860,13 @@ async function deleteVariationImage(imageId, uid) {
           return;
         }
 
-        alert("Product updated successfully");
-
-        setTimeout(() => window.history.back(), 1500);
+        alert(result.message);
+        await loadProduct(); // smooth refresh
 
       } catch (err) {
         alert("Error: " + err.message);
       }
     });
+
   });
 </script>

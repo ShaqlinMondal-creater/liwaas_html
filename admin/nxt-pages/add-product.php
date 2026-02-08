@@ -266,6 +266,46 @@
 <!-- Footer -->
 <?php include("../footer.php"); ?>
 
+
+<script>
+  function initColorDropdown(dropdown) {
+  fetch("./configs/color.json")
+    .then(res => res.json())
+    .then(data => {
+      const menu = dropdown.querySelector(".color-menu");
+      const btn = dropdown.querySelector(".color-btn");
+      const dot = dropdown.querySelector(".color-dot");
+      const text = dropdown.querySelector(".color-text");
+      const input = dropdown.querySelector(".color-value");
+
+      menu.innerHTML = "";
+
+      data.colors.forEach(color => {
+        const item = document.createElement("div");
+        item.innerHTML = `
+          <span style="background:${color.code}" class="w-6 h-4 rounded-full border"></span>
+          <span>${color.name}</span>
+        `;
+
+        item.onclick = () => {
+          dot.style.backgroundColor = color.code;
+          dot.style.borderColor = "#64748b";
+          text.textContent = color.name;
+          text.classList.remove("text-gray-500");
+          input.value = color.name;
+          menu.classList.add("hidden");
+        };
+
+        menu.appendChild(item);
+      });
+
+      btn.onclick = () => {
+        menu.classList.toggle("hidden");
+      };
+    });
+}
+
+</script>
 <!-- Get Brands and Categories -->
 <script>
   const baseUrl = "<?= $baseUrl ?>"; // Or replace with your actual base URL
@@ -336,47 +376,52 @@
       .catch(err => console.error("Category fetch error:", err));
   }
 
-  async function loadColors() {
-    try {
-      const res = await fetch("./configs/color.json");
-      const data = await res.json();
+  // async function loadColors() {
+  //   try {
+  //     const res = await fetch("./configs/color.json");
+  //     const data = await res.json();
 
-      document.querySelectorAll(".color-dropdown").forEach(dropdown => {
-        const menu = dropdown.querySelector(".color-menu");
-        const btn = dropdown.querySelector(".color-btn");
-        const dot = dropdown.querySelector(".color-dot");
-        const text = dropdown.querySelector(".color-text");
-        const input = dropdown.querySelector(".color-value");
+  //     document.querySelectorAll(".color-dropdown").forEach(dropdown => {
+  //       const menu = dropdown.querySelector(".color-menu");
+  //       const btn = dropdown.querySelector(".color-btn");
+  //       const dot = dropdown.querySelector(".color-dot");
+  //       const text = dropdown.querySelector(".color-text");
+  //       const input = dropdown.querySelector(".color-value");
 
-        menu.innerHTML = "";
+  //       menu.innerHTML = "";
 
-        data.colors.forEach(color => {
-          const item = document.createElement("div");
-          item.innerHTML = `
-            <span style="background:${color.code}" class="w-6 h-4 rounded-full border"></span>
-            <span>${color.name}</span>
-          `;
+  //       data.colors.forEach(color => {
+  //         const item = document.createElement("div");
+  //         item.innerHTML = `
+  //           <span style="background:${color.code}" class="w-6 h-4 rounded-full border"></span>
+  //           <span>${color.name}</span>
+  //         `;
 
-          item.onclick = () => {
-            dot.style.backgroundColor = color.code;
-            dot.style.borderColor = "#64748b";
-            text.textContent = color.name;
-            text.classList.remove("text-gray-500");
-            input.value = color.name; // backend-safe
-            menu.classList.add("hidden");
-          };
+  //         item.onclick = () => {
+  //           dot.style.backgroundColor = color.code;
+  //           dot.style.borderColor = "#64748b";
+  //           text.textContent = color.name;
+  //           text.classList.remove("text-gray-500");
+  //           input.value = color.name; // backend-safe
+  //           menu.classList.add("hidden");
+  //         };
 
-          menu.appendChild(item);
-        });
+  //         menu.appendChild(item);
+  //       });
 
-        btn.onclick = () => {
-          menu.classList.toggle("hidden");
-        };
-      });
+  //       btn.onclick = () => {
+  //         menu.classList.toggle("hidden");
+  //       };
+  //     });
 
-    } catch (err) {
-      console.error("Color load error:", err);
-    }
+  //   } catch (err) {
+  //     console.error("Color load error:", err);
+  //   }
+  // }
+  function loadColors() {
+    document.querySelectorAll(".color-dropdown").forEach(dropdown => {
+      initColorDropdown(dropdown);
+    });
   }
 
   async function fetchNextAidUid() {
@@ -408,8 +453,9 @@
 
         // Set UID for first variant
         const firstVariantUid = document.querySelector(
-          "#variant_fields .variation-item input[type='number']"
+          "#variant_fields .variation-item input[placeholder='UID']"
         );
+
         if (firstVariantUid) {
           firstVariantUid.value = nextUID;
         }
@@ -488,7 +534,7 @@
       });
 
       // AUTO UID INCREMENT
-      const uidInput = clone.querySelector("input[type='number']");
+      const uidInput = clone.querySelector("input[placeholder='UID']");
       if (uidInput && nextUID !== null) {
         nextUID += 1;
         uidInput.value = nextUID;
@@ -499,7 +545,7 @@
       // Attach remove button event to new row
       attachRemoveListener(clone.querySelector(".remove-variation-btn"));
       // Reload colors for newly added variation
-      loadColors();
+      initColorDropdown(clone.querySelector(".color-dropdown"));
     });
     
     // ✅ CLONE VARIATION (FINAL SAFE VERSION)
@@ -509,33 +555,42 @@
       const currentItem = e.target.closest(".variation-item");
       const clone = currentItem.cloneNode(true);
 
-      // ❌ Clear file input
+      // Clear file input
       const fileInput = clone.querySelector(".variation-image-input");
       if (fileInput) fileInput.value = "";
 
-      // ✅ NEW UID
+      // NEW UID
       const uidInput = clone.querySelector("input[placeholder='UID']");
       if (uidInput && nextUID !== null) {
         nextUID += 1;
         uidInput.value = nextUID;
       }
 
-      // ✅ Rebind remove variation button
-      attachRemoveListener(clone.querySelector(".remove-variation-btn"));
-
-      // ✅ Insert clone AFTER current row
+      // Insert clone
       currentItem.after(clone);
 
-      // ✅ Reload color dropdown
-      loadColors();
+      // Reinitialize dropdown ONLY for clone
+      const dropdown = clone.querySelector(".color-dropdown");
+      initColorDropdown(dropdown);
 
-      // ✅ Restore selected color text + value
-      const originalColor = currentItem.querySelector(".color-value").value;
-      if (originalColor) {
-        clone.querySelector(".color-value").value = originalColor;
-        clone.querySelector(".color-text").textContent = originalColor;
-        clone.querySelector(".color-text").classList.remove("text-gray-500");
+      // ✅ Restore selected color properly
+      const originalColorValue = currentItem.querySelector(".color-value").value;
+      const originalDotColor = currentItem.querySelector(".color-dot").style.backgroundColor;
+
+      if (originalColorValue) {
+        const cloneInput = clone.querySelector(".color-value");
+        const cloneText = clone.querySelector(".color-text");
+        const cloneDot = clone.querySelector(".color-dot");
+
+        cloneInput.value = originalColorValue;
+        cloneText.textContent = originalColorValue;
+        cloneText.classList.remove("text-gray-500");
+
+        cloneDot.style.backgroundColor = originalDotColor;
+        cloneDot.style.borderColor = "#64748b";
       }
+
+      attachRemoveListener(clone.querySelector(".remove-variation-btn"));
     });
 
     // Remove variation row handler
@@ -740,27 +795,30 @@
         }
 
         // STEP 3: ADD SPECS PER VARIATION
-        const variationItems = variantFields.querySelectorAll(".variation-item");
+        if (isVariant && payload.variations.length > 0) {
 
-        for (let i = 0; i < variationItems.length; i++) {
-          const row = variationItems[i];
-          const uid = payload.variations[i].uid;
+          const variationItems = variantFields.querySelectorAll(".variation-item");
 
-          const specs = [];
-          row.querySelectorAll(".spec-row").forEach(specRow => {
-            const name = specRow.querySelector(".spec-name").value;
-            const value = specRow.querySelector(".spec-value").value;
+          for (let i = 0; i < variationItems.length; i++) {
+            const row = variationItems[i];
+            const uid = payload.variations[i].uid;
 
-            if (name && value) {
-              specs.push({
-                spec_name: name,
-                spec_value: value,
-              });
+            const specs = [];
+            row.querySelectorAll(".spec-row").forEach(specRow => {
+              const name = specRow.querySelector(".spec-name").value;
+              const value = specRow.querySelector(".spec-value").value;
+
+              if (name && value) {
+                specs.push({
+                  spec_name: name,
+                  spec_value: value,
+                });
+              }
+            });
+
+            if (specs.length) {
+              await submitSpecs(uid, specs);
             }
-          });
-
-          if (specs.length) {
-            await submitSpecs(uid, specs);
           }
         }
 
@@ -769,6 +827,8 @@
         simpleFields.classList.remove("hidden");
         variantFields.classList.add("hidden");
         productTypeSelect.value = "simple";
+        loadColors();
+        fetchNextAidUid();
 
       } catch (err) {
         alert("⚠️ Error: " + err.message);

@@ -1,260 +1,779 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Add Product</title>
+<!-- header.php include -->
+<base href="../">
+<?php include("../header.php"); ?>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-
-</head>
-
-<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen">
-
-<div class="max-w-6xl mx-auto px-6 py-12">
-
-<h1 class="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-3">
-<i class="fas fa-plus-circle text-indigo-600"></i> Add Product
-</h1>
-
-<div class="bg-white rounded-2xl shadow-xl p-10 space-y-10">
-
-<!-- TYPE TOGGLE -->
-<div class="flex gap-4 bg-gray-100 p-2 rounded-xl w-fit">
-    <button id="simpleBtn"
-        onclick="setType('simple')"
-        class="px-6 py-2 rounded-lg bg-white shadow text-indigo-600 font-medium flex items-center gap-2">
-        <i class="fas fa-tag"></i> Simple
-    </button>
-
-    <button id="variationBtn"
-        onclick="setType('variation')"
-        class="px-6 py-2 rounded-lg text-gray-600 font-medium flex items-center gap-2">
-        <i class="fas fa-layer-group"></i> Variation
-    </button>
-</div>
-
-<!-- BASIC INFO -->
-<div class="grid md:grid-cols-2 gap-6">
-
-<input id="aid" placeholder="AID"
-class="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-400 outline-none">
-
-<input id="name" placeholder="Product Name"
-onkeyup="generateSlug()"
-class="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-400 outline-none">
-
-<input id="slug" placeholder="Slug"
-class="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-400 outline-none">
-
-<input id="brand" placeholder="Brand"
-class="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-400 outline-none">
-
-<input id="category" placeholder="Category"
-class="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-400 outline-none">
-
-<select id="gender"
-class="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-400 outline-none">
-<option value="">Gender</option>
-<option>male</option>
-<option>female</option>
-<option>unisex</option>
-</select>
-
-</div>
-
-<textarea id="description"
-placeholder="Description"
-class="border rounded-lg px-4 py-3 w-full h-28 focus:ring-2 focus:ring-indigo-400 outline-none"></textarea>
-
-<!-- SIMPLE SECTION -->
-<div id="simpleSection">
-
-<div class="grid md:grid-cols-3 gap-6">
-
-<input id="regular_price" type="number" placeholder="Regular Price"
-class="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-400">
-
-<input id="sale_price" type="number" placeholder="Sale Price"
-class="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-400">
-
-<input id="stock" type="number" placeholder="Stock"
-class="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-400">
-
-<input id="size" placeholder="Size"
-class="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-400">
-
-<input id="color" type="color"
-class="border rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-400">
-
-</div>
-
-<h3 class="mt-6 font-semibold text-gray-700">Specifications</h3>
-<div id="simpleSpecs" class="mt-4 space-y-3"></div>
-
-<button onclick="addSpecification('simpleSpecs')"
-class="mt-3 bg-indigo-600 text-white px-4 py-2 rounded-lg">
-+ Add Specification
-</button>
-
-</div>
-
-<!-- VARIATION SECTION -->
-<div id="variationSection" class="hidden">
-
-<div id="variationContainer" class="space-y-6"></div>
-
-<button onclick="addVariation()"
-class="bg-indigo-600 text-white px-4 py-2 rounded-lg">
-+ Add Variation
-</button>
-
-</div>
-
-<!-- IMAGE UPLOAD -->
-<div>
-<h3 class="font-semibold text-gray-700">Product Images</h3>
-
-<input type="file" id="images" multiple onchange="previewImages(event)"
-class="mt-3">
-
-<div id="preview" class="flex flex-wrap gap-4 mt-4"></div>
-</div>
-
-<button onclick="submitForm()"
-class="bg-green-600 text-white px-6 py-3 rounded-lg">
-Save Product
-</button>
-
-</div>
-</div>
-
-<script>
-
-const specKeys = ["Fabric","Material","Fit","Pattern","Sleeve","Neck","Style"];
-
-function setType(type){
-    document.getElementById('simpleSection').classList.toggle('hidden', type !== 'simple');
-    document.getElementById('variationSection').classList.toggle('hidden', type !== 'variation');
-
-    simpleBtn.classList.toggle('bg-white', type==='simple');
-    simpleBtn.classList.toggle('shadow', type==='simple');
-    simpleBtn.classList.toggle('text-indigo-600', type==='simple');
-
-    variationBtn.classList.toggle('bg-white', type==='variation');
-    variationBtn.classList.toggle('shadow', type==='variation');
-    variationBtn.classList.toggle('text-indigo-600', type==='variation');
-}
-
-function generateSlug(){
-    slug.value = name.value
-        .toLowerCase()
-        .replace(/\s+/g,'-')
-        .replace(/[^\w\-]+/g,'');
-}
-
-function addSpecification(containerId){
-    const container = document.getElementById(containerId);
-    const row = document.createElement('div');
-    row.className = "flex gap-3";
-
-    let options = specKeys.map(k=>`<option value="${k}">${k}</option>`).join('');
-
-    row.innerHTML = `
-        <select class="border rounded-lg px-3 py-2 w-1/3">${options}</select>
-        <input placeholder="Value"
-        class="border rounded-lg px-3 py-2 w-2/3">
-        <button onclick="this.parentElement.remove()" class="text-red-500">
-        ✕</button>
-    `;
-
-    container.appendChild(row);
-}
-
-function addVariation(){
-    const container = document.getElementById('variationContainer');
-    const box = document.createElement('div');
-    box.className = "border rounded-xl p-6 bg-gray-50";
-
-    box.innerHTML = `
-        <div class="grid md:grid-cols-3 gap-4 mb-4">
-            <input placeholder="UID" class="uid border rounded-lg px-3 py-2">
-            <input placeholder="Regular Price" class="regular border rounded-lg px-3 py-2">
-            <input placeholder="Sale Price" class="sale border rounded-lg px-3 py-2">
-            <input placeholder="Size" class="size border rounded-lg px-3 py-2">
-            <input type="color" class="color border rounded-lg px-3 py-2">
-            <input placeholder="Stock" class="stock border rounded-lg px-3 py-2">
+<main class="grow content pt-5" id="content" role="content">
+  <div class="container-fixed">
+    <div class="card min-w-full">
+      <form id="add_product_form" class="card-body flex flex-col gap-5 p-5" method="post" enctype="multipart/form-data">
+        <!-- Title -->
+        <div>
+          <h3 class="text-lg font-medium text-gray-900 leading-none">Add Product</h3>
+          <div class="text-2sm text-gray-700">Fill in all details for variant or non-variant products</div>
         </div>
-        <div class="specContainer space-y-2 mb-3"></div>
-        <button onclick="addSpecificationToVariation(this)"
-        class="bg-indigo-600 text-white px-3 py-1 rounded">
-        + Spec</button>
-        <button onclick="this.parentElement.remove()"
-        class="text-red-600 ml-3">
-        Remove</button>
-    `;
-    container.appendChild(box);
-}
 
-function addSpecificationToVariation(btn){
-    const container = btn.parentElement.querySelector('.specContainer');
-    const id = "spec" + Date.now();
-    container.id = id;
-    addSpecification(id);
-}
+        <!-- Row: Basic Fields -->
+        <div class="flex gap-10 items-center">
+          <div class="flex flex-col gap-1 flex-grow">
+            <label class="form-label text-gray-900">Product Name</label>
+            <input class="input input-sm w-[240px]" type="text" name="name" placeholder="Casual T-Shirt" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">AID</label>
+            <input class="input input-sm w-[240px]" type="text" name="aid" placeholder="A-210" />
+          </div>
 
-function previewImages(event){
-    preview.innerHTML='';
-    [...event.target.files].forEach(file=>{
-        const reader=new FileReader();
-        reader.onload=e=>{
-            preview.innerHTML+=`<img src="${e.target.result}"
-            class="w-24 h-24 object-cover rounded shadow">`;
-        }
-        reader.readAsDataURL(file);
-    });
-}
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Brand</label>
+            <select name="brand_select" id="brand_select" class="input input-sm w-[240px]">
+              <option value="">Select Brand</option>
+              <option value="2">Liwaas</option>
+            </select>
+          </div>
+          
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Category</label>
+            <select name="category_select" id="category_select" class="input input-sm w-[240px]">
+              <option value="">Select Category</option>
+              <option value="1">Over Sized T-Shirt</option>
+              <option value="3">Full T-Shirt</option>
+            </select>
+          </div>
 
-function submitForm(){
-    const type = variationSection.classList.contains('hidden') ? 'simple' : 'variation';
+        </div>
 
-    let data={
-        aid:aid.value,
-        name:name.value,
-        slug:slug.value,
-        brand:brand.value,
-        category:category.value,
-        gender:gender.value,
-        description:description.value,
-        type:type
-    };
+        <!-- Row: Info Fields -->
+        <div class="flex gap-10 items-center">
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Gender</label>
+            <select name="gender_select" id="gender_select" class="input input-sm w-[240px]">
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="unisex">Unisex</option>
+            </select>
+          </div>
 
-    if(type==='simple'){
-        data.regular_price=regular_price.value;
-        data.sale_price=sale_price.value;
-        data.stock=stock.value;
-        data.size=size.value;
-        data.color=color.value;
-    }else{
-        data.variations=[];
-        document.querySelectorAll('#variationContainer > div').forEach(v=>{
-            data.variations.push({
-                uid:v.querySelector('.uid').value,
-                regular_price:v.querySelector('.regular').value,
-                sale_price:v.querySelector('.sale').value,
-                size:v.querySelector('.size').value,
-                color:v.querySelector('.color').value,
-                stock:v.querySelector('.stock').value
-            });
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Keyword</label>
+            <input class="input input-sm w-[240px]" type="text" name="keyword" placeholder="Grey shirt, fit" />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Description</label>
+            <input class="input input-sm w-[240px]" type="text" name="description" placeholder="Soft and comfortable" />
+          </div>
+        </div>
+        <!-- Row: Availability Options -->
+        <div class="flex gap-10 items-center">
+          <div class="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="cod_checkbox"
+              class="h-4 w-4"
+              checked
+            />
+            <label for="cod_checkbox" class="form-label text-gray-900">
+              Cash on Delivery (COD)
+            </label>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="custom_design_checkbox"
+              class="h-4 w-4"
+              checked
+            />
+            <label for="custom_design_checkbox" class="form-label text-gray-900">
+              Custom Design Available
+            </label>
+          </div>
+        </div>
+
+        <!-- Row: Product Type -->
+        <div class="flex gap-10 items-center">
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Product Type</label>
+            <select name="product_type" id="product_type" class="input input-sm w-[240px]">
+              <option value="simple">Simple Product</option>
+              <option value="variant">Variant Product</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row: Simple Fields -->
+        <div id="simple_fields" class="flex gap-4 items-center">
+          <input class="input input-sm w-[120px]" type="number" name="uid" placeholder="UID" />
+          <input class="input input-sm w-[140px]" type="number" name="regular_price" placeholder="Regular Price" />
+          <input class="input input-sm w-[140px]" type="number" name="sale_price" placeholder="Sale Price" />
+          <input class="input input-sm w-[120px]" type="text" name="size" placeholder="Size" />
+          <div class="color-dropdown relative w-[120px]">
+            <input type="hidden" name="color" class="color-value" />
+            <button type="button" class="color-btn">
+              <span class="color-dot"></span>
+              <span class="color-text">Select Color</span>
+            </button>
+            <div class="color-menu hidden absolute z-50 bg-white border rounded shadow w-full mt-1"></div>
+          </div>
+          <input class="input input-sm w-[100px]" type="number" name="stock" placeholder="Stock" />          
+        </div>
+
+        <!-- Variant Fields -->
+        <div id="variant_fields" class="hidden flex flex-col gap-3 border rounded bg-gray-50">
+          <div class="variation-item flex flex-col gap-3 border p-3 rounded bg-white">
+            <!-- Variation main row -->
+            <div class="flex gap-4 items-center">
+              <input type="number" placeholder="UID" class="input input-sm w-[120px]" />
+              <input type="number" placeholder="Regular Price" class="input input-sm w-[140px]" />
+              <input type="number" placeholder="Sale Price" class="input input-sm w-[140px]" />
+              <input type="text" placeholder="Size" class="input input-sm w-[120px]" />
+              <div class="color-dropdown relative w-[120px]">
+                <input type="hidden" class="color-value" />
+                <button type="button" class="color-btn input input-sm w-full flex items-center gap-2">
+                  <span class="color-dot w-4 h-4 rounded-full border"></span>
+                  <span class="color-text text-gray-500">Select Color</span>
+                </button>
+                <div class="color-menu hidden absolute z-50 bg-white border rounded shadow w-full mt-1"></div>
+              </div>
+              <input type="number" placeholder="Stock" class="input input-sm w-[100px]" />
+              <input type="file" class="variation-image-input input input-sm w-[160px]" accept="image/*" multiple />
+              <button type="button" class="clone-variation-btn btn btn-sm bg-blue-500 text-white">
+                Clone
+              </button>
+              <button type="button" class="remove-variation-btn btn btn-sm bg-red-500 text-white">
+                ✕
+              </button>
+            </div>
+            <!-- SPECIFICATIONS -->
+            <div class="specs-wrapper flex flex-col gap-2 mt-2">
+              <div class="spec-row flex gap-2 items-center">
+                <select class="input input-sm w-[180px] spec-name">
+                  <option value="">Select Spec</option>
+                  <option value="Material">Material</option>
+                  <option value="Fit">Fit</option>
+                  <option value="Country of Origin">Country of Origin</option>
+                  <option value="Color">Color</option>
+                  <option value="Wash">Wash</option>
+                </select>
+                <input type="text" class="input input-sm w-[240px] spec-value" placeholder="Spec value" />
+                <button type="button" class="remove-spec btn btn-xs bg-gray-300">✕</button>
+              </div>
+            </div>
+
+            <button type="button" class="add-spec btn btn-xs btn-secondary w-max">
+              + Add Specification
+            </button>
+          </div>
+
+          <button type="button" id="add_variation_btn" class="btn btn-secondary w-max mt-2">+ Add Variation</button>
+        </div>
+
+        <!-- Row: Image and Submit -->
+        <div class="flex gap-10 items-center mb-5">
+          <div class="flex flex-col gap-1">
+            <label class="form-label text-gray-900">Product Image</label>
+            <input class=" input-sm w-[240px]" type="file" name="image[]" accept="image/*" multiple />
+            <span class="text-gray-400 italic">Use Format: jpeg,png,jpg (Max: 8mb)</span>
+          </div>
+          <div class="flex flex-col gap-1 justify-end" style="min-width: 140px;">
+            <button type="submit" class="btn btn-primary h-8 mt-5 w-[120px]">Add Product</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<style>
+  /* ---------- COLOR SELECT FIX (FINAL) ---------- */
+
+  .color-dropdown {
+    width: 150px;
+    position: relative;
+    font-size: 13px;
+  }
+
+  .color-btn {
+    width: 120px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #fff;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    cursor: pointer;
+  }
+
+  /* LOCK DOT SIZE */
+  .color-dot {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    min-height: 14px;
+    border-radius: 9999px;
+    border: 1px solid #94a3b8;
+    background-color: transparent;
+  }
+
+  /* TEXT MUST NEVER WRAP */
+  .color-text {
+    font-size: 13px;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* DROPDOWN MENU */
+  .color-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 120px;
+    margin-top: 4px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 999;
+  }
+
+  /* DROPDOWN ITEM */
+  .color-menu div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+  .color-menu div span{
+    min-width:16px;
+  }
+
+  .color-menu div:hover {
+    background: #f3f4f6;
+  }
+</style>
+
+<!-- Footer -->
+<?php include("../footer.php"); ?>
+
+<!-- Get Brands and Categories -->
+<script>
+  const baseUrl = "<?= $baseUrl ?>"; // Or replace with your actual base URL
+  const token = localStorage.getItem("auth_token");
+  let nextUID = null; // global UID tracker
+
+  // Fetch and populate all brands
+  function fetchBrands() {
+      fetch(`${baseUrl}/api/allBrands`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+              limit: 100,
+              offset: 0
+          })
+      })
+      .then(res => res.json())
+      .then(data => {
+          if (data.success && Array.isArray(data.data)) {
+              const brandSelect = document.getElementById("brand_select");
+              // Clear existing options
+              brandSelect.innerHTML = `<option value="">Select Brand</option>`;
+              data.data.forEach(brand => {
+                  const option = document.createElement("option");
+                  option.value = brand.id;
+                  option.textContent = brand.name;
+                  brandSelect.appendChild(option);
+              });
+          } else {
+              console.error("Failed to fetch brands:", data.message);
+          }
+      })
+      .catch(err => console.error("Brand fetch error:", err));
+  }
+
+  // Fetch and populate all categories
+  function fetchCategories() {
+      fetch(`${baseUrl}/api/allCategories`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+              limit: 100,
+              offset: 0
+          })
+      })
+      .then(res => res.json())
+      .then(data => {
+          if (data.success && Array.isArray(data.data)) {
+              const categorySelect = document.getElementById("category_select");
+              // Clear existing options
+              categorySelect.innerHTML = `<option value="">Select Category</option>`;
+              data.data.forEach(category => {
+                  const option = document.createElement("option");
+                  option.value = category.id;
+                  option.textContent = category.name;
+                  categorySelect.appendChild(option);
+              });
+          } else {
+              console.error("Failed to fetch categories:", data.message);
+          }
+      })
+      .catch(err => console.error("Category fetch error:", err));
+  }
+
+  async function loadColors() {
+    try {
+      const res = await fetch("./configs/color.json");
+      const data = await res.json();
+
+      document.querySelectorAll(".color-dropdown").forEach(dropdown => {
+        const menu = dropdown.querySelector(".color-menu");
+        const btn = dropdown.querySelector(".color-btn");
+        const dot = dropdown.querySelector(".color-dot");
+        const text = dropdown.querySelector(".color-text");
+        const input = dropdown.querySelector(".color-value");
+
+        menu.innerHTML = "";
+
+        data.colors.forEach(color => {
+          const item = document.createElement("div");
+          item.innerHTML = `
+            <span style="background:${color.code}" class="w-6 h-4 rounded-full border"></span>
+            <span>${color.name}</span>
+          `;
+
+          item.onclick = () => {
+            dot.style.backgroundColor = color.code;
+            dot.style.borderColor = "#64748b";
+            text.textContent = color.name;
+            text.classList.remove("text-gray-500");
+            input.value = color.name; // backend-safe
+            menu.classList.add("hidden");
+          };
+
+          menu.appendChild(item);
         });
+
+        btn.onclick = () => {
+          menu.classList.toggle("hidden");
+        };
+      });
+
+    } catch (err) {
+      console.error("Color load error:", err);
     }
+  }
 
-    console.log(data);
-    alert("Check console for JSON output");
-}
+  async function fetchNextAidUid() {
+    try {
+      const res = await fetch("<?= $baseUrl ?>/api/admin/products/get-next-count", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
+      const data = await res.json();
+
+      if (data.success) {
+        const { aid, uid } = data.data;
+
+        // Set AID
+        const aidInput = document.querySelector('input[name="aid"]');
+        aidInput.value = aid;
+
+        // Set UID tracker
+        nextUID = Number(uid);
+
+        // Set UID for simple product
+        const simpleUidInput = document.querySelector('input[name="uid"]');
+        if (simpleUidInput) {
+          simpleUidInput.value = nextUID;
+        }
+
+        // Set UID for first variant
+        const firstVariantUid = document.querySelector(
+          "#variant_fields .variation-item input[type='number']"
+        );
+        if (firstVariantUid) {
+          firstVariantUid.value = nextUID;
+        }
+      } else {
+        console.error("Failed to fetch AID/UID");
+      }
+    } catch (err) {
+      console.error("AID/UID fetch error:", err);
+    }
+  }
+
+  // Call both on page load
+  document.addEventListener("DOMContentLoaded", () => {
+      fetchBrands();
+      fetchCategories();
+      // call it
+      fetchNextAidUid();
+      loadColors();
+  });
 </script>
 
-</body>
-</html>
+
+<!-- JS will be appended separately -->
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const productTypeSelect = document.getElementById("product_type");
+    const simpleFields = document.getElementById("simple_fields");
+    const variantFields = document.getElementById("variant_fields");
+    const addVariationBtn = document.getElementById("add_variation_btn");
+    const form = document.getElementById("add_product_form");
+
+    // Toggle form fields between simple and variant
+    productTypeSelect.addEventListener("change", () => {
+      const isVariant = productTypeSelect.value === "variant";
+      simpleFields.classList.toggle("hidden", isVariant);
+      variantFields.classList.toggle("hidden", !isVariant);
+      if (productTypeSelect.value === "simple" && nextUID !== null) {
+        document.querySelector('input[name="uid"]').value = nextUID;
+      }
+    });
+
+    // Add spec row
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("add-spec")) {
+        const wrapper = e.target.previousElementSibling;
+        const firstRow = wrapper.querySelector(".spec-row");
+        const clone = firstRow.cloneNode(true);
+
+        clone.querySelector(".spec-name").value = "";
+        clone.querySelector(".spec-value").value = "";
+
+        wrapper.appendChild(clone);
+      }
+
+      // Remove spec row
+      if (e.target.classList.contains("remove-spec")) {
+        const wrapper = e.target.closest(".specs-wrapper");
+        const rows = wrapper.querySelectorAll(".spec-row");
+
+        if (rows.length > 1) {
+          e.target.closest(".spec-row").remove();
+        }
+      }
+    });
+
+    // Add new variation row
+    addVariationBtn.addEventListener("click", () => {
+      const firstRow = variantFields.querySelector(".variation-item");
+      const clone = firstRow.cloneNode(true);
+      clone.querySelectorAll("input").forEach((input) => {
+        if (input.type === "file") {
+          input.value = "";
+        } else {
+          input.value = "";
+        }
+      });
+
+      // AUTO UID INCREMENT
+      const uidInput = clone.querySelector("input[type='number']");
+      if (uidInput && nextUID !== null) {
+        nextUID += 1;
+        uidInput.value = nextUID;
+      }
+
+      variantFields.insertBefore(clone, addVariationBtn);
+
+      // Attach remove button event to new row
+      attachRemoveListener(clone.querySelector(".remove-variation-btn"));
+      // Reload colors for newly added variation
+      loadColors();
+    });
+    
+    // ✅ CLONE VARIATION (FINAL SAFE VERSION)
+    document.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("clone-variation-btn")) return;
+
+      const currentItem = e.target.closest(".variation-item");
+      const clone = currentItem.cloneNode(true);
+
+      // ❌ Clear file input
+      const fileInput = clone.querySelector(".variation-image-input");
+      if (fileInput) fileInput.value = "";
+
+      // ✅ NEW UID
+      const uidInput = clone.querySelector("input[placeholder='UID']");
+      if (uidInput && nextUID !== null) {
+        nextUID += 1;
+        uidInput.value = nextUID;
+      }
+
+      // ✅ Rebind remove variation button
+      attachRemoveListener(clone.querySelector(".remove-variation-btn"));
+
+      // ✅ Insert clone AFTER current row
+      currentItem.after(clone);
+
+      // ✅ Reload color dropdown
+      loadColors();
+
+      // ✅ Restore selected color text + value
+      const originalColor = currentItem.querySelector(".color-value").value;
+      if (originalColor) {
+        clone.querySelector(".color-value").value = originalColor;
+        clone.querySelector(".color-text").textContent = originalColor;
+        clone.querySelector(".color-text").classList.remove("text-gray-500");
+      }
+    });
+
+    // Remove variation row handler
+    function attachRemoveListener(button) {
+      button.addEventListener("click", () => {
+        const items = variantFields.querySelectorAll(".variation-item");
+        if (items.length > 1) {
+          button.closest(".variation-item").remove();
+        } else {
+          alert("At least one variation is required.");
+        }
+      });
+    }
+
+    async function submitSpecs(uid, specs) {
+      if (!specs.length) return;
+
+      try {
+        const res = await fetch("<?= $baseUrl ?>/api/admin/products/add-specs", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            uid,
+            features: specs,
+          }),
+        });
+
+        const result = await res.json();
+
+        if (!result.success) {
+          console.warn(`Specs failed for UID ${uid}`, result.message);
+        }
+      } catch (err) {
+        console.error("Spec API error:", err);
+      }
+    }
+
+    // Attach remove listener for the initial remove button
+    attachRemoveListener(variantFields.querySelector(".remove-variation-btn"));
+
+    // Form submission
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const token = localStorage.getItem("auth_token");
+      const formData = new FormData(form);
+      const isVariant = productTypeSelect.value === "variant";
+      const codCheckbox = document.getElementById("cod_checkbox");
+      const customDesignCheckbox = document.getElementById("custom_design_checkbox");
+
+      const codValue = codCheckbox.checked ? "available" : "not available";
+      const customDesignValue = customDesignCheckbox.checked ? "available" : "not available";
+
+      // Collect basic fields
+      const aid = formData.get("aid");
+      const name = formData.get("name");
+
+      const payload = {
+        aid,
+        name,
+        brand: Number(formData.get("brand_select")),
+        category: Number(formData.get("category_select")),
+        gender: formData.get("gender_select"),
+        keyword: formData.get("keyword"),
+        description: formData.get("description"),
+        cod: codValue,
+        custom_design: customDesignValue,
+      };
+
+      if (isVariant) {
+        payload.slug = name.toLowerCase().replace(/\s+/g, "-");
+        payload.shipping = "available";
+        payload.added_by = "admin";
+        payload.variations = [];
+
+        // Collect variant rows data
+        const variationRows = variantFields.querySelectorAll(".variation-item");
+        variationRows.forEach((row) => {
+          const uid = row.querySelector("input[placeholder='UID']").value;
+          const regular_price = row.querySelector("input[placeholder='Regular Price']").value;
+          const sale_price = row.querySelector("input[placeholder='Sale Price']").value;
+          const size = row.querySelector("input[placeholder='Size']").value;
+          const color = row.querySelector(".color-value").value;
+          const stock = row.querySelector("input[placeholder='Stock']").value;
+
+          payload.variations.push({
+            uid: Number(uid),
+            regular_price: Number(regular_price),
+            sale_price: Number(sale_price),
+            size,
+            color, // ✅ CORRECT COLOR NAME
+            stock: Number(stock),
+          });
+        });
+      } else {
+        // Simple product data
+        payload.uid = Number(formData.get("uid"));
+        payload.size = formData.get("size");
+        payload.color = formData.get("color");
+        payload.stock = Number(formData.get("stock"));
+        payload.regular_price = Number(formData.get("regular_price"));
+        payload.sale_price = Number(formData.get("sale_price"));
+      }
+
+      try {
+        // Step 1: Submit product data
+        const productRes = await fetch("<?= $baseUrl ?>/api/admin/products/add_product", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await productRes.json();
+
+        if (!result.success) {
+          alert("❌ Failed to add product: " + result.message);
+          return;
+        }
+
+        alert("✅ Product added: " + result.message);
+
+        // ===============================
+        // STEP 2A: UPLOAD PRODUCT IMAGES (ALWAYS)
+        // ===============================
+        const productImageInput = form.querySelector('input[name="image[]"]');
+        const productFiles = productImageInput.files;
+
+        if (productFiles.length > 0) {
+          const uploadForm = new FormData();
+          uploadForm.append("aid", aid);
+
+          for (let file of productFiles) {
+            uploadForm.append("file[]", file);
+          }
+
+          const uploadRes = await fetch("<?= $baseUrl ?>/api/admin/upload/product-images", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: uploadForm,
+          });
+
+          const uploadResult = await uploadRes.json();
+
+          if (uploadResult.success) {
+            console.log("✅ Product images uploaded");
+          } else {
+            alert("⚠️ Product image upload failed: " + uploadResult.message);
+          }
+        }
+
+        // ===============================
+        // STEP 2B: UPLOAD VARIATION IMAGES (ONLY IF VARIANT)
+        // ===============================
+        if (isVariant && payload.variations.length > 0) {
+          const variationItems = variantFields.querySelectorAll(".variation-item");
+
+          for (let i = 0; i < variationItems.length; i++) {
+            const imageInput = variationItems[i].querySelector(".variation-image-input");
+            const files = imageInput.files;
+
+            if (files.length > 0) {
+              const uploadForm = new FormData();
+              uploadForm.append("aid", aid);
+              uploadForm.append("uid", payload.variations[i].uid);
+
+              for (let file of files) {
+                uploadForm.append("file[]", file);
+              }
+
+              try {
+                const uploadRes = await fetch(
+                  "<?= $baseUrl ?>/api/admin/upload/variation-images",
+                  {
+                    method: "POST",
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                    body: uploadForm,
+                  }
+                );
+
+                const uploadResult = await uploadRes.json();
+
+                if (!uploadResult.success) {
+                  alert(
+                    `⚠️ Variant image upload failed for UID ${payload.variations[i].uid}`
+                  );
+                }
+              } catch (err) {
+                alert(`⚠️ Error uploading variant images: ${err.message}`);
+              }
+            }
+          }
+        }
+
+        // STEP 3: ADD SPECS PER VARIATION
+        const variationItems = variantFields.querySelectorAll(".variation-item");
+
+        for (let i = 0; i < variationItems.length; i++) {
+          const row = variationItems[i];
+          const uid = payload.variations[i].uid;
+
+          const specs = [];
+          row.querySelectorAll(".spec-row").forEach(specRow => {
+            const name = specRow.querySelector(".spec-name").value;
+            const value = specRow.querySelector(".spec-value").value;
+
+            if (name && value) {
+              specs.push({
+                spec_name: name,
+                spec_value: value,
+              });
+            }
+          });
+
+          if (specs.length) {
+            await submitSpecs(uid, specs);
+          }
+        }
+
+        // Reset form and UI state
+        form.reset();
+        simpleFields.classList.remove("hidden");
+        variantFields.classList.add("hidden");
+        productTypeSelect.value = "simple";
+
+      } catch (err) {
+        alert("⚠️ Error: " + err.message);
+      }
+    });
+  });
+
+</script>

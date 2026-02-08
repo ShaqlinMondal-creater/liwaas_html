@@ -98,8 +98,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
               <!-- SLIDE PANEL -->
               <div id="slide${index}"
-                class="absolute inset-0 bg-black/90 flex items-center justify-center transform translate-x-full transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] pointer-events-none">
-
+                class="absolute inset-0 bg-black/90 flex items-center justify-center transform translate-x-full transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
+                
                 <div class="text-center">
                   <p class="text-xl font-bold mb-2 text-white">
                     ${product.name}

@@ -142,11 +142,11 @@ Delete Coupons -> Done ✅
 Update Coupons -> Done ✅
 
 Products:
-Add product -> Done ✅  -> need more modification
-Fetch product -> Done ✅ -> need more modification
+Add product -> Done ✅ 
+Fetch product -> Done ✅ 
 View product
 Delete Product -> Done ✅
-Update Product 
+Update Product -> Done ✅ 
 
 Carts:
 Add Carts 

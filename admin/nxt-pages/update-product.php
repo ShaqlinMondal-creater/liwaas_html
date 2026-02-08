@@ -154,11 +154,16 @@
             <div id="product_images_wrapper" class="flex flex-wrap gap-3 mb-3"></div>
           </div>
 
-          <div class="flex gap-10 items-center">
+          <div class="flex gap-4 items-end">
             <div class="flex flex-col gap-1">
               <input class="input input-sm w-[240px]" type="file" id="product_images" name="image[]" accept="image/*" multiple />
               <span class="text-gray-400 italic">Use Format: jpeg,png,jpg (Max: 8mb)</span>
             </div>
+
+            <button type="button" id="upload_product_images_btn"
+                    class="btn btn-sm bg-blue-500 text-white h-8">
+              Upload Images
+            </button>
           </div>
         </div>
 
@@ -440,35 +445,35 @@
     }
   }
 
-  async function uploadVariationImages(aid, uid, files) {
-    if (!files.length) return;
+  // async function uploadVariationImages(aid, uid, files) {
+  //   if (!files.length) return;
 
-    const formData = new FormData();
-    formData.append("aid", aid);
-    formData.append("uid", uid);
+  //   const formData = new FormData();
+  //   formData.append("aid", aid);
+  //   formData.append("uid", uid);
 
-    for (let file of files) {
-      formData.append("file[]", file);
-    }
+  //   for (let file of files) {
+  //     formData.append("file[]", file);
+  //   }
 
-    try {
-      const res = await fetch(`${baseUrl}/api/admin/upload/variation-images`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData
-      });
+  //   try {
+  //     const res = await fetch(`${baseUrl}/api/admin/upload/variation-images`, {
+  //       method: "POST",
+  //       headers: { Authorization: `Bearer ${token}` },
+  //       body: formData
+  //     });
 
-      const result = await res.json();
-      if (result.success) {
-        alert("Images uploaded successfully");
-        location.reload();
-      } else {
-        alert("Failed to upload images: " + result.message);
-      }
-    } catch (err) {
-      alert("Error uploading images: " + err.message);
-    }
-  }
+  //     const result = await res.json();
+  //     if (result.success) {
+  //       alert("Images uploaded successfully");
+  //       location.reload();
+  //     } else {
+  //       alert("Failed to upload images: " + result.message);
+  //     }
+  //   } catch (err) {
+  //     alert("Error uploading images: " + err.message);
+  //   }
+  // }
 
   async function loadProduct() {
     const AID = new URLSearchParams(window.location.search).get("AID");
@@ -671,6 +676,49 @@
     const cancelBtn = document.getElementById("cancel_btn");
     const addVariationBtn = document.getElementById("add_variation_btn");
 
+    const uploadProductBtn = document.getElementById("upload_product_images_btn");
+    uploadProductBtn.addEventListener("click", async () => {
+      const fileInput = document.getElementById("product_images");
+
+      if (!fileInput.files.length) {
+        alert("Please select images first");
+        return;
+      }
+
+      const uploadForm = new FormData();
+      if (!currentProduct || !currentProduct.aid) {
+        alert("Product not loaded yet");
+        return;
+      }
+
+      uploadForm.append("aid", currentProduct.aid);
+
+      for (let file of fileInput.files) {
+        uploadForm.append("file[]", file);
+      }
+
+      try {
+        const res = await fetch(`${baseUrl}/api/admin/upload/product-images`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: uploadForm
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+          alert("Images uploaded successfully");
+          fileInput.value = "";
+          await loadProduct();
+        } else {
+          alert("Upload failed: " + result.message);
+        }
+
+      } catch (err) {
+        alert("Upload error: " + err.message);
+      }
+    });
+
     // Cancel button
     cancelBtn.addEventListener("click", () => window.history.back());
 
@@ -687,7 +735,7 @@
       });
 
       clone.querySelector(".images-wrapper").innerHTML = "";
-      clone.querySelector(".variation-image-input").value = "";
+      // clone.querySelector(".variation-image-input").value = "";
 
       variantFields.insertBefore(clone, addVariationBtn);
 
@@ -792,23 +840,6 @@
         }
 
         alert("Product updated successfully");
-
-        // Upload product images if selected
-        const productImageInput = form.querySelector('input[name="image[]"]');
-        if (productImageInput.files.length > 0) {
-          const uploadForm = new FormData();
-          uploadForm.append("aid", payload.aid);
-
-          for (let file of productImageInput.files) {
-            uploadForm.append("file[]", file);
-          }
-
-          await fetch(`${baseUrl}/api/admin/upload/product-images`, {
-            method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
-            body: uploadForm
-          });
-        }
 
         setTimeout(() => window.history.back(), 1500);
 

@@ -334,7 +334,7 @@
                                         <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
                                             <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-search-list me-2"></i>View</a></div>
                                             <div class="menu-separator"></div>
-                                            <div class="menu-item"><a class="menu-link" href="nxt-pages/update-product.php?uid=${product.variations?.[0]?.aid}"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
+                                            <div class="menu-item"><a class="menu-link" href="nxt-pages/update-product.php?aid=${product.variations?.[0]?.aid}"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
                                             <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-copy me-2"></i>Make a copy</a></div>
                                             <div class="menu-separator"></div>
                                             <div class="menu-item">

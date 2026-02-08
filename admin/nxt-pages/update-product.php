@@ -476,15 +476,15 @@
   }
 
   async function loadProduct() {
-    const UID = new URLSearchParams(window.location.search).get("uid");
+    const AID = new URLSearchParams(window.location.search).get("aid");
 
-    if (!UID) {
+    if (!AID) {
       alert("Product slug is missing in URL");
       return;
     }
 
     try {
-      const res = await fetch(`${baseUrl}/api/products/get-product-byUid/${UID}`, {
+      const res = await fetch(`${baseUrl}/api/products/get-product-byAid/${AID}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` }
       });

@@ -401,67 +401,73 @@
     return card;
   }
 
-  async function deleteProductImage(imageId) {
-    const confirmed = confirm("Are you sure you want to delete this image?");
-    if (!confirmed) return;
+async function deleteProductImage(imageId) {
+  const confirmed = confirm("Are you sure you want to delete this image?");
+  if (!confirmed) return;
 
-    try {
-      const res = await fetch(`${baseUrl}/api/admin/upload/delete-images`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          ids: imageId,
-          aid: currentProduct.aid
-        })
-      });
-
-      const result = await res.json();
-
-      if (result.success) {
-        alert("Image deleted successfully");
-        await loadProduct();
-      } else {
-        alert("Failed to delete image");
-      }
-
-    } catch (err) {
-      alert("Error deleting image: " + err.message);
-    }
+  if (!currentProduct || !currentProduct.aid) {
+    alert("Product not loaded properly");
+    return;
   }
 
-  async function deleteVariationImage(imageId, uid) {
-    const confirmed = confirm("Are you sure you want to delete this image?");
-    if (!confirmed) return;
+  try {
+    const res = await fetch(`${baseUrl}/api/admin/upload/delete-images`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        aid: currentProduct.aid,
+        ids: String(imageId) // API expects string
+      })
+    });
 
-    try {
-      const res = await fetch(`${baseUrl}/api/admin/upload/delete-images`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          ids: imageId,
-          uid: uid
-        })
-      });
+    const result = await res.json();
 
-      const result = await res.json();
-
-      if (result.success) {
-        alert("Image deleted successfully");
-        await loadProduct();
-      } else {
-        alert("Failed to delete image");
-      }
-
-    } catch (err) {
-      alert("Error deleting image: " + err.message);
+    if (result.success) {
+      alert(result.message);
+      await loadProduct(); // refresh images without reload
+    } else {
+      alert("Failed to delete image");
     }
+
+  } catch (err) {
+    alert("Error deleting image: " + err.message);
   }
+}
+
+async function deleteVariationImage(imageId, uid) {
+  const confirmed = confirm("Are you sure you want to delete this image?");
+  if (!confirmed) return;
+
+  try {
+    const res = await fetch(`${baseUrl}/api/admin/upload/delete-variation-images`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        uid: String(uid),
+        ids: String(imageId)
+      })
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      alert(result.message);
+      await loadProduct(); // smooth refresh
+    } else {
+      alert("Failed to delete variation image");
+    }
+
+  } catch (err) {
+    alert("Error deleting variation image: " + err.message);
+  }
+}
+
 
   // async function uploadVariationImages(aid, uid, files) {
   //   if (!files.length) return;

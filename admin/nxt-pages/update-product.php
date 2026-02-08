@@ -406,7 +406,7 @@
     if (!confirmed) return;
 
     try {
-      const res = await fetch(`${baseUrl}/api/admin/delete-image/${imageId}`, {
+      const res = await fetch(`${baseUrl}/api/admin/delete-images/${imageId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` }
       });

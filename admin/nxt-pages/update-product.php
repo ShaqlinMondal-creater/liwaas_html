@@ -406,40 +406,58 @@
     if (!confirmed) return;
 
     try {
-      const res = await fetch(`${baseUrl}/api/admin/upload/delete-images/${imageId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await fetch(`${baseUrl}/api/admin/upload/delete-images`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          image_id: imageId,
+          aid: currentProduct.aid
+        })
       });
 
       const result = await res.json();
+
       if (result.success) {
         alert("Image deleted successfully");
-        location.reload();
+        await loadProduct();
       } else {
         alert("Failed to delete image");
       }
+
     } catch (err) {
       alert("Error deleting image: " + err.message);
     }
   }
 
-  async function deleteVariationImage(imageId) {
+  async function deleteVariationImage(imageId, uid) {
     const confirmed = confirm("Are you sure you want to delete this image?");
     if (!confirmed) return;
 
     try {
-      const res = await fetch(`${baseUrl}/api/admin/upload/delete-images/${imageId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await fetch(`${baseUrl}/api/admin/upload/delete-images`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          image_id: imageId,
+          uid: uid
+        })
       });
 
       const result = await res.json();
+
       if (result.success) {
         alert("Image deleted successfully");
-        location.reload();
+        await loadProduct();
       } else {
         alert("Failed to delete image");
       }
+
     } catch (err) {
       alert("Error deleting image: " + err.message);
     }
@@ -573,7 +591,12 @@
           imagesWrapper.innerHTML = "";
           if (variant.images && variant.images.length > 0) {
             variant.images.forEach(img => {
-              const imageCard = createImageCard(img.id, img.url, deleteVariationImage);
+              const imageCard = createImageCard(
+                img.id,
+                img.url,
+                (imageId) => deleteVariationImage(imageId, variant.uid)
+              );
+
               imagesWrapper.appendChild(imageCard);
             });
           }

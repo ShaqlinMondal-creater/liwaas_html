@@ -55,6 +55,7 @@
 </main>
 
 <style>
+
 /* Pinterest Masonry Layout */
 .masonry-grid {
   column-count: 2;
@@ -73,7 +74,9 @@
   }
 }
 
+
 .upload-card {
+  position: relative;
   break-inside: avoid;
   margin-bottom: 16px;
   border-radius: 8px;
@@ -83,27 +86,65 @@
   transition: 0.2s ease;
 }
 
-.upload-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-
 .upload-card img {
   width: 100%;
-  height: auto;   /* important */
+  height: auto;
   display: block;
 }
 
-.upload-info {
+/* Overlay */
+.upload-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #000;
+  color: #fff;
+  transform: translateY(100%);
+  transition: 0.3s ease;
+}
+
+.upload-card:hover .upload-overlay {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.overlay-content {
   padding: 8px;
   font-size: 12px;
 }
 
-.upload-info p {
-  margin: 3px 0;
+.file-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 6px;
+}
+
+.overlay-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.overlay-actions button {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.overlay-actions button:hover {
+  background: #2563eb;
+  color: #fff;
+}
+.upload-card img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 </style>
@@ -171,16 +212,55 @@ function renderUploads(images) {
 
     card.innerHTML = `
       <img src="${img.url}" alt="${img.file_name}">
-      <div class="upload-info">
-        <p><strong>ID:</strong> ${img.id}</p>
-        <p title="${img.file_name}">${img.file_name}</p>
-        <p class="text-gray-500">${img.extension.toUpperCase()}</p>
+      
+      <div class="upload-overlay">
+        <div class="overlay-content">
+          <div class="file-name">${img.file_name}</div>
+          <div class="overlay-actions">
+            <button class="copy-btn" data-url="${img.url}">
+              Copy
+            </button>
+            <button class="delete-btn" data-id="${img.id}">
+              Delete
+            </button>
+          </div>
+        </div>
       </div>
     `;
 
     grid.appendChild(card);
   });
+
+  attachOverlayActions();
 }
+
+function attachOverlayActions() {
+  document.querySelectorAll(".copy-btn").forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      const url = btn.getAttribute("data-url");
+
+      try {
+        await navigator.clipboard.writeText(url);
+        btn.innerText = "Copied!";
+            setTimeout(() => {
+                btn.innerText = "Copy";
+            }, 1500);
+      } catch (err) {
+        alert("Copy failed");
+      }
+    });
+  });
+
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute("data-id");
+      alert("Delete clicked for image ID: " + id);
+    });
+  });
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
   fetchUploads();

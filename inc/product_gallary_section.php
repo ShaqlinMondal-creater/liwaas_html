@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     response.data.forEach((item, index) => {
 
       const product   = item.product;
-      const variation = product.variation || {};
+      const variation = product.variation?.[0] || {};
       const images    = variation.images || [];
 
       const image1 = images[0]?.upload_url || 'https://via.placeholder.com/400x500?text=No+Image';
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     ₹${sellPrice.toFixed(2)}
                   </p>
                   <button class="buy-now-btn bg-black text-white px-4 py-1 rounded-full font-bold hover:bg-gray-900 transition"
-                          data-uid="${variation.uid}">
+                          data-uid="${variation.uid || ''}">
                     Buy Now
                   </button>
                 </div>
@@ -137,16 +137,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         imgHover.classList.add('opacity-0');
       });
     });
-
-    /* ========== Slide Toggle + Color Bind ========== */
-    // document.querySelectorAll('.toggle-btn').forEach(btn => {
-    //   btn.addEventListener('click', (e) => {
-    //     e.stopPropagation();
-    //     const index = btn.dataset.index;
-    //     const slide = document.getElementById(`slide${index}`);
-    //     slide.classList.toggle('translate-x-full');
-    //   });
-    // });
 
     /* ========== Auto Slide After 2s Hover (Stable Version) ========== */
     document.querySelectorAll('#product-grid .group').forEach((card, index) => {
@@ -180,6 +170,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const uid = btn.dataset.uid;
+        if (!uid) return;
         window.location.href = `pages/product-detail.php?id=${uid}`;
       });
     });

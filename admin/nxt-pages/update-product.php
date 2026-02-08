@@ -13,7 +13,7 @@
 
         <!-- Row: Basic Fields -->
         <div class="flex gap-10 items-center">
-          <input type="hidden" id="product_slug" name="slug" />
+          <input type="text" id="product_slug" name="slug" />
 
           <div class="flex flex-col gap-1 flex-grow">
             <label class="form-label text-gray-900">Product Name</label>
@@ -479,7 +479,7 @@
     const AID = new URLSearchParams(window.location.search).get("aid");
 
     if (!AID) {
-      alert("Product slug is missing in URL");
+      alert("Product AID is missing in URL");
       return;
     }
 

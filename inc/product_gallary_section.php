@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     response.data.forEach((item, index) => {
 
       const product   = item.product;
-      const variation = product.variation?.[0] || {};
+      const variation = product.variations?.[0] || {};
       const images    = variation.images || [];
 
       const image1 = images[0]?.upload_url || 'https://via.placeholder.com/400x500?text=No+Image';

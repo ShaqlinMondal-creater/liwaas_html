@@ -125,11 +125,6 @@
             <!-- Images Section -->
             <div class="images-wrapper flex flex-wrap gap-3 mb-3"></div>
 
-            <div class="flex gap-3 items-center">
-              <input type="file" class="variation-image-input input input-sm w-[240px]" accept="image/*" multiple />
-              <button type="button" class="upload-images-btn btn btn-sm bg-blue-500 text-white">Upload Images</button>
-            </div>
-
             <!-- SPECIFICATIONS -->
             <div class="specs-wrapper flex flex-col gap-2 mt-2">
               <div class="spec-row flex gap-2 items-center">
@@ -543,13 +538,30 @@
 
           variantItem.querySelector("input[placeholder='UID']").value = variant.uid;
           variantItem.querySelector("input[placeholder='Regular Price']").value = variant.regular_price;
-          variantItem.querySelector("input[placeholder='Sale Price']").value = variant.sell_price;
+          variantItem.querySelector("input[placeholder='Sale Price']").value = variant.sell_price || variant.sale_price;
           variantItem.querySelector("input[placeholder='Size']").value = variant.size;
           variantItem.querySelector(".color-value").value = variant.color;
           variantItem.querySelector(".color-text").textContent = variant.color;
           variantItem.querySelector(".color-text").classList.remove("text-gray-500");
-          variantItem.querySelector(".color-dot").style.backgroundColor = "#94a3b8";
           variantItem.querySelector("input[placeholder='Stock']").value = variant.stock;
+
+          setTimeout(() => {
+            const dropdown = variantItem.querySelector(".color-dropdown");
+            const colorValue = variant.color;
+
+            const menuItems = dropdown.querySelectorAll(".color-menu div");
+
+            menuItems.forEach(item => {
+              const name = item.querySelector("span:last-child").textContent;
+              const dotSpan = item.querySelector("span:first-child");
+
+              if (name === colorValue) {
+                variantItem.querySelector(".color-dot").style.backgroundColor =
+                  dotSpan.style.background;
+              }
+            });
+          }, 300);
+
 
           // Load images
           const imagesWrapper = variantItem.querySelector(".images-wrapper");
@@ -561,18 +573,33 @@
             });
           }
 
-          // Attach upload button
-          const uploadBtn = variantItem.querySelector(".upload-images-btn");
-          const fileInput = variantItem.querySelector(".variation-image-input");
+          const specsWrapper = variantItem.querySelector(".specs-wrapper");
+          specsWrapper.innerHTML = "";
 
-          uploadBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            if (fileInput.files.length > 0) {
-              uploadVariationImages(product.aid, variant.uid, fileInput.files);
-            } else {
-              alert("Please select images to upload");
-            }
-          });
+          if (variant.specs && variant.specs.length > 0) {
+            variant.specs.forEach((spec, index) => {
+              const specRow = document.createElement("div");
+              specRow.className = "spec-row flex gap-2 items-center";
+
+              specRow.innerHTML = `
+                <select class="input input-sm w-[180px] spec-name">
+                  <option value="">Select Spec</option>
+                  <option value="Material">Material</option>
+                  <option value="Fit">Fit</option>
+                  <option value="Country of Origin">Country of Origin</option>
+                  <option value="Color">Color</option>
+                  <option value="Wash">Wash</option>
+                </select>
+                <input type="text" class="input input-sm w-[240px] spec-value" placeholder="Spec value" />
+                <button type="button" class="remove-spec btn btn-xs bg-gray-300">✕</button>
+              `;
+
+              specRow.querySelector(".spec-name").value = spec.spec_name;
+              specRow.querySelector(".spec-value").value = spec.spec_value;
+
+              specsWrapper.appendChild(specRow);
+            });
+          }
 
           // Attach remove button
           const removeBtn = variantItem.querySelector(".remove-variation-btn");
@@ -605,6 +632,20 @@
         if (product.color) {
           colorText.textContent = product.color;
           colorText.classList.remove("text-gray-500");
+
+          setTimeout(() => {
+            const dropdown = document.querySelector("#simple_fields .color-dropdown");
+            const items = dropdown.querySelectorAll(".color-menu div");
+
+            items.forEach(item => {
+              const name = item.querySelector("span:last-child").textContent;
+              const dotSpan = item.querySelector("span:first-child");
+
+              if (name === product.color) {
+                colorDot.style.backgroundColor = dotSpan.style.background;
+              }
+            });
+          }, 300);
         }
       }
 
@@ -656,18 +697,6 @@
         const items = variantFields.querySelectorAll(".variation-item");
         if (items.length > 1) {
           clone.remove();
-        }
-      });
-
-      const uploadBtn = clone.querySelector(".upload-images-btn");
-      const fileInput = clone.querySelector(".variation-image-input");
-      uploadBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (fileInput.files.length > 0) {
-          const uid = clone.querySelector("input[placeholder='UID']").value;
-          uploadVariationImages(currentProduct.aid, uid, fileInput.files);
-        } else {
-          alert("Please select images to upload");
         }
       });
 

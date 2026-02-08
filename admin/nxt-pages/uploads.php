@@ -14,7 +14,7 @@
       </div>
 
       <!-- Filters -->
-      <div class="flex gap-4 mb-6 items-end">
+      <div class="flex gap-4 items-end">
         <div>
           <label class="text-sm text-gray-700">Search Name</label>
           <input type="text" id="filter_name"
@@ -40,8 +40,8 @@
       </div>
 
       <!-- Image Grid -->
-      <div id="uploads_grid"
-           class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <div id="uploads_grid" class="masonry-grid mt-4">
+
       </div>
 
       <!-- Loader -->
@@ -55,31 +55,57 @@
 </main>
 
 <style>
+/* Pinterest Masonry Layout */
+.masonry-grid {
+  column-count: 2;
+  column-gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .masonry-grid {
+    column-count: 3;
+  }
+}
+
+@media (min-width: 1200px) {
+  .masonry-grid {
+    column-count: 4;
+  }
+}
+
 .upload-card {
-  position: relative;
+  break-inside: avoid;
+  margin-bottom: 16px;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #e5e7eb;
   background: #fff;
+  transition: 0.2s ease;
+}
+
+.upload-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 .upload-card img {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
+  height: auto;   /* important */
+  display: block;
 }
 
 .upload-info {
-  padding: 6px;
+  padding: 8px;
   font-size: 12px;
 }
 
 .upload-info p {
-  margin: 2px 0;
+  margin: 3px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 </style>
 
 <?php include("../footer.php"); ?>

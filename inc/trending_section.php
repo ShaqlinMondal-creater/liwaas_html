@@ -226,7 +226,7 @@
                         Description: ${product.gender ?? ''}
                       </p>
 
-                      <div class="mt-4 text-sm text-gray-700 flex items-center gap-8">
+                      <div class="mt-4 text-sm text-gray-700 flex items-center gap-4">
                         <!-- COLOR -->
                         <div class="flex items-center gap-2">
                           <strong>Color:</strong>
@@ -239,7 +239,7 @@
 
                         <!-- SIZE -->
                         <div class="flex items-center gap-1">
-                          <strong class="block mb-2">Select Size:</strong>
+                          <strong class="block">Size:</strong>
                           <div id="size-options" class="flex gap-1 flex-wrap"></div>
                         </div>
                       </div>
@@ -328,7 +328,7 @@
                   const sizeBtn = document.createElement('button');
                   sizeBtn.textContent = v.size;
                   sizeBtn.className =
-                    "px-2 py-2 border rounded-md text-xs hover:bg-black hover:text-white transition";
+                    "px-3 py-2 border rounded-md text-xs hover:bg-black hover:text-white transition";
 
                   if (index === 0) {
                     sizeBtn.classList.add("bg-black", "text-white");

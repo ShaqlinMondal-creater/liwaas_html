@@ -182,7 +182,6 @@ document.addEventListener("DOMContentLoaded", () => {
         fetchCarts(1);
     });
 
-
     function renderCarts(carts) {
         tableBody.innerHTML = "";
 
@@ -339,19 +338,22 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!confirm("Delete this cart item?")) return;
 
         try {
-            const res = await fetch(`<?= $baseUrl ?>/api/admin/cart/delete/${cartId}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`
+            const res = await fetch(
+                `<?= $baseUrl ?>/admin/cart/delete/${cartId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
                 }
-            });
+            );
 
             const result = await res.json();
 
             if (result.success) {
                 fetchCarts(currentPage);
             } else {
-                alert("Delete failed");
+                alert(result.message || "Delete failed");
             }
 
         } catch (err) {
@@ -361,42 +363,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Bulk Delete
     document.getElementById("bulk_delete_cart")
-        ?.addEventListener("click", async () => {
+    ?.addEventListener("click", async () => {
 
-            const selected = [...document.querySelectorAll(".cart-checkbox:checked")]
-                .map(cb => cb.value);
+        const selected = [...document.querySelectorAll(".cart-checkbox:checked")]
+            .map(cb => cb.value);
 
-            if (!selected.length) {
-                alert("No carts selected");
-                return;
-            }
+        if (!selected.length) {
+            alert("No carts selected");
+            return;
+        }
 
-            if (!confirm(`Delete ${selected.length} carts?`)) return;
+        if (!confirm(`Delete ${selected.length} carts?`)) return;
 
-            try {
-                const res = await fetch(`<?= $baseUrl ?>/api/admin/cart/bulk-delete`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ ids: selected })
-                });
+        try {
+
+            for (const cartId of selected) {
+
+                const res = await fetch(
+                    `<?= $baseUrl ?>/admin/cart/delete/${cartId}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
 
                 const result = await res.json();
 
-                if (result.success) {
-                    fetchCarts(currentPage);
-                } else {
-                    alert("Bulk delete failed");
+                if (!result.success) {
+                    console.warn(`Failed to delete cart ID: ${cartId}`);
                 }
-
-            } catch (err) {
-                alert("Error deleting carts");
             }
-        });
 
-    fetchCarts(currentPage);
+            alert("Selected carts deleted successfully");
+            fetchCarts(currentPage);
+
+        } catch (err) {
+            alert("Error deleting carts");
+        }
+    });
 });
 </script>
 

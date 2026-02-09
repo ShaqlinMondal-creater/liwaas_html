@@ -278,11 +278,11 @@
 
                           <input id="qty-input"
                                 value="1"
-                                class="w-14 text-center border rounded py-1"
+                                class="w-14 h-8 text-center border rounded py-1"
                                 readonly />
 
                           <button id="qty-increase"
-                                  class="w-10 h-10 bg-gray-200 rounded text-xl hover:bg-gray-300">
+                                  class="w-10 h-8 bg-gray-200 rounded text-xl hover:bg-gray-300">
                             +
                           </button>
                         </div>

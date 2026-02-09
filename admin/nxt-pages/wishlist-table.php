@@ -39,6 +39,13 @@
         placeholder="Search Product"
         class="input input-sm w-48"/>
 
+    <select id="sort_by" class="select select-sm w-40">
+        <option value="">Sort</option>
+        <option value="price_asc">Price Low → High</option>
+        <option value="price_desc">Price High → Low</option>
+        <option value="most_liked">Most Liked</option>
+    </select>
+
     <button id="apply_filters"
         class="btn btn-sm btn-primary">
         Apply
@@ -57,6 +64,8 @@
     </th>
     <th>User</th>
     <th>Product</th>
+    <th>Variation</th>
+    <th>Price</th>
     <th>Date</th>
     <th></th>
 </tr>
@@ -91,6 +100,7 @@ let totalRecords = 0;
 
 const searchUser = document.getElementById("search_user");
 const searchProduct = document.getElementById("search_product");
+const sortBy = document.getElementById("sort_by");
 const applyBtn = document.getElementById("apply_filters");
 
 async function fetchWishlists(page = 1) {
@@ -101,14 +111,11 @@ async function fetchWishlists(page = 1) {
     const offset = (page - 1) * limit;
 
     tableBody.innerHTML =
-        `<tr>
-            <td colspan="5" class="text-center py-4">
-                Loading wishlists...
-            </td>
-        </tr>`;
+        `<tr><td colspan="7" class="text-center py-4">
+            Loading wishlists...
+        </td></tr>`;
 
     try {
-
         const res = await fetch("<?= $baseUrl ?>/api/admin/wishlists", {
             method: "POST",
             headers: {
@@ -118,6 +125,7 @@ async function fetchWishlists(page = 1) {
             body: JSON.stringify({
                 user_name: searchUser.value || undefined,
                 product_name: searchProduct.value || undefined,
+                sort_by: sortBy.value || undefined,
                 limit: limit,
                 offset: offset
             })
@@ -127,7 +135,7 @@ async function fetchWishlists(page = 1) {
 
         if (!result.success) {
             tableBody.innerHTML =
-                `<tr><td colspan="5" class="text-center text-red-500">
+                `<tr><td colspan="7" class="text-center text-red-500">
                     ${result.message || "No data found"}
                 </td></tr>`;
             isLoading = false;
@@ -146,7 +154,7 @@ async function fetchWishlists(page = 1) {
 
     } catch (err) {
         tableBody.innerHTML =
-            `<tr><td colspan="5" class="text-center text-red-500">
+            `<tr><td colspan="7" class="text-center text-red-500">
                 Error loading data
             </td></tr>`;
     }
@@ -160,23 +168,49 @@ function renderWishlists(data) {
 
     data.forEach(item => {
 
-        const user = item.user?.name
-            ? item.user.name
-            : `<span class="badge badge-warning">Guest</span>`;
+        const userName = item.user?.name || 
+            `<span class="badge badge-warning">Guest</span>`;
 
-        const product = item.product?.name
-            || `<span class="text-gray-400">Deleted Product</span>`;
+        const productName = item.product?.name || 
+            `<span class="text-gray-400">Deleted Product</span>`;
+
+        const productAid = item.product?.aid || "-";
+
+        const variation = item.variation || {};
+        const variationText = item.variation
+            ? `${variation.color || "-"} / ${variation.size || "-"}`
+            : `<span class="text-gray-400">No variation</span>`;
+
+        const image = variation.images?.length
+            ? `<img src="${variation.images[0]}"
+                class="w-10 h-10 rounded object-cover">`
+            : "";
+
+        const price = variation.sell_price || "-";
 
         const row = `
             <tr>
                 <td class="text-center">
                     <input type="checkbox"
                         class="wishlist-checkbox"
-                        value="${item.id}">
+                        value="${item.wishlist_id}">
                 </td>
 
-                <td>${user}</td>
-                <td>${product}</td>
+                <td>${userName}</td>
+
+                <td>
+                    <div class="flex items-center gap-2">
+                        ${image}
+                        <div>
+                            <div class="font-medium">${productName}</div>
+                            <div class="text-xs text-gray-500">${productAid}</div>
+                        </div>
+                    </div>
+                </td>
+
+                <td>${variationText}</td>
+                <td>₹${price}</td>
+
                 <td>
                     ${item.created_at
                         ? new Date(item.created_at).toLocaleDateString()
@@ -186,7 +220,7 @@ function renderWishlists(data) {
                 <td>
                     <button
                         class="btn btn-sm btn-danger delete-wishlist"
-                        data-id="${item.id}">
+                        data-id="${item.wishlist_id}">
                         Delete
                     </button>
                 </td>
@@ -218,7 +252,10 @@ function renderPagination(total, page) {
     };
     pagination.appendChild(prev);
 
-    for (let i = 1; i <= totalPages; i++) {
+    let startPage = Math.max(1, page - 2);
+    let endPage = Math.min(totalPages, page + 2);
+
+    for (let i = startPage; i <= endPage; i++) {
         const btn = document.createElement("button");
         btn.textContent = i;
         btn.className =
@@ -253,13 +290,16 @@ function renderInfo(page) {
         `Showing ${start}–${end} of ${totalRecords} wishlists`;
 }
 
-/* APPLY FILTER */
 applyBtn.addEventListener("click", () => {
     currentPage = 1;
     fetchWishlists(1);
 });
 
-/* SELECT ALL */
+sortBy.addEventListener("change", () => {
+    currentPage = 1;
+    fetchWishlists(1);
+});
+
 document.getElementById("select_all_wishlist")
 .addEventListener("change", function() {
     document.querySelectorAll(".wishlist-checkbox")
@@ -276,14 +316,23 @@ document.addEventListener("click", async e => {
 
     if (!confirm("Delete this wishlist?")) return;
 
-    await fetch(`<?= $baseUrl ?>/api/admin/wishlist/delete/${id}`, {
-        method: "DELETE",
-        headers: {
-            "Authorization": `Bearer ${token}`
+    const res = await fetch(
+        `<?= $baseUrl ?>/api/admin/wishlist/delete/${id}`,
+        {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         }
-    });
+    );
 
-    fetchWishlists(currentPage);
+    const result = await res.json();
+
+    if (result.success) {
+        fetchWishlists(currentPage);
+    } else {
+        alert(result.message || "Delete failed");
+    }
 });
 
 /* BULK DELETE */

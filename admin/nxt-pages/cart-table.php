@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let limit = 10;
     let totalRecords = 0;
 
-    async function fetchCarts(page = 1) {
+async function fetchCarts(page = 1) {
 
     const offset = (page - 1) * limit;
 
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
 
-        const response = await fetch("<?= $baseUrl ?>/admin/carts", {
+        const response = await fetch("<?= $baseUrl ?>/api/admin/carts", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

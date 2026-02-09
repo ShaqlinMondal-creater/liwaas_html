@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       'Authorization': `Bearer ${authToken}`
     },
     body: JSON.stringify({
-      section_name: "New Arrival",
+      section_name: "Gallery",
       limit: 12,
       offset: 0,
       status: true

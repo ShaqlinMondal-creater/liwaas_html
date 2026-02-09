@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const pagination = document.getElementById("cart_pagination");
     const infoText = document.getElementById("cart_info_text");
     const token = localStorage.getItem("auth_token");
-
+    let isLoading = false;
     let currentPage = 1;
     let limit = 10;
     let totalRecords = 0;
@@ -103,6 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchCarts(page = 1) {
 
+        if (isLoading) return;   // prevent multiple calls
+        isLoading = true;
         const offset = (page - 1) * limit;
 
         tableBody.innerHTML = `
@@ -137,6 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     `<tr><td colspan="9" class="text-center text-red-500">
                         ${result.message || "No carts found"}
                     </td></tr>`;
+                    isLoading = false;   // IMPORTANT
                 return;
             }
 
@@ -148,14 +151,37 @@ document.addEventListener("DOMContentLoaded", () => {
             renderInfo(page);
 
             document.getElementById("total_carts_count").textContent = totalRecords;
+            isLoading = false;
 
         } catch (err) {
             tableBody.innerHTML =
                 `<tr><td colspan="9" class="text-center text-red-500">
                     ${err.message}
                 </td></tr>`;
+                isLoading = false;
         }
     }
+    applyBtn.addEventListener("click", () => {
+        currentPage = 1;
+        fetchCarts(1);
+    });
+
+    // Search on Enter key
+    [searchUser, searchProduct].forEach(input => {
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                currentPage = 1;
+                fetchCarts(1);
+            }
+        });
+    });
+
+    // Auto apply when sort changes
+    sortPrice.addEventListener("change", () => {
+        currentPage = 1;
+        fetchCarts(1);
+    });
+
 
     function renderCarts(carts) {
         tableBody.innerHTML = "";
@@ -167,8 +193,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const product = cart.product || {};
             const variation = cart.variation || {};
 
-            const userName = cart.user_name || 
-                `<span class="text-gray-400">Guest</span>`;
+            const userName = cart.user_name 
+                ? cart.user_name 
+                : `<span class="badge badge-warning">Guest</span>`;
 
             const productName = product.name || 
                 `<span class="text-gray-400">Product deleted</span>`;
@@ -312,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!confirm("Delete this cart item?")) return;
 
         try {
-            const res = await fetch(`<?= $baseUrl ?>/admin/cart/delete/${cartId}`, {
+            const res = await fetch(`<?= $baseUrl ?>/api/admin/cart/delete/${cartId}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -347,7 +374,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!confirm(`Delete ${selected.length} carts?`)) return;
 
             try {
-                const res = await fetch(`<?= $baseUrl ?>/admin/cart/bulk-delete`, {
+                const res = await fetch(`<?= $baseUrl ?>/api/admin/cart/bulk-delete`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

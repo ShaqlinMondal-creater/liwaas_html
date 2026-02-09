@@ -69,51 +69,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchCarts(page = 1) {
 
-        const offset = (page - 1) * limit;
+    const offset = (page - 1) * limit;
 
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="9" class="text-center py-4 text-gray-500">
-                    Loading carts...
-                </td>
-            </tr>
-        `;
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="9" class="text-center py-4 text-gray-500">
+                Loading carts...
+            </td>
+        </tr>
+    `;
 
-        try {
-            const response = await fetch("<?= $baseUrl ?>/api/admin/carts", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    limit: limit,
-                    offset: offset
-                })
-            });
+    try {
 
-            const result = await response.json();
+        const response = await fetch("<?= $baseUrl ?>/admin/carts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                limit: limit,
+                offset: offset
+            })
+        });
 
-            if (!result.success) {
-                tableBody.innerHTML =
-                    `<tr><td colspan="9" class="text-center text-red-500">No carts found</td></tr>`;
-                return;
-            }
+        console.log("Raw response:", response);
 
-            totalRecords = result.meta.total;
-            limit = result.meta.limit;
+        const result = await response.json();
 
-            renderCarts(result.data);
-            renderPagination(totalRecords, page);
-            renderInfo(page);
+        console.log("API Result:", result);
 
-            document.getElementById("total_carts_count").textContent = totalRecords;
-
-        } catch (err) {
+        if (!result.success) {
             tableBody.innerHTML =
-                `<tr><td colspan="9" class="text-center text-red-500">Error loading carts</td></tr>`;
+                `<tr><td colspan="9" class="text-center text-red-500">
+                    ${result.message || "No carts found"}
+                </td></tr>`;
+            return;
         }
+
+        if (!result.meta) {
+            console.error("Meta missing in response");
+            return;
+        }
+
+        totalRecords = result.meta.total || 0;
+        limit = result.meta.limit || 10;
+
+        renderCarts(result.data || []);
+        renderPagination(totalRecords, page);
+        renderInfo(page);
+
+        document.getElementById("total_carts_count").textContent = totalRecords;
+
+    } catch (err) {
+        console.error("Fetch Error:", err);
+        tableBody.innerHTML =
+            `<tr><td colspan="9" class="text-center text-red-500">
+                ${err.message}
+            </td></tr>`;
     }
+}
+
 
     function renderCarts(carts) {
         tableBody.innerHTML = "";

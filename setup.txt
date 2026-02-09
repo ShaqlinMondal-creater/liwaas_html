@@ -151,14 +151,12 @@ Update Product -> Done ✅
 Carts:
 Add Carts 
 Fetch Carts -> Done ✅
-Delete Carts  
-Update Carts 
+Delete Carts -> Done ✅
 
 Wishlists:
 Add Wishlist 
-Fetch Wishlist 
-Delete Wishlist 
-Update Wishlist 
+Fetch Wishlist -> Done ✅
+Delete Wishlist -> Done ✅
 
 Users:
 Add User ->  need to create api

@@ -339,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const res = await fetch(
-                `<?= $baseUrl ?>/admin/cart/delete/${cartId}`,
+                `<?= $baseUrl ?>/api/admin/cart/delete/${cartId}`,
                 {
                     method: "DELETE",
                     headers: {
@@ -380,7 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
             for (const cartId of selected) {
 
                 const res = await fetch(
-                    `<?= $baseUrl ?>/admin/cart/delete/${cartId}`,
+                    `<?= $baseUrl ?>/api/admin/cart/delete/${cartId}`,
                     {
                         method: "DELETE",
                         headers: {

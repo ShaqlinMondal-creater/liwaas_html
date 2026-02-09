@@ -25,6 +25,35 @@
         <div class="card card-grid min-w-full">
             <div class="card-body">
                 <div class="scrollable-x-auto">
+                    <div class="card-header flex flex-wrap gap-3 items-center justify-between">
+
+                        <div class="flex gap-3 flex-wrap">
+
+                            <input 
+                                type="text" 
+                                id="search_user"
+                                placeholder="Search User Name"
+                                class="input input-sm w-48" />
+
+                            <input 
+                                type="text" 
+                                id="search_product"
+                                placeholder="Search Product Name"
+                                class="input input-sm w-48" />
+
+                            <select id="sort_price" class="select select-sm w-40">
+                                <option value="">Sort By Price</option>
+                                <option value="min_to_max">Low → High</option>
+                                <option value="max_to_min">High → Low</option>
+                            </select>
+
+                            <button id="apply_filters" class="btn btn-sm btn-primary">
+                                Apply
+                            </button>
+
+                        </div>
+                    </div>
+
                     <table class="table table-auto table-border">
                         <thead>
                             <tr>
@@ -67,164 +96,194 @@ document.addEventListener("DOMContentLoaded", () => {
     let limit = 10;
     let totalRecords = 0;
 
-async function fetchCarts(page = 1) {
+    const searchUser = document.getElementById("search_user");
+    const searchProduct = document.getElementById("search_product");
+    const sortPrice = document.getElementById("sort_price");
+    const applyBtn = document.getElementById("apply_filters");
 
-    const offset = (page - 1) * limit;
+    async function fetchCarts(page = 1) {
 
-    tableBody.innerHTML = `
-        <tr>
-            <td colspan="9" class="text-center py-4 text-gray-500">
-                Loading carts...
-            </td>
-        </tr>
-    `;
+        const offset = (page - 1) * limit;
 
-    try {
-
-        const response = await fetch("<?= $baseUrl ?>/api/admin/carts", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                limit: limit,
-                offset: offset
-            })
-        });
-
-        console.log("Raw response:", response);
-
-        const result = await response.json();
-
-        console.log("API Result:", result);
-
-        if (!result.success) {
-            tableBody.innerHTML =
-                `<tr><td colspan="9" class="text-center text-red-500">
-                    ${result.message || "No carts found"}
-                </td></tr>`;
-            return;
-        }
-
-        if (!result.meta) {
-            console.error("Meta missing in response");
-            return;
-        }
-
-        totalRecords = result.meta.total || 0;
-        limit = result.meta.limit || 10;
-
-        renderCarts(result.data || []);
-        renderPagination(totalRecords, page);
-        renderInfo(page);
-
-        document.getElementById("total_carts_count").textContent = totalRecords;
-
-    } catch (err) {
-        console.error("Fetch Error:", err);
-        tableBody.innerHTML =
-            `<tr><td colspan="9" class="text-center text-red-500">
-                ${err.message}
-            </td></tr>`;
-    }
-}
-
-
-    function renderCarts(carts) {
-    tableBody.innerHTML = "";
-
-    carts.forEach(item => {
-
-        const cart = item.cart || {};
-
-        const product = cart.product || {};
-        const variation = cart.variation || {};
-
-        const userName = cart.user_name || 
-            `<span class="text-gray-400">Guest</span>`;
-
-        const productName = product.name || 
-            `<span class="text-gray-400">Product deleted</span>`;
-
-        const productAid = product.aid || "-";
-
-        const variationText = cart.variation
-            ? `${variation.color || "-"} / ${variation.size || "-"}`
-            : `<span class="text-gray-400">No variation</span>`;
-
-        const image = variation.images && variation.images.length
-            ? `<img src="${variation.images[0]}" 
-                 class="w-10 h-10 rounded object-cover">`
-            : "";
-
-        const row = `
+        tableBody.innerHTML = `
             <tr>
-                <td class="text-center">
-                    <input type="checkbox" class="cart-checkbox" value="${item.id}">
-                </td>
-
-                <td>${userName}</td>
-
-                <td>
-                    <div class="flex items-center gap-2">
-                        ${image}
-                        <div>
-                            <div class="font-medium">${productName}</div>
-                            <div class="text-xs text-gray-500">${productAid}</div>
-                        </div>
-                    </div>
-                </td>
-
-                <td>${variationText}</td>
-
-                <td>${cart.quantity || 0}</td>
-
-                <td>₹${cart.sell_price || 0}</td>
-
-                <td class="font-semibold">₹${cart.total_price || 0}</td>
-
-                <td>
-                    ${cart.created_at 
-                        ? new Date(cart.created_at).toLocaleDateString() 
-                        : "-"}
-                </td>
-
-                <td>
-                    <button 
-                        class="btn btn-sm btn-danger delete-cart" 
-                        data-id="${item.id}">
-                        Delete
-                    </button>
+                <td colspan="9" class="text-center py-4 text-gray-500">
+                    Loading carts...
                 </td>
             </tr>
         `;
 
-        tableBody.insertAdjacentHTML("beforeend", row);
-    });
+        try {
 
-    document.getElementById("select_all_carts").checked = false;
-}
+            const response = await fetch("<?= $baseUrl ?>/api/admin/carts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    user_name: searchUser.value || undefined,
+                    product_name: searchProduct.value || undefined,
+                    sort_price: sortPrice.value || undefined,
+                    limit: limit,
+                    offset: offset
+                })
+            });
 
+            const result = await response.json();
+
+            if (!result.success) {
+                tableBody.innerHTML =
+                    `<tr><td colspan="9" class="text-center text-red-500">
+                        ${result.message || "No carts found"}
+                    </td></tr>`;
+                return;
+            }
+
+            totalRecords = result.meta.total || 0;
+            limit = result.meta.limit || 10;
+
+            renderCarts(result.data || []);
+            renderPagination(totalRecords, page);
+            renderInfo(page);
+
+            document.getElementById("total_carts_count").textContent = totalRecords;
+
+        } catch (err) {
+            tableBody.innerHTML =
+                `<tr><td colspan="9" class="text-center text-red-500">
+                    ${err.message}
+                </td></tr>`;
+        }
+    }
+
+    function renderCarts(carts) {
+        tableBody.innerHTML = "";
+
+        carts.forEach(item => {
+
+            const cart = item.cart || {};
+
+            const product = cart.product || {};
+            const variation = cart.variation || {};
+
+            const userName = cart.user_name || 
+                `<span class="text-gray-400">Guest</span>`;
+
+            const productName = product.name || 
+                `<span class="text-gray-400">Product deleted</span>`;
+
+            const productAid = product.aid || "-";
+
+            const variationText = cart.variation
+                ? `${variation.color || "-"} / ${variation.size || "-"}`
+                : `<span class="text-gray-400">No variation</span>`;
+
+            const image = variation.images && variation.images.length
+                ? `<img src="${variation.images[0]}" 
+                    class="w-10 h-10 rounded object-cover">`
+                : "";
+
+            const row = `
+                <tr>
+                    <td class="text-center">
+                        <input type="checkbox" class="cart-checkbox" value="${item.id}">
+                    </td>
+
+                    <td>${userName}</td>
+
+                    <td>
+                        <div class="flex items-center gap-2">
+                            ${image}
+                            <div>
+                                <div class="font-medium">${productName}</div>
+                                <div class="text-xs text-gray-500">${productAid}</div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>${variationText}</td>
+
+                    <td>${cart.quantity || 0}</td>
+
+                    <td>₹${cart.sell_price || 0}</td>
+
+                    <td class="font-semibold">₹${cart.total_price || 0}</td>
+
+                    <td>
+                        ${cart.created_at 
+                            ? new Date(cart.created_at).toLocaleDateString() 
+                            : "-"}
+                    </td>
+
+                    <td>
+                        <button 
+                            class="btn btn-sm btn-danger delete-cart" 
+                            data-id="${item.id}">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `;
+
+            tableBody.insertAdjacentHTML("beforeend", row);
+        });
+
+        document.getElementById("select_all_carts").checked = false;
+    }
 
     function renderPagination(total, page) {
+
         pagination.innerHTML = "";
 
         const totalPages = Math.ceil(total / limit);
         if (totalPages <= 1) return;
 
-        for (let i = 1; i <= totalPages; i++) {
+        // PREV BUTTON
+        const prevBtn = document.createElement("button");
+        prevBtn.textContent = "Prev";
+        prevBtn.className = "px-3 py-1 border rounded";
+        prevBtn.disabled = page === 1;
+        prevBtn.onclick = () => {
+            if (page > 1) {
+                currentPage--;
+                fetchCarts(currentPage);
+            }
+        };
+        pagination.appendChild(prevBtn);
+
+        // PAGE NUMBERS (max 5 around current)
+        let startPage = Math.max(1, page - 2);
+        let endPage = Math.min(totalPages, page + 2);
+
+        for (let i = startPage; i <= endPage; i++) {
+
             const btn = document.createElement("button");
+            btn.textContent = i;
             btn.className = `px-3 py-1 border rounded ${
                 i === page ? "bg-indigo-600 text-white" : ""
             }`;
-            btn.textContent = i;
+
             btn.onclick = () => {
                 currentPage = i;
                 fetchCarts(i);
             };
+
             pagination.appendChild(btn);
         }
+
+        // NEXT BUTTON
+        const nextBtn = document.createElement("button");
+        nextBtn.textContent = "Next";
+        nextBtn.className = "px-3 py-1 border rounded";
+        nextBtn.disabled = page === totalPages;
+        nextBtn.onclick = () => {
+            if (page < totalPages) {
+                currentPage++;
+                fetchCarts(currentPage);
+            }
+        };
+        pagination.appendChild(nextBtn);
     }
 
     function renderInfo(page) {

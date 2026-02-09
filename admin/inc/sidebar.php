@@ -124,7 +124,7 @@
                 </div>
 
                 <!-- TABLES -->
-                <div class="menu-item <?= menuShow(['order-table.php','brand-table.php','category-table.php','product-table.php', 'coupons-table.php','cart-table.php','user-table.php','shipping-table.php','uploads.php',]) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
+                <div class="menu-item <?= menuShow(['order-table.php','brand-table.php','category-table.php','product-table.php', 'coupons-table.php','cart-table.php','wishlist-table.php','user-table.php','shipping-table.php','uploads.php',]) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
                     <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] ps-[10px] pe-[10px] py-[6px]">
                         <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
                             <i class="ki-filled ki-setting-2 text-lg"></i>
@@ -176,6 +176,13 @@
                             <a href="nxt-pages/cart-table.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('cart-table.php') ?>">
                                 <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('cart-table.php') ?>"></span>
                                 <span class="menu-title text-2sm">Cart Table</span>
+                            </a>
+                        </div>
+
+                        <div class="menu-item">
+                            <a href="nxt-pages/wishlist-table.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('wishlist-table.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('wishlist-table.php') ?>"></span>
+                                <span class="menu-title text-2sm">Wishlist Table</span>
                             </a>
                         </div>
 

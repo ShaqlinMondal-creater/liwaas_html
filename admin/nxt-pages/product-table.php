@@ -557,7 +557,7 @@
     </script>
     <!-- Mark Products -->
      <script>
-        async function markSectionProduct(uid, aid, section) {
+        async function markSectionProduct(aid, section, uid) {
             try {
                 const response = await fetch('<?= $baseUrl ?>/api/admin/fetch/marked-section-products', {
                     method: 'POST',
@@ -567,6 +567,7 @@
                     },
                     body: JSON.stringify({
                         aid: aid,
+                        uid: uid, // include if backend needs it
                         section_name: section
                     })
                 });
@@ -588,16 +589,59 @@
                         confirmButtonColor: '#EF4444'
                     });
                 }
+
             } catch (error) {
+                console.error(error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
                     text: 'Unable to mark product, please try again later.',
                     confirmButtonColor: '#EF4444'
                 });
-                console.error('Error marking product:', error);
             }
         }
+
+        // async function markSectionProduct(uid, aid, section) {
+        //     try {
+        //         const response = await fetch('<?= $baseUrl ?>/api/admin/fetch/marked-section-products', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
+        //             },
+        //             body: JSON.stringify({
+        //                 aid: aid,
+        //                 section_name: section
+        //             })
+        //         });
+
+        //         const data = await response.json();
+
+        //         if (data.success) {
+        //             Swal.fire({
+        //                 icon: 'success',
+        //                 title: 'Marked Successfully!',
+        //                 text: data.message,
+        //                 confirmButtonColor: '#10B981'
+        //             });
+        //         } else {
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Failed!',
+        //                 text: data.message || 'Something went wrong',
+        //                 confirmButtonColor: '#EF4444'
+        //             });
+        //         }
+        //     } catch (error) {
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Error!',
+        //             text: 'Unable to mark product, please try again later.',
+        //             confirmButtonColor: '#EF4444'
+        //         });
+        //         console.error('Error marking product:', error);
+        //     }
+        // }
      </script>
 <!-- Footer -->
 <?php include("../footer.php"); ?>

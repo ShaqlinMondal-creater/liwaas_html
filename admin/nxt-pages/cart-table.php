@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
         try {
-            const response = await fetch("<?= $baseUrl ?>/admin/carts", {
+            const response = await fetch("<?= $baseUrl ?>/api/admin/carts", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

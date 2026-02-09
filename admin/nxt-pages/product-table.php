@@ -274,22 +274,25 @@
                                         <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
                                             <div class="menu-item">
                                                 <a class="menu-link mark-product" 
-                                                    data-section="Trending"
-                                                    data-variations='${JSON.stringify(product.variations)}'>
+                                                    data-section="Trending" 
+                                                    data-variations='${JSON.stringify(product.variations)}'
+                                                    data-aid='${product.aid}'>
                                                     As Trending
                                                 </a>
                                             </div>
                                             <div class="menu-item">
                                                 <a class="menu-link mark-product" 
                                                 data-section="New Arrival" 
-                                                data-variations='${JSON.stringify(product.variations)}'>
+                                                data-variations='${JSON.stringify(product.variations)}'
+                                                data-aid='${product.aid}'>
                                                 As New Arrival
                                                 </a>
                                             </div>
                                             <div class="menu-item">
                                                 <a class="menu-link mark-product" 
                                                 data-section="Gallery" 
-                                                data-variations='${JSON.stringify(product.variations)}'>
+                                                data-variations='${JSON.stringify(product.variations)}'
+                                                data-aid='${product.aid}'>
                                                 As Gallery
                                                 </a>
                                             </div>
@@ -431,6 +434,7 @@
                 e.preventDefault();
 
                 const section = target.dataset.section;
+                const aid = target.dataset.aid;
                 const variations = JSON.parse(target.dataset.variations || '[]');
 
                 if (!variations.length) {
@@ -474,7 +478,7 @@
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        markSectionProduct(result.value, section);
+                        markSectionProduct(aid, section, result.value);
                     }
                 });
             });
@@ -553,7 +557,7 @@
     </script>
     <!-- Mark Products -->
      <script>
-        async function markSectionProduct(uid, section) {
+        async function markSectionProduct(uid, aid, section) {
             try {
                 const response = await fetch('<?= $baseUrl ?>/api/admin/fetch/marked-section-products', {
                     method: 'POST',
@@ -562,7 +566,7 @@
                         'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
                     },
                     body: JSON.stringify({
-                        uid: uid,
+                        aid: aid,
                         section_name: section
                     })
                 });

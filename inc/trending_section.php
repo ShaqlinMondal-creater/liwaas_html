@@ -328,7 +328,7 @@
                   const sizeBtn = document.createElement('button');
                   sizeBtn.textContent = v.size;
                   sizeBtn.className =
-                    "px-4 py-2 border rounded-md text-xs hover:bg-black hover:text-white transition";
+                    "px-2 py-2 border rounded-md text-xs hover:bg-black hover:text-white transition";
 
                   if (index === 0) {
                     sizeBtn.classList.add("bg-black", "text-white");

@@ -132,67 +132,80 @@ async function fetchCarts(page = 1) {
 
 
     function renderCarts(carts) {
-        tableBody.innerHTML = "";
+    tableBody.innerHTML = "";
 
-        carts.forEach(item => {
+    carts.forEach(item => {
 
-            const cart = item.cart;
-            const product = cart.product;
-            const variation = cart.variation;
+        const cart = item.cart || {};
 
-            const userName = cart.user_name || `<span class="text-gray-400">Guest</span>`;
+        const product = cart.product || {};
+        const variation = cart.variation || {};
 
-            const variationText = variation
-                ? `${variation.color} / ${variation.size}`
-                : `<span class="text-gray-400">No variation</span>`;
+        const userName = cart.user_name || 
+            `<span class="text-gray-400">Guest</span>`;
 
-            const image = variation?.images?.length
-                ? `<img src="${variation.images[0]}" class="w-10 h-10 rounded object-cover">`
-                : "";
+        const productName = product.name || 
+            `<span class="text-gray-400">Product deleted</span>`;
 
-            const row = `
-                <tr>
-                    <td class="text-center">
-                        <input type="checkbox" class="cart-checkbox" value="${item.id}">
-                    </td>
+        const productAid = product.aid || "-";
 
-                    <td>${userName}</td>
+        const variationText = cart.variation
+            ? `${variation.color || "-"} / ${variation.size || "-"}`
+            : `<span class="text-gray-400">No variation</span>`;
 
-                    <td>
-                        <div class="flex items-center gap-2">
-                            ${image}
-                            <div>
-                                <div class="font-medium">${product.name}</div>
-                                <div class="text-xs text-gray-500">${product.aid}</div>
-                            </div>
+        const image = variation.images && variation.images.length
+            ? `<img src="${variation.images[0]}" 
+                 class="w-10 h-10 rounded object-cover">`
+            : "";
+
+        const row = `
+            <tr>
+                <td class="text-center">
+                    <input type="checkbox" class="cart-checkbox" value="${item.id}">
+                </td>
+
+                <td>${userName}</td>
+
+                <td>
+                    <div class="flex items-center gap-2">
+                        ${image}
+                        <div>
+                            <div class="font-medium">${productName}</div>
+                            <div class="text-xs text-gray-500">${productAid}</div>
                         </div>
-                    </td>
+                    </div>
+                </td>
 
-                    <td>${variationText}</td>
+                <td>${variationText}</td>
 
-                    <td>${cart.quantity}</td>
+                <td>${cart.quantity || 0}</td>
 
-                    <td>₹${cart.sell_price}</td>
+                <td>₹${cart.sell_price || 0}</td>
 
-                    <td class="font-semibold">₹${cart.total_price}</td>
+                <td class="font-semibold">₹${cart.total_price || 0}</td>
 
-                    <td>${new Date(cart.created_at).toLocaleDateString()}</td>
+                <td>
+                    ${cart.created_at 
+                        ? new Date(cart.created_at).toLocaleDateString() 
+                        : "-"}
+                </td>
 
-                    <td>
-                        <button 
-                            class="btn btn-sm btn-danger delete-cart" 
-                            data-id="${item.id}">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            `;
+                <td>
+                    <button 
+                        class="btn btn-sm btn-danger delete-cart" 
+                        data-id="${item.id}">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `;
 
-            tableBody.insertAdjacentHTML("beforeend", row);
-        });
+        tableBody.insertAdjacentHTML("beforeend", row);
+    });
 
-        document.getElementById("select_all_carts").checked = false;
-    }
+    document.getElementById("select_all_carts").checked = false;
+}
+
 
     function renderPagination(total, page) {
         pagination.innerHTML = "";

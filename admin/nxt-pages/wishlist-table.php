@@ -276,7 +276,7 @@ document.addEventListener("click", async e => {
 
     if (!confirm("Delete this wishlist?")) return;
 
-    await fetch(`<?= $baseUrl ?>/admin/wishlist/delete/${id}`, {
+    await fetch(`<?= $baseUrl ?>/api/admin/wishlist/delete/${id}`, {
         method: "DELETE",
         headers: {
             "Authorization": `Bearer ${token}`
@@ -302,7 +302,7 @@ document.getElementById("bulk_delete_wishlist")
 
     await Promise.all(
         selected.map(id =>
-            fetch(`<?= $baseUrl ?>/admin/wishlist/delete/${id}`, {
+            fetch(`<?= $baseUrl ?>/api/admin/wishlist/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`

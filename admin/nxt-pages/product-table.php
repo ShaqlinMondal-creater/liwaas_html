@@ -427,6 +427,63 @@
                 });
             }
 
+            // document.addEventListener('click', (e) => {
+            //     const target = e.target.closest('.mark-product');
+            //     if (!target) return;
+
+            //     e.preventDefault();
+
+            //     const section = target.dataset.section;
+            //     const aid = target.dataset.aid;
+            //     const variations = JSON.parse(target.dataset.variations || '[]');
+
+            //     if (!variations.length) {
+            //         Swal.fire('Error', 'No variations found.', 'error');
+            //         return;
+            //     }
+
+            //     // Build variation selection HTML
+            //     let variationOptions = '';
+
+            //     variations.forEach((v, index) => {
+            //         variationOptions += `
+            //             <div class="text-left mb-2">
+            //                 <label style="cursor:pointer;">
+            //                     <input type="radio" name="variation_uid" value="${v.uid}" ${index === 0 ? 'checked' : ''}>
+            //                     <strong>${v.color}</strong> | ${v.size} | <strong>${v.uid}</strong>
+            //                     (Stock: ${v.stock})
+            //                 </label>
+            //             </div>
+            //         `;
+            //     });
+
+            //     Swal.fire({
+            //         title: `Mark as ${section}?`,
+            //         html: `
+            //             <div style="text-align:left">
+            //                 <p class="mb-2">Select variation:</p>
+            //                 ${variationOptions}
+            //             </div>
+            //         `,
+            //         showCancelButton: true,
+            //         confirmButtonText: 'Mark Now',
+            //         confirmButtonColor: '#3B82F6',
+            //         preConfirm: () => {
+            //             const selected = document.querySelector('input[name="variation_uid"]:checked');
+            //             if (!selected) {
+            //                 Swal.showValidationMessage('Please select a variation');
+            //                 return false;
+            //             }
+            //             return selected.value;
+            //         }
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+            //             markSectionProduct(aid, section, result.value);
+            //         }
+            //     });
+                
+            // });
+
             document.addEventListener('click', (e) => {
                 const target = e.target.closest('.mark-product');
                 if (!target) return;
@@ -435,52 +492,13 @@
 
                 const section = target.dataset.section;
                 const aid = target.dataset.aid;
-                const variations = JSON.parse(target.dataset.variations || '[]');
 
-                if (!variations.length) {
-                    Swal.fire('Error', 'No variations found.', 'error');
+                if (!aid || !section) {
+                    Swal.fire('Error', 'Invalid product data.', 'error');
                     return;
                 }
 
-                // Build variation selection HTML
-                let variationOptions = '';
-
-                variations.forEach((v, index) => {
-                    variationOptions += `
-                        <div class="text-left mb-2">
-                            <label style="cursor:pointer;">
-                                <input type="radio" name="variation_uid" value="${v.uid}" ${index === 0 ? 'checked' : ''}>
-                                <strong>${v.color}</strong> | ${v.size} | <strong>${v.uid}</strong>
-                                (Stock: ${v.stock})
-                            </label>
-                        </div>
-                    `;
-                });
-
-                Swal.fire({
-                    title: `Mark as ${section}?`,
-                    html: `
-                        <div style="text-align:left">
-                            <p class="mb-2">Select variation:</p>
-                            ${variationOptions}
-                        </div>
-                    `,
-                    showCancelButton: true,
-                    confirmButtonText: 'Mark Now',
-                    confirmButtonColor: '#3B82F6',
-                    preConfirm: () => {
-                        const selected = document.querySelector('input[name="variation_uid"]:checked');
-                        if (!selected) {
-                            Swal.showValidationMessage('Please select a variation');
-                            return false;
-                        }
-                        return selected.value;
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        markSectionProduct(aid, section, result.value);
-                    }
-                });
+                markSectionProduct(aid, section);
             });
 
             document.addEventListener('click', (e) => {
@@ -550,14 +568,13 @@
                 });
             });
 
-
             // Initial Load
             fetchProducts(currentPage);
         });
     </script>
     <!-- Mark Products -->
      <script>
-        async function markSectionProduct(aid, section, uid) {
+        async function markSectionProduct(aid, section) {
             try {
                 const response = await fetch('<?= $baseUrl ?>/api/admin/fetch/marked-section-products', {
                     method: 'POST',
@@ -567,7 +584,6 @@
                     },
                     body: JSON.stringify({
                         aid: aid,
-                        uid: uid, // include if backend needs it
                         section_name: section
                     })
                 });
@@ -600,48 +616,6 @@
                 });
             }
         }
-
-        // async function markSectionProduct(uid, aid, section) {
-        //     try {
-        //         const response = await fetch('<?= $baseUrl ?>/api/admin/fetch/marked-section-products', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
-        //             },
-        //             body: JSON.stringify({
-        //                 aid: aid,
-        //                 section_name: section
-        //             })
-        //         });
-
-        //         const data = await response.json();
-
-        //         if (data.success) {
-        //             Swal.fire({
-        //                 icon: 'success',
-        //                 title: 'Marked Successfully!',
-        //                 text: data.message,
-        //                 confirmButtonColor: '#10B981'
-        //             });
-        //         } else {
-        //             Swal.fire({
-        //                 icon: 'error',
-        //                 title: 'Failed!',
-        //                 text: data.message || 'Something went wrong',
-        //                 confirmButtonColor: '#EF4444'
-        //             });
-        //         }
-        //     } catch (error) {
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Error!',
-        //             text: 'Unable to mark product, please try again later.',
-        //             confirmButtonColor: '#EF4444'
-        //         });
-        //         console.error('Error marking product:', error);
-        //     }
-        // }
      </script>
 <!-- Footer -->
 <?php include("../footer.php"); ?>

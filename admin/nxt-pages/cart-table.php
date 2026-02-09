@@ -403,6 +403,9 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Error deleting carts");
         }
     });
+
+    fetchCarts(currentPage);   // <-- ADD THIS
+
 });
 </script>
 

@@ -105,6 +105,11 @@
 .dark .channel-stats-bg {
     background-image: url('assets/media/images/2600x1600/bg-3-dark.png');
 }
+@media (min-width: 768px) {
+    .md\:grid-cols-2 {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+}
 </style>
 
 <!-- ================= CORE BUSINESS ================= -->
@@ -257,6 +262,77 @@
 
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+
+        const token = localStorage.getItem("auth_token");
+
+        try {
+            const res = await fetch("<?= $baseUrl ?>/api/admin/dashboard", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const result = await res.json();
+            if (!result.success) return;
+
+            const d = result.data;
+
+            // USERS
+            total_users.textContent = d.users.total_users;
+            active_users.textContent = d.users.active_users;
+            verified_users.textContent = d.users.verified_users;
+
+            // PRODUCTS
+            total_products.textContent = d.products.total_products;
+            total_variations.textContent = d.productVariations.total_variations;
+            total_categories.textContent = d.categories.total_categories;
+
+            // ORDERS
+            total_orders.textContent = d.orders.total_orders;
+            pending_orders.textContent = d.orders.pending_orders;
+            total_products_sold.textContent = d.orderItems.total_products_sold;
+
+            // PAYMENTS
+            total_revenue.textContent = "₹" + d.payments.total_revenue;
+            paid_orders.textContent = d.payments.paid_orders;
+            cod_orders.textContent = d.payments.cod_orders;
+
+            // WISHLIST
+            total_wishlists.textContent = d.wishlists.total_wishlist_items;
+            wishlist_users.textContent = d.wishlists.unique_users;
+
+            // CART
+            total_cart_items.textContent = d.cart.total_cart_items;
+
+            // COUPONS
+            total_coupons.textContent = d.coupons.total_coupons;
+            active_coupons.textContent = d.coupons.active_coupons;
+
+            // UPLOADS
+            total_uploads.textContent = d.uploads.total_uploads;
+
+            // SHIPPING
+            total_shipments.textContent = d.shipping.total_shipments;
+            pending_shipments.textContent = d.shipping.pending_shipments;
+
+            // INVOICES
+            total_invoices.textContent = d.invoices.total_invoices;
+
+            // BRANDS
+            total_brands.textContent = d.brands.total_brands;
+
+            // ADDRESSES
+            total_addresses.textContent = d.addresses.total_addresses;
+
+        } catch (err) {
+            console.error("Dashboard load failed", err);
+        }
+
+    });
+</script>
 
 
                     <!-- end: grid -->

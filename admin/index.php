@@ -26,78 +26,7 @@
                </div>
           </div>
           <!-- End of Container -->
-          <!-- Container -->
-          <div class="container-fixed">
-               <div class="grid gap-5 lg:gap-7.5">
-                    <!-- begin: grid -->
-                    <!-- <div class="grid lg:grid-cols-3 gap-y-5 lg:gap-7.5 items-stretch">
-                         <div class="lg:col-span-1">
-                              <div class="grid grid-cols-2 gap-5 lg:gap-7.5 h-full items-stretch">
-                                   <style>
-                                        .channel-stats-bg {
-                                             background-image: url('assets/media/images/2600x1600/bg-3.png');
-                                        }
-
-                                        .dark .channel-stats-bg {
-                                             background-image: url('assets/media/images/2600x1600/bg-3-dark.png');
-                                        }
-                                   </style>
-                                   <div
-                                        class="card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                        <img alt="" class="w-7 mt-4 ms-5" src="assets/media/brand-logos/linkedin-2.svg" />
-                                        <div class="flex flex-col gap-1 pb-4 px-5">
-                                             <span class="text-3xl font-semibold text-gray-900">
-                                                  9.3k
-                                             </span>
-                                             <span class="text-2sm font-normal text-gray-700">
-                                                  Amazing mates
-                                             </span>
-                                        </div>
-                                   </div>
-                                   <div
-                                        class="card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                        <img alt="" class="w-7 mt-4 ms-5" src="assets/media/brand-logos/youtube-2.svg" />
-                                        <div class="flex flex-col gap-1 pb-4 px-5">
-                                             <span class="text-3xl font-semibold text-gray-900">
-                                                  24k
-                                             </span>
-                                             <span class="text-2sm font-normal text-gray-700">
-                                                  Lessons Views
-                                             </span>
-                                        </div>
-                                   </div>
-                                   <div
-                                        class="card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                        <img alt="" class="w-7 mt-4 ms-5" src="assets/media/brand-logos/instagram-03.svg" />
-                                        <div class="flex flex-col gap-1 pb-4 px-5">
-                                             <span class="text-3xl font-semibold text-gray-900">
-                                                  608
-                                             </span>
-                                             <span class="text-2sm font-normal text-gray-700">
-                                                  New subscribers
-                                             </span>
-                                        </div>
-                                   </div>
-                                   <div
-                                        class="card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-                                        <img alt="" class="dark:hidden w-7 mt-4 ms-5"
-                                             src="assets/media/brand-logos/tiktok.svg" />
-                                        <img alt="" class="light:hidden w-7 mt-4 ms-5"
-                                             src="assets/media/brand-logos/tiktok-dark.svg" />
-                                        <div class="flex flex-col gap-1 pb-4 px-5">
-                                             <span class="text-3xl font-semibold text-gray-900">
-                                                  2.5k
-                                             </span>
-                                             <span class="text-2sm font-normal text-gray-700">
-                                                  Stream audience
-                                             </span>
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>                         
-                    </div> -->
-
-<div class="grid lg:grid-cols-3 gap-y-5 lg:gap-7.5 items-stretch">
+           <div class="grid lg:grid-cols-3 gap-y-5 lg:gap-7.5 items-stretch">
     <div class="lg:col-span-1">
         <div class="grid grid-cols-2 gap-5 lg:gap-7.5 h-full items-stretch">
 
@@ -304,6 +233,78 @@
 
     });
 </script>
+          <!-- Container -->
+          <div class="container-fixed">
+               <div class="grid gap-5 lg:gap-7.5">
+                    <!-- begin: grid -->
+                    <!-- <div class="grid lg:grid-cols-3 gap-y-5 lg:gap-7.5 items-stretch">
+                         <div class="lg:col-span-1">
+                              <div class="grid grid-cols-2 gap-5 lg:gap-7.5 h-full items-stretch">
+                                   <style>
+                                        .channel-stats-bg {
+                                             background-image: url('assets/media/images/2600x1600/bg-3.png');
+                                        }
+
+                                        .dark .channel-stats-bg {
+                                             background-image: url('assets/media/images/2600x1600/bg-3-dark.png');
+                                        }
+                                   </style>
+                                   <div
+                                        class="card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                        <img alt="" class="w-7 mt-4 ms-5" src="assets/media/brand-logos/linkedin-2.svg" />
+                                        <div class="flex flex-col gap-1 pb-4 px-5">
+                                             <span class="text-3xl font-semibold text-gray-900">
+                                                  9.3k
+                                             </span>
+                                             <span class="text-2sm font-normal text-gray-700">
+                                                  Amazing mates
+                                             </span>
+                                        </div>
+                                   </div>
+                                   <div
+                                        class="card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                        <img alt="" class="w-7 mt-4 ms-5" src="assets/media/brand-logos/youtube-2.svg" />
+                                        <div class="flex flex-col gap-1 pb-4 px-5">
+                                             <span class="text-3xl font-semibold text-gray-900">
+                                                  24k
+                                             </span>
+                                             <span class="text-2sm font-normal text-gray-700">
+                                                  Lessons Views
+                                             </span>
+                                        </div>
+                                   </div>
+                                   <div
+                                        class="card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                        <img alt="" class="w-7 mt-4 ms-5" src="assets/media/brand-logos/instagram-03.svg" />
+                                        <div class="flex flex-col gap-1 pb-4 px-5">
+                                             <span class="text-3xl font-semibold text-gray-900">
+                                                  608
+                                             </span>
+                                             <span class="text-2sm font-normal text-gray-700">
+                                                  New subscribers
+                                             </span>
+                                        </div>
+                                   </div>
+                                   <div
+                                        class="card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+                                        <img alt="" class="dark:hidden w-7 mt-4 ms-5"
+                                             src="assets/media/brand-logos/tiktok.svg" />
+                                        <img alt="" class="light:hidden w-7 mt-4 ms-5"
+                                             src="assets/media/brand-logos/tiktok-dark.svg" />
+                                        <div class="flex flex-col gap-1 pb-4 px-5">
+                                             <span class="text-3xl font-semibold text-gray-900">
+                                                  2.5k
+                                             </span>
+                                             <span class="text-2sm font-normal text-gray-700">
+                                                  Stream audience
+                                             </span>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>                         
+                    </div> -->
+
+
 
                     <!-- end: grid -->
                     <!-- begin: grid -->

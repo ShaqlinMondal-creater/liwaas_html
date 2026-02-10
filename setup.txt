@@ -109,7 +109,7 @@ signin --> Done ✅
 signup --> Done ✅
 forget-password -> setup with api -> Done ✅
 home page cart : add more size available for the popup -> Done ✅
-glarry section : on hover after 2 second open the slider 
+glarry section : on hover after 2 second open the slider -> Done ✅
 nav show the cart count
 
 ADMIN:

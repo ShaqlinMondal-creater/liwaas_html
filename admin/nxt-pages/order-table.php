@@ -49,7 +49,7 @@
                                         <label class="input input-sm">
                                             <i class="ki-filled ki-magnifier">
                                             </i>
-                                            <input id="search_order" data-datatable-search="#order_tables" placeholder="Search Customer Name"
+                                            <input id="search_order" data-datatable-search="#order_tables" placeholder="Search Order No"
                                                 type="text" value="">
                                             </input>
                                         </label>

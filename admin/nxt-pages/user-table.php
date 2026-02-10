@@ -85,7 +85,7 @@
                                                     <th class="min-w-[180px]">
                                                         <span class="sort">
                                                             <span class="sort-label font-normal text-gray-700">
-                                                                Location
+                                                                Mobile
                                                             </span>
                                                             <span class="sort-icon">
                                                             </span>
@@ -105,126 +105,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <!-- <tr>
-                                                    <td class="text-center">
-                                                        <input class="checkbox checkbox-sm"
-                                                            data-datatable-row-check="true" type="checkbox" value="1" />
-                                                    </td>
-                                                    <td>
-                                                        <div class="flex items-center gap-2.5">
-                                                            <img alt="" class="rounded-full size-9 shrink-0"
-                                                                src="assets/media/avatars/300-1.png" />
-                                                            <div class="flex flex-col">
-                                                                <a class="text-sm font-medium text-gray-900 hover:text-primary-active mb-px"
-                                                                    href="#">
-                                                                    Esther Howard
-                                                                </a>
-                                                                <a class="text-2sm text-gray-700 font-normal hover:text-primary-active"
-                                                                    href="#">
-                                                                    esther.howard@gmail.com
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-gray-800 font-normal">
-                                                        Editor
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge badge-danger badge-outline rounded-[30px]">
-                                                            <span class="size-1.5 rounded-full bg-danger me-1.5">
-                                                            </span>
-                                                            On Leave
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <div
-                                                            class="flex items-center text-gray-800 font-normal gap-1.5">
-                                                            <img alt="" class="rounded-full size-4 shrink-0"
-                                                                src="assets/media/flags/malaysia.svg" />
-                                                            Malaysia
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-gray-800 font-normal">
-                                                        Week ago
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <div class="menu flex-inline" data-menu="true">
-                                                            <div class="menu-item" data-menu-item-offset="0, 10px"
-                                                                data-menu-item-placement="bottom-end"
-                                                                data-menu-item-placement-rtl="bottom-start"
-                                                                data-menu-item-toggle="dropdown"
-                                                                data-menu-item-trigger="click|lg:click">
-                                                                <button
-                                                                    class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
-                                                                    <i class="ki-filled ki-dots-vertical">
-                                                                    </i>
-                                                                </button>
-                                                                <div class="menu-dropdown menu-default w-full max-w-[175px]"
-                                                                    data-menu-dismiss="true">
-                                                                    <div class="menu-item">
-                                                                        <a class="menu-link" href="#">
-                                                                            <span class="menu-icon">
-                                                                                <i class="ki-filled ki-search-list">
-                                                                                </i>
-                                                                            </span>
-                                                                            <span class="menu-title">
-                                                                                View
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="menu-item">
-                                                                        <a class="menu-link" href="#">
-                                                                            <span class="menu-icon">
-                                                                                <i class="ki-filled ki-file-up">
-                                                                                </i>
-                                                                            </span>
-                                                                            <span class="menu-title">
-                                                                                Export
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="menu-separator">
-                                                                    </div>
-                                                                    <div class="menu-item">
-                                                                        <a class="menu-link" href="#">
-                                                                            <span class="menu-icon">
-                                                                                <i class="ki-filled ki-pencil">
-                                                                                </i>
-                                                                            </span>
-                                                                            <span class="menu-title">
-                                                                                Edit
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="menu-item">
-                                                                        <a class="menu-link" href="#">
-                                                                            <span class="menu-icon">
-                                                                                <i class="ki-filled ki-copy">
-                                                                                </i>
-                                                                            </span>
-                                                                            <span class="menu-title">
-                                                                                Make a copy
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="menu-separator">
-                                                                    </div>
-                                                                    <div class="menu-item">
-                                                                        <a class="menu-link" href="#">
-                                                                            <span class="menu-icon">
-                                                                                <i class="ki-filled ki-trash">
-                                                                                </i>
-                                                                            </span>
-                                                                            <span class="menu-title">
-                                                                                Remove
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr> -->
+                                                <!--  -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -307,59 +188,89 @@
 
             function renderTable(users) {
                 tableBody.innerHTML = '';
-                users.forEach((user, index) => {
-                    const statusBadge = (user.is_logged_in === true || user.is_logged_in === "true")
-                    ? '<span class="badge badge-success badge-outline rounded-[30px]"><span class="size-1.5 rounded-full bg-success me-1.5"></span>Online</span>'
-                    : '<span class="badge badge-danger badge-outline rounded-[30px]"><span class="size-1.5 rounded-full bg-danger me-1.5"></span>Offline</span>';
+
+                users.forEach((user) => {
+
+                    const isOnline = user.is_logged_in === true || user.is_logged_in === "true";
+                    const isActive = user.is_active === true || user.is_active === "true";
+
+                    const loginBadge = isOnline
+                        ? `<span class="badge badge-success badge-outline rounded-[30px]">
+                                <span class="size-1.5 rounded-full bg-success me-1.5"></span>Online
+                        </span>`
+                        : `<span class="badge badge-danger badge-outline rounded-[30px]">
+                                <span class="size-1.5 rounded-full bg-danger me-1.5"></span>Offline
+                        </span>`;
+
+                    const activeBadge = isActive
+                        ? `<span class="badge badge-success badge-outline rounded-[30px]">
+                                <span class="size-1.5 rounded-full bg-success me-1.5"></span>Active
+                        </span>`
+                        : `<span class="badge badge-danger badge-outline rounded-[30px]">
+                                <span class="size-1.5 rounded-full bg-danger me-1.5"></span>Inactive
+                        </span>`;
 
                     const row = `
                         <tr>
                             <td class="text-center">
                                 <input class="checkbox checkbox-sm" type="checkbox" value="${user.id}" />
                             </td>
+
                             <td>
                                 <div class="flex items-center gap-2.5">
-                                    <img alt="" class="rounded-full size-9 shrink-0" src="assets/media/avatars/300-1.png" />
+                                    <img class="rounded-full size-9 shrink-0"
+                                        src="assets/media/avatars/300-1.png" />
                                     <div class="flex flex-col">
-                                        <span class="text-sm font-medium text-gray-900 mb-px">${user.name}</span>
-                                        <span class="text-2sm text-gray-700 font-normal">${user.email}</span>
+                                        <span class="text-sm font-medium text-gray-900">${user.name}</span>
+                                        <span class="text-2sm text-gray-700">${user.email}</span>
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-gray-800 font-normal">${user.role}</td>
-                            <td>${statusBadge}</td>
-                            <td class="text-gray-800 font-normal">${user.address_line_1}</td>
-                            <td>
-                                ${user.is_active === 'true'
-                                    ? '<span class="badge badge-success badge-outline rounded-[30px]"><span class="size-1.5 rounded-full bg-success me-1.5"></span>Active</span>'
-                                    : '<span class="badge badge-primary badge-outline rounded-[30px]"><span class="size-1.5 rounded-full bg-primary me-1.5"></span>Inactive</span>'
-                                }
+
+                            <td class="text-gray-800 font-normal text-capitalize">
+                                ${user.role}
                             </td>
+
+                            <td>${loginBadge}</td>
+
+                            <td class="text-gray-800 font-normal">
+                                ${user.mobile ?? 'N/A'}
+                            </td>
+
+                            <td>${activeBadge}</td>
 
                             <td class="text-center">
                                 <div class="menu flex-inline" data-menu="true">
-                                    <div class="menu-item" data-menu-item-offset="0, 10px"
-                                        data-menu-item-placement="bottom-end"
-                                        data-menu-item-placement-rtl="bottom-start"
+                                    <div class="menu-item"
                                         data-menu-item-toggle="dropdown"
-                                        data-menu-item-trigger="click|lg:click">
+                                        data-menu-item-trigger="click">
                                         <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
                                             <i class="ki-filled ki-dots-vertical"></i>
                                         </button>
                                         <div class="menu-dropdown menu-default w-full max-w-[175px]" data-menu-dismiss="true">
-                                            <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-search-list me-2"></i>View</a></div>
-                                            <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-file-up me-2"></i>Export</a></div>
+                                            <div class="menu-item">
+                                                <a class="menu-link" href="#">
+                                                    <i class="ki-filled ki-search-list me-2"></i>View
+                                                </a>
+                                            </div>
+                                            <div class="menu-item">
+                                                <a class="menu-link" href="#">
+                                                    <i class="ki-filled ki-pencil me-2"></i>Edit
+                                                </a>
+                                            </div>
                                             <div class="menu-separator"></div>
-                                            <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-pencil me-2"></i>Edit</a></div>
-                                            <div class="menu-item"><a class="menu-link" href="#"><i class="ki-filled ki-copy me-2"></i>Make a copy</a></div>
-                                            <div class="menu-separator"></div>
-                                            <div class="menu-item"><a class="menu-link text-danger" href="#"><i class="ki-filled ki-trash me-2"></i>Remove</a></div>
+                                            <div class="menu-item">
+                                                <a class="menu-link text-danger" href="#">
+                                                    <i class="ki-filled ki-trash me-2"></i>Remove
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                     `;
+
                     tableBody.insertAdjacentHTML('beforeend', row);
                 });
             }

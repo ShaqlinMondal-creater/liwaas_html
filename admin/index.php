@@ -30,7 +30,7 @@
           <div class="container-fixed">
                <div class="grid gap-5 lg:gap-7.5">
                     <!-- begin: grid -->
-                    <div class="grid lg:grid-cols-3 gap-y-5 lg:gap-7.5 items-stretch">
+                    <!-- <div class="grid lg:grid-cols-3 gap-y-5 lg:gap-7.5 items-stretch">
                          <div class="lg:col-span-1">
                               <div class="grid grid-cols-2 gap-5 lg:gap-7.5 h-full items-stretch">
                                    <style>
@@ -94,66 +94,217 @@
                                         </div>
                                    </div>
                               </div>
-                         </div>
-                         <div class="lg:col-span-2">
-                              <style>
-                                   .entry-callout-bg {
-                                        background-image: url('assets/media/images/2600x1600/2.png');
-                                   }
+                         </div>                         
+                    </div> -->
 
-                                   .dark .entry-callout-bg {
-                                        background-image: url('assets/media/images/2600x1600/2-dark.png');
-                                   }
-                              </style>
-                              <div class="card h-full h-full">
-                                   <div
-                                        class="card-body p-10 bg-[length:80%] rtl:[background-position:-70%_25%] [background-position:175%_25%] bg-no-repeat entry-callout-bg">
-                                        <div class="flex flex-col justify-center gap-4">
-                                             <div class="flex -space-x-2">
-                                                  <div class="flex">
-                                                       <img class="hover:z-5 relative shrink-0 rounded-full ring-1 ring-light-light size-10"
-                                                            src="assets/media/avatars/300-4.png" />
-                                                  </div>
-                                                  <div class="flex">
-                                                       <img class="hover:z-5 relative shrink-0 rounded-full ring-1 ring-light-light size-10"
-                                                            src="assets/media/avatars/300-1.png" />
-                                                  </div>
-                                                  <div class="flex">
-                                                       <img class="hover:z-5 relative shrink-0 rounded-full ring-1 ring-light-light size-10"
-                                                            src="assets/media/avatars/300-2.png" />
-                                                  </div>
-                                                  <div class="flex">
-                                                       <span
-                                                            class="hover:z-5 relative inline-flex items-center justify-center shrink-0 rounded-full ring-1 font-semibold leading-none text-3xs size-10 text-success-inverse text-xs ring-success-light bg-success">
-                                                            S
-                                                       </span>
-                                                  </div>
-                                             </div>
-                                             <h2 class="text-1.5xl font-semibold text-gray-900">
-                                                  Connect Today & Join
-                                                  <br />
-                                                  the
-                                                  <a class="link" href="#">
-                                                       KeenThemes Network
-                                                  </a>
-                                             </h2>
-                                             <p class="text-sm font-normal text-gray-700 leading-5.5">
-                                                  Enhance your projects with premium themes and
-                                                  <br />
-                                                  templates. Join the KeenThemes community today
-                                                  <br />
-                                                  for top-quality designs and resources.
-                                             </p>
-                                        </div>
-                                   </div>
-                                   <div class="card-footer justify-center">
-                                        <a class="btn btn-link" href="html/demo1/account/home/get-started.html">
-                                             Get Started
-                                        </a>
-                                   </div>
-                              </div>
-                         </div>
+<div class="grid lg:grid-cols-3 gap-y-5 lg:gap-7.5 items-stretch">
+    <div class="lg:col-span-1">
+        <div class="grid grid-cols-2 gap-5 lg:gap-7.5 h-full items-stretch">
+
+            <style>
+                .channel-stats-bg {
+                    background-image: url('assets/media/images/2600x1600/bg-3.png');
+                }
+
+                .dark .channel-stats-bg {
+                    background-image: url('assets/media/images/2600x1600/bg-3-dark.png');
+                }
+            </style>
+
+            <!-- USERS -->
+            <div class="card flex-col justify-between gap-6 h-full bg-cover channel-stats-bg">
+                <div class="p-5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Total Users</span>
+                        <i class="ki-filled ki-profile-circle text-xl text-primary"></i>
                     </div>
+                    <div id="total_users" class="text-3xl font-semibold mt-2">0</div>
+                    <div class="text-xs text-gray-500 mt-1">
+                        Active: <span id="active_users">0</span> |
+                        Verified: <span id="verified_users">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCTS -->
+            <div class="card flex-col justify-between gap-6 h-full bg-cover channel-stats-bg">
+                <div class="p-5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Total Products</span>
+                        <i class="ki-filled ki-box text-xl text-success"></i>
+                    </div>
+                    <div id="total_products" class="text-3xl font-semibold mt-2">0</div>
+                    <div class="text-xs text-gray-500 mt-1">
+                        Variations: <span id="total_variations">0</span> |
+                        Categories: <span id="total_categories">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ORDERS -->
+            <div class="card flex-col justify-between gap-6 h-full bg-cover channel-stats-bg">
+                <div class="p-5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Total Orders</span>
+                        <i class="ki-filled ki-cart text-xl text-warning"></i>
+                    </div>
+                    <div id="total_orders" class="text-3xl font-semibold mt-2">0</div>
+                    <div class="text-xs text-gray-500 mt-1">
+                        Pending: <span id="pending_orders">0</span> |
+                        Sold: <span id="total_products_sold">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REVENUE -->
+            <div class="card flex-col justify-between gap-6 h-full bg-cover channel-stats-bg">
+                <div class="p-5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Total Revenue</span>
+                        <i class="ki-filled ki-dollar text-xl text-danger"></i>
+                    </div>
+                    <div id="total_revenue" class="text-3xl font-semibold mt-2">₹0</div>
+                    <div class="text-xs text-gray-500 mt-1">
+                        Paid: <span id="paid_orders">0</span> |
+                        COD: <span id="cod_orders">0</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-5 mt-7">
+
+    <div class="card p-4 text-center">
+        <div class="text-xs text-gray-500">Wishlists</div>
+        <div id="total_wishlists" class="text-xl font-semibold">0</div>
+        <div class="text-xs text-gray-400">
+            Unique Users: <span id="wishlist_users">0</span>
+        </div>
+    </div>
+
+    <div class="card p-4 text-center">
+        <div class="text-xs text-gray-500">Cart Items</div>
+        <div id="total_cart_items" class="text-xl font-semibold">0</div>
+    </div>
+
+    <div class="card p-4 text-center">
+        <div class="text-xs text-gray-500">Coupons</div>
+        <div id="total_coupons" class="text-xl font-semibold">0</div>
+        <div class="text-xs text-gray-400">
+            Active: <span id="active_coupons">0</span>
+        </div>
+    </div>
+
+    <div class="card p-4 text-center">
+        <div class="text-xs text-gray-500">Uploads</div>
+        <div id="total_uploads" class="text-xl font-semibold">0</div>
+    </div>
+
+</div>
+
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-5 mt-7">
+
+    <div class="card p-4 text-center">
+        <div class="text-xs text-gray-500">Shipments</div>
+        <div id="total_shipments" class="text-xl font-semibold">0</div>
+        <div class="text-xs text-gray-400">
+            Pending: <span id="pending_shipments">0</span>
+        </div>
+    </div>
+
+    <div class="card p-4 text-center">
+        <div class="text-xs text-gray-500">Invoices</div>
+        <div id="total_invoices" class="text-xl font-semibold">0</div>
+    </div>
+
+    <div class="card p-4 text-center">
+        <div class="text-xs text-gray-500">Brands</div>
+        <div id="total_brands" class="text-xl font-semibold">0</div>
+    </div>
+
+    <div class="card p-4 text-center">
+        <div class="text-xs text-gray-500">Addresses</div>
+        <div id="total_addresses" class="text-xl font-semibold">0</div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+
+        const token = localStorage.getItem("auth_token");
+
+        try {
+            const res = await fetch("<?= $baseUrl ?>/api/admin/dashboard", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const result = await res.json();
+            if (!result.success) return;
+
+            const d = result.data;
+
+            // USERS
+            total_users.textContent = d.users.total_users;
+            active_users.textContent = d.users.active_users;
+            verified_users.textContent = d.users.verified_users;
+
+            // PRODUCTS
+            total_products.textContent = d.products.total_products;
+            total_variations.textContent = d.productVariations.total_variations;
+            total_categories.textContent = d.categories.total_categories;
+
+            // ORDERS
+            total_orders.textContent = d.orders.total_orders;
+            pending_orders.textContent = d.orders.pending_orders;
+            total_products_sold.textContent = d.orderItems.total_products_sold;
+
+            // PAYMENTS
+            total_revenue.textContent = "₹" + d.payments.total_revenue;
+            paid_orders.textContent = d.payments.paid_orders;
+            cod_orders.textContent = d.payments.cod_orders;
+
+            // WISHLIST
+            total_wishlists.textContent = d.wishlists.total_wishlist_items;
+            wishlist_users.textContent = d.wishlists.unique_users;
+
+            // CART
+            total_cart_items.textContent = d.cart.total_cart_items;
+
+            // COUPONS
+            total_coupons.textContent = d.coupons.total_coupons;
+            active_coupons.textContent = d.coupons.active_coupons;
+
+            // UPLOADS
+            total_uploads.textContent = d.uploads.total_uploads;
+
+            // SHIPPING
+            total_shipments.textContent = d.shipping.total_shipments;
+            pending_shipments.textContent = d.shipping.pending_shipments;
+
+            // INVOICES
+            total_invoices.textContent = d.invoices.total_invoices;
+
+            // BRANDS
+            total_brands.textContent = d.brands.total_brands;
+
+            // ADDRESSES
+            total_addresses.textContent = d.addresses.total_addresses;
+
+        } catch (err) {
+            console.error("Dashboard load failed", err);
+        }
+
+    });
+</script>
+
                     <!-- end: grid -->
                     <!-- begin: grid -->
                     <div class="grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch">
@@ -431,74 +582,6 @@
                     <!-- end: grid -->
                     <!-- begin: grid -->
                     <div class="grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch">
-                         <div class="lg:col-span-1">
-                              <div class="card h-full">
-                                   <div class="card-body lg:p-7.5 lg:pt-6 p-5">
-                                        <div class="flex items-center justify-between flex-wrap gap-5 mb-7.5">
-                                             <div class="flex flex-col gap-1">
-                                                  <span class="text-1.5xl font-semibold text-gray-900">
-                                                       Team Meeting
-                                                  </span>
-                                                  <span class="text-sm font-semibold text-gray-800">
-                                                       09:00 - 09:30
-                                                  </span>
-                                             </div>
-                                             <img alt="" class="size-7" src="assets/media/brand-logos/zoom.svg" />
-                                        </div>
-                                        <p class="text-sm font-normal text-gray-800 leading-5.5 mb-8">
-                                             Team meeting to discuss strategies, outline
-                                             <br />
-                                             project milestones, define key goals, and
-                                             <br />
-                                             establish clear timelines.
-                                        </p>
-                                        <div class="flex rounded-lg bg-gray-100 gap-10 p-5">
-                                             <div class="flex flex-col gap-5">
-                                                  <div class="flex items-center gap-1.5 text-sm font-normal text-gray-800">
-                                                       <i class="ki-filled ki-geolocation text-base text-gray-500">
-                                                       </i>
-                                                       Location
-                                                  </div>
-                                                  <div class="text-sm font-medium text-gray-800 pt-1.5">
-                                                       Amsterdam
-                                                  </div>
-                                             </div>
-                                             <div class="flex flex-col gap-5">
-                                                  <div class="flex items-center gap-1.5 text-sm font-normal text-gray-800">
-                                                       <i class="ki-filled ki-users text-base text-gray-500">
-                                                       </i>
-                                                       Team
-                                                  </div>
-                                                  <div class="flex -space-x-2">
-                                                       <div class="flex">
-                                                            <img class="hover:z-5 relative shrink-0 rounded-full ring-1 ring-light-light size-[30px]"
-                                                                 src="assets/media/avatars/300-4.png" />
-                                                       </div>
-                                                       <div class="flex">
-                                                            <img class="hover:z-5 relative shrink-0 rounded-full ring-1 ring-light-light size-[30px]"
-                                                                 src="assets/media/avatars/300-1.png" />
-                                                       </div>
-                                                       <div class="flex">
-                                                            <img class="hover:z-5 relative shrink-0 rounded-full ring-1 ring-light-light size-[30px]"
-                                                                 src="assets/media/avatars/300-2.png" />
-                                                       </div>
-                                                       <div class="flex">
-                                                            <span
-                                                                 class="hover:z-5 relative inline-flex items-center justify-center shrink-0 rounded-full ring-1 font-semibold leading-none text-3xs size-[30px] text-success-inverse text-4xs ring-success-light bg-success">
-                                                                 +10
-                                                            </span>
-                                                       </div>
-                                                  </div>
-                                             </div>
-                                        </div>
-                                   </div>
-                                   <div class="card-footer justify-center">
-                                        <a class="btn btn-link" href="">
-                                             Join Meeting
-                                        </a>
-                                   </div>
-                              </div>
-                         </div>
                          <div class="lg:col-span-2">
                               <div class="grid">
                                    <div class="card card-grid h-full min-w-full">

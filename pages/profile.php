@@ -1102,11 +1102,11 @@
                             <div class="p-4">
                                 <h3 class="font-medium">${item.product_name}</h3>
                                 <p class="text-sm text-gray-500 mt-1 flex items-center gap-2">
-                                    <span>Size: ${variation.size}</span> | 
+                                    <span>${variation.size}</span> | 
                                     <span class="flex items-center gap-1">
                                         <span class="w-4 h-4 rounded-full border" style="background-color: ${colorCode};"></span>
                                     </span> |
-                                    <span>Color: ${item.quantity}</span>
+                                    <span>${item.quantity} pcs.</span>
                                 </p>
                                 <div class="flex items-center justify-between mt-2">
                                     <span class="font-bold text-base">₹${item.sell_price}</span>
@@ -1216,10 +1216,9 @@
                             <div class="p-4">
                                 <h3 class="font-medium">${product.name || "Unnamed Product"}</h3>
                                 <p class="text-sm text-gray-500 mt-1 flex items-center gap-2">
-                                    <span>Size: ${variation.size}</span> | 
+                                    <span>${variation.size}</span> | 
                                     <span class="flex items-center gap-1">
                                         <span class="w-4 h-4 rounded-full border" style="background-color: ${colorCode};"></span>
-                                        
                                     </span>
                                 </p>
 

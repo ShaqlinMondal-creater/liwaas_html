@@ -182,7 +182,7 @@
   <div class="max-w-7xl mx-auto px-4 text-center fade-up">
     <h2 class="text-4xl font-bold mb-6">Wear Confidence. Wear Liwaas.</h2>
     <p class="text-xl opacity-90 max-w-3xl mx-auto mb-8">Join thousands who trust Liwaas for everyday style and comfort.</p>
-    <a href="shop" class="inline-block bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-full font-semibold transition">Shop Now</a>
+    <a href="pages/shop" class="inline-block bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-full font-semibold transition">Shop Now</a>
   </div>
 </section>
 

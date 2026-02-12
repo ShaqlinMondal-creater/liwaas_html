@@ -205,7 +205,7 @@
 
                 <!-- Avatar -->
                 <div class="relative">
-                    <img id="avatarBtn" src="https://i.pravatar.cc/40?img=32" alt="User Avatar"
+                    <img id="avatarBtn" src="assets/account.png" alt="User Avatar"
                         class="h-9 w-9 rounded-full cursor-pointer ring-2 ring-white">
                     <div id="avatarMenu" class="dropdown avatar-menu hidden w-44 right-0 mt-4">
                         <a href="sign-in" class="dropdown-link">Login</a>
@@ -312,7 +312,7 @@
                 loginLink?.classList.remove('hidden');
 
                 if (avatarBtn) {
-                    avatarBtn.src = 'https://i.pravatar.cc/40?img=32';
+                    avatarBtn.src = 'assets/account.png';
                 }
             } else {
                 // Hide login link

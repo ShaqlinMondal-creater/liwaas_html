@@ -239,7 +239,7 @@ body{font-family:'Shadeerah Demo',sans-serif !important;}
 <h1 class="text-3xl tracking-wide">LIWAAS</h1>
 <p class="text-[11px] tracking-[0.3em] uppercase text-gray-400 mb-5">Premium Fashion Brand</p>
 
-<h2 class="text-xl mb-4">Launching Soon</h2>
+<h2 class="text-xl mb-4">Work On Development</h2>
 <textarea
   id="preorderMessage"
   oninput="updateMailto()"
@@ -281,7 +281,7 @@ View Sample Collection
 
 <script>
 // Launch date: 7 Feb 2026 IST (1st week Feb)
-const launchDate = new Date("2026-02-07T00:00:00+05:30");
+const launchDate = new Date("2026-02-14T00:00:00+05:30");
 const boxes = document.querySelectorAll(".time-value");
 let last = [];
 

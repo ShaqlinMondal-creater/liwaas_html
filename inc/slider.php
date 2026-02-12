@@ -49,7 +49,7 @@
           >
             
             <a
-              href="/shop"
+              href="pages/shop"
               class="inline-block bg-amber-400 hover:bg-amber-500 text-black font-semibold px-6 py-3 rounded-full transition"
               >Shop Now</a
             >

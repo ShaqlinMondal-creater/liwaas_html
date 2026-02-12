@@ -183,3 +183,8 @@ Fetch Messege notification
 Update Messege notification 
 Delete Messege notification
 
+
+
+---->
+1. product detail page : on create wishlist should toast
+2. 

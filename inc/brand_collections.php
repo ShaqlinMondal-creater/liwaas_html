@@ -83,7 +83,7 @@
           <div class="rounded-2xl overflow-hidden relative h-[420px] shadow-lg">
 
             <!-- Image -->
-            <a href="pages/product-detail.php?id=${variationUID}" 
+            <a href="pages/product-detail?id=${variationUID}" 
                class="block w-full h-full">
               <img 
                 src="${image}" 

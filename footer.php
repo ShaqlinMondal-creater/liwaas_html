@@ -73,7 +73,7 @@
                 </a>
               </li>
               <li>
-                <a href="pages/blog" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="pages/blogs" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
@@ -205,10 +205,10 @@
               © 2026 liwaas. All rights reserved.
             </div>
             <div class="flex space-x-6 text-sm">
-              <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+              <a href="policies/privacy-policy" class="text-gray-400 hover:text-white transition-colors duration-200">
                 Privacy Policy
               </a>
-              <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+              <a href="policies/terms-and-conditions" class="text-gray-400 hover:text-white transition-colors duration-200">
                 Terms of Service
               </a>
               <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">

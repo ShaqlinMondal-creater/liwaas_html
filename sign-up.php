@@ -159,8 +159,8 @@
                             <input id="terms" name="terms" type="checkbox" required
                                 class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-white/20 rounded bg-white/10">
                             <label for="terms" class="ml-2 block text-sm text-white/80">
-                                I agree to the <a href="pages/terms" class="text-white hover:text-white/80 underline">Terms and Conditions</a> 
-                                and <a href="pages/privacy" class="text-white hover:text-white/80 underline">Privacy Policy</a>
+                                I agree to the <a href="policies/terms" class="text-white hover:text-white/80 underline">Terms and Conditions</a> 
+                                and <a href="policies/privacy" class="text-white hover:text-white/80 underline">Privacy Policy</a>
                             </label>
                         </div>
 

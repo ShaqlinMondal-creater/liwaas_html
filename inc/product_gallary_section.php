@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         e.stopPropagation();
         const uid = btn.dataset.uid;
         if (!uid) return;
-        window.location.href = `pages/product-detail.php?id=${uid}`;
+        window.location.href = `pages/product-detail?id=${uid}`;
       });
     });
 

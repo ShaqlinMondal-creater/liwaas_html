@@ -95,7 +95,7 @@
 
             <!-- Image -->
             <div class="h-72 bg-gray-100 overflow-hidden">
-              <a href="pages/product-detail.php?id=${variationUID}" class="block w-full h-full">
+              <a href="pages/product-detail?id=${variationUID}" class="block w-full h-full">
                 <img 
                   src="${image}" 
                   alt="${productName}" 
@@ -122,7 +122,7 @@
               </div>
 
               <!-- View button stuck right -->
-              <a href="pages/product-detail.php?id=${variationUID}" 
+              <a href="pages/product-detail?id=${variationUID}" 
                 class="view-btn absolute right-0 bottom-4 inline-flex items-center gap-1 px-7 py-2 rounded-l-full text-xl font-semibold">
                 View
               </a>

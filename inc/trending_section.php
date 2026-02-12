@@ -179,7 +179,7 @@
           card.addEventListener('click', (e) => {
             if (e.target.closest('button')) return; // Skip if a button (cart or wish) is clicked
             if (!variation?.uid) return;
-            window.location.href = `pages/product-detail.php?id=${variation.uid}`;
+            window.location.href = `pages/product-detail?id=${variation.uid}`;
           });
 
           // Cart button click
@@ -604,7 +604,7 @@
 
     toast.innerHTML = `
       <span>You have to login first.</span>
-      <a href="sign-in.php"
+      <a href="sign-in"
         style="margin-left:10px; text-decoration:underline; font-weight:600;">
         Login
       </a>

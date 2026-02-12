@@ -126,7 +126,7 @@
             <p class="text-xl text-gray-600">Find what you're looking for</p>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <a href="pages/privacy.php"
+            <a href="pages/privacy"
                 class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 text-center group">
                 <div
                     class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -154,7 +154,7 @@
                 <p class="text-gray-600 text-sm">Get help with your orders</p>
             </a>
 
-            <a href="pages/terms.php"
+            <a href="pages/terms"
                 class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 text-center group">
                 <div
                     class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">

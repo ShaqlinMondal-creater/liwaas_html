@@ -132,7 +132,7 @@
                         <div class="text-center mt-6">
                             <p class="text-white/80">
                                 Don't have an account? 
-                                <a href="sign-up.php" class="font-medium text-white hover:text-white/80 transition-colors">Sign up here</a>
+                                <a href="sign-up" class="font-medium text-white hover:text-white/80 transition-colors">Sign up here</a>
                             </p>
                         </div>
                     </div>
@@ -257,7 +257,7 @@
                             window.location.href = 'home.php';
                         } else {
                             alert("Invalid role. Redirecting to login.");
-                            window.location.href = 'sign-in.php';
+                            window.location.href = 'sign-in';
                         }
                     } else {
                         alert(result.message || 'Login failed. Please try again.');

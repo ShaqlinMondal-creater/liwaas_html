@@ -49,7 +49,7 @@
             <h4 class="text-lg font-semibold text-white">Quick Links</h4>
             <ul class="space-y-3">
               <li>
-                <a href="pages/about-us.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="pages/about-us" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
@@ -57,7 +57,7 @@
                 </a>
               </li>
               <li>
-                <a href="pages/shop.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="pages/shop" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
@@ -65,7 +65,7 @@
                 </a>
               </li>
               <li>
-                <a href="pages/contact.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="pages/contact" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
@@ -73,7 +73,7 @@
                 </a>
               </li>
               <li>
-                <a href="pages/blog.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="pages/blog" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
@@ -88,7 +88,7 @@
             <h4 class="text-lg font-semibold text-white">Policies</h4>
             <ul class="space-y-3">
               <li>
-                <a href="policies/privacy-policy.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/privacy-policy" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
@@ -96,7 +96,7 @@
                 </a>
               </li>
               <li>
-                <a href="policies/terms-and-conditions.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/terms-and-conditions" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
@@ -104,7 +104,7 @@
                 </a>
               </li>
               <li>
-                <a href="policies/shipping-policy.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/shipping-policy" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
@@ -112,7 +112,7 @@
                 </a>
               </li>
               <li>
-                <a href="policies/refund-policy.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/refund-policy" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
@@ -120,7 +120,7 @@
                 </a>
               </li>
               <li>
-                <a href="policies/cancellation-policy.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/cancellation-policy" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
@@ -128,7 +128,7 @@
                 </a>
               </li>
               <li>
-                <a href="policies/disclaimer.php" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
+                <a href="policies/disclaimer" class="text-gray-300 hover:text-white hover:translate-x-1 transform transition-all duration-200 flex items-center group">
                   <svg class="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>

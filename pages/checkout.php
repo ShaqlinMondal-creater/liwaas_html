@@ -1057,7 +1057,7 @@ document.getElementById("placeOrderBtn").addEventListener("click", async functio
 
     // COD → success page
     if (payload.payment_type === "COD") {
-      window.location.href = `pages/order-success.php?order_id=${result.order_id}`;
+      window.location.href = `pages/order-success?order_id=${result.order_id}`;
       return;
     }
 
@@ -1091,7 +1091,7 @@ function openRazorpay(orderData) {
     modal: {
         ondismiss: function () {
             window.location.href =
-            `pages/order-success.php?order_id=${orderData.order_id}`;
+            `pages/order-success?order_id=${orderData.order_id}`;
         }
     },
     theme: {
@@ -1126,14 +1126,14 @@ async function verifyPayment(response) {
     const result = await res.json();
 
     if (result.success) {
-      window.location.href = `pages/order-success.php?order_id=${result.order_id}`;
+      window.location.href = `pages/order-success?order_id=${result.order_id}`;
     } else {
-       window.location.href = `pages/order-success.php?order_id=${result.order_id}`;
+       window.location.href = `pages/order-success?order_id=${result.order_id}`;
     }
 
   } catch (err) {
     console.error("Payment verification error:", err);
-    window.location.href = `pages/order-success.php?order_id=${result.order_id}`;
+    window.location.href = `pages/order-success?order_id=${result.order_id}`;
   }
 }
 </script>

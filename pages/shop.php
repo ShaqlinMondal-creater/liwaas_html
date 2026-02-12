@@ -661,7 +661,7 @@
             }
             // Create a wrapper anchor tag for the entire card
             const card = document.createElement("a");
-            card.href = `pages/product-detail.php?id=${variationUID}`;
+            card.href = `pages/product-detail?id=${variationUID}`;
             card.className = "featured-card bg-white rounded-xl shadow-md border overflow-hidden transition-all hover:shadow-lg block group p-0";
 
             card.innerHTML = `

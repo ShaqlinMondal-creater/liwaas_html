@@ -434,7 +434,7 @@ form.addEventListener('submit', async (e) => {
                     background: 'rgba(30,30,30,0.95)',
                     color: '#fff'
                 }).then(() => {
-                    window.location.href = "sign-in.php";
+                    window.location.href = "sign-in";
                 });
 
             } else {

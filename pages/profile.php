@@ -88,12 +88,12 @@
                         <i data-lucide="heart" class="w-5 h-5"></i>
                         <span class="text-[10px] leading-none">Wishlist</span>
                     </button>
-                    <button id="tab-notifications"
+                    <!-- <button id="tab-notifications"
                             class="mobile-tab-button flex-1 py-3 flex flex-col items-center gap-1 text-gray-500 hover:bg-gray-50"
                             onclick="switchTab('notifications')">
                         <i data-lucide="bell" class="w-5 h-5"></i>
                         <span class="text-[10px] leading-none">Alerts</span>
-                    </button>
+                    </button> -->
                     <button id="tab-settings"
                             class="mobile-tab-button flex-1 py-3 flex flex-col items-center gap-1 text-gray-500 hover:bg-gray-50"
                             onclick="switchTab('settings')">
@@ -127,11 +127,11 @@
                             <i data-lucide="settings" class="w-5 h-5"></i>
                             <span>Account Settings</span>
                         </button>
-                        <button onclick="switchTab('notifications')" 
+                        <!-- <button onclick="switchTab('notifications')" 
                                     class="sidebar-btn w-full px-6 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-l-4 border-transparent">
                             <i data-lucide="bell" class="w-5 h-5"></i>
                             <span>Notifications</span>
-                        </button>
+                        </button> -->
 
                     </div>
                 </div>

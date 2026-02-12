@@ -5,7 +5,7 @@
   <?php include("inc/slider.php"); ?>
 
   <!-- 🔖 Categories -->
-  <?php include("inc/category.php"); ?>
+  <?php //include("inc/category.php"); ?>
 
   <!-- Featured -->
   <?php include("inc/trending_section.php"); ?>

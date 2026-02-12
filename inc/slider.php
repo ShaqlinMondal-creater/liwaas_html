@@ -47,8 +47,7 @@
           <div
             class="absolute bottom-6 left-6 max-w-[80%] z-20 text-white"
           >
-            <h2 class="text-3xl font-extrabold drop-shadow-lg mb-2">${purpose_name || ''}</h2>
-            <p class="text-sm drop-shadow-md mb-4">${file_name || ''}</p>
+            
             <a
               href="/shop"
               class="inline-block bg-amber-400 hover:bg-amber-500 text-black font-semibold px-6 py-3 rounded-full transition"
@@ -59,6 +58,9 @@
 
         wrapper.appendChild(slide);
       });
+
+      // <h2 class="text-3xl font-extrabold drop-shadow-lg mb-2">${purpose_name || ''}</h2>
+      // <p class="text-sm drop-shadow-md mb-4">${file_name || ''}</p>
 
       // Initialize Swiper
       const swiper = new Swiper('.mySwiper', {

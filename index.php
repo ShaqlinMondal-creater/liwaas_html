@@ -230,7 +230,7 @@ body{font-family:'Shadeerah Demo',sans-serif !important;}
 <!-- PARTICLES -->
 <div class="particles" id="particles"></div>
 <!-- NEW YEAR MESSAGE -->
-<div id="nyToast">✨ Happy New Year 2026 — Welcome to LIWAAS ✨</div>
+<!-- <div id="nyToast">✨ Happy New Year 2026 — Welcome to LIWAAS ✨</div> -->
 
 <div class="glass max-w-md w-full rounded-2xl p-7 text-center">
 
@@ -318,8 +318,8 @@ setInterval(update,
 update();
 
 // New Year toast auto hide
-setTimeout(()=>document.getElementById("nyToast").style.display="none",
-2500);
+// setTimeout(()=>document.getElementById("nyToast").style.display="none",
+// 2500);
 </script>
 <script>
 const container = document.getElementById("particles");

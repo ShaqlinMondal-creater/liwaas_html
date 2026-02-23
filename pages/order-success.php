@@ -124,7 +124,7 @@ function renderOrder(order){
 
 const isPending =
 order.payment_type==="Prepaid" &&
-order.payment_status.toLowerCase()==="pending" &&
+(order.payment_status || "").toLowerCase() === "pending" &&
 paymentAction;
 
 if(isPending){
@@ -138,23 +138,26 @@ if(isPending){
 }else{
 
   statusBadge("check","green");
+
   document.getElementById("order-title").textContent="Order Confirmed!";
   document.getElementById("order-subtitle").textContent=
   "We’ll email your shipping confirmation shortly.";
 
-  fireConfetti();
+  if ((order.payment_status || "").toLowerCase() === "success") {
+    fireConfetti();
+  }
 }
 
 /* HEADER */
 document.getElementById("order-code").textContent=`Order #${order.order_code}`;
-document.getElementById("order-date").textContent=
-new Date(order.created_at).toLocaleDateString();
+
+document.getElementById("order-date").textContent = order.created_at;
 
 /* ITEMS */
 const itemsEl=document.getElementById("order-items");
 itemsEl.innerHTML="";
 
-order.items.forEach(item=>{
+(order.items || []).forEach(item=>{
 itemsEl.innerHTML+=`
 <li class="flex gap-4 py-4">
 <img src="${item.image?.upload_url || 'assets/placeholder.png'}"
@@ -175,18 +178,73 @@ ${item.variation?.color || ""} ${item.variation?.size || ""}
 });
 
 /* SUMMARY */
-document.getElementById("summary-subtotal").textContent=`₹${order.subtotal}`;
-document.getElementById("summary-shipping").textContent=
-order.shipping.shipping_charge==0?"Free":`₹${order.shipping.shipping_charge}`;
-document.getElementById("summary-tax").textContent=`₹${order.tax_price}`;
-document.getElementById("summary-total").textContent=`₹${order.grand_total}`;
+// document.getElementById("summary-subtotal").textContent=`₹${order.subtotal}`;
+// document.getElementById("summary-shipping").textContent=
+// order.shipping.shipping_charge==0?"Free":`₹${order.shipping.shipping_charge}`;
+// document.getElementById("summary-tax").textContent=`₹${order.tax_price}`;
+// document.getElementById("summary-total").textContent=`₹${order.grand_total}`;
+
+/* =======================
+   PRICE CALCULATION
+======================= */
+
+// Convert safely to numbers
+const itemsSubtotal = (order.items || []).reduce(
+  (sum, item) => sum + parseFloat(item.total || 0),
+  0
+);
+
+const taxAmount = parseFloat(order.tax_price || 0);
+const discountAmount = parseFloat(order.coupon_discount || 0);
+const shippingCharge = parseFloat(order.shipping.shipping_charge || 0);
+const grandTotal = parseFloat(order.grand_total || 0);
+
+// Set UI
+document.getElementById("summary-subtotal").textContent =
+  `₹${itemsSubtotal.toFixed(2)}`;
+
+document.getElementById("summary-shipping").textContent =
+  shippingCharge === 0 ? "Free" : `₹${shippingCharge.toFixed(2)}`;
+
+document.getElementById("summary-tax").textContent =
+  `₹${taxAmount.toFixed(2)}`;
+
+// OPTIONAL (if you want to show coupon discount)
+const oldDiscountRow = document.getElementById("discount-row");
+if (oldDiscountRow) oldDiscountRow.remove();
+
+if (discountAmount > 0) {
+  const discountRow = document.createElement("div");
+  discountRow.id = "discount-row";
+  discountRow.className = "flex justify-between text-green-600";
+
+  discountRow.innerHTML = `
+    <span>Coupon Discount</span>
+    <span>- ₹${discountAmount.toFixed(2)}</span>
+  `;
+
+  document
+    .getElementById("summary-tax")
+    .closest("div")
+    .insertAdjacentElement("afterend", discountRow);
+}
+
+document.getElementById("summary-total").textContent =
+  `₹${grandTotal.toFixed(2)}`;
 
 /* SHIPPING */
 const addr=order.shipping.address;
 
-document.getElementById("ship-name").textContent=addr.name || "";
+document.getElementById("ship-name").innerHTML = `
+  ${addr.name || ""}<br>
+  <span class="text-gray-500">${addr.phone || ""}</span><br>
+  <span class="text-gray-500">${addr.email || ""}</span>
+`;
 document.getElementById("ship-line1").textContent=addr.address_line1 || "";
-document.getElementById("ship-line2").textContent=addr.address_line2 || "";
+document.getElementById("ship-line2").style.display =
+  addr.address_line2 ? "block" : "none";
+
+document.getElementById("ship-line2").textContent = addr.address_line2 || "";
 document.getElementById("ship-city").textContent=addr.city || "";
 document.getElementById("ship-state").textContent=addr.state || "";
 document.getElementById("ship-pincode").textContent=addr.pincode || "";
@@ -204,17 +262,33 @@ order.transaction_payment_id || "N/A";
 
 const statusEl=document.getElementById("payment-status");
 statusEl.textContent=order.payment_status;
-statusEl.className=order.payment_status==="Pending"?"text-yellow-600":"text-green-700";
+const paymentStatusLower = (order.payment_status || "").toLowerCase();
+
+if (paymentStatusLower === "pending") {
+  statusEl.className = "text-yellow-600 font-bold";
+} else if (paymentStatusLower === "success") {
+  statusEl.className = "text-green-700 font-bold";
+} else {
+  statusEl.className = "text-gray-600 font-bold";
+}
 
 document.getElementById("amount-charged").textContent=`₹${order.grand_total}`;
 
 lucide.createIcons();
 }
 
-function statusBadge(icon,color){
-const badge=document.getElementById("status-badge");
-badge.className=`w-24 h-24 mx-auto mb-8 rounded-full bg-${color}-100 flex items-center justify-center glow-badge`;
-badge.innerHTML=`<i data-lucide="${icon}" class="w-12 h-12 text-${color}-600"></i>`;
+function statusBadge(icon, color) {
+  const badge = document.getElementById("status-badge");
+
+  if (color === "green") {
+    badge.className = "w-24 h-24 mx-auto mb-8 rounded-full bg-green-100 flex items-center justify-center glow-badge";
+    badge.innerHTML = `<i data-lucide="${icon}" class="w-12 h-12 text-green-600"></i>`;
+  }
+
+  if (color === "yellow") {
+    badge.className = "w-24 h-24 mx-auto mb-8 rounded-full bg-yellow-100 flex items-center justify-center glow-badge";
+    badge.innerHTML = `<i data-lucide="${icon}" class="w-12 h-12 text-yellow-600"></i>`;
+  }
 }
 
 function fireConfetti(){

@@ -40,34 +40,6 @@
             </header>
 
             <!-- Items -->
-            <!-- <ul class="px-6 py-5 divide-y">
-                <li class="flex items-center gap-4 py-4 first:pt-0">
-                    <img src="https://images.pexels.com/photos/4066293/pexels-photo-4066293.jpeg"
-                         alt=""
-                         class="w-20 h-20 rounded-lg object-cover" />
-                    <div class="flex-1">
-                        <h3 class="font-medium">Essential Premium T-Shirt</h3>
-                        <p class="text-sm text-gray-500">Black • Size M</p>
-                    </div>
-                    <div class="text-right space-y-0.5">
-                        <span class="text-sm text-gray-500 block">Qty: 1</span>
-                        <span class="font-medium block">$49.99</span>
-                    </div>
-                </li>
-                <li class="flex items-center gap-4 py-4">
-                    <img src="https://images.pexels.com/photos/2385477/pexels-photo-2385477.jpeg"
-                         alt=""
-                         class="w-20 h-20 rounded-lg object-cover" />
-                    <div class="flex-1">
-                        <h3 class="font-medium">Premium Wool Sweater</h3>
-                        <p class="text-sm text-gray-500">Gray • Size L</p>
-                    </div>
-                    <div class="text-right space-y-0.5">
-                        <span class="text-sm text-gray-500 block">Qty: 1</span>
-                        <span class="font-medium block">$89.99</span>
-                    </div>
-                </li>
-            </ul> -->
             <ul class="px-6 py-5 divide-y" id="order-items"></ul>
 
             <!-- Summary -->
@@ -115,7 +87,7 @@
                     <div>
                         <h3 class="font-medium text-gray-700 mb-1">Shipping Method</h3>
                         <p>
-                            <span id="shipping-type"></span> | <span id="shipping-status"></span>                            <span id="shipping-status"></span>
+                            <span id="shipping-type"></span> | <span id="shipping-status"></span>
                         </p>
                     </div>
                 </div>
@@ -280,7 +252,6 @@ function renderOrder(order) {
     document.getElementById("ship-country").textContent = `${order.shipping.address.country}`;
 
   document.getElementById("shipping-type").textContent = order.shipping_type;
-  document.getElementById("shipping-status").textContent = `Order Status: ${order.delivery_status}`;
 
   // payment
   const paymentEl = document.getElementById("payment-method");

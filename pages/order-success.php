@@ -175,6 +175,7 @@
 
 <script>
 let paymentAction = null;
+let isPaymentPending = false;
 
 async function fetchOrderDetail() {
   try {
@@ -212,9 +213,11 @@ function renderOrder(order) {
 
     const isPendingPayment =
         order.payment_type === "Prepaid" &&
-        order.payment_status.toLowerCase() === "pending";
+        order.payment_status.toLowerCase() === "pending" &&
+        paymentAction;
 
     if (isPendingPayment) {
+        isPaymentPending = true;
         document.querySelector(".glow-badge").classList.remove("bg-green-100");
         document.querySelector(".glow-badge").classList.add("bg-yellow-100");
 
@@ -384,7 +387,7 @@ async function verifyRetryPayment(response) {
                 document.getElementById("pay-now-wrapper").classList.contains("hidden") === false;
 
             // ❌ don't celebrate unpaid order
-            if (isPending) return;
+            if (isPaymentPending) return;
 
             const duration = 1800;
             const end = Date.now() + duration;

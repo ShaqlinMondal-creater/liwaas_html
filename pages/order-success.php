@@ -88,6 +88,42 @@
 
 </section>
 
+        <!-- Next Steps -->
+        <section class="bg-white rounded-3xl shadow-lg ring-1 ring-black/5 mb-16">
+            <div class="px-6 py-6">
+                <h2 class="font-medium mb-4 text-gray-800">What’s Next?</h2>
+                <ol class="space-y-5 text-sm text-gray-600">
+                    <li class="flex gap-4">
+                        <span class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 flex-shrink-0">
+                            <i data-lucide="mail" class="w-4 h-4 text-blue-600"></i>
+                        </span>
+                        We’ve emailed you the order confirmation.
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 flex-shrink-0">
+                            <i data-lucide="package" class="w-4 h-4 text-blue-600"></i>
+                        </span>
+                        Our team is carefully packing your items.
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 flex-shrink-0">
+                            <i data-lucide="truck" class="w-4 h-4 text-blue-600"></i>
+                        </span>
+                        You’ll receive a shipping notification once it’s on the way.
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="pages/shop" class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-900 rounded-lg text-sm font-medium hover:bg-gray-100 transition">
+                Continue&nbsp;Shopping
+            </a>
+            <a href="pages/profile" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition">
+                View Order History
+            </a>
+        </div>
 </main>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

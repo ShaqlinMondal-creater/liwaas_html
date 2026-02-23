@@ -19,12 +19,15 @@
             <div class="w-24 h-24 mx-auto mb-8 rounded-full bg-green-100 flex items-center justify-center glow-badge">
                 <i data-lucide="check" class="w-12 h-12 text-green-600"></i>
             </div>
-            <h1 class="text-3xl sm:text-4xl font-extrabold mb-3 tracking-tight">
-                Order&nbsp;Confirmed!
-            </h1>
-            <p class="text-gray-600">
-                Thank you for your purchase — we’ll email you the shipping confirmation shortly.
-            </p>
+            <h1 id="order-title" class="text-3xl sm:text-4xl font-extrabold mb-3 tracking-tight"></h1>
+            <p id="order-subtitle" class="text-gray-600"></p>
+
+            <div id="pay-now-wrapper" class="mt-6 hidden">
+                <button onclick="retryPayment()"
+                    class="px-6 py-3 bg-[#c7aa28] text-white rounded-lg font-medium hover:opacity-90 transition">
+                    Pay Now
+                </button>
+            </div>
         </section>
 
         <!-- Order Card -->
@@ -171,6 +174,8 @@
 </script>
 
 <script>
+let paymentAction = null;
+
 async function fetchOrderDetail() {
   try {
     const res = await fetch(`${baseUrl}/api/customer/order/get-order-detail`, {
@@ -189,6 +194,9 @@ async function fetchOrderDetail() {
       return;
     }
 
+    // ✅ store globally for retry payment
+    paymentAction = result.payment_action;
+
     renderOrder(result.data);
 
   } catch (err) {
@@ -201,6 +209,35 @@ fetchOrderDetail();
 </script>
 <script>
 function renderOrder(order) {
+
+    const isPendingPayment =
+        order.payment_type === "Prepaid" &&
+        order.payment_status.toLowerCase() === "pending";
+
+    if (isPendingPayment) {
+        document.querySelector(".glow-badge").classList.remove("bg-green-100");
+        document.querySelector(".glow-badge").classList.add("bg-yellow-100");
+
+        document.querySelector(".glow-badge i")
+            .setAttribute("data-lucide", "clock");
+
+        lucide.createIcons();
+        document.getElementById("order-title").textContent =
+            "Order Created — Payment Pending";
+
+        document.getElementById("order-subtitle").textContent =
+            "Your order has been placed. Please complete your payment to start processing.";
+
+        document.getElementById("pay-now-wrapper").classList.remove("hidden");
+
+    } else {
+
+        document.getElementById("order-title").textContent =
+            "Order Confirmed!";
+
+        document.getElementById("order-subtitle").textContent =
+            "Thank you for your purchase — we’ll email you the shipping confirmation shortly.";
+    }
 
   // header
   document.getElementById("order-code").textContent = `Order #${order.order_code}`;
@@ -265,19 +302,94 @@ function renderOrder(order) {
   document.getElementById("transaction-id").textContent =
     order.transaction_payment_id || "N/A";
 
-  document.getElementById("payment-status").textContent = order.payment_status;
+    const statusEl = document.getElementById("payment-status");
+
+    statusEl.textContent = order.payment_status;
+
+    if (order.payment_status.toLowerCase() === "pending") {
+        statusEl.classList.remove("text-green-700");
+        statusEl.classList.add("text-yellow-600");
+    }
+    //   document.getElementById("payment-status").textContent = order.payment_status;
   document.getElementById("amount-charged").textContent = `₹${order.grand_total}`;
 }
 </script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+<script>
+function retryPayment() {
+
+    if (!paymentAction) {
+        alert("Payment info missing");
+        return;
+    }
+
+    const options = {
+        key: paymentAction.key,
+        amount: paymentAction.amount,
+        currency: paymentAction.currency,
+        name: paymentAction.name,
+        description: paymentAction.description,
+        order_id: paymentAction.razorpay_order_id,
+
+        handler: async function (response) {
+            await verifyRetryPayment(response);
+        },
+
+        prefill: paymentAction.prefill,
+
+        theme: {
+            color: "#c7aa28"
+        },
+
+        modal: {
+            ondismiss: function () {
+                location.reload();
+            }
+        }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+}
+async function verifyRetryPayment(response) {
+
+    try {
+        const res = await fetch(`${baseUrl}/api/customer/payments/verify`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${authToken}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(response)
+        });
+
+        const result = await res.json();
+
+        location.reload();
+
+    } catch (err) {
+        console.error(err);
+        alert("Payment verification failed");
+    }
+}
+</script>
     <script>
         lucide.createIcons();
 
         // Confetti blast on load
         window.addEventListener('DOMContentLoaded', () => {
+
+            const isPending =
+                document.getElementById("pay-now-wrapper").classList.contains("hidden") === false;
+
+            // ❌ don't celebrate unpaid order
+            if (isPending) return;
+
             const duration = 1800;
             const end = Date.now() + duration;
             const colors = ['#10b981','#0891b2','#f97316','#ec4899','#6366f1'];
+
             (function frame() {
                 confetti({
                     particleCount: 8,
@@ -286,6 +398,7 @@ function renderOrder(order) {
                     origin: { x: 0.2, y: 0.1 },
                     colors
                 });
+
                 confetti({
                     particleCount: 8,
                     angle: 110,
@@ -293,6 +406,7 @@ function renderOrder(order) {
                     origin: { x: 0.8, y: 0.1 },
                     colors
                 });
+
                 if (Date.now() < end) requestAnimationFrame(frame);
             })();
         });

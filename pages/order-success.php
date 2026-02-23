@@ -87,8 +87,7 @@
                     <div>
                         <h3 class="font-medium text-gray-700 mb-1">Shipping Method</h3>
                         <p>
-                            <span id="shipping-type"></span> | <span id="shipping-status"></span>
-                        </p>
+                            <span id="shipping-type"></span> |                     </p>
                     </div>
                 </div>
             </div>
@@ -251,7 +250,7 @@ function renderOrder(order) {
     document.getElementById("ship-pincode").textContent = `${order.shipping.address.pincode}`;
     document.getElementById("ship-country").textContent = `${order.shipping.address.country}`;
 
-  document.getElementById("shipping-type").textContent = order.shipping_type;
+  document.getElementById("shipping-type").textContent = order.shipping.shipping_type;
 
   // payment
   const paymentEl = document.getElementById("payment-method");

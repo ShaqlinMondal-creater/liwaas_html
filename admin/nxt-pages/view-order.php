@@ -14,15 +14,6 @@
 </div>
 </main>
 
-<!-- SHIPPING MODAL -->
-<div id="shippingModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center">
-  <div class="bg-white rounded-lg w-[600px] p-5 relative">
-    <button onclick="closeShippingModal()" class="absolute right-3 top-2 text-xl">×</button>
-    <h3 class="font-semibold mb-4">Shipping Details</h3>
-    <div id="shippingDetails"></div>
-  </div>
-</div>
-
 <script>
 const token = localStorage.getItem("auth_token");
 const params = new URLSearchParams(window.location.search);
@@ -176,50 +167,95 @@ fetchOrder();
 }
 </script>
 <script>
+    function getShippingBadge(status){
+        if(!status) return "—";
+
+        const s = status.toLowerCase();
+
+        let color = "badge-secondary";
+
+        if(s==="pending") color="badge-warning";
+        if(s==="approved") color="badge-info";
+        if(s==="completed") color="badge-success";
+
+        return `<span class="badge ${color}">${status}</span>`;
+    }
+
 function openShippingModal(){
 
-const s = currentOrder.shipping || {};
-const address = s.address || {};
+    const s = currentOrder.shipping || {};
+    const address = s.address || {};
 
-document.getElementById("shippingDetails").innerHTML = `
+    const shiprocketResponse = s.response_
+    ? `<pre class="bg-gray-100 p-3 rounded text-xs overflow-auto max-h-[250px] text-left">${JSON.stringify(JSON.parse(s.response_), null, 2)}</pre>`
+    : `<div class="text-gray-400 text-sm">No response available</div>`;
 
-<div class="space-y-2 text-sm">
+    Swal.fire({
+    title: `<div class="text-lg font-semibold">Shipping Details</div>`,
+    width: 800,
+    confirmButtonText: "Close",
+    html: `
 
-<h4 class="font-semibold mb-2">Address</h4>
+    <div class="text-left space-y-5">
 
-<div><b>Name:</b> ${address.name ?? "—"}</div>
-<div><b>Mobile:</b> ${address.mobile ?? "—"}</div>
-<div><b>Email:</b> ${address.email ?? "—"}</div>
-<div><b>Address:</b> ${address.address_line_1 ?? "—"}</div>
-<div>${address.city ?? ""} ${address.state ?? ""} ${address.pincode ?? ""}</div>
-<div>${address.country ?? ""}</div>
+        <!-- ADDRESS -->
+        <div>
+        <div class="font-semibold mb-2">📍 Delivery Address</div>
 
-<hr>
+        <div class="grid grid-cols-2 gap-3 text-sm">
 
-<h4 class="font-semibold mb-2">Shipping Info</h4>
+            <div><b>Name:</b><br>${address.name ?? "—"}</div>
+            <div><b>Mobile:</b><br>${address.mobile ?? "—"}</div>
 
-<div><b>Status:</b> ${s.shipping_status ?? "—"}</div>
-<div><b>Courier:</b> ${s.shipping_by ?? "—"}</div>
-<div><b>AWB:</b> ${s.shipping_delivery_id ?? "—"}</div>
+            <div class="col-span-2">
+            <b>Email:</b><br>${address.email ?? "—"}
+            </div>
 
-<hr>
+            <div class="col-span-2">
+            <b>Address:</b><br>
+            ${address.address_line_1 ?? ""}
+            ${address.city ?? ""}, ${address.state ?? ""} - ${address.pincode ?? ""}
+            <br>${address.country ?? ""}
+            </div>
 
-<h4 class="font-semibold mb-2">Shiprocket Response</h4>
+        </div>
+        </div>
 
-<div class="text-xs bg-gray-100 p-2 rounded overflow-auto max-h-[200px]">
-${
-  s.response_
-  ? JSON.stringify(JSON.parse(s.response_), null, 2)
-  : "No response available"
+        <!-- SHIPPING INFO -->
+        <div>
+        <div class="font-semibold mb-2">🚚 Shipping Info</div>
+
+        <div class="grid grid-cols-3 gap-3 text-sm">
+
+            <div>
+            <b>Status</b><br>
+            ${getShippingBadge(s.shipping_status)}
+            </div>
+
+            <div>
+            <b>Courier</b><br>
+            ${s.shipping_by ?? "—"}
+            </div>
+
+            <div>
+            <b>AWB</b><br>
+            ${s.shipping_delivery_id ?? "—"}
+            </div>
+
+        </div>
+        </div>
+
+        <!-- SHIPROCKET RESPONSE -->
+        <div>
+        <div class="font-semibold mb-2">📦 Shiprocket Response</div>
+        ${shiprocketResponse}
+        </div>
+
+    </div>
+    `
+    });
 }
-</div>
 
-</div>
-`;
-
-document.getElementById("shippingModal").classList.remove("hidden");
-document.getElementById("shippingModal").classList.add("flex");
-}
 
 function closeShippingModal(){
 document.getElementById("shippingModal").classList.add("hidden");

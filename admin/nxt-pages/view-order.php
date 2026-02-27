@@ -178,30 +178,40 @@ fetchOrder();
 <script>
 function openShippingModal(){
 
-const s = currentOrder.shipping;
-
-const address = s.address;
+const s = currentOrder.shipping || {};
+const address = s.address || {};
 
 document.getElementById("shippingDetails").innerHTML = `
 
 <div class="space-y-2 text-sm">
 
-<div><b>Name:</b> ${address.name}</div>
-<div><b>Mobile:</b> ${address.mobile}</div>
-<div><b>Address:</b> ${address.address_line_1}</div>
-<div>${address.city}, ${address.state} - ${address.pincode}</div>
-<div>${address.country}</div>
+<h4 class="font-semibold mb-2">Address</h4>
+
+<div><b>Name:</b> ${address.name ?? "—"}</div>
+<div><b>Mobile:</b> ${address.mobile ?? "—"}</div>
+<div><b>Email:</b> ${address.email ?? "—"}</div>
+<div><b>Address:</b> ${address.address_line_1 ?? "—"}</div>
+<div>${address.city ?? ""} ${address.state ?? ""} ${address.pincode ?? ""}</div>
+<div>${address.country ?? ""}</div>
 
 <hr>
 
-<div><b>Shipping Status:</b> ${s.shipping_status}</div>
-<div><b>Courier:</b> ${s.shipping_by}</div>
+<h4 class="font-semibold mb-2">Shipping Info</h4>
+
+<div><b>Status:</b> ${s.shipping_status ?? "—"}</div>
+<div><b>Courier:</b> ${s.shipping_by ?? "—"}</div>
 <div><b>AWB:</b> ${s.shipping_delivery_id ?? "—"}</div>
 
 <hr>
 
-<div class="text-xs bg-gray-100 p-2 rounded overflow-auto">
-${s.response_ ? JSON.stringify(JSON.parse(s.response_),null,2) : "No response"}
+<h4 class="font-semibold mb-2">Shiprocket Response</h4>
+
+<div class="text-xs bg-gray-100 p-2 rounded overflow-auto max-h-[200px]">
+${
+  s.response_
+  ? JSON.stringify(JSON.parse(s.response_), null, 2)
+  : "No response available"
+}
 </div>
 
 </div>

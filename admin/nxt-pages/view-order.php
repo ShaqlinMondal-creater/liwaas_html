@@ -115,10 +115,8 @@ document.getElementById("order_view").innerHTML = `
                 <div>${order.user?.mobile ?? ""}</div>
             </div>
         </div>
-    </div>
 
-    <div class="card p-5">
-        <div class="space-y-5">
+        <div class="card p-5">
             <h3 class="font-semibold mb-3">Shipping</h3>
 
             <div class="text-sm space-y-2">
@@ -136,27 +134,26 @@ document.getElementById("order_view").innerHTML = `
                     View Details
                 </button>
             </div>
+        
+            <div class="card p-5">
+                <h3 class="font-semibold mb-3">Order Info</h3>
+
+                <div class="text-sm space-y-2">
+                    <div><b>Order Code:</b> ${order.order_code}</div>
+                    <div><b>Date:</b> ${order.created_at}</div>
+                    <div><b>Payment:</b> ${order.payment_type}</div>
+                    <div class="mt-3">${invoiceBtn}</div>
+                </div>
+            </div>
+
+            <div class="card p-5">
+                <div class="flex justify-between font-semibold text-lg">
+                    <span>Total</span>
+                    <span>₹${order.grand_total}</span>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="card p-5">
-        <h3 class="font-semibold mb-3">Order Info</h3>
-
-        <div class="text-sm space-y-2">
-            <div><b>Order Code:</b> ${order.order_code}</div>
-            <div><b>Date:</b> ${order.created_at}</div>
-            <div><b>Payment:</b> ${order.payment_type}</div>
-            <div class="mt-3">${invoiceBtn}</div>
-        </div>
-    </div>
-
-    <div class="card p-5">
-        <div class="flex justify-between font-semibold text-lg">
-            <span>Total</span>
-            <span>₹${order.grand_total}</span>
-        </div>
-    </div>
-
-</div>
 </div>
 `;
 }

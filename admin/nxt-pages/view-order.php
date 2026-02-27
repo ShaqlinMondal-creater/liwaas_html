@@ -50,94 +50,111 @@ const invoiceBtn = order.invoice?.invoice_link
 
 const items = order.items.map(i=>`
 <tr>
-<td class="flex items-center gap-3">
-<img src="${i.image_link ?? i.product.image?.upload_url}" class="w-12 h-12 rounded">
-<div>
-<div>${i.product.name}</div>
-<div class="text-xs text-gray-500">${i.color} / ${i.size}</div>
-</div>
-</td>
-<td>${i.quantity}</td>
-<td>₹${i.total}</td>
+    <td class="flex items-center gap-3">
+        <img src="${i.image_link ?? i.product.image?.upload_url}" class="w-12 h-12 rounded">
+        <div>
+            <div>${i.product.name}</div>
+            <div class="text-xs text-gray-500">${i.color} / ${i.size}</div>
+        </div>
+    </td>
+    <td>${i.quantity}</td>
+    <td>₹${i.total}</td>
 </tr>`).join("");
 
 document.getElementById("order_view").innerHTML = `
 
 <div class="grid lg:grid-cols-3 gap-5">
 
-<div class="lg:col-span-2 space-y-5">
+    <div class="lg:col-span-2 space-y-5">
+        <div class="card p-5">
+            <h3 class="font-semibold mb-3">Update Status</h3>
 
-<div class="card p-5">
-<h3 class="font-semibold mb-3">Update Status</h3>
+            <div class="flex gap-3">
 
-<div class="flex gap-3">
+                <select id="shipping_status" class="select">
+                    <option ${order.shipping.shipping_status=="Pending"?"selected":""}>Pending</option>
+                    <option ${order.shipping.shipping_status=="Approved"?"selected":""}>Approved</option>
+                    <option ${order.shipping.shipping_status=="Completed"?"selected":""}>Completed</option>
+                </select>
 
-<select id="shipping_status" class="select">
-<option ${order.shipping.shipping_status=="Pending"?"selected":""}>Pending</option>
-<option ${order.shipping.shipping_status=="Approved"?"selected":""}>Approved</option>
-<option ${order.shipping.shipping_status=="Completed"?"selected":""}>Completed</option>
-</select>
+                <select id="order_status" class="select">
+                    <option ${order.order_status=="pending"?"selected":""}>pending</option>
+                    <option ${order.order_status=="confirmed"?"selected":""}>confirmed</option>
+                    <option ${order.order_status=="completed"?"selected":""}>completed</option>
+                    <option ${order.order_status=="cancelled"?"selected":""}>cancelled</option>
+                </select>
 
-<select id="order_status" class="select">
-<option ${order.order_status=="pending"?"selected":""}>pending</option>
-<option ${order.order_status=="confirmed"?"selected":""}>confirmed</option>
-<option ${order.order_status=="completed"?"selected":""}>completed</option>
-<option ${order.order_status=="cancelled"?"selected":""}>cancelled</option>
-</select>
+                <button onclick="updateStatus()" class="btn btn-primary btn-sm">Update</button>
 
-<button onclick="updateStatus()" class="btn btn-primary btn-sm">Update</button>
+            </div>
+        </div>
 
-</div>
-</div>
+        <div class="card p-5">
+            <h3 class="font-semibold mb-3">Items</h3>
 
-<div class="card p-5">
-<h3 class="font-semibold mb-3">Items</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>${items}</tbody>
+            </table>
+        </div>
+    </div>
 
-<table class="table">
-<thead>
-<tr><th>Product</th><th>Qty</th><th>Total</th></tr>
-</thead>
-<tbody>${items}</tbody>
-</table>
+    <div class="space-y-5">
+        <div class="card p-5">
+            <h3 class="font-semibold mb-3">Customer</h3>
 
-</div>
+            <div class="text-sm space-y-1">
+                <div class="font-medium">${order.user?.name ?? "Guest"}</div>
+                <div class="text-gray-500">${order.user?.email ?? ""}</div>
+                <div>${order.user?.mobile ?? ""}</div>
+            </div>
+        </div>
+    </div>
 
-</div>
+    <div class="card p-5">
+        <div class="space-y-5">
+            <h3 class="font-semibold mb-3">Shipping</h3>
 
-<div class="space-y-5">
+            <div class="text-sm space-y-2">
+                <div>
+                    <b>Status:</b> ${order.shipping.shipping_status}
+                </div>
+                <div>
+                    <b>By:</b> ${order.shipping.shipping_by}
+                </div>
+                <div>
+                    <b>AWB:</b> ${order.shipping.shipping_delivery_id ?? "—"}
+                </div>
 
-<div class="card p-5">
-<h3 class="font-semibold mb-3">Shipping</h3>
+                <button onclick="openShippingModal()" class="btn btn-sm btn-light mt-2">
+                    View Details
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card p-5">
+        <h3 class="font-semibold mb-3">Order Info</h3>
 
-<div class="text-sm space-y-2">
-<div><b>Status:</b> ${order.shipping.shipping_status}</div>
-<div><b>By:</b> ${order.shipping.shipping_by}</div>
-<div><b>AWB:</b> ${order.shipping.shipping_delivery_id ?? "—"}</div>
+        <div class="text-sm space-y-2">
+            <div><b>Order Code:</b> ${order.order_code}</div>
+            <div><b>Date:</b> ${order.created_at}</div>
+            <div><b>Payment:</b> ${order.payment_type}</div>
+            <div class="mt-3">${invoiceBtn}</div>
+        </div>
+    </div>
 
-<button onclick="openShippingModal()" class="btn btn-sm btn-light mt-2">
-View Details
-</button>
-
-</div>
-</div>
-
-<div class="card p-5">
-<h3 class="font-semibold mb-3">Order Info</h3>
-
-<div class="text-sm space-y-2">
-<div><b>Order Code:</b> ${order.order_code}</div>
-<div><b>Date:</b> ${order.created_at}</div>
-<div><b>Payment:</b> ${order.payment_type}</div>
-<div class="mt-3">${invoiceBtn}</div>
-</div>
-</div>
-
-<div class="card p-5">
-<div class="flex justify-between font-semibold text-lg">
-<span>Total</span>
-<span>₹${order.grand_total}</span>
-</div>
-</div>
+    <div class="card p-5">
+        <div class="flex justify-between font-semibold text-lg">
+            <span>Total</span>
+            <span>₹${order.grand_total}</span>
+        </div>
+    </div>
 
 </div>
 </div>

@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //                     <input type="checkbox" class="order-checkbox" value="${order.id}">
     //                 </td>
     //                 <td class="font-medium text-primary">
-    //                     <a href="view-order.php?id=${order.id}">${order.order_code}</a>
+    //                     <a href="nxt-pages/view-order.php?id=${order.id}">${order.order_code}</a>
     //                 </td>
     //                 <td>${customer}</td>
     //                 <td>${itemsPreview} <br>(${itemsCount} items)</td>
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //                             </button>
     //                             <div class="menu-dropdown menu-default w-[150px]">
     //                                 <div class="menu-item">
-    //                                     <a class="menu-link" href="view-order.php?id=${order.id}">View</a>
+    //                                     <a class="menu-link" href="nxt-pages/view-order.php?id=${order.id}">View</a>
     //                                 </div>
     //                                 <div class="menu-item">
     //                                     <a class="menu-link" href="update-order.php?id=${order.id}">Update</a>
@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <input type="checkbox" class="order-checkbox" value="${order.id}">
                     </td>
                     <td class="font-medium text-primary">
-                        <a href="view-order.php?code=${order.order_code}">${order.order_code}</a>
+                        <a href="nxt-pages/view-order.php?code=${order.order_code}">${order.order_code}</a>
                     </td>
                     <td>${customer}</td>
                     <td>${itemsPreview}<br>(${itemsCount} items)</td>
@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 </button>
                                 <div class="menu-dropdown menu-default w-[150px]">
                                     <div class="menu-item">
-                                        <a class="menu-link" href="view-order.php?code=${order.order_code}">View</a>
+                                        <a class="menu-link" href="nxt-pages/view-order.php?code=${order.order_code}">View</a>
                                     </div>
                                     <div class="menu-item">
                                         <a class="menu-link" href="update-order.php?id=${order.id}">Update</a>

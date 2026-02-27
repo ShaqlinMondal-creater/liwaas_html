@@ -61,6 +61,11 @@ const items = order.items.map(i=>`
     <td>₹${i.total}</td>
 </tr>`).join("");
 
+const trackBtn = order.shipping?.shipping_delivery_id
+  ? `<button onclick="trackShipment('${order.shipping.shipping_delivery_id}')" 
+       class="btn btn-sm btn-info">Track</button>`
+  : `<button class="btn btn-sm btn-secondary" disabled>Track</button>`;
+
 document.getElementById("order_view").innerHTML = `
 
 <div class="grid lg:grid-cols-3 gap-5">
@@ -133,24 +138,25 @@ document.getElementById("order_view").innerHTML = `
                 <button onclick="openShippingModal()" class="btn btn-sm btn-light mt-2">
                     View Details
                 </button>
+                ${trackBtn}
             </div>
         
-            <div class="card p-5">
-                <h3 class="font-semibold mb-3">Order Info</h3>
+        </div>
+        <div class="card p-5">
+            <h3 class="font-semibold mb-3">Order Info</h3>
 
-                <div class="text-sm space-y-2">
-                    <div><b>Order Code:</b> ${order.order_code}</div>
-                    <div><b>Date:</b> ${order.created_at}</div>
-                    <div><b>Payment:</b> ${order.payment_type}</div>
-                    <div class="mt-3">${invoiceBtn}</div>
-                </div>
+            <div class="text-sm space-y-2">
+                <div><b>Order Code:</b> ${order.order_code}</div>
+                <div><b>Date:</b> ${order.created_at}</div>
+                <div><b>Payment:</b> ${order.payment_type}</div>
+                <div class="mt-3">${invoiceBtn}</div>
             </div>
+        </div>
 
-            <div class="card p-5">
-                <div class="flex justify-between font-semibold text-lg">
-                    <span>Total</span>
-                    <span>₹${order.grand_total}</span>
-                </div>
+        <div class="card p-5">
+            <div class="flex justify-between font-semibold text-lg">
+                <span>Total</span>
+                <span>₹${order.grand_total}</span>
             </div>
         </div>
     </div>
@@ -195,84 +201,162 @@ fetchOrder();
         return `<span class="badge ${color}">${status}</span>`;
     }
 
-function openShippingModal(){
+    function openShippingModal(){
 
-    const s = currentOrder.shipping || {};
-    const address = s.address || {};
+        const s = currentOrder.shipping || {};
+        const address = s.address || {};
 
-    const shiprocketResponse = s.response_
-    ? `<pre class="bg-gray-100 p-3 rounded text-xs overflow-auto max-h-[250px] text-left">${JSON.stringify(JSON.parse(s.response_), null, 2)}</pre>`
-    : `<div class="text-gray-400 text-sm">No response available</div>`;
+        const shiprocketResponse = s.response_
+        ? `<pre class="bg-gray-100 p-3 rounded text-xs overflow-auto max-h-[250px] text-left">${JSON.stringify(JSON.parse(s.response_), null, 2)}</pre>`
+        : `<div class="text-gray-400 text-sm">No response available</div>`;
 
-    Swal.fire({
-    title: `<div class="text-lg font-semibold">Shipping Details</div>`,
-    width: 800,
-    confirmButtonText: "Close",
-    html: `
+        Swal.fire({
+        title: `<div class="text-lg font-semibold">Shipping Details</div>`,
+        width: 800,
+        confirmButtonText: "Close",
+        html: `
 
-    <div class="text-left space-y-5">
+        <div class="text-left space-y-5">
 
-        <!-- ADDRESS -->
-        <div>
-        <div class="font-semibold mb-2">📍 Delivery Address</div>
-
-        <div class="grid grid-cols-2 gap-3 text-sm">
-
-            <div><b>Name:</b><br>${address.name ?? "—"}</div>
-            <div><b>Mobile:</b><br>${address.mobile ?? "—"}</div>
-
-            <div class="col-span-2">
-            <b>Email:</b><br>${address.email ?? "—"}
-            </div>
-
-            <div class="col-span-2">
-            <b>Address:</b><br>
-            ${address.address_line_1 ?? ""}
-            ${address.city ?? ""}, ${address.state ?? ""} - ${address.pincode ?? ""}
-            <br>${address.country ?? ""}
-            </div>
-
-        </div>
-        </div>
-
-        <!-- SHIPPING INFO -->
-        <div>
-        <div class="font-semibold mb-2">🚚 Shipping Info</div>
-
-        <div class="grid grid-cols-3 gap-3 text-sm">
-
+            <!-- ADDRESS -->
             <div>
-            <b>Status</b><br>
-            ${getShippingBadge(s.shipping_status)}
+            <div class="font-semibold mb-2">📍 Delivery Address</div>
+
+            <div class="grid grid-cols-2 gap-3 text-sm">
+
+                <div><b>Name:</b><br>${address.name ?? "—"}</div>
+                <div><b>Mobile:</b><br>${address.mobile ?? "—"}</div>
+
+                <div class="col-span-2">
+                <b>Email:</b><br>${address.email ?? "—"}
+                </div>
+
+                <div class="col-span-2">
+                <b>Address:</b><br>
+                ${address.address_line_1 ?? ""}
+                ${address.city ?? ""}, ${address.state ?? ""} - ${address.pincode ?? ""}
+                <br>${address.country ?? ""}
+                </div>
+
+            </div>
             </div>
 
+            <!-- SHIPPING INFO -->
             <div>
-            <b>Courier</b><br>
-            ${s.shipping_by ?? "—"}
+            <div class="font-semibold mb-2">🚚 Shipping Info</div>
+
+            <div class="grid grid-cols-3 gap-3 text-sm">
+
+                <div>
+                <b>Status</b><br>
+                ${getShippingBadge(s.shipping_status)}
+                </div>
+
+                <div>
+                <b>Courier</b><br>
+                ${s.shipping_by ?? "—"}
+                </div>
+
+                <div>
+                <b>AWB</b><br>
+                ${s.shipping_delivery_id ?? "—"}
+                </div>
+
+            </div>
             </div>
 
+            <!-- SHIPROCKET RESPONSE -->
             <div>
-            <b>AWB</b><br>
-            ${s.shipping_delivery_id ?? "—"}
+            <div class="font-semibold mb-2">📦 Shiprocket Response</div>
+            ${shiprocketResponse}
             </div>
 
         </div>
-        </div>
+        `
+        });
+    }
 
-        <!-- SHIPROCKET RESPONSE -->
-        <div>
-        <div class="font-semibold mb-2">📦 Shiprocket Response</div>
-        ${shiprocketResponse}
-        </div>
+    function closeShippingModal(){
+        document.getElementById("shippingModal").classList.add("hidden");
+    }
+</script>
+<script>
+    async function trackShipment(shipmentId){
 
-    </div>
-    `
-    });
+const res = await fetch(
+`<?= $baseUrl ?>/api/admin/shiprocket/track?shipment_id=${shipmentId}`,
+{
+headers:{ "Authorization":`Bearer ${token}` }
+});
+
+const data = await res.json();
+
+const track = data.tracking?.[shipmentId]?.tracking_data;
+
+if(!track){
+  Swal.fire("No tracking found","","info");
+  return;
 }
 
+const shipment = track.shipment_track?.[0] || {};
 
-function closeShippingModal(){
-document.getElementById("shippingModal").classList.add("hidden");
+const activities = track.shipment_track_activities?.map(a => `
+  <div class="border-b py-2 text-sm">
+    <div class="font-medium">${a.activity}</div>
+    <div class="text-xs text-gray-500">${a.date} ${a.time}</div>
+    <div class="text-xs">${a.location}</div>
+  </div>
+`).join("") || `<div class="text-gray-400 text-sm">${track.error ?? "No activities yet"}</div>`;
+
+Swal.fire({
+title:"Tracking Details",
+width:800,
+confirmButtonText:"Close",
+html:`
+
+<div class="text-left space-y-5">
+
+<div class="grid grid-cols-2 gap-4 text-sm">
+
+<div>
+<b>Courier</b><br>
+${shipment.courier_name || "—"}
+</div>
+
+<div>
+<b>AWB</b><br>
+${shipment.awb_code || "—"}
+</div>
+
+<div>
+<b>Current Status</b><br>
+<span class="badge badge-warning">${shipment.current_status || "—"}</span>
+</div>
+
+<div>
+<b>EDD</b><br>
+${shipment.edd || "—"}
+</div>
+
+</div>
+
+<div>
+<div class="font-semibold mb-2">Activities</div>
+<div class="max-h-[300px] overflow-auto text-left">
+${activities}
+</div>
+</div>
+
+${
+track.track_url
+? `<a href="${track.track_url}" target="_blank" class="btn btn-sm btn-primary mt-3">Track on Courier Site</a>`
+: ""
 }
+
+</div>
+`
+});
+}
+
 </script>
 <?php include("../footer.php"); ?>

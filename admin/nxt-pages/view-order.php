@@ -2,16 +2,15 @@
 <?php include("../header.php"); ?>
 
 <main class="grow content pt-5">
-<div class="container-fixed">
+    <div class="container-fixed">
 
-<div class="flex justify-between mb-5">
-  <h1 class="text-xl font-semibold">Order Details</h1>
-  <a href="orders/" class="btn btn-sm btn-light">← Back</a>
-</div>
+        <div class="flex justify-between mb-5">
+            <h1 class="text-xl font-semibold">Order Details</h1>
+            <a href="orders/" class="btn btn-sm btn-light">← Back</a>
+        </div>
+        <div id="order_view">Loading...</div>
 
-<div id="order_view">Loading...</div>
-
-</div>
+    </div>
 </main>
 
 <script>
@@ -63,7 +62,7 @@ const items = order.items.map(i=>`
 
 const trackBtn = order.shipping?.shipping_delivery_id
   ? `<button onclick="trackShipment('${order.shipping.shipping_delivery_id}')" 
-       class="btn btn-sm btn-info">Track</button>`
+       class="btn btn-sm btn-primary">Track</button>`
   : `<button class="btn btn-sm btn-secondary" disabled>Track</button>`;
 
 document.getElementById("order_view").innerHTML = `

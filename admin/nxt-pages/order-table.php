@@ -70,11 +70,12 @@
                                                     <th class="w-[60px] text-center">
                                                         <input id="select_all_orders" class="checkbox checkbox-sm" type="checkbox" />
                                                     </th>
-                                                    <th class="min-w-[180px]">Order Code</th>
-                                                    <th class="min-w-[250px]">Customer</th>
+                                                    <th class="min-w-[150px]">Order Code</th>
+                                                    <th class="min-w-[220px]">Customer</th>
                                                     <th class="min-w-[150px]">Items</th>
-                                                    <th class="min-w-[120px]">Payment</th>
-                                                    <th class="min-w-[120px]">Delivery</th>
+                                                    <th class="min-w-[100px]">Payment</th>
+                                                    <th class="min-w-[100px]">Delivery</th>
+                                                    <th class="min-w-[100px]">Shipping</th>
                                                     <th class="min-w-[120px]">Total</th>
                                                     <th class="min-w-[150px]">Date</th>
                                                     <th class="w-[60px]"></th>
@@ -131,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         tableBody.innerHTML = `
             <tr>
-                <td colspan="9" class="text-center py-4 text-gray-500">
+                <td colspan="10" class="text-center py-4 text-gray-500">
                     Loading orders...
                 </td>
             </tr>
@@ -155,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const result = await response.json();
 
             if (!result.success) {
-                tableBody.innerHTML = `<tr><td colspan="9" class="text-center text-red-500">No orders found</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="10" class="text-center text-red-500">No orders found</td></tr>`;
                 return;
             }
 
@@ -167,32 +168,108 @@ document.addEventListener("DOMContentLoaded", () => {
             updateHeaderCounts(result.total, result.data);
 
         } catch (err) {
-            tableBody.innerHTML = `<tr><td colspan="9" class="text-center text-red-500">Error loading orders</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="10" class="text-center text-red-500">Error loading orders</td></tr>`;
         }
     }
 
+    // function renderOrders(orders) {
+    //     tableBody.innerHTML = "";
+
+    //     orders.forEach(order => {
+
+    //         const customer = order.user
+    //             ? `${order.user.name}<br><span class="text-xs text-gray-500">${order.user.email}</span>`
+    //             : `<span class="text-gray-400">Guest</span>`;
+
+    //         const itemsPreview = order.items?.length
+    //             ? order.items.map(i => `${i.product.name} × ${i.quantity}`).join("<br>")
+    //             : '<span class="text-gray-400">No items</span>';
+
+    //         const itemsCount = order.items?.length || 0;
+
+    //         const shippingBy = order.shipping?.shipping_by ?? '—';
+    //         const awb = order.shipping?.shipping_delivery_id ?? '—';
+
+    //         const row = `
+    //             <tr>
+    //                 <td class="text-center">
+    //                     <input type="checkbox" class="order-checkbox" value="${order.id}">
+    //                 </td>
+    //                 <td class="font-medium text-primary">
+    //                     <a href="view-order.php?id=${order.id}">${order.order_code}</a>
+    //                 </td>
+    //                 <td>${customer}</td>
+    //                 <td>${itemsPreview} <br>(${itemsCount} items)</td>
+    //                 <td>${badge(order.payment_type)}</td>
+    //                 <td>${badge(order.shipping?.shipping_status)}</td>
+    //                 <td>${shippingBy} - ${awb}</td>
+    //                 <td class="font-semibold">₹${order.grand_total}</td>
+    //                 <td>${order.created_at}</td>
+
+    //                 <td class="text-center">
+    //                     <div class="menu flex-inline" data-menu="true">
+    //                         <div class="menu-item" data-menu-item-toggle="dropdown" data-menu-item-trigger="click">
+    //                             <button class="menu-toggle btn btn-sm btn-light">
+    //                                 ⋮
+    //                             </button>
+    //                             <div class="menu-dropdown menu-default w-[150px]">
+    //                                 <div class="menu-item">
+    //                                     <a class="menu-link" href="view-order.php?id=${order.id}">View</a>
+    //                                 </div>
+    //                                 <div class="menu-item">
+    //                                     <a class="menu-link" href="update-order.php?id=${order.id}">Update</a>
+    //                                 </div>
+    //                                 <div class="menu-item">
+    //                                     <a class="menu-link text-warning cancel-order" data-id="${order.id}">Cancel</a>
+    //                                 </div>
+    //                                 <div class="menu-item">
+    //                                     <a class="menu-link text-danger delete-order" data-id="${order.id}">Delete</a>
+    //                                 </div>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </td>
+    //             </tr>
+    //         `;
+
+    //         tableBody.insertAdjacentHTML("beforeend", row);
+    //     });
+    //     // Reset select all when table re-renders
+    //     const selectAll = document.getElementById("select_all_orders");
+    //     if (selectAll) selectAll.checked = false;
+    // }
+
     function renderOrders(orders) {
-        tableBody.innerHTML = "";
+        let rows = "";
 
         orders.forEach(order => {
 
             const customer = order.user
-                ? `${order.user.name}<br><span class="text-xs text-gray-500">${order.user.email}</span>`
-                : `<span class="text-gray-400">Guest</span>`;
+            ? `${order.user.name}<br><span class="text-xs text-gray-500">${order.user.email}</span>`
+            : `<span class="text-gray-400">Guest</span>`;
 
-            const itemsCount = order.items.length;
+        const itemsPreview = order.items?.length
+            ? order.items.map(i => `${i.product.name} × ${i.quantity}`).join("<br>")
+            : '<span class="text-gray-400">No items</span>';
 
-            const row = `
+        const itemsCount = order.items?.length || 0;
+
+        const shippingBy = order.shipping?.shipping_by ?? '—';
+        const awb = order.shipping?.shipping_delivery_id ?? '—';
+
+            rows += `
                 <tr>
                     <td class="text-center">
                         <input type="checkbox" class="order-checkbox" value="${order.id}">
                     </td>
-
-                    <td class="font-medium text-primary">${order.order_code}</td>
+                    <td class="font-medium text-primary">
+                        <a href="view-order.php?id=${order.id}">${order.order_code}</a>
+                    </td>
                     <td>${customer}</td>
-                    <td>${itemsCount}</td>
+                    <td>${itemsPreview}<br>(${itemsCount} items)</td>
                     <td>${badge(order.payment_type)}</td>
-                    <td>${badge(order.delivery_status)}</td>
+                    <td>${badge(order.shipping?.shipping_status)}</td>
+                    <td>${shippingBy} - ${awb}</td>
                     <td class="font-semibold">₹${order.grand_total}</td>
                     <td>${order.created_at}</td>
 
@@ -221,22 +298,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     </td>
                 </tr>
             `;
-
-            tableBody.insertAdjacentHTML("beforeend", row);
         });
-        // Reset select all when table re-renders
-        const selectAll = document.getElementById("select_all_orders");
-        if (selectAll) selectAll.checked = false;
+        tableBody.innerHTML = rows;
+
+        document.getElementById("select_all_orders").checked = false;
     }
 
     function badge(value) {
         if (!value) return `<span class="badge badge-secondary">N/A</span>`;
+
         const lower = value.toLowerCase();
         let color = "primary";
-        if (lower.includes("cod")) color = "warning";
-        if (lower.includes("prepaid")) color = "success";
-        if (lower.includes("pending")) color = "warning";
-        if (lower.includes("confirmed")) color = "success";
+
+        if (lower === "cod") color = "warning";
+        else if (lower === "prepaid") color = "success";
+        else if (lower === "pending") color = "warning";
+        else if (lower === "approved" || lower === "confirmed") color = "success";
+        else if (lower === "cancelled") color = "danger";
 
         return `<span class="badge badge-${color} badge-outline">${value}</span>`;
     }
@@ -293,8 +371,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("total_orders_count").textContent = total;
 
         const pendingCount = orders.filter(o =>
-            o.delivery_status?.toLowerCase() === "pending"
-        ).length;
+                o.shipping?.shipping_status?.toLowerCase() === "pending"
+            ).length;
 
         document.getElementById("pending_orders_count").textContent = pendingCount;
     }
@@ -308,18 +386,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".order-checkbox").forEach(cb => {
             cb.checked = checked;
         });
-    });
-
-    document.getElementById("bulk_delete")?.addEventListener("click", () => {
-        const selected = [...document.querySelectorAll(".order-checkbox:checked")]
-            .map(cb => cb.value);
-
-        if (!selected.length) {
-            alert("No orders selected");
-            return;
-        }
-
-        console.log("Delete IDs:", selected);
     });
 
     document.addEventListener("click", async function(e) {

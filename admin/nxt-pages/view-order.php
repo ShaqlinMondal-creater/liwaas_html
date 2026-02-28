@@ -43,9 +43,18 @@ async function fetchOrder() {
 <script>
 function renderOrder(order){
 
-const invoiceBtn = order.invoice?.invoice_link
-  ? `<a target="_blank" href="${order.invoice.invoice_link}" class="btn btn-sm btn-success">View Invoice</a>`
-  : `<button class="btn btn-sm btn-secondary" disabled>No Invoice</button>`;
+const invoiceLink = order.invoice?.invoice_link || order.invoice_link;
+const invoiceNo = order.invoice?.invoice_no || order.invoice_no;
+const invoiceBtn = invoiceLink
+  ? `<a target="_blank"
+        href="${invoiceLink}"
+        class="btn btn-sm btn-success">
+        View Invoice - ${invoiceNo ?? "#"}
+     </a>`
+  : `<button class="btn btn-sm btn-secondary" disabled>
+        No Invoice
+     </button>`;
+
 
 const items = order.items.map(i=>`
 <tr>

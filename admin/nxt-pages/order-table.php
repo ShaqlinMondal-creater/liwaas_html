@@ -172,73 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // function renderOrders(orders) {
-    //     tableBody.innerHTML = "";
-
-    //     orders.forEach(order => {
-
-    //         const customer = order.user
-    //             ? `${order.user.name}<br><span class="text-xs text-gray-500">${order.user.email}</span>`
-    //             : `<span class="text-gray-400">Guest</span>`;
-
-    //         const itemsPreview = order.items?.length
-    //             ? order.items.map(i => `${i.product.name} × ${i.quantity}`).join("<br>")
-    //             : '<span class="text-gray-400">No items</span>';
-
-    //         const itemsCount = order.items?.length || 0;
-
-    //         const shippingBy = order.shipping?.shipping_by ?? '—';
-    //         const awb = order.shipping?.shipping_delivery_id ?? '—';
-
-    //         const row = `
-    //             <tr>
-    //                 <td class="text-center">
-    //                     <input type="checkbox" class="order-checkbox" value="${order.id}">
-    //                 </td>
-    //                 <td class="font-medium text-primary">
-    //                     <a href="nxt-pages/view-order.php?id=${order.id}">${order.order_code}</a>
-    //                 </td>
-    //                 <td>${customer}</td>
-    //                 <td>${itemsPreview} <br>(${itemsCount} items)</td>
-    //                 <td>${badge(order.payment_type)}</td>
-    //                 <td>${badge(order.shipping?.shipping_status)}</td>
-    //                 <td>${shippingBy} - ${awb}</td>
-    //                 <td class="font-semibold">₹${order.grand_total}</td>
-    //                 <td>${order.created_at}</td>
-
-    //                 <td class="text-center">
-    //                     <div class="menu flex-inline" data-menu="true">
-    //                         <div class="menu-item" data-menu-item-toggle="dropdown" data-menu-item-trigger="click">
-    //                             <button class="menu-toggle btn btn-sm btn-light">
-    //                                 ⋮
-    //                             </button>
-    //                             <div class="menu-dropdown menu-default w-[150px]">
-    //                                 <div class="menu-item">
-    //                                     <a class="menu-link" href="nxt-pages/view-order.php?id=${order.id}">View</a>
-    //                                 </div>
-    //                                 <div class="menu-item">
-    //                                     <a class="menu-link" href="update-order.php?id=${order.id}">Update</a>
-    //                                 </div>
-    //                                 <div class="menu-item">
-    //                                     <a class="menu-link text-warning cancel-order" data-id="${order.id}">Cancel</a>
-    //                                 </div>
-    //                                 <div class="menu-item">
-    //                                     <a class="menu-link text-danger delete-order" data-id="${order.id}">Delete</a>
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 </td>
-    //             </tr>
-    //         `;
-
-    //         tableBody.insertAdjacentHTML("beforeend", row);
-    //     });
-    //     // Reset select all when table re-renders
-    //     const selectAll = document.getElementById("select_all_orders");
-    //     if (selectAll) selectAll.checked = false;
-    // }
-
     function renderOrders(orders) {
         let rows = "";
 
@@ -507,5 +440,5 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
-               <!-- Footer -->
+<!-- Footer -->
 <?php include("../footer.php"); ?>

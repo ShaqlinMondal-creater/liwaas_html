@@ -178,8 +178,7 @@ function paymentButton(order){
   }
 
   return `
-    <button onclick="openPaymentDetails()"
-      class="btn btn-sm btn-light-primary">
+    <button onclick="openPaymentDetails()" class="btn btn-sm btn-light-primary">
       Payment Details
     </button>
   `;
@@ -212,19 +211,11 @@ function openPaymentDetails(){
         </div>
 
         <hr>
-
-        <div>
-          <b>Razorpay Order ID:</b><br>
-          <span class="text-xs">${p.generate_order_id ?? "—"}</span>
+        <div class="grid grid-cols-2 gap-3">
+          <div><b>Razorpay Order ID:</b> <span class="text-xs">${p.generate_order_id ?? "—"}</span></div>
+          <div><b>Transaction ID:</b> <span class="text-xs">${p.transaction_id ?? "—"}</span></div>
         </div>
-
-        <div>
-          <b>Transaction ID:</b><br>
-          <span class="text-xs">${p.transaction_id ?? "—"}</span>
-        </div>
-
         <hr>
-
         <div>
           <b>Gateway Response</b>
           <pre class="bg-gray-100 p-3 rounded text-xs overflow-auto max-h-[200px]">

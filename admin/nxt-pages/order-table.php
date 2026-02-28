@@ -487,7 +487,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const data = await res.json();
 
-        if(!data.success || (!data.recommended?.length && !data.fastest?.length)){
+        if(!data.success){
             el.innerHTML = `<span class="text-red-500">Not serviceable</span>`;
             return;
         }
@@ -500,41 +500,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderService(el, data){
 
-    const recommended = data.recommended?.[0];
+        const recommended = data.recommended?.[0];
+        const fastest = data.fastest?.[0];
 
-    const fastest = data.fastest
-        ?.filter(c => c.delivery_days != null)
-        .reduce((a,b)=> a.delivery_days <= b.delivery_days ? a : b, null);
+        el.innerHTML = `
+            ${
+            recommended
+            ? `<div class="text-primary-600 font-medium leading-tight">
+                    ${recommended.delivery_days}d ₹${Math.round(recommended.total_charge || 0)}
+                    <span class="block text-[10px] text-gray-500">
+                    ${recommended.name} • Recommended
+                    </span>
+                </div>`
+            : `<div class="text-gray-400 text-[11px]">No recommended</div>`
+            }
 
-    const showFastest =
-        fastest &&
-            (!recommended ||
-            fastest.delivery_days !== recommended.delivery_days ||
-            fastest.total_charge !== recommended.total_charge);
-
-    el.innerHTML = `
-        ${
-        recommended
-        ? `<div class="text-primary-600 font-medium leading-tight">
-                ${recommended.delivery_days}d ₹${Number(recommended.total_charge).toFixed(0)}
-                <span class="block text-[10px] text-gray-500">
-                ${recommended.name} • Recommended
-                </span>
-            </div>`
-        : ``
-        }
-
-        ${
-        showFastest
-        ? `<div class="text-red-600 font-medium leading-tight mt-1">
-                ${fastest.delivery_days}d ₹${Number(fastest.total_charge).toFixed(0)}
-                <span class="block text-[10px] text-gray-500">
-                ${fastest.name} • Fastest
-                </span>
-            </div>`
-        : ``
-        }
-    `;
+            ${
+            fastest
+            ? `<div class="text-red-600 font-medium leading-tight mt-1">
+                    ${fastest.delivery_days}d ₹${Number(fastest.total_charge).toFixed(0)}
+                    <span class="block text-[10px] text-gray-500">
+                    ${fastest.name} • Fastest
+                    </span>
+                </div>`
+            : `<div class="text-gray-400 text-[11px]">No fastest</div>`
+            }
+        `;
     }
 
     fetchOrders(currentPage);

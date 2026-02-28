@@ -288,57 +288,47 @@ fetchOrder();
 
             <!-- ADDRESS -->
             <div>
-            <div class="font-semibold mb-2">📍 Delivery Address</div>
+                <div class="font-semibold mb-2">📍 Delivery Address</div>
 
-            <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="grid grid-cols-3 gap-3 text-sm">
+                    <div><b>Name:</b><br>${address.name ?? "—"}</div>
+                    <div><b>Mobile:</b><br>${address.mobile ?? "—"}</div>
+                    <div><b>Email:</b><br>${address.email ?? "—"}</div>
 
-                <div><b>Name:</b><br>${address.name ?? "—"}</div>
-                <div><b>Mobile:</b><br>${address.mobile ?? "—"}</div>
-
-                <div class="col-span-2">
-                <b>Email:</b><br>${address.email ?? "—"}
+                    <div class="col-span-2">
+                        <b>Address:</b><br>
+                        ${address.address_line_1 ?? ""}
+                        ${address.city ?? ""}, ${address.state ?? ""} - ${address.pincode ?? ""}
+                        <br>${address.country ?? ""}
+                    </div>
                 </div>
-
-                <div class="col-span-2">
-                <b>Address:</b><br>
-                ${address.address_line_1 ?? ""}
-                ${address.city ?? ""}, ${address.state ?? ""} - ${address.pincode ?? ""}
-                <br>${address.country ?? ""}
-                </div>
-
-            </div>
             </div>
 
             <!-- SHIPPING INFO -->
             <div>
-            <div class="font-semibold mb-2">🚚 Shipping Info</div>
+                <div class="font-semibold mb-2">🚚 Shipping Info</div>
 
-            <div class="grid grid-cols-3 gap-3 text-sm">
-
-                <div>
-                <b>Status</b><br>
-                ${getShippingBadge(s.shipping_status)}
+                <div class="grid grid-cols-3 gap-3 text-sm">
+                    <div>
+                        <b>Status</b><br>
+                        ${getShippingBadge(s.shipping_status)}
+                    </div>
+                    <div>
+                        <b>Courier</b><br>
+                        ${s.shipping_by ?? "—"}
+                    </div>
+                    <div>
+                        <b>AWB</b><br>
+                        ${s.shipping_delivery_id ?? "—"}
+                    </div>
                 </div>
-
-                <div>
-                <b>Courier</b><br>
-                ${s.shipping_by ?? "—"}
-                </div>
-
-                <div>
-                <b>AWB</b><br>
-                ${s.shipping_delivery_id ?? "—"}
-                </div>
-
-            </div>
             </div>
 
             <!-- SHIPROCKET RESPONSE -->
             <div>
-            <div class="font-semibold mb-2">📦 Shiprocket Response</div>
-            ${shiprocketResponse}
+                <div class="font-semibold mb-2">📦 Shiprocket Response</div>
+                ${shiprocketResponse}
             </div>
-
         </div>
         `
         });

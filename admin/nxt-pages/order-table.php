@@ -111,6 +111,8 @@
                <!-- End of Content -->
 
 <script>
+    const svcCache = {};
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const tableBody = document.getElementById("order_table_body");
@@ -202,7 +204,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${itemsPreview}<br>(${itemsCount} items)</td>
                     <td>${badge(order.payment_type)}</td>
                     <td>${badge(order.shipping?.shipping_status)}</td>
-                    <td>${shippingBy} - ${awb}</td>
+                    <td>
+                        ${shippingBy} - ${awb}
+                        <div id="svc_${order.id}" class="text-xs text-gray-500 mt-1">
+                            checking...
+                        </div>
+                    </td>
                     <td class="font-semibold">₹${order.grand_total}</td>
                     <td>${order.created_at}</td>
 
@@ -213,6 +220,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                     ⋮
                                 </button>
                                 <div class="menu-dropdown menu-default w-[150px]">
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="punch.php?id=${order.id}">Punch Shiprocket</a>
+                                    </div>
                                     <div class="menu-item">
                                         <a class="menu-link" href="nxt-pages/view-order.php?code=${order.order_code}">View</a>
                                     </div>
@@ -233,6 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
         });
         tableBody.innerHTML = rows;
+        orders.forEach(loadServiceability);
 
         document.getElementById("select_all_orders").checked = false;
     }
@@ -435,10 +446,91 @@ document.addEventListener("DOMContentLoaded", () => {
         fetchOrders(currentPage);
     });
 
+    async function loadServiceability(order){
+
+    const el = document.getElementById(`svc_${order.id}`);
+    if(!el) return;
+
+    const pincode = order.shipping?.address?.pincode;
+    if(!pincode){
+        el.innerHTML = `<span class="text-gray-400">No pincode</span>`;
+        return;
+    }
+
+    const cod = order.payment_type === "COD" ? 1 : 0;
+
+    const cacheKey = `${pincode}_${cod}`;
+
+    if(svcCache[cacheKey]){
+        renderService(el, svcCache[cacheKey]);
+        return;
+    }
+
+    try{
+
+        const res = await fetch("<?= $baseUrl ?>/api/admin/shiprocket/serviceability",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization":`Bearer ${token}`
+        },
+        body:JSON.stringify({
+            pickup_pincode:"700001",
+            delivery_pincode:pincode,
+            cod:cod,
+            weight:0.4,
+            length:10,
+            breadth:10,
+            height:4
+        })
+        });
+
+        const data = await res.json();
+
+        if(!data.success || (!data.recommended?.length && !data.fastest?.length)){
+            el.innerHTML = `<span class="text-red-500">Not serviceable</span>`;
+            return;
+        }
+        svcCache[cacheKey] = data;
+        renderService(el, data);
+    }catch{
+        el.innerHTML = `<span class="text-red-500">Error</span>`;
+    }
+    }
+
+    function renderService(el, data){
+        const recommended = data.recommended?.[0];
+        const fastest = data.fastest?.[0];
+        el.innerHTML = `
+            ${
+            recommended
+            ? `<div class="text-green-600 font-medium leading-tight">
+                    ${recommended.delivery_days}d ₹${recommended.total_charge}
+                    <span class="block text-[10px] text-gray-500">
+                    ${recommended.name} • Recommended
+                    </span>
+                </div>`
+            : ``
+            }
+
+            ${
+            fastest
+            ? `<div class="text-indigo-600 font-medium leading-tight">
+                    ${fastest.delivery_days}d ₹${fastest.total_charge}
+                    <span class="block text-[10px] text-gray-500">
+                    ${fastest.name} • Fastest
+                    </span>
+                </div>`
+            : ``
+            }
+        `;
+    }
+
+
     fetchOrders(currentPage);
 });
-</script>
 
+</script>
 
 <!-- Footer -->
 <?php include("../footer.php"); ?>

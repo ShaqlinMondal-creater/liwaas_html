@@ -507,7 +507,10 @@ document.addEventListener("DOMContentLoaded", () => {
         .reduce((a,b)=> a.delivery_days <= b.delivery_days ? a : b, null);
 
     const showFastest =
-        fastest && (!recommended || fastest.id !== recommended.id);
+        fastest &&
+            (!recommended ||
+            fastest.delivery_days !== recommended.delivery_days ||
+            fastest.total_charge !== recommended.total_charge);
 
     el.innerHTML = `
         ${

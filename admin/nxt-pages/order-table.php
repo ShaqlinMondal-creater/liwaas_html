@@ -502,9 +502,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const recommended = data.recommended?.[0];
 
-    const fastest = data.fastest?.reduce((a,b)=>
-        a.delivery_days <= b.delivery_days ? a : b
-    );
+    const fastest = data.fastest
+        ?.filter(c => c.delivery_days != null)
+        .reduce((a,b)=> a.delivery_days <= b.delivery_days ? a : b, null);
 
     const showFastest =
         fastest && (!recommended || fastest.id !== recommended.id);
@@ -512,8 +512,8 @@ document.addEventListener("DOMContentLoaded", () => {
     el.innerHTML = `
         ${
         recommended
-        ? `<div class="text-green-600 font-medium leading-tight">
-                ${recommended.delivery_days}d ₹${recommended.total_charge}
+        ? `<div class="text-primary-600 font-medium leading-tight">
+                ${recommended.delivery_days}d ₹${Number(recommended.total_charge).toFixed(0)}
                 <span class="block text-[10px] text-gray-500">
                 ${recommended.name} • Recommended
                 </span>
@@ -523,8 +523,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         ${
         showFastest
-        ? `<div class="text-indigo-600 font-medium leading-tight mt-1">
-                ${fastest.delivery_days}d ₹${fastest.total_charge}
+        ? `<div class="text-red-600 font-medium leading-tight mt-1">
+                ${fastest.delivery_days}d ₹${Number(fastest.total_charge).toFixed(0)}
                 <span class="block text-[10px] text-gray-500">
                 ${fastest.name} • Fastest
                 </span>

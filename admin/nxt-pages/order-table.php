@@ -70,13 +70,13 @@
                                                     <th class="w-[60px] text-center">
                                                         <input id="select_all_orders" class="checkbox checkbox-sm" type="checkbox" />
                                                     </th>
-                                                    <th class="min-w-[150px]">Order Code</th>
-                                                    <th class="min-w-[220px]">Customer</th>
-                                                    <th class="min-w-[150px]">Items</th>
-                                                    <th class="min-w-[100px]">Payment</th>
-                                                    <th class="min-w-[100px]">Shipping</th>
-                                                    <th class="min-w-[100px]">Delivery</th>
-                                                    <th class="min-w-[120px]">Total</th>
+                                                    <th class="min-w-[120px]">Order Code</th>
+                                                    <th class="min-w-[180px]">Customer</th>
+                                                    <th class="min-w-[180px]">Items</th>
+                                                    <th class="min-w-[80px]">Payment</th>
+                                                    <th class="min-w-[80px]">Shipping</th>
+                                                    <th class="min-w-[180px]">Delivery</th>
+                                                    <th class="min-w-[100px]">Total</th>
                                                     <th class="min-w-[150px]">Date</th>
                                                     <th class="w-[60px]"></th>
                                                 </tr>

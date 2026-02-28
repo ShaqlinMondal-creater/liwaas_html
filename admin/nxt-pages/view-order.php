@@ -43,134 +43,203 @@ async function fetchOrder() {
 <script>
 function renderOrder(order){
 
-const invoiceLink = order.invoice?.invoice_link || order.invoice_link;
-const invoiceNo = order.invoice?.invoice_no || order.invoice_no;
-const invoiceBtn = invoiceLink
-  ? `<a target="_blank"
-        href="${invoiceLink}"
-        class="btn btn-sm btn-success">
-        View Invoice - ${invoiceNo ?? "#"}
-     </a>`
-  : `<button class="btn btn-sm btn-secondary" disabled>
-        No Invoice
-     </button>`;
+    const invoiceLink = order.invoice?.invoice_link || order.invoice_link;
+    const invoiceNo = order.invoice?.invoice_no || order.invoice_no;
+    const invoiceBtn = invoiceLink
+        ? `<a target="_blank"
+                href="${invoiceLink}"
+                class="btn btn-sm btn-success">
+                View Invoice - ${invoiceNo ?? "#"}
+            </a>`
+        : `<button class="btn btn-sm btn-secondary" disabled>
+                No Invoice
+            </button>`;
 
 
-const items = order.items.map(i=>`
-<tr>
-    <td class="flex items-center gap-3">
-        <img src="${i.image_link ?? i.product.image?.upload_url}" class="w-12 h-12 rounded">
-        <div>
-            <div>${i.product.name}</div>
-            <div class="text-xs text-gray-500">${i.color} / ${i.size}</div>
-        </div>
-    </td>
-    <td>${i.quantity}</td>
-    <td>₹${i.total}</td>
-</tr>`).join("");
-
-const trackBtn = order.shipping?.shipping_delivery_id
-  ? `<button onclick="trackShipment('${order.shipping.shipping_delivery_id}')" 
-       class="btn btn-sm btn-primary">Track</button>`
-  : `<button class="btn btn-sm btn-secondary" disabled>Track</button>`;
-
-document.getElementById("order_view").innerHTML = `
-
-<div class="grid lg:grid-cols-3 gap-5">
-
-    <div class="lg:col-span-2 space-y-5">
-        <div class="card p-5">
-            <h3 class="font-semibold mb-3">Update Status</h3>
-
-            <div class="flex gap-3">
-
-                <select id="shipping_status" class="select">
-                    <option ${order.shipping.shipping_status=="Pending"?"selected":""}>Pending</option>
-                    <option ${order.shipping.shipping_status=="Approved"?"selected":""}>Approved</option>
-                    <option ${order.shipping.shipping_status=="Completed"?"selected":""}>Completed</option>
-                </select>
-
-                <select id="order_status" class="select">
-                    <option ${order.order_status=="pending"?"selected":""}>pending</option>
-                    <option ${order.order_status=="confirmed"?"selected":""}>confirmed</option>
-                    <option ${order.order_status=="completed"?"selected":""}>completed</option>
-                    <option ${order.order_status=="cancelled"?"selected":""}>cancelled</option>
-                </select>
-
-                <button onclick="updateStatus()" class="btn btn-primary btn-sm">Update</button>
-
-            </div>
-        </div>
-
-        <div class="card p-5">
-            <h3 class="font-semibold mb-3">Items</h3>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Qty</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>${items}</tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="space-y-5">
-        <div class="card p-5">
-            <h3 class="font-semibold mb-3">Customer</h3>
-
-            <div class="text-sm space-y-1">
-                <div class="font-medium">${order.user?.name ?? "Guest"}</div>
-                <div class="text-gray-500">${order.user?.email ?? ""}</div>
-                <div>${order.user?.mobile ?? ""}</div>
-            </div>
-        </div>
-
-        <div class="card p-5">
-            <h3 class="font-semibold mb-3">Shipping</h3>
-
-            <div class="text-sm space-y-2">
+        const items = order.items.map(i=>`
+        <tr>
+            <td class="flex items-center gap-3">
+                <img src="${i.image_link ?? i.product.image?.upload_url}" class="w-12 h-12 rounded">
                 <div>
-                    <b>Status:</b> ${order.shipping.shipping_status}
+                    <div>${i.product.name}</div>
+                    <div class="text-xs text-gray-500">${i.color} / ${i.size}</div>
                 </div>
-                <div>
-                    <b>By:</b> ${order.shipping.shipping_by}
-                </div>
-                <div>
-                    <b>AWB:</b> ${order.shipping.shipping_delivery_id ?? "—"}
+            </td>
+            <td>${i.quantity}</td>
+            <td>₹${i.total}</td>
+        </tr>`).join("");
+
+        const trackBtn = order.shipping?.shipping_delivery_id
+        ? `<button onclick="trackShipment('${order.shipping.shipping_delivery_id}')" 
+            class="btn btn-sm btn-primary">Track</button>`
+        : `<button class="btn btn-sm btn-secondary" disabled>Track</button>`;
+
+        document.getElementById("order_view").innerHTML = `
+
+            <div class="grid lg:grid-cols-3 gap-5">
+
+                <div class="lg:col-span-2 space-y-5">
+                    <div class="card p-5">
+                        <h3 class="font-semibold mb-3">Update Status</h3>
+
+                        <div class="flex gap-3">
+
+                            <select id="shipping_status" class="select">
+                                <option ${order.shipping.shipping_status=="Pending"?"selected":""}>Pending</option>
+                                <option ${order.shipping.shipping_status=="Approved"?"selected":""}>Approved</option>
+                                <option ${order.shipping.shipping_status=="Completed"?"selected":""}>Completed</option>
+                            </select>
+
+                            <select id="order_status" class="select">
+                                <option ${order.order_status=="pending"?"selected":""}>pending</option>
+                                <option ${order.order_status=="confirmed"?"selected":""}>confirmed</option>
+                                <option ${order.order_status=="completed"?"selected":""}>completed</option>
+                                <option ${order.order_status=="cancelled"?"selected":""}>cancelled</option>
+                            </select>
+
+                            <button onclick="updateStatus()" class="btn btn-primary btn-sm">Update</button>
+
+                        </div>
+                    </div>
+
+                    <div class="card p-5">
+                        <h3 class="font-semibold mb-3">Items</h3>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Qty</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>${items}</tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <button onclick="openShippingModal()" class="btn btn-sm btn-light mt-2">
-                    View Details
-                </button>
-                ${trackBtn}
-            </div>
-        
-        </div>
-        <div class="card p-5">
-            <h3 class="font-semibold mb-3">Order Info</h3>
+                <div class="space-y-5">
+                    <div class="card p-5">
+                        <h3 class="font-semibold mb-3">Customer</h3>
 
-            <div class="text-sm space-y-2">
-                <div><b>Order Code:</b> ${order.order_code}</div>
-                <div><b>Date:</b> ${order.created_at}</div>
-                <div><b>Payment:</b> ${order.payment_type}</div>
-                <div class="mt-3">${invoiceBtn}</div>
-            </div>
-        </div>
+                        <div class="text-sm space-y-1">
+                            <div class="font-medium">${order.user?.name ?? "Guest"}</div>
+                            <div class="text-gray-500">${order.user?.email ?? ""}</div>
+                            <div>${order.user?.mobile ?? ""}</div>
+                        </div>
+                    </div>
 
-        <div class="card p-5">
-            <div class="flex justify-between font-semibold text-lg">
-                <span>Total</span>
-                <span>₹${order.grand_total}</span>
+                    <div class="card p-5">
+                        <h3 class="font-semibold mb-3">Shipping</h3>
+
+                        <div class="text-sm space-y-2">
+                            <div>
+                                <b>Status:</b> ${order.shipping.shipping_status}
+                            </div>
+                            <div>
+                                <b>By:</b> ${order.shipping.shipping_by}
+                            </div>
+                            <div>
+                                <b>AWB:</b> ${order.shipping.shipping_delivery_id ?? "—"}
+                            </div>
+
+                            <button onclick="openShippingModal()" class="btn btn-sm btn-light mt-2">
+                                View Details
+                            </button>
+                            ${trackBtn}
+                        </div>
+                    
+                    </div>
+                    <div class="card p-5">
+                        <h3 class="font-semibold mb-3">Order Info</h3>
+
+                        <div class="text-sm space-y-2">
+                            <div><b>Order Code:</b> ${order.order_code}</div>
+                            <div><b>Date:</b> ${order.created_at}</div>
+                            <div><b>Payment:</b> ${order.payment_type}</div>
+                            <div class="mt-3">${invoiceBtn}  ${paymentButton(order)}</div>
+                        </div>
+                    </div>
+
+                    <div class="card p-5">
+                        <div class="flex justify-between font-semibold text-lg">
+                            <span>Total</span>
+                            <span>₹${order.grand_total}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-`;
+        `;
 }
+function paymentButton(order){
+
+  if(!order.payment){
+    return `<button class="btn btn-sm btn-secondary" disabled>No Payment</button>`;
+  }
+
+  return `
+    <button onclick="openPaymentDetails()"
+      class="btn btn-sm btn-light-primary">
+      Payment Details
+    </button>
+  `;
+}
+
+function openPaymentDetails(){
+
+  const p = currentOrder.payment || {};
+  const razor = p.response ? JSON.parse(p.response) : {};
+
+  Swal.fire({
+    title: "Payment Details",
+    width: 700,
+    html: `
+
+      <div class="text-left space-y-4 text-sm">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div><b>Type:</b> ${p.payment_type ?? "—"}</div>
+          <div><b>Status:</b>
+            <span class="badge badge-${p.status === 'success' ? 'success' : 'warning'}">
+              ${p.status ?? "—"}
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div><b>Amount:</b> ₹${p.amount ?? "—"}</div>
+          <div><b>Date:</b> ${p.created_at ?? "—"}</div>
+        </div>
+
+        <hr>
+
+        <div>
+          <b>Razorpay Order ID:</b><br>
+          <span class="text-xs">${p.generate_order_id ?? "—"}</span>
+        </div>
+
+        <div>
+          <b>Transaction ID:</b><br>
+          <span class="text-xs">${p.transaction_id ?? "—"}</span>
+        </div>
+
+        <hr>
+
+        <div>
+          <b>Gateway Response</b>
+          <pre class="bg-gray-100 p-3 rounded text-xs overflow-auto max-h-[200px]">
+                ${JSON.stringify(razor, null, 2)}
+          </pre>
+        </div>
+
+      </div>
+    `,
+    showCloseButton: true,
+    showConfirmButton: false
+  });
+
+}
+
 </script>
 <script>
 async function updateStatus(){

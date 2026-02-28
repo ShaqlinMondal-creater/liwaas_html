@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>
                         ${shippingBy} - ${awb}
                         <div id="svc_${order.id}" class="text-xs text-gray-500 mt-1">
-                            checking...
+                            <span class="animate-pulse text-gray-400">Checking...</span>
                         </div>
                     </td>
                     <td class="font-semibold">₹${order.grand_total}</td>
@@ -499,33 +499,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderService(el, data){
-        const recommended = data.recommended?.[0];
-        const fastest = data.fastest?.[0];
-        el.innerHTML = `
-            ${
-            recommended
-            ? `<div class="text-green-600 font-medium leading-tight">
-                    ${recommended.delivery_days}d ₹${recommended.total_charge}
-                    <span class="block text-[10px] text-gray-500">
-                    ${recommended.name} • Recommended
-                    </span>
-                </div>`
-            : ``
-            }
 
-            ${
-            fastest
-            ? `<div class="text-indigo-600 font-medium leading-tight">
-                    ${fastest.delivery_days}d ₹${fastest.total_charge}
-                    <span class="block text-[10px] text-gray-500">
-                    ${fastest.name} • Fastest
-                    </span>
-                </div>`
-            : ``
-            }
-        `;
+    const recommended = data.recommended?.[0];
+
+    const fastest = data.fastest?.reduce((a,b)=>
+        a.delivery_days <= b.delivery_days ? a : b
+    );
+
+    const showFastest =
+        fastest && (!recommended || fastest.id !== recommended.id);
+
+    el.innerHTML = `
+        ${
+        recommended
+        ? `<div class="text-green-600 font-medium leading-tight">
+                ${recommended.delivery_days}d ₹${recommended.total_charge}
+                <span class="block text-[10px] text-gray-500">
+                ${recommended.name} • Recommended
+                </span>
+            </div>`
+        : ``
+        }
+
+        ${
+        showFastest
+        ? `<div class="text-indigo-600 font-medium leading-tight mt-1">
+                ${fastest.delivery_days}d ₹${fastest.total_charge}
+                <span class="block text-[10px] text-gray-500">
+                ${fastest.name} • Fastest
+                </span>
+            </div>`
+        : ``
+        }
+    `;
     }
-
 
     fetchOrders(currentPage);
 });

@@ -75,7 +75,7 @@
                                                     <th class="min-w-[180px]">Items</th>
                                                     <th class="min-w-[80px]">Payment</th>
                                                     <th class="min-w-[80px]">Shipping</th>
-                                                    <th class="min-w-[180px]">Delivery</th>
+                                                    <th class="min-w-[250px]">Delivery</th>
                                                     <th class="min-w-[100px]">Total</th>
                                                     <th class="min-w-[150px]">Date</th>
                                                     <th class="w-[60px]"></th>

@@ -508,7 +508,7 @@ document.addEventListener("DOMContentLoaded", () => {
             recommended
             ? `<div class="text-primary-600 font-medium leading-tight">
                     ${recommended.delivery_days}d ₹${Math.round(recommended.total_charge || 0)}
-                    <span class="block text-[10px] text-gray-500">
+                    <span class="block text-[10px] text-primary-500">
                     ${recommended.name} • Recommended
                     </span>
                 </div>`
@@ -518,8 +518,8 @@ document.addEventListener("DOMContentLoaded", () => {
             ${
             fastest
             ? `<div class="text-red-600 font-medium leading-tight mt-1">
-                    ${fastest.delivery_days}d ₹${Number(fastest.total_charge).toFixed(0)}
-                    <span class="block text-[10px] text-gray-500">
+                    ${fastest.delivery_days}d ₹${Math.round(fastest.total_charge || 0)}
+                    <span class="block text-[10px] text-red-500">
                     ${fastest.name} • Fastest
                     </span>
                 </div>`

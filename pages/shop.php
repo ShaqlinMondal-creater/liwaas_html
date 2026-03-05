@@ -231,7 +231,7 @@
         sort: null,
         min_price: null,
         max_price: null,
-        limit: 5,
+        limit: 6,
         offset: 0,
         currentPage: 1,
         totalPages: 1
@@ -271,36 +271,6 @@
             });
         }
     }
-
-    // let COLOR_MAP = {};
-    // async function loadColorMap() {
-    //     try {
-    //         const res = await fetch("../stat-json/color.json");
-    //         const json = await res.json();
-    //         json.colors.forEach(c => {
-    //             COLOR_MAP[c.name.toLowerCase()] = c.code;
-    //         });
-    //         console.log("Color map loaded:", COLOR_MAP);
-    //     } catch (e) {
-    //         console.error("Failed to load color map:", e);
-    //     }
-    // }
-    // async function loadColorMap() {
-    //     try {
-    //         const res = await fetch(`../stat-json/color.json`);
-    //         const json = await res.json();
-
-    //         json.colors.forEach(c => {
-    //             COLOR_MAP[c.name.trim().toLowerCase()] = c.code;
-    //         });
-
-    //         console.log("Color map loaded:", COLOR_MAP);
-
-    //     } catch (e) {
-    //         console.error("Failed to load color map:", e);
-    //     }
-    // }
-
 
     fetch(filtersEndpoint)
         .then(res => res.json())

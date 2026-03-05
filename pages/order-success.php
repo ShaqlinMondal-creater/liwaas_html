@@ -196,20 +196,20 @@ itemsEl.innerHTML="";
 (order.items || []).forEach(item=>{
 itemsEl.innerHTML+=`
 <li class="flex gap-4 py-4">
-<img src="${item.image?.upload_url || 'assets/placeholder.png'}"
-class="w-20 h-20 rounded-lg object-cover"/>
+  <img src="${item.image?.upload_url || 'assets/placeholder.png'}" class="w-20 h-20 rounded-lg object-cover"/>
 
-<div class="flex-1">
-<h3 class="font-medium">${item.product.name}</h3>
-<p class="text-sm text-gray-500">
-${item.variation?.color || ""} ${item.variation?.size || ""}
-</p>
-</div>
+  <div class="flex-1">
+    <h3 class="font-medium">${item.product.name}</h3>
+    <p class="text-sm text-gray-500 flex items-center gap-2">
+      <span class="w-3 h-3 rounded-full border" style="background:${item.variation?.color?.code || '#e5e7eb'}"></span>
+      ${item.variation?.color?.name || ""} | ${item.variation?.size || ""}
+    </p>
+  </div>
 
-<div class="text-right">
-<p>Qty: ${item.quantity}</p>
-<p class="font-medium">₹${item.total}</p>
-</div>
+  <div class="text-right">
+    <p>Qty: ${item.quantity}</p>
+    <p class="font-medium">₹${item.total}</p>
+  </div>
 </li>`;
 });
 

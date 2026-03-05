@@ -358,7 +358,8 @@
             container.innerHTML = "";
 
             data.colors.forEach(colorName => {
-                const key = (colorName || "").toLowerCase();
+                // const key = (colorName || "").toLowerCase();
+                const key = (colorName || "").trim().toLowerCase();
                 const colorCode = COLOR_MAP[key] || "#e5e7eb"; // fallback grey
 
                 const btn = document.createElement("button");

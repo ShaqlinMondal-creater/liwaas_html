@@ -178,10 +178,19 @@ function renderWishlists(data) {
 
         const variation = item.variation || {};
         const variationText = item.variation
-            ? `${variation.color || "-"} / ${variation.size || "-"}`
+            ? `
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full border"
+                    style="background:${variation.color?.code || '#e5e7eb'}">
+                </span>
+                <span>${variation.color?.name || "-"}</span>
+                /
+                <span>${variation.size || "-"}</span>
+            </div>
+            `
             : `<span class="text-gray-400">No variation</span>`;
 
-        const image = variation.images?.length
+        const image = variation.images?.[0]
             ? `<img src="${variation.images[0]}"
                 class="w-10 h-10 rounded object-cover">`
             : "";

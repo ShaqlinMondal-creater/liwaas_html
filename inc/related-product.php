@@ -91,9 +91,9 @@
             const productIdRl = p.product_id;
             const variationUid = p.variation?.uid;
             const slug = p.slug;
-            const colorName = p.variation?.color || "";
+            const colorName = p.variation?.color?.name || "";
             const size = p.variation?.size || "";
-            const colorCode = COLOR_MAP[colorName.toLowerCase()] || "#e5e7eb";
+            const colorCode = p.variation?.color?.code || "#e5e7eb";
 
             return `
             <div class="flex-shrink-0 w-48 group" data-product-id="${variationUid}">

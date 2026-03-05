@@ -756,19 +756,6 @@
           });
         }
 
-        // ========== PRODUCT DATA ==========
-        // async function loadColorMap() {
-        //   try {
-        //     const res = await fetch("../stat-json/color.json");
-        //     const json = await res.json();
-        //     json.colors.forEach(c => {
-        //       COLOR_MAP[c.name.toLowerCase()] = c.code;
-        //     });
-        //   } catch (error) {
-        //     console.error("Failed to load color map:", error);
-        //   }
-        // }
-
         async function fetchProduct() {
           const uid = getProductUid();
           if (!uid) {

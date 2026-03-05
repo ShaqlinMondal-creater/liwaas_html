@@ -525,23 +525,21 @@
                 container.innerHTML = "";
 
                 orders.forEach(order => {
-                    // ✅ Map delivery_status into progress codes
+                    // ✅ Map order_status into progress codes
                     const statusMap = {
-                        pending: { code: 1, color: "blue", label: "Confirm" },
-                        shipped: { code: 2, color: "blue", label: "Shipped" },
-                        arrived: { code: 3, color: "blue", label: "Arrived" },
-                        "near you": { code: 4, color: "orange", label: "Near You" },
-                        delivered: { code: 5, color: "green", label: "Delivered" },
-                        cancel: { code: 5, color: "red", label: "Cancelled" }
+                        pending: { code: 1, color: "blue", label: "Pending" },
+                        approved: { code: 2, color: "blue", label: "Confirmed" },
+                        completed: { code: 5, color: "green", label: "Delivered" },
+                        cancelled: { code: 5, color: "red", label: "Cancelled" }
                     };
 
-                    const normalizedStatus = order.delivery_status?.trim().toLowerCase();
+                    const normalizedStatus = order.order_status?.trim().toLowerCase();
                     const matchedKey = Object.keys(statusMap).find(
                         key => key.toLowerCase() === normalizedStatus
                     );
                     const statusInfo = matchedKey 
                         ? statusMap[matchedKey] 
-                        : { code: 1, color: "gray", label: order.delivery_status };
+                        : { code: 1, color: "gray", label: order.order_status || "In Progress" };
 
                     const statusBgMap = {
                         orange: "bg-orange-200 text-orange-700",

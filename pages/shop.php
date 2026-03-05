@@ -111,22 +111,7 @@
                 <div class="bg-white p-6 rounded-xl shadow-sm border">
                     <h3 class="font-medium mb-4">Categories</h3>
                     <div class="space-y-3 filters-categories">
-                        <!-- <label class="flex items-center">
-                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                            <span class="ml-2">T-Shirts (24)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                            <span class="ml-2">Sweaters (12)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                            <span class="ml-2">Jackets (8)</span>
-                        </label>
-                        <label class="flex items-center">
-                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                            <span class="ml-2">Accessories (16)</span>
-                        </label> -->
+                        <!--  -->
                     </div>
                 </div>
                 <!-- Price Range -->
@@ -149,12 +134,7 @@
                 <div class="bg-white p-6 rounded-xl shadow-sm border">
                     <h3 class="font-medium mb-4">Colors</h3>
                     <div class="flex flex-wrap gap-3 filters-colors">
-                        <!-- <button class="w-10 h-10 rounded-full bg-black ring-2 ring-offset-2 ring-black"></button>
-                        <button class="w-10 h-10 rounded-full bg-white border-2 border-gray-200"></button>
-                        <button class="w-10 h-10 rounded-full bg-gray-500"></button>
-                        <button class="w-10 h-10 rounded-full bg-red-500"></button>
-                        <button class="w-10 h-10 rounded-full bg-blue-500"></button>
-                        <button class="w-10 h-10 rounded-full bg-green-500"></button> -->
+                        <!--  -->
                     </div>
                 </div>
 
@@ -162,12 +142,6 @@
                 <div class="bg-white p-6 rounded-xl shadow-sm border">
                     <h3 class="font-medium mb-4">Size</h3>
                     <div class="grid grid-cols-3 gap-3 filters-sizes">
-                        <!-- <button class="py-3 border rounded-lg hover:border-black">XS</button>
-                        <button class="py-3 border rounded-lg hover:border-black">S</button>
-                        <button class="py-3 bg-black text-white rounded-lg">M</button>
-                        <button class="py-3 border rounded-lg hover:border-black">L</button>
-                        <button class="py-3 border rounded-lg hover:border-black">XL</button>
-                        <button class="py-3 border rounded-lg hover:border-black">2XL</button> -->
                     </div>
                 </div>
             </div>
@@ -299,18 +273,34 @@
     }
 
     let COLOR_MAP = {};
+    // async function loadColorMap() {
+    //     try {
+    //         const res = await fetch("../stat-json/color.json");
+    //         const json = await res.json();
+    //         json.colors.forEach(c => {
+    //             COLOR_MAP[c.name.toLowerCase()] = c.code;
+    //         });
+    //         console.log("Color map loaded:", COLOR_MAP);
+    //     } catch (e) {
+    //         console.error("Failed to load color map:", e);
+    //     }
+    // }
     async function loadColorMap() {
         try {
-            const res = await fetch("../stat-json/color.json");
+            const res = await fetch(`${baseUrl}/stat-json/color.json`);
             const json = await res.json();
+
             json.colors.forEach(c => {
-                COLOR_MAP[c.name.toLowerCase()] = c.code;
+                COLOR_MAP[c.name.trim().toLowerCase()] = c.code;
             });
+
             console.log("Color map loaded:", COLOR_MAP);
+
         } catch (e) {
             console.error("Failed to load color map:", e);
         }
     }
+
 
     loadColorMap().then(() => {
     fetch(filtersEndpoint)
@@ -478,39 +468,6 @@
             body: JSON.stringify(body)
         })
         .then(res => res.json())
-        // .then(data => {
-        //     if (data.success && Array.isArray(data.data)) {
-
-        //         renderProducts(data.data);
-        //         filters.offset += data.data.length;
-
-        //         // if (data.data.length < filters.limit) {
-        //         //     hasMore = false;
-
-        //         //     // 🔥 show "no more products"
-        //         //     loadMoreIndicator.innerText = "No more products";
-        //         // }
-        //         // 🔥 First load and no products
-
-        //         // ✅ FIRST LOAD & NO PRODUCTS
-        //         if (filters.offset === 0 && data.data.length === 0) {
-        //             hasMore = false;
-        //             showNoProducts();
-        //             loadMoreIndicator.classList.add("hidden");
-        //             return;
-        //         }
-
-        //         // ✅ Normal rendering
-        //         renderProducts(data.data);
-        //         filters.offset += data.data.length;
-
-        //         // ✅ No more pages
-        //         if (data.data.length < filters.limit) {
-        //             hasMore = false;
-        //         }
-            
-        //     }
-        // })
         .then(data => {
             if (data.success && Array.isArray(data.data)) {
 

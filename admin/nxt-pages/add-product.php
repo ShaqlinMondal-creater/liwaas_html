@@ -267,50 +267,77 @@
 <?php include("../footer.php"); ?>
 
 
-<script>
-  function initColorDropdown(dropdown) {
-  fetch("./configs/color.json")
-    .then(res => res.json())
-    .then(data => {
-      const menu = dropdown.querySelector(".color-menu");
-      const btn = dropdown.querySelector(".color-btn");
-      const dot = dropdown.querySelector(".color-dot");
-      const text = dropdown.querySelector(".color-text");
-      const input = dropdown.querySelector(".color-value");
 
-      menu.innerHTML = "";
-
-      data.colors.forEach(color => {
-        const item = document.createElement("div");
-        item.innerHTML = `
-          <span style="background:${color.code}" class="w-6 h-4 rounded-full border"></span>
-          <span>${color.name}</span>
-        `;
-
-        item.onclick = () => {
-          dot.style.backgroundColor = color.code;
-          dot.style.borderColor = "#64748b";
-          text.textContent = color.name;
-          text.classList.remove("text-gray-500");
-          input.value = color.name;
-          menu.classList.add("hidden");
-        };
-
-        menu.appendChild(item);
-      });
-
-      btn.onclick = () => {
-        menu.classList.toggle("hidden");
-      };
-    });
-}
-
-</script>
 <!-- Get Brands and Categories -->
 <script>
   const baseUrl = "<?= $baseUrl ?>"; // Or replace with your actual base URL
   const token = localStorage.getItem("auth_token");
   let nextUID = null; // global UID tracker
+  let allColors = [];   // ✅ ADD THIS LINE
+</script>
+
+<script>
+  function initColorDropdown(dropdown) {
+
+    const menu = dropdown.querySelector(".color-menu");
+    const btn = dropdown.querySelector(".color-btn");
+    const dot = dropdown.querySelector(".color-dot");
+    const text = dropdown.querySelector(".color-text");
+    const input = dropdown.querySelector(".color-value");
+
+    menu.innerHTML = "";
+
+    allColors.forEach(color => {
+
+      const item = document.createElement("div");
+
+      item.innerHTML = `
+        <span style="background:${color.code}" 
+          class="w-4 h-4 rounded-full border"></span>
+        <span>${color.name}</span>
+      `;
+
+      item.onclick = () => {
+
+        dot.style.backgroundColor = color.code;
+        dot.style.borderColor = "#64748b";
+
+        text.textContent = color.name;
+        text.classList.remove("text-gray-500");
+
+        input.value = color.name;
+
+        menu.classList.add("hidden");
+
+      };
+
+      menu.appendChild(item);
+
+    });
+
+    btn.onclick = () => {
+      menu.classList.toggle("hidden");
+    };
+
+  }
+
+  async function fetchColors() {
+    try {
+
+      const res = await fetch(`${baseUrl}/colors/getAll`);
+      const result = await res.json();
+
+      if (result.success) {
+        allColors = result.data;
+        loadColors();
+      }
+
+    } catch (err) {
+      console.error("Color API error:", err);
+    }
+  }
+</script>
+<script>
 
   // Fetch and populate all brands
   function fetchBrands() {
@@ -376,48 +403,6 @@
       .catch(err => console.error("Category fetch error:", err));
   }
 
-  // async function loadColors() {
-  //   try {
-  //     const res = await fetch("./configs/color.json");
-  //     const data = await res.json();
-
-  //     document.querySelectorAll(".color-dropdown").forEach(dropdown => {
-  //       const menu = dropdown.querySelector(".color-menu");
-  //       const btn = dropdown.querySelector(".color-btn");
-  //       const dot = dropdown.querySelector(".color-dot");
-  //       const text = dropdown.querySelector(".color-text");
-  //       const input = dropdown.querySelector(".color-value");
-
-  //       menu.innerHTML = "";
-
-  //       data.colors.forEach(color => {
-  //         const item = document.createElement("div");
-  //         item.innerHTML = `
-  //           <span style="background:${color.code}" class="w-6 h-4 rounded-full border"></span>
-  //           <span>${color.name}</span>
-  //         `;
-
-  //         item.onclick = () => {
-  //           dot.style.backgroundColor = color.code;
-  //           dot.style.borderColor = "#64748b";
-  //           text.textContent = color.name;
-  //           text.classList.remove("text-gray-500");
-  //           input.value = color.name; // backend-safe
-  //           menu.classList.add("hidden");
-  //         };
-
-  //         menu.appendChild(item);
-  //       });
-
-  //       btn.onclick = () => {
-  //         menu.classList.toggle("hidden");
-  //       };
-  //     });
-
-  //   } catch (err) {
-  //     console.error("Color load error:", err);
-  //   }
-  // }
   function loadColors() {
     document.querySelectorAll(".color-dropdown").forEach(dropdown => {
       initColorDropdown(dropdown);
@@ -473,7 +458,7 @@
       fetchCategories();
       // call it
       fetchNextAidUid();
-      loadColors();
+      fetchColors();   // ✅ CHANGE THIS
   });
 </script>
 

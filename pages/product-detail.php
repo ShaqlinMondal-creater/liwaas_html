@@ -328,7 +328,7 @@
         
         let images = [];
         let variations = [];
-        let COLOR_MAP = {};
+        // let COLOR_MAP = {};
         let selectedColor = null;
         let selectedSize = null;
         let currentStock = 0;
@@ -353,7 +353,7 @@
 
         function findVariation(color, size) {
           return variations.find(v => 
-            normalize(v.color) === normalize(color) && 
+            normalize(v.color.name) === normalize(color) && 
             sizeMatches(v, size)
           );
         }
@@ -375,7 +375,7 @@
         }
 
         function getAllAvailableColors() {
-          return [...new Set(variations.map(v => v.color))];
+          return [...new Set(variations.map(v => v.color.name))];
         }
 
         // ========== COLOR & SIZE LOGIC ==========
@@ -383,7 +383,7 @@
           if (!color) return getAllAvailableSizes();
           const sizeSet = new Set();
           variations.forEach(v => {
-            if (normalize(v.color) === normalize(color) && v.size) {
+            if (normalize(v.color.name) === normalize(color) && v.size) {
               v.size.split(",").forEach(s => sizeSet.add(normalize(s.trim())));
             }
           });
@@ -395,7 +395,7 @@
           const colorSet = new Set();
           variations.forEach(v => {
             if (sizeMatches(v, size)) {
-              colorSet.add(v.color);
+              colorSet.add(v.color.name);
             }
           });
           return [...colorSet];
@@ -567,7 +567,7 @@
           if (!variation) return;
 
           currentVariation = variation;
-          selectedColor = variation.color;
+          selectedColor = variation.color.name;
           
           // Preserve selected size if it exists in this variation, otherwise use first available
           const variationSizes = variation.size ? variation.size.split(",").map(s => s.trim()) : [];
@@ -757,17 +757,17 @@
         }
 
         // ========== PRODUCT DATA ==========
-        async function loadColorMap() {
-          try {
-            const res = await fetch("../stat-json/color.json");
-            const json = await res.json();
-            json.colors.forEach(c => {
-              COLOR_MAP[c.name.toLowerCase()] = c.code;
-            });
-          } catch (error) {
-            console.error("Failed to load color map:", error);
-          }
-        }
+        // async function loadColorMap() {
+        //   try {
+        //     const res = await fetch("../stat-json/color.json");
+        //     const json = await res.json();
+        //     json.colors.forEach(c => {
+        //       COLOR_MAP[c.name.toLowerCase()] = c.code;
+        //     });
+        //   } catch (error) {
+        //     console.error("Failed to load color map:", error);
+        //   }
+        // }
 
         async function fetchProduct() {
           const uid = getProductUid();
@@ -848,7 +848,7 @@
 
           // Initial variation
           const initialVariation = data.selected_variation || variations[0];
-          selectedColor = initialVariation.color;
+          selectedColor = initialVariation.color.name;
           selectedSize = initialVariation.size ? initialVariation.size.trim() : null;
           document.getElementById("selectedColorName").innerText = selectedColor;
 
@@ -869,7 +869,7 @@
           renderSpecs(initialVariation.specs || []);
           syncVariationWithWishlist();   // 👈 ADD THIS
           // 🔥 ADD THIS
-          await loadColorMap();
+          // await loadColorMap();
           fetchRelatedProducts();
           // Show content
           showRealContent();
@@ -882,7 +882,8 @@
           const colors = getAllAvailableColors();
           
           colors.forEach(color => {
-            const code = COLOR_MAP[color.toLowerCase()] || "#e5e7eb";
+            const variation = variations.find(v => v.color.name === color);
+            const code = variation?.color?.code || "#e5e7eb";
             const isSelected = normalize(color) === normalize(selectedColor);
 
             const btn = document.createElement("button");
@@ -1094,7 +1095,7 @@
 
         // ========== INITIALIZATION ==========
         document.addEventListener("DOMContentLoaded", async () => {
-          await loadColorMap();
+          // await loadColorMap();
           await fetchCartForProductPage();
           await fetchProduct();
           initUIEvents();

@@ -339,27 +339,27 @@
     </script>
 
     <script>
-        let COLOR_MAP = {};
+        // let COLOR_MAP = {};
 
-        async function loadColorMap() {
-            try {
-            const res = await fetch("../stat-json/color.json");
-            const json = await res.json();
+        // async function loadColorMap() {
+        //     try {
+        //     const res = await fetch("../stat-json/color.json");
+        //     const json = await res.json();
 
-            json.colors.forEach(c => {
-                COLOR_MAP[c.name.toLowerCase()] = c.code;
-            });
+        //     json.colors.forEach(c => {
+        //         COLOR_MAP[c.name.toLowerCase()] = c.code;
+        //     });
 
-            console.log("Color map loaded:", COLOR_MAP);
-            } catch (err) {
-            console.error("Failed to load color map:", err);
-            }
-        }
+        //     console.log("Color map loaded:", COLOR_MAP);
+        //     } catch (err) {
+        //     console.error("Failed to load color map:", err);
+        //     }
+        // }
 
-        function getColorCode(colorName) {
-            if (!colorName) return "#e5e7eb"; // fallback gray
-            return COLOR_MAP[colorName.toLowerCase()] || "#e5e7eb";
-        }
+        // function getColorCode(colorName) {
+        //     if (!colorName) return "#e5e7eb"; // fallback gray
+        //     return COLOR_MAP[colorName.toLowerCase()] || "#e5e7eb";
+        // }
     </script>
 
     <!-- Apis Setup -->
@@ -582,7 +582,7 @@
                             if (variation.uid) {
                                 uids.push(variation.uid);
                             }
-                            const colorCode = getColorCode(variation.color);
+                            const colorCode = variation?.color?.code || "#e5e7eb";
 
                             itemsHtml += `
                             <div class="flex justify-between">
@@ -1089,7 +1089,7 @@
                     let imageUrl = variation.images?.[0] || "assets/placeholder.jpg";
                     // imageUrl = imageUrl.replace("http://127.0.0.1:8000/uploads/http://", "http://");
 
-                    const colorCode = getColorCode(variation.color);
+                    const colorCode = variation?.color?.code || "#e5e7eb";
 
                     container.innerHTML += `
                         <div class="bg-white rounded-xl shadow-sm border group overflow-hidden glossy-card relative">
@@ -1203,7 +1203,7 @@
 
                     // Clean up malformed image URLs
                     let imageUrl = variation.images?.[0] || "assets/placeholder.jpg";
-                    const colorCode = getColorCode(variation.color);
+                    const colorCode = variation?.color?.code || "#e5e7eb";
 
                     container.innerHTML += `
                         <div class="bg-white rounded-xl shadow-sm border group overflow-hidden glossy-card relative cursor-pointer">
@@ -1305,7 +1305,7 @@
         }
 
         document.addEventListener("DOMContentLoaded", async () => {
-            await loadColorMap();
+            // await loadColorMap();
 
             setTimeout(() => {
                 document.getElementById("profile-skeleton").classList.add("hidden");

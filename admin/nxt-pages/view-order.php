@@ -62,7 +62,11 @@ function renderOrder(order){
                 <img src="${i.image_link ?? i.product.image?.upload_url}" class="w-12 h-12 rounded">
                 <div>
                     <div>${i.product.name}</div>
-                    <div class="text-xs text-gray-500">${i.color} / ${i.size}</div>
+                    <div class="text-xs text-gray-500 flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full border"
+                            style="background:${i.variation?.color?.code || '#e5e7eb'}"></span>
+                        ${i.variation?.color?.name || "-"} / ${i.variation?.size || "-"}
+                    </div>
                 </div>
             </td>
             <td>${i.quantity}</td>

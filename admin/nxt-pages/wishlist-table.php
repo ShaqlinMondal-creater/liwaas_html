@@ -180,7 +180,7 @@ function renderWishlists(data) {
         const variationText = item.variation
             ? `
             <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full border"
+                <span class="w-5 h-5 rounded-full border"
                     style="background:${variation.color?.code || '#e5e7eb'}">
                 </span>
                 <span>${variation.color?.name || "-"}</span>

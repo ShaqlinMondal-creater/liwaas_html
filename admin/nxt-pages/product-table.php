@@ -246,7 +246,13 @@
                                 <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
                                     <div><strong>AID:</strong> ${variation.aid}</div>
                                     <div><strong>UID:</strong> ${variation.uid}</div>
-                                    <div><strong>Color:</strong> ${variation.color}</div>
+                                    <div class="flex items-center gap-2">
+                                        <strong>Color:</strong>
+                                        <span class="w-5 h-5 rounded-full border"
+                                            style="background:${variation.color?.code || '#e5e7eb'}">
+                                        </span>
+                                        ${variation.color?.name || '-'}
+                                    </div>
                                     <div><strong>Size:</strong> ${variation.size}</div>
                                     <div><strong>Regular:</strong> ₹${variation.regular_price}</div>
                                     <div><strong>Sell:</strong> ₹${variation.sell_price}</div>

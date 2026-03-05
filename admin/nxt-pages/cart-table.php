@@ -202,10 +202,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const productAid = product.aid || "-";
 
             const variationText = cart.variation
-                ? `${variation.color || "-"} / ${variation.size || "-"}`
+                ? `
+                <div class="flex items-center gap-2">
+                    <span class="w-5 h-5 rounded-full border"
+                        style="background:${variation.color?.code || '#e5e7eb'}">
+                    </span>
+                    <span>${variation.color?.name || "-"}</span>
+                    /
+                    <span>${variation.size || "-"}</span>
+                </div>
+                `
                 : `<span class="text-gray-400">No variation</span>`;
 
-            const image = variation.images && variation.images.length
+            const image = variation.images && variation.images.[0]
                 ? `<img src="${variation.images[0]}" 
                     class="w-10 h-10 rounded object-cover">`
                 : "";

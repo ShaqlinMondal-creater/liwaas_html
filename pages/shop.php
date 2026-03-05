@@ -272,7 +272,7 @@
         }
     }
 
-    let COLOR_MAP = {};
+    // let COLOR_MAP = {};
     // async function loadColorMap() {
     //     try {
     //         const res = await fetch("../stat-json/color.json");
@@ -285,24 +285,23 @@
     //         console.error("Failed to load color map:", e);
     //     }
     // }
-    async function loadColorMap() {
-        try {
-            const res = await fetch(`../stat-json/color.json`);
-            const json = await res.json();
+    // async function loadColorMap() {
+    //     try {
+    //         const res = await fetch(`../stat-json/color.json`);
+    //         const json = await res.json();
 
-            json.colors.forEach(c => {
-                COLOR_MAP[c.name.trim().toLowerCase()] = c.code;
-            });
+    //         json.colors.forEach(c => {
+    //             COLOR_MAP[c.name.trim().toLowerCase()] = c.code;
+    //         });
 
-            console.log("Color map loaded:", COLOR_MAP);
+    //         console.log("Color map loaded:", COLOR_MAP);
 
-        } catch (e) {
-            console.error("Failed to load color map:", e);
-        }
-    }
+    //     } catch (e) {
+    //         console.error("Failed to load color map:", e);
+    //     }
+    // }
 
 
-    loadColorMap().then(() => {
     fetch(filtersEndpoint)
         .then(res => res.json())
         .then(data => {
@@ -311,7 +310,6 @@
                 fetchAndRenderProducts();
             }
         });
-    });
 
     function renderFilterOptions(data) {
         // CATEGORIES
@@ -357,10 +355,10 @@
         colorsContainer.forEach(container => {
             container.innerHTML = "";
 
-            data.colors.forEach(colorName => {
-                // const key = (colorName || "").toLowerCase();
-                const key = (colorName || "").trim().toLowerCase();
-                const colorCode = COLOR_MAP[key] || "#e5e7eb"; // fallback grey
+            data.colors.forEach(color => {
+
+                const colorCode = color.code;
+                const colorName = color.name; // fallback grey
 
                 const btn = document.createElement("button");
                 btn.className = "w-10 h-10 rounded-full border ring-1 ring-offset-1 transition-all";

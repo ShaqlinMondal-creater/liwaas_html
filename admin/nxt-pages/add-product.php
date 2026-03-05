@@ -324,7 +324,7 @@
   async function fetchColors() {
     try {
 
-      const res = await fetch(`${baseUrl}/colors/getAll`);
+      const res = await fetch(`${baseUrl}/api/colors/getAll`);
       const result = await res.json();
 
       if (result.success) {

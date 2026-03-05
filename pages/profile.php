@@ -527,10 +527,10 @@
                 orders.forEach(order => {
                     // ✅ Map order_status into progress codes
                     const statusMap = {
-                        pending: { code: 1, color: "blue", label: "Pending" },
-                        approved: { code: 2, color: "blue", label: "Confirmed" },
-                        completed: { code: 5, color: "green", label: "Delivered" },
-                        cancelled: { code: 5, color: "red", label: "Cancelled" }
+                        pending:   { code: 1, color: "orange", label: "Pending" },
+                        confirmed: { code: 2, color: "blue", label: "Confirmed" },
+                        completed: { code: 3, color: "green", label: "Completed" },
+                        cancelled: { code: 4, color: "red", label: "Cancelled" }
                     };
 
                     const normalizedStatus = order.order_status?.trim().toLowerCase();

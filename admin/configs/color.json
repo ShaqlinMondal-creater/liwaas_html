@@ -59,6 +59,30 @@
         {
             "code": "#da3e43",
             "name": "Royal Red"
+        },
+        {
+            "code": "#f6e27a",
+            "name": "Butter Yellow"
+        },
+        {
+            "code": "#1a1a1a",
+            "name": "Matt Black"
+        },
+        {
+            "code": "#c56a2d",
+            "name": "Camel Orange"
+        },
+        {
+            "code": "#008080",
+            "name": "Teal Green"
+        },
+        {
+            "code": "#191970",
+            "name": "Midnight Navy"
+        },
+        {
+            "code": "#ffffff",
+            "name": "Peace White"
         }
     ]
 }

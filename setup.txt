@@ -165,7 +165,7 @@ Delete User ->  need to create api
 Update User ->  need to create api
 
 Orders:
-View Order
+View Order -> Done ✅
 Fetch Order -> Done ✅
 Cancel Order 
 Update Order 
@@ -176,6 +176,12 @@ View Upload -> Done ✅
 Fetch Upload -> Done ✅
 Update Upload with chose product 
 Delete Upload 
+
+Analytics:
+View Analytic -> 
+Fetch Analytic ->
+Update Analytic ->
+Delete Analytic ->
 
 Notification:
 Create Messege notification

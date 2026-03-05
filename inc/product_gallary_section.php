@@ -12,21 +12,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   const grid = document.getElementById('product-grid');
   const authToken = localStorage.getItem('auth_token');
 
-  let COLOR_MAP = {};
+  // let COLOR_MAP = {};
 
-  async function loadColorMap() {
-    try {
-      const res = await fetch("../stat-json/color.json");
-      const json = await res.json();
-      json.colors.forEach(c => {
-        COLOR_MAP[c.name.toLowerCase()] = c.code;
-      });
-    } catch (e) {
-      console.error("Failed to load color map:", e);
-    }
-  }
+  // async function loadColorMap() {
+  //   try {
+  //     const res = await fetch("../stat-json/color.json");
+  //     const json = await res.json();
+  //     json.colors.forEach(c => {
+  //       COLOR_MAP[c.name.toLowerCase()] = c.code;
+  //     });
+  //   } catch (e) {
+  //     console.error("Failed to load color map:", e);
+  //   }
+  // }
 
-  await loadColorMap();
+  // await loadColorMap();
 
   fetch('<?= $baseUrl ?>/api/sections/getsections-products', {
     method: 'POST',
@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       const image1 = images[0]?.upload_url || 'https://via.placeholder.com/400x500?text=No+Image';
       const image2 = images[1]?.upload_url || image1;
 
-      const colorName = (variation.color || '').toLowerCase();
-      const colorHex  = COLOR_MAP[colorName] || '#111827';
+      const colorName = variation.color?.name || '';
+      const colorHex  = variation.color?.code || '#111827';
 
       const sellPrice = parseFloat(variation.sell_price || 0);
       const regularPrice = parseFloat(variation.regular_price || sellPrice);

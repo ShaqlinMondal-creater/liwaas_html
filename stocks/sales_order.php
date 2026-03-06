@@ -1,0 +1,95 @@
+<?php include 'header.php'; ?>
+
+<div class="max-w-7xl mx-auto mt-6">
+
+    <div class="bg-white p-6 rounded shadow">
+
+        <h2 class="text-lg font-semibold mb-4">Create Sales Order</h2>
+
+        <!-- Customer -->
+        <div class="grid grid-cols-3 gap-4 mb-6">
+
+            <input class="border p-2 rounded" placeholder="Customer Name">
+
+            <input class="border p-2 rounded" placeholder="Phone">
+
+            <input class="border p-2 rounded" placeholder="Address">
+
+        </div>
+
+        <!-- Products Table -->
+
+        <table class="w-full text-sm">
+
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="p-3 text-left">Product</th>
+                    <th class="p-3 text-left">Color</th>
+                    <th class="p-3 text-left">Size</th>
+                    <th class="p-3 text-left">Qty</th>
+                    <th class="p-3 text-left">Price</th>
+                    <th class="p-3 text-left">Total</th>
+                </tr>
+            </thead>
+
+            <tbody class="divide-y">
+
+                <tr>
+
+                    <td class="p-3">Classic T-Shirt</td>
+
+                    <td class="p-3">Black</td>
+
+                    <td class="p-3">M</td>
+
+                    <td class="p-3">
+                        <input type="number" value="1" class="border p-1 w-16">
+                    </td>
+
+                    <td class="p-3">₹499</td>
+
+                    <td class="p-3 font-semibold">₹499</td>
+
+                </tr>
+
+                <tr>
+
+                    <td class="p-3">Oversized Tee</td>
+
+                    <td class="p-3">Red</td>
+
+                    <td class="p-3">XL</td>
+
+                    <td class="p-3">
+                        <input type="number" value="2" class="border p-1 w-16">
+                    </td>
+
+                    <td class="p-3">₹699</td>
+
+                    <td class="p-3 font-semibold">₹1398</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="flex justify-end mt-6">
+
+            <div class="text-right">
+
+                <p class="text-lg font-semibold">Grand Total: ₹1897</p>
+
+                <button class="mt-3 bg-blue-600 text-white px-5 py-2 rounded">
+                    Generate Order
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<?php include 'footer.php'; ?>

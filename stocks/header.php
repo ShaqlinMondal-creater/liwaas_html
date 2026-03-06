@@ -17,10 +17,10 @@
             <h1 class="text-xl font-bold">POS Dashboard</h1>
 
             <div class="space-x-6">
-                <a href="#" class="text-gray-600">Stocks</a>
-                <a href="#" class="text-gray-600">Sales Order</a>
-                <a href="#" class="text-blue-600 font-semibold">Sales Invoice</a>
-                <a href="#" class="text-gray-600">Analytics</a>
+                <a href="stocks.php" class="text-gray-600">Stocks</a>
+                <a href="sales_order.php" class="text-gray-600">Sales Order</a>
+                <a href="sales_invoice.php" class="text-blue-600 font-semibold">Sales Invoice</a>
+                <a href="analytics.php" class="text-gray-600">Analytics</a>
             </div>
 
         </div>

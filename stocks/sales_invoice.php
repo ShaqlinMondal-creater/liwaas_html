@@ -1,4 +1,4 @@
-<? include 'header.php'; ?>
+<?php include 'header.php'; ?>
 
     <div class="max-w-7xl mx-auto mt-6">
 
@@ -51,4 +51,4 @@
 
     </div>
 
-<? include 'footer.php'; ?>
+<?php include 'footer.php'; ?>

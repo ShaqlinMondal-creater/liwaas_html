@@ -188,7 +188,7 @@
                         if (user.role === 'admin') {
                             window.location.href = 'admin/index.php';
                         } else if (user.role === 'customer') {
-                            window.location.href = 'home.php';
+                            window.location.href = 'index';
                         } else {
                             alert("Invalid role. Redirecting to login.");
                             window.location.href = 'sign-in.php';

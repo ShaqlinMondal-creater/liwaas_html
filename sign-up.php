@@ -283,7 +283,7 @@
                 localStorage.setItem("user_name", data.user.name);
                 localStorage.setItem("user_role", data.user.role);
 
-                window.location.href = "home.php";
+                window.location.href = "index";
 
             } catch (error) {
                 console.error("Google Login Error:", error);

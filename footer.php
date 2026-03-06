@@ -1,4 +1,33 @@
-    <!-- <footer class="bg-gray-900 text-gray-400 text-sm pt-10 pb-6 mt-auto rounded-t-2xl"> -->
+ <style>
+  .whatsapp-float{
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 55px;
+      height: 55px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      z-index: 9999;
+      transition: all .3s ease;
+  }
+
+  .whatsapp-float:hover{
+      transform: scale(1.1);
+      background:#20c45a;
+  }
+ </style>
+ <a href="https://wa.me/91<?= $basePhone; ?>?text=Hello%20I%20have%20a%20query%20about%20your%20products"
+    class="whatsapp-float" target="_blank" rel="noopener">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="28" height="28">
+      <path fill="white" d="M16.04 2.003C8.834 2.003 3 7.835 3 15.04c0 2.647.78 5.11 2.125 7.19L3 30l7.97-2.095A13.01 13.01 0 0 0 16.04 28c7.205 0 13.037-5.834 13.037-13.04 0-7.205-5.832-12.957-13.037-12.957zm0 23.927c-2.3 0-4.445-.676-6.256-1.84l-.447-.28-4.73 1.24 1.26-4.61-.29-.47a10.84 10.84 0 0 1-1.69-5.83c0-6.02 4.9-10.92 10.92-10.92 6.02 0 10.92 4.9 10.92 10.92s-4.9 10.92-10.92 10.92zm6.07-7.93c-.33-.17-1.96-.97-2.26-1.08-.3-.11-.52-.17-.74.17-.22.33-.85 1.08-1.04 1.3-.19.22-.38.25-.7.08-.33-.17-1.39-.51-2.65-1.63-.98-.87-1.65-1.94-1.84-2.27-.19-.33-.02-.51.14-.67.14-.14.33-.38.49-.57.16-.19.22-.33.33-.55.11-.22.05-.41-.03-.58-.08-.17-.74-1.78-1.02-2.44-.27-.65-.55-.56-.74-.57l-.63-.01c-.22 0-.58.08-.88.41-.3.33-1.16 1.13-1.16 2.76 0 1.63 1.19 3.2 1.35 3.42.16.22 2.33 3.55 5.65 4.97.79.34 1.4.54 1.88.69.79.25 1.51.21 2.08.13.64-.09 1.96-.8 2.24-1.57.27-.77.27-1.43.19-1.57-.08-.14-.3-.22-.63-.39z"/>
+    </svg>
+  </a>
+  <!-- <footer class="bg-gray-900 text-gray-400 text-sm pt-10 pb-6 mt-auto rounded-t-2xl"> -->
     <footer style="background-color: rgb(26 26 26);" class="text-white">
       <!-- Main Footer Content -->
       <div class="max-w-7xl mx-auto px-6 py-16">
@@ -162,8 +191,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                   </svg>
                 </div>
-                <a href="tel:<?= $basePhone; ?>" class="text-gray-300 hover:text-white transition-colors duration-200">
-                  <?= $basePhone; ?>
+                <a href="tel:91<?= $basePhone; ?>" class="text-gray-300 hover:text-white transition-colors duration-200">
+                  +91 <?= $basePhone; ?>
                 </a>
               </div>
               

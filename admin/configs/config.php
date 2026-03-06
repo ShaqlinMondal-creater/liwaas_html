@@ -11,7 +11,7 @@ return [
   'BASE_FAV_ICON'    => '../assets/brand/fav_icon.png',
   'BASE_ADDRESS' => 'Memari, Burdwan, 713146',
   'BASE_EMAIL'   => 'business.liwaas@gmail.com',
-  'BASE_PHONE'   => '+91 8348381252',
+  'BASE_PHONE'   => '8348381252',
   'RAZORPAY_KEY' => 'rzp_test_8WG68Pg2DZy2bj', // Replace with your Razorpay Key ID
   
   // Google Auth Setup

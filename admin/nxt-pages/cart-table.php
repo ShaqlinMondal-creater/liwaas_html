@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `
                 : `<span class="text-gray-400">No variation</span>`;
 
-            const image = variation.images && variation.images.[0]
+            const image = variation.images && variation.images?.[0]
                 ? `<img src="${variation.images[0]}" 
                     class="w-10 h-10 rounded object-cover">`
                 : "";

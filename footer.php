@@ -180,7 +180,7 @@
             </div>
 
             <!-- Newsletter Signup -->
-            <div class="space-y-3">
+            <!-- <div class="space-y-3">
               <p class="text-sm text-gray-400">Subscribe to our newsletter</p>
               <div class="flex">
                 <input 
@@ -192,7 +192,7 @@
                   Subscribe
                 </button>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -211,9 +211,9 @@
               <a href="policies/terms-and-conditions" class="text-gray-400 hover:text-white transition-colors duration-200">
                 Terms of Service
               </a>
-              <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+              <!-- <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
                 Cookie Policy
-              </a>
+              </a> -->
             </div>
           </div>
         </div>

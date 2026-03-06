@@ -1,32 +1,85 @@
- <style>
+<style>
   .whatsapp-float{
-      position: fixed;
-      bottom: 25px;
-      right: 25px;
-      width: 55px;
-      height: 55px;
-      background: #25D366;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-      z-index: 9999;
-      transition: all .3s ease;
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    width: 58px;
+    height: 58px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    z-index: 9999;
+    transition: all .3s ease;
+    animation: whatsappPulse 2s infinite;
   }
 
+  /* Hover */
   .whatsapp-float:hover{
-      transform: scale(1.1);
-      background:#20c45a;
+    transform: scale(1.1);
+    background:#20c45a;
   }
- </style>
- <a href="https://wa.me/91<?= $basePhone; ?>?text=Hello%20I%20have%20a%20query%20about%20your%20products"
-    class="whatsapp-float" target="_blank" rel="noopener">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="28" height="28">
-      <path fill="white" d="M16.04 2.003C8.834 2.003 3 7.835 3 15.04c0 2.647.78 5.11 2.125 7.19L3 30l7.97-2.095A13.01 13.01 0 0 0 16.04 28c7.205 0 13.037-5.834 13.037-13.04 0-7.205-5.832-12.957-13.037-12.957zm0 23.927c-2.3 0-4.445-.676-6.256-1.84l-.447-.28-4.73 1.24 1.26-4.61-.29-.47a10.84 10.84 0 0 1-1.69-5.83c0-6.02 4.9-10.92 10.92-10.92 6.02 0 10.92 4.9 10.92 10.92s-4.9 10.92-10.92 10.92zm6.07-7.93c-.33-.17-1.96-.97-2.26-1.08-.3-.11-.52-.17-.74.17-.22.33-.85 1.08-1.04 1.3-.19.22-.38.25-.7.08-.33-.17-1.39-.51-2.65-1.63-.98-.87-1.65-1.94-1.84-2.27-.19-.33-.02-.51.14-.67.14-.14.33-.38.49-.57.16-.19.22-.33.33-.55.11-.22.05-.41-.03-.58-.08-.17-.74-1.78-1.02-2.44-.27-.65-.55-.56-.74-.57l-.63-.01c-.22 0-.58.08-.88.41-.3.33-1.16 1.13-1.16 2.76 0 1.63 1.19 3.2 1.35 3.42.16.22 2.33 3.55 5.65 4.97.79.34 1.4.54 1.88.69.79.25 1.51.21 2.08.13.64-.09 1.96-.8 2.24-1.57.27-.77.27-1.43.19-1.57-.08-.14-.3-.22-.63-.39z"/>
-    </svg>
-  </a>
+
+  /* Pulse animation */
+  @keyframes whatsappPulse{
+    0%{
+      box-shadow:0 0 0 0 rgba(37,211,102,.6);
+    }
+    70%{
+      box-shadow:0 0 0 15px rgba(37,211,102,0);
+    }
+    100%{
+      box-shadow:0 0 0 0 rgba(37,211,102,0);
+    }
+  }
+
+  /* Tooltip */
+  .whatsapp-tooltip{
+    position: absolute;
+    right: 70px;
+    background:#111827;
+    color:#fff;
+    padding:8px 12px;
+    border-radius:6px;
+    font-size:13px;
+    white-space:nowrap;
+    opacity:0;
+    transform:translateY(5px);
+    transition:.25s;
+    pointer-events:none;
+  }
+
+  .whatsapp-float:hover .whatsapp-tooltip{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* Mobile position */
+  @media(max-width:600px){
+    .whatsapp-float{
+      bottom:18px;
+      right:18px;
+      width:52px;
+      height:52px;
+    }
+  }
+</style>
+<a href="https://wa.me/91<?= $basePhone; ?>?text=Hello%20I%20have%20a%20query%20about%20your%20products"
+   class="whatsapp-float"
+   target="_blank"
+   rel="noopener">
+
+  <span class="whatsapp-tooltip">
+    Have query? Chat on WhatsApp
+  </span>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="28" height="28">
+    <path fill="white" d="M16.04 2.003C8.834 2.003 3 7.835 3 15.04c0 2.647.78 5.11 2.125 7.19L3 30l7.97-2.095A13.01 13.01 0 0 0 16.04 28c7.205 0 13.037-5.834 13.037-13.04 0-7.205-5.832-12.957-13.037-12.957zm0 23.927c-2.3 0-4.445-.676-6.256-1.84l-.447-.28-4.73 1.24 1.26-4.61-.29-.47a10.84 10.84 0 0 1-1.69-5.83c0-6.02 4.9-10.92 10.92-10.92 6.02 0 10.92 4.9 10.92 10.92s-4.9 10.92-10.92 10.92zm6.07-7.93c-.33-.17-1.96-.97-2.26-1.08-.3-.11-.52-.17-.74.17-.22.33-.85 1.08-1.04 1.3-.19.22-.38.25-.7.08-.33-.17-1.39-.51-2.65-1.63-.98-.87-1.65-1.94-1.84-2.27-.19-.33-.02-.51.14-.67.14-.14.33-.38.49-.57.16-.19.22-.33.33-.55.11-.22.05-.41-.03-.58-.08-.17-.74-1.78-1.02-2.44-.27-.65-.55-.56-.74-.57l-.63-.01c-.22 0-.58.08-.88.41-.3.33-1.16 1.13-1.16 2.76 0 1.63 1.19 3.2 1.35 3.42.16.22 2.33 3.55 5.65 4.97.79.34 1.4.54 1.88.69.79.25 1.51.21 2.08.13.64-.09 1.96-.8 2.24-1.57.27-.77.27-1.43.19-1.57-.08-.14-.3-.22-.63-.39z"/>
+  </svg>
+
+</a>
   <!-- <footer class="bg-gray-900 text-gray-400 text-sm pt-10 pb-6 mt-auto rounded-t-2xl"> -->
     <footer style="background-color: rgb(26 26 26);" class="text-white">
       <!-- Main Footer Content -->

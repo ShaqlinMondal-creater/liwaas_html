@@ -68,20 +68,20 @@
     prevBtn.addEventListener('click', () => slider.scrollBy({ left: -300, behavior: 'smooth' }));
     nextBtn.addEventListener('click', () => slider.scrollBy({ left: 300, behavior: 'smooth' }));
 
-    let COLOR_MAP = {};
+    // let COLOR_MAP = {};
 
-    async function loadColorMap() {
-      try {
-        const res = await fetch("../stat-json/color.json");
-        const json = await res.json();
-        json.colors.forEach(c => {
-          COLOR_MAP[c.name.toLowerCase()] = c.code;
-        });
-      } catch (e) {
-        console.error("Failed to load color map:", e);
-      }
-    }
-    loadColorMap();
+    // async function loadColorMap() {
+    //   try {
+    //     const res = await fetch("../stat-json/color.json");
+    //     const json = await res.json();
+    //     json.colors.forEach(c => {
+    //       COLOR_MAP[c.name.toLowerCase()] = c.code;
+    //     });
+    //   } catch (e) {
+    //     console.error("Failed to load color map:", e);
+    //   }
+    // }
+    // loadColorMap();
 
     async function fetchWishlist() {
       const authToken = localStorage.getItem("auth_token");
@@ -142,7 +142,9 @@
         response.data.forEach(item => {
           const product = item.product;
           // const variation = product.variation || {};
-          const variation = product.variations?.[0] || {};
+          // const variation = product.variations?.[0] || {};
+          const variation = product.variations?.length ? product.variations[0] : null;
+          if (!variation) return;
           const imageUrl = variation.images?.[0]?.upload_url || 'https://via.placeholder.com/300x400?text=No+Image';
 
           const card = document.createElement('div');
@@ -186,9 +188,9 @@
           card.querySelector('.cart-btn').addEventListener('click', () => {
             const price = parseFloat(variation.sell_price || 0);
             
-            const color = variation.color || 'N/A';
-            const size  = variation.size  || 'N/A';
-            const colorHex = COLOR_MAP[color.toLowerCase()] || '#e5e7eb';
+            const color = variation.color?.name || 'N/A';
+            const size  = variation.size || 'N/A';
+            const colorHex = variation.color?.code || '#e5e7eb';
             const sellPrice = parseFloat(variation.sell_price || 0);
             const regularPrice = parseFloat(variation.regular_price || sellPrice);
 

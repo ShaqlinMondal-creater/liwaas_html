@@ -1,7 +1,7 @@
 <style>
   .whatsapp-float{
     position: fixed;
-    bottom: 22px;
+    bottom: 80px;
     right: 22px;
     width: 58px;
     height: 58px;
@@ -39,7 +39,7 @@
   .whatsapp-tooltip{
     position: absolute;
     right: 70px;
-    background:#111827;
+    background:#25D366;
     color:#fff;
     padding:8px 12px;
     border-radius:6px;
@@ -59,8 +59,8 @@
   /* Mobile position */
   @media(max-width:600px){
     .whatsapp-float{
-      bottom:18px;
-      right:18px;
+      bottom:80px;
+      left:18px;
       width:52px;
       height:52px;
     }

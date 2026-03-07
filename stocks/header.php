@@ -25,12 +25,12 @@
             <span class="text-xs mt-1">Stocks</span>
         </a>
 
-        <a href="sales_orders.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600">
+        <a href="sales_order.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600">
             <i class="fas fa-shopping-cart text-xl"></i>
             <span class="text-xs mt-1">Sales Orders</span>
         </a>
 
-        <a href="sales_invoices.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600">
+        <a href="sales_invoice.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600">
             <i class="fas fa-truck text-xl"></i>
             <span class="text-xs mt-1">Sales Invoices</span>
         </a>

@@ -1,27 +1,39 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Stocks</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stocks Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen">
 
-    <!-- NAVBAR -->
+<!-- ================= NOTCH NAVBAR ================= -->
+<div class="flex justify-center mt-6">
+    <div class="bg-white shadow-xl rounded-full px-8 py-4 flex space-x-10 items-center">
+        
+        <a href="analytics.php" class="flex flex-col items-center text-indigo-600">
+            <i class="fas fa-chart-line text-xl"></i>
+            <span class="text-xs mt-1">Analytics</span>
+        </a>
 
-    <div class="bg-white shadow">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
+        <a href="stocks.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600">
+            <i class="fas fa-box text-xl"></i>
+            <span class="text-xs mt-1">Stocks</span>
+        </a>
 
-            <h1 class="text-xl font-bold">POS Dashboard</h1>
+        <a href="sales_orders.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span class="text-xs mt-1">Sales Orders</span>
+        </a>
 
-            <div class="space-x-6">
-                <a href="stocks.php" class="text-gray-600">Stocks</a>
-                <a href="sales_order.php" class="text-gray-600">Sales Order</a>
-                <a href="sales_invoice.php" class="text-gray-600 font-semibold">Sales Invoice</a>
-                <a href="analytics.php" class="text-gray-600">Analytics</a>
-            </div>
+        <a href="sales_invoices.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600">
+            <i class="fas fa-truck text-xl"></i>
+            <span class="text-xs mt-1">Sales Invoices</span>
+        </a>
 
-        </div>
     </div>
+</div>

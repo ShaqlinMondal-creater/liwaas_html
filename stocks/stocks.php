@@ -1,238 +1,57 @@
 <?php include 'header.php'; ?>
 
-
-    <div class="max-w-7xl mx-auto mt-6">
-
-        <!-- FILTER SECTION -->
-
-        <div class="bg-white p-4 rounded-lg shadow mb-4">
-
-            <div class="flex flex-wrap gap-4 items-center justify-between">
-
-                <div class="flex gap-3">
-
-                    <input type="text" placeholder="Search product..." class="border px-3 py-2 rounded w-60" />
-
-                    <select class="border px-3 py-2 rounded">
-                        <option value="">All Size</option>
-                        <option>S</option>
-                        <option>M</option>
-                        <option>L</option>
-                        <option>XL</option>
-                    </select>
-
-                    <select class="border px-3 py-2 rounded">
-                        <option value="">All Color</option>
-                        <option>Black</option>
-                        <option>White</option>
-                        <option>Red</option>
-                        <option>Green</option>
-                    </select>
-
-                </div>
-
-                <!-- BULK ACTIONS -->
-
-                <div class="flex gap-2">
-
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded">
-                        Generate Sales Order PDF
-                    </button>
-
-                    <button class="bg-red-500 text-white px-4 py-2 rounded">
-                        Delete
-                    </button>
-
-                    <button class="bg-green-600 text-white px-4 py-2 rounded">
-                        Export Excel
-                    </button>
-
-                </div>
-
-            </div>
-        </div>
-
-
-        <!-- TABLE -->
-
-        <div class="bg-white shadow rounded-lg overflow-hidden">
-
-            <table class="w-full text-sm">
-
-                <thead class="bg-gray-100">
-
-                    <tr>
-
-                        <th class="p-3">
-                            <input type="checkbox">
-                        </th>
-
-                        <th class="p-3 text-left">Product</th>
-
-                        <th class="p-3 text-left">Color</th>
-
-                        <th class="p-3 text-left">Size</th>
-
-                        <th class="p-3 text-left">Stock</th>
-
-                        <th class="p-3 text-left">Price</th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody class="divide-y">
-
-                    <tr>
-
-                        <td class="p-3">
-                            <input type="checkbox">
-                        </td>
-
-                        <td class="p-3 font-medium">
-                            Classic T-Shirt
-                        </td>
-
-                        <td class="p-3">
-
-                            <div class="flex items-center gap-2">
-
-                                <div class="w-4 h-4 rounded-full bg-black"></div>
-                                Black
-
-                            </div>
-
-                        </td>
-
-                        <td class="p-3">
-                            M
-                        </td>
-
-                        <td class="p-3 text-green-600 font-semibold">
-                            120
-                        </td>
-
-                        <td class="p-3">
-                            ₹499
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td class="p-3">
-                            <input type="checkbox">
-                        </td>
-
-                        <td class="p-3 font-medium">
-                            Classic T-Shirt
-                        </td>
-
-                        <td class="p-3">
-
-                            <div class="flex items-center gap-2">
-
-                                <div class="w-4 h-4 rounded-full bg-white border"></div>
-                                White
-
-                            </div>
-
-                        </td>
-
-                        <td class="p-3">
-                            L
-                        </td>
-
-                        <td class="p-3 text-green-600 font-semibold">
-                            80
-                        </td>
-
-                        <td class="p-3">
-                            ₹499
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td class="p-3">
-                            <input type="checkbox">
-                        </td>
-
-                        <td class="p-3 font-medium">
-                            Oversized Tee
-                        </td>
-
-                        <td class="p-3">
-
-                            <div class="flex items-center gap-2">
-
-                                <div class="w-4 h-4 rounded-full bg-red-600"></div>
-                                Red
-
-                            </div>
-
-                        </td>
-
-                        <td class="p-3">
-                            XL
-                        </td>
-
-                        <td class="p-3 text-red-600 font-semibold">
-                            15
-                        </td>
-
-                        <td class="p-3">
-                            ₹699
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-
-        <!-- PAGINATION -->
-
-        <div class="flex justify-between items-center mt-4">
-
-            <p class="text-sm text-gray-600">
-                Showing 1 to 10 of 120 results
-            </p>
-
-            <div class="flex gap-2">
-
-                <button class="px-3 py-1 border rounded">
-                    Prev
-                </button>
-
-                <button class="px-3 py-1 bg-blue-600 text-white rounded">
-                    1
-                </button>
-
-                <button class="px-3 py-1 border rounded">
-                    2
-                </button>
-
-                <button class="px-3 py-1 border rounded">
-                    3
-                </button>
-
-                <button class="px-3 py-1 border rounded">
-                    Next
-                </button>
-
-            </div>
-
-        </div>
-
+<!-- Stocks CONTENT -->
+<div class="max-w-7xl mx-auto px-6 mt-12">
+
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Products</h1>
+        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+            + Add Product
+        </button>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg overflow-x-auto">
+
+        <table class="min-w-full text-left">
+            <thead class="bg-indigo-50">
+                <tr>
+                    <th class="px-6 py-3">Name</th>
+                    <th class="px-6 py-3">Price</th>
+                    <th class="px-6 py-3">Stock</th>
+                    <th class="px-6 py-3">Status</th>
+                    <th class="px-6 py-3">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-t">
+                    <td class="px-6 py-4">Laptop</td>
+                    <td class="px-6 py-4">$800</td>
+                    <td class="px-6 py-4">25</td>
+                    <td class="px-6 py-4 text-green-600">Active</td>
+                    <td class="px-6 py-4 space-x-3">
+                        <button class="text-blue-600"><i class="fas fa-eye"></i></button>
+                        <button class="text-yellow-600"><i class="fas fa-edit"></i></button>
+                        <button class="text-red-600"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+
+                <tr class="border-t">
+                    <td class="px-6 py-4">Phone</td>
+                    <td class="px-6 py-4">$500</td>
+                    <td class="px-6 py-4">40</td>
+                    <td class="px-6 py-4 text-green-600">Active</td>
+                    <td class="px-6 py-4 space-x-3">
+                        <button class="text-blue-600"><i class="fas fa-eye"></i></button>
+                        <button class="text-yellow-600"><i class="fas fa-edit"></i></button>
+                        <button class="text-red-600"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
 
     </div>
+
+</div>
 
 <?php include 'footer.php'; ?>

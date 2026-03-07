@@ -1,54 +1,61 @@
 <?php include 'header.php'; ?>
 
-    <div class="max-w-7xl mx-auto mt-6">
+<!-- ================= SHIPPING CONTENT ================= -->
+<div class="max-w-7xl mx-auto px-6 mt-12">
 
-        <div class="bg-white rounded shadow overflow-hidden">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Shipping Management</h1>
+        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+            + Add Shipping
+        </button>
+    </div>
 
-            <table class="w-full text-sm">
+    <div class="bg-white rounded-2xl shadow-lg overflow-x-auto">
 
-                <thead class="bg-gray-100">
+        <table class="min-w-full text-left">
+            <thead class="bg-indigo-50">
+                <tr>
+                    <th class="px-6 py-3">Tracking ID</th>
+                    <th class="px-6 py-3">Order ID</th>
+                    <th class="px-6 py-3">Carrier</th>
+                    <th class="px-6 py-3">Status</th>
+                    <th class="px-6 py-3">Estimated Delivery</th>
+                    <th class="px-6 py-3">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-t">
+                    <td class="px-6 py-4">TRK001</td>
+                    <td class="px-6 py-4">#ORD001</td>
+                    <td class="px-6 py-4">DHL</td>
+                    <td class="px-6 py-4">
+                        <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">In Transit</span>
+                    </td>
+                    <td class="px-6 py-4">10 Feb 2026</td>
+                    <td class="px-6 py-4 space-x-3">
+                        <button class="text-blue-600"><i class="fas fa-eye"></i></button>
+                        <button class="text-yellow-600"><i class="fas fa-edit"></i></button>
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th class="p-3 text-left">Invoice ID</th>
-                        <th class="p-3 text-left">Customer</th>
-                        <th class="p-3 text-left">Amount</th>
-                        <th class="p-3 text-left">Payment</th>
-                        <th class="p-3 text-left">Date</th>
-                        <th class="p-3 text-left">Action</th>
-                    </tr>
+                <tr class="border-t">
+                    <td class="px-6 py-4">TRK002</td>
+                    <td class="px-6 py-4">#ORD002</td>
+                    <td class="px-6 py-4">FedEx</td>
+                    <td class="px-6 py-4">
+                        <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm">Delivered</span>
+                    </td>
+                    <td class="px-6 py-4">08 Feb 2026</td>
+                    <td class="px-6 py-4 space-x-3">
+                        <button class="text-blue-600"><i class="fas fa-eye"></i></button>
+                    </td>
+                </tr>
 
-                </thead>
-
-                <tbody class="divide-y">
-
-                    <tr>
-                        <td class="p-3">INV-1001</td>
-                        <td class="p-3">Rahul Sharma</td>
-                        <td class="p-3">₹1897</td>
-                        <td class="p-3 text-green-600 font-semibold">Paid</td>
-                        <td class="p-3">05 Mar 2026</td>
-                        <td class="p-3">
-                            <button class="text-blue-600">View</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="p-3">INV-1002</td>
-                        <td class="p-3">Amit Kumar</td>
-                        <td class="p-3">₹998</td>
-                        <td class="p-3 text-yellow-600 font-semibold">Pending</td>
-                        <td class="p-3">06 Mar 2026</td>
-                        <td class="p-3">
-                            <button class="text-blue-600">View</button>
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
+            </tbody>
+        </table>
 
     </div>
+
+</div>
 
 <?php include 'footer.php'; ?>

@@ -571,13 +571,13 @@
         const selected = [];
 
         document.querySelectorAll(".rowCheckbox:checked")
-            .forEach(cb => selected.push(cb.value));
+        .forEach(cb => selected.push(parseInt(cb.value)));
 
         if (selected.length === 0) {
             alert("Select product first");
             return;
         }
-
+        document.getElementById("orderItems").innerHTML = "";
         document.getElementById("salesOrderModal").classList.remove("hidden");
         document.getElementById("salesOrderModal").classList.add("flex");
 
@@ -596,13 +596,13 @@
 
         rows.forEach(row => {
 
-            if (ids.includes(row.value)) {
+            if (ids.includes(parseInt(row.value))) {
 
                 const tr = row.closest("tr");
 
-                const name = tr.children[2].innerText;
-                const uid = tr.children[1].innerText;
-                const price = tr.children[6].innerText.replace("₹", "");
+                const uid = tr.children[1].innerText.trim();
+                const name = tr.children[2].innerText.trim();
+                const price = tr.children[6].innerText.replace("₹","").trim();
 
                 table.innerHTML += `
 
@@ -646,7 +646,7 @@
 
             select.innerHTML += `
                 <option value="${client.id}">
-                    ${client.name} (${client.mobile})
+                    ${client.name} - ${client.owner_name} (${client.mobile})
                 </option>`;
 
         });
@@ -678,6 +678,11 @@
 
         };
 
+        if(!payload.client_id){
+            alert("Select client");
+            return;
+        }
+
         const res = await createSalesOrderAPI(payload);
 
         if (res.status) {
@@ -685,6 +690,9 @@
             alert("Order Created : " + res.data.sales_order_no);
 
             closeSalesModal();
+
+            document.querySelectorAll(".rowCheckbox").forEach(cb => cb.checked = false);
+            document.getElementById("selectAll").checked = false;
 
         }
         else {

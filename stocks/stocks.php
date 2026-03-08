@@ -319,7 +319,7 @@
 
         const token = localStorage.getItem("auth_token");
 
-        const response = await fetch(BASE_URL + "/sales/create-order", {
+        const response = await fetch(BASE_URL + "/stocks/sales/create-order", {
 
             method: "POST",
 

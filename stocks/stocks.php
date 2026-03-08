@@ -183,7 +183,7 @@
 
         <!-- Products -->
 
-        <div class="max-h-80 overflow-y-auto overflow-x-auto">
+        <div class="max-h-100 overflow-y-auto overflow-x-auto">
 
             <table class="min-w-full text-left">
 
@@ -626,7 +626,7 @@
                         </td>
 
                         <td class="px-4 py-2">
-                            <input type="number" value="18" class="item_tax border px-2 py-1 w-20" oninput="calculateOrderTotal()">
+                            <input type="number" value="5" class="item_tax border px-2 py-1 w-20" oninput="calculateOrderTotal()">
                         </td>
 
                         <td class="px-4 py-2">

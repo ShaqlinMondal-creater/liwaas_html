@@ -37,19 +37,16 @@
 
             <tbody id="ordersTable"></tbody>
         </table>
-        <div class="flex justify-between mt-6">
-
-            <button id="prevBtn" class="bg-gray-200 px-4 py-2 rounded">
-                Previous
-            </button>
-
-            <button id="nextBtn" class="bg-gray-200 px-4 py-2 rounded">
-                Next
-            </button>
-
-        </div>
     </div>
-
+    <div class="flex justify-between mt-6">
+        <button id="prevBtn" class="bg-gray-200 px-4 py-2 rounded">
+            Previous
+        </button>
+        <button id="nextBtn" class="bg-gray-200 px-4 py-2 rounded">
+            Next
+        </button>
+    </div>
+    
 </div>
 <script>
     const BASE_URL = "https://api.liwaas.com/api";

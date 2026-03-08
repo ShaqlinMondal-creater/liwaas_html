@@ -92,6 +92,7 @@
         </table>
 
         <div class="mt-4 text-right">
+            <p><b>Taxable Amount:</b> ₹<span id="detailTaxable"></span></p>
             <p><b>Total Tax:</b> ₹<span id="detailTax"></span></p>
             <p class="text-lg font-bold"><b>Grand Total:</b> ₹<span id="detailTotal"></span></p>
         </div>
@@ -291,8 +292,14 @@
         document.getElementById("detailOrderNo").innerText = order.sales_order_no;
         document.getElementById("detailClient").innerText = order.client ? order.client.name : "N/A";
         document.getElementById("detailDate").innerText = order.date;
-        document.getElementById("detailTax").innerText = order.total_tax;
-        document.getElementById("detailTotal").innerText = order.grand_total;
+        
+        const totalTax = parseFloat(order.total_tax);
+        const grandTotal = parseFloat(order.grand_total);
+        const taxableAmount = grandTotal - totalTax;
+
+        document.getElementById("detailTaxable").innerText = taxableAmount.toFixed(2);
+        document.getElementById("detailTax").innerText = totalTax.toFixed(2);
+        document.getElementById("detailTotal").innerText = grandTotal.toFixed(2);
 
         const table = document.getElementById("orderItemsTable");
         table.innerHTML = "";
@@ -308,7 +315,7 @@
                     <td class="px-4 py-2">${product.color ?? "-"}</td>
                     <td class="px-4 py-2">${item.qty}</td>
                     <td class="px-4 py-2">₹${item.price}</td>
-                    <td class="px-4 py-2">${item.tax}%</td>
+                    <td class="px-4 py-2">${item.tax}% = ₹${item.sub_total_tax}</td>
                     <td class="px-4 py-2">₹${item.sub_total}</td>
                 </tr>
             `;

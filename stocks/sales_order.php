@@ -46,8 +46,8 @@
             Next
         </button>
     </div>
-    
 </div>
+
 <script>
     const BASE_URL = "https://api.liwaas.com/api";
 </script>
@@ -183,4 +183,5 @@
         alert("Delete Order : " + id);
     }
 </script>
+
 <?php include 'footer.php'; ?>

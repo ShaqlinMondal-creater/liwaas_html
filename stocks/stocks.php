@@ -12,7 +12,7 @@
             <button class="bg-red-600 text-white px-4 py-2 rounded-lg">
                 Export PDF
             </button>
-            <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+            <button onclick="openAddModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
                 + Add Product
             </button>
         </div>
@@ -108,6 +108,60 @@
 
 </div>
 
+<!-- ADD PRODUCT MODAL -->
+
+<div id="addProductModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+
+    <div class="bg-white rounded-xl w-full max-w-lg p-6">
+
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Add Product</h2>
+            <button onclick="closeAddModal()" class="text-gray-500">✕</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+
+            <input id="p_name" placeholder="Product Name" class="border rounded-lg px-3 py-2 col-span-2">
+
+            <select id="p_size" class="border rounded-lg px-3 py-2">
+                <option value="">Size</option>
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+            </select>
+
+            <input id="p_color" placeholder="Color" class="border rounded-lg px-3 py-2">
+
+            <input id="p_list_price" type="number" placeholder="List Price" class="border rounded-lg px-3 py-2">
+
+            <input id="p_sale_price" type="number" placeholder="Sale Price" class="border rounded-lg px-3 py-2">
+
+            <input id="p_stock" type="number" placeholder="Stock" class="border rounded-lg px-3 py-2">
+
+            <select id="p_status" class="border rounded-lg px-3 py-2">
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+            </select>
+
+        </div>
+
+        <div class="flex justify-end gap-3 mt-6">
+
+            <button onclick="closeAddModal()" class="px-4 py-2 bg-gray-200 rounded-lg">
+                Cancel
+            </button>
+
+            <button onclick="addProduct()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">
+                Save
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
 <script>
     const BASE_URL = "https://api.liwaas.com/api";
 </script>
@@ -132,6 +186,28 @@
             },
 
             body:JSON.stringify(filters)
+
+        });
+
+        return await response.json();
+
+    }
+
+    async function addStockAPI(payload)
+    {
+
+        const token = localStorage.getItem("auth_token");
+
+        const response = await fetch(BASE_URL + "/stocks/add-stock",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
+            },
+
+            body:JSON.stringify(payload)
 
         });
 
@@ -275,6 +351,50 @@
         if(offset - limit >= 0)
         loadStocks(offset - limit);
     };
+
+    // Add Product Modal codes
+    function openAddModal()
+    {
+        document.getElementById("addProductModal").classList.remove("hidden");
+        document.getElementById("addProductModal").classList.add("flex");
+    }
+    function closeAddModal()
+    {
+        document.getElementById("addProductModal").classList.add("hidden");
+    }
+    async function addProduct()
+    {
+
+        const payload = {
+
+            name:document.getElementById("p_name").value,
+            size:document.getElementById("p_size").value,
+            color:document.getElementById("p_color").value,
+            list_price:parseFloat(document.getElementById("p_list_price").value),
+            sale_price:parseFloat(document.getElementById("p_sale_price").value),
+            stock:parseInt(document.getElementById("p_stock").value),
+            status:parseInt(document.getElementById("p_status").value)
+
+        };
+
+        const res = await addStockAPI(payload);
+
+        if(res.status)
+        {
+
+            alert(res.message);
+
+            closeAddModal();
+
+            loadStocks(0); // refresh table
+
+        }
+        else
+        {
+            alert("Failed to add product");
+        }
+
+    }
 
     window.onload = () =>
     {

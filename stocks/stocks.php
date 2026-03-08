@@ -193,6 +193,7 @@
                         <th class="px-4 py-2">Qty</th>
                         <th class="px-4 py-2">Price</th>
                         <th class="px-4 py-2">Tax %</th>
+                        <th class="px-4 py-2"></th>
                     </tr>
                 </thead>
 
@@ -204,6 +205,11 @@
 
         <div class="flex justify-end mt-4 gap-3">
 
+            <div class="text-right mb-4 space-y-1">
+                <p>Taxable Amount: ₹<span id="orderTaxable">0</span></p>
+                <p>Total Tax: ₹<span id="orderTax">0</span></p>
+                <p class="text-lg font-bold">Grand Total: ₹<span id="orderTotal">0</span></p>
+            </div>
             <button onclick="closeSalesModal()" class="px-4 py-2 bg-gray-200 rounded">
                 Cancel
             </button>
@@ -606,31 +612,69 @@
 
                 table.innerHTML += `
 
-                    <tr>
-
+                    <tr class="orderRow">
                         <td class="px-4 py-2">${name}
                             <input type="hidden" class="item_uid" value="${uid}">
                         </td>
 
                         <td class="px-4 py-2">
-                            <input type="number" value="1" class="item_qty border px-2 py-1 w-20">
+                            <input type="number" value="1" class="item_qty border px-2 py-1 w-20" oninput="calculateOrderTotal()">
                         </td>
 
                         <td class="px-4 py-2">
-                            <input type="number" value="${price}" class="item_price border px-2 py-1 w-24">
+                            <input type="number" value="${price}" class="item_price border px-2 py-1 w-24" oninput="calculateOrderTotal()">
                         </td>
 
                         <td class="px-4 py-2">
-                            <input type="number" value="18" class="item_tax border px-2 py-1 w-20">
+                            <input type="number" value="18" class="item_tax border px-2 py-1 w-20" oninput="calculateOrderTotal()">
                         </td>
 
+                        <td class="px-4 py-2">
+                            <button onclick="removeOrderRow(this)" class="text-red-600">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
                     </tr>
-
                 `;
-
             }
 
         });
+        calculateOrderTotal();
+
+    }
+
+    function removeOrderRow(btn)
+    {
+        const row = btn.closest("tr");
+        row.remove();
+        calculateOrderTotal();
+    }
+
+    function calculateOrderTotal()
+    {
+
+        let taxable = 0;
+        let totalTax = 0;
+
+        document.querySelectorAll("#orderItems tr").forEach(row => {
+
+            const qty = parseFloat(row.querySelector(".item_qty").value) || 0;
+            const price = parseFloat(row.querySelector(".item_price").value) || 0;
+            const tax = parseFloat(row.querySelector(".item_tax").value) || 0;
+
+            const subTotal = qty * price;
+            const taxAmount = subTotal * tax / 100;
+
+            taxable += subTotal;
+            totalTax += taxAmount;
+
+        });
+
+        const grandTotal = taxable + totalTax;
+
+        document.getElementById("orderTaxable").innerText = taxable.toFixed(2);
+        document.getElementById("orderTax").innerText = totalTax.toFixed(2);
+        document.getElementById("orderTotal").innerText = grandTotal.toFixed(2);
 
     }
 

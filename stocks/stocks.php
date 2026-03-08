@@ -5,7 +5,7 @@
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Stocks</h1>
 
-        <div class="flex gap-3">
+        <div class="flex flex-wrap gap-3 md:flex-nowrap">
             <button class="bg-green-600 text-white px-4 py-2 rounded-lg">
                 Export Excel
             </button>
@@ -170,7 +170,7 @@
 
 <div id="salesOrderModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
 
-    <div class="bg-white rounded-xl w-full max-w-3xl p-6">
+    <div class="bg-white rounded-xl w-full max-w-3xl p-6 mx-4">
 
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold">Generate Sales Order</h2>
@@ -183,7 +183,7 @@
 
         <!-- Products -->
 
-        <div class="max-h-80 overflow-y-auto">
+        <div class="max-h-80 overflow-y-auto overflow-x-auto">
 
             <table class="min-w-full text-left">
 

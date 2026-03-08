@@ -12,6 +12,9 @@
             <button class="bg-red-600 text-white px-4 py-2 rounded-lg">
                 Export PDF
             </button>
+            <button onclick="deleteSelected()" class="bg-red-700 text-white px-4 py-2 rounded-lg">
+                Delete Selected
+            </button>
             <button onclick="openAddModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
                 + Add Product
             </button>
@@ -214,6 +217,31 @@
         return await response.json();
 
     }
+
+    async function deleteStockAPI(ids)
+    {
+
+        const token = localStorage.getItem("auth_token");
+
+        const response = await fetch(BASE_URL + "/stocks/delete-stock",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
+            },
+
+            body:JSON.stringify({
+                ids: ids
+            })
+
+        });
+
+        return await response.json();
+
+    }
+
 </script>
 
 <!-- ========================= -->
@@ -314,7 +342,7 @@
                         <i class="fas fa-edit"></i>
                     </button>
 
-                    <button class="text-red-600">
+                    <button onclick="deleteSingle(${item.id})" class="text-red-600">
                         <i class="fas fa-trash"></i>
                     </button>
 
@@ -392,6 +420,55 @@
         else
         {
             alert("Failed to add product");
+        }
+
+    }
+
+    async function deleteSingle(id)
+    {
+
+        if(!confirm("Delete this product?")) return;
+
+        const res = await deleteStockAPI([id]);
+
+        if(res.status)
+        {
+            alert(res.message);
+            loadStocks(offset);
+        }
+        else
+        {
+            alert("Delete failed");
+        }
+
+    }
+
+    async function deleteSelected()
+    {
+
+        const ids = [];
+
+        document.querySelectorAll(".rowCheckbox:checked")
+        .forEach(cb => ids.push(parseInt(cb.value)));
+
+        if(ids.length === 0)
+        {
+            alert("Select products first");
+            return;
+        }
+
+        if(!confirm("Delete selected products?")) return;
+
+        const res = await deleteStockAPI(ids);
+
+        if(res.status)
+        {
+            alert(res.message);
+            loadStocks(offset);
+        }
+        else
+        {
+            alert("Delete failed");
         }
 
     }

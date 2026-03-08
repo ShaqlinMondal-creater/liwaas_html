@@ -73,23 +73,25 @@
 
         </div>
 
-        <table class="min-w-full text-left border">
+        <div class="overflow-x-auto scrollbar-thin">
+            <table class="min-w-full text-left border">
 
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-4 py-2">Product</th>
-                    <th class="px-4 py-2">Size</th>
-                    <th class="px-4 py-2">Color</th>
-                    <th class="px-4 py-2">Qty</th>
-                    <th class="px-4 py-2">Price</th>
-                    <th class="px-4 py-2">Tax</th>
-                    <th class="px-4 py-2">Subtotal</th>
-                </tr>
-            </thead>
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-2">Product</th>
+                        <th class="px-4 py-2">Size</th>
+                        <th class="px-4 py-2">Color</th>
+                        <th class="px-4 py-2">Qty</th>
+                        <th class="px-4 py-2">Price</th>
+                        <th class="px-4 py-2">Tax</th>
+                        <th class="px-4 py-2">Subtotal</th>
+                    </tr>
+                </thead>
 
-            <tbody id="orderItemsTable"></tbody>
+                <tbody id="orderItemsTable"></tbody>
 
-        </table>
+            </table>
+        </div>
 
         <div class="mt-4 text-right">
             <p><b>Taxable Amount:</b> ₹<span id="detailTaxable"></span></p>

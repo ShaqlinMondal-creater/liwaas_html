@@ -171,6 +171,28 @@
         return await response.json();
 
     }
+    async function deleteOrderAPI(id) {
+
+        const token = localStorage.getItem("auth_token");
+
+        const response = await fetch(BASE_URL + "/stocks/sales-order/delete", {
+
+            method: "DELETE",
+
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+
+            body: JSON.stringify({
+                id: id
+            })
+
+        });
+
+        return await response.json();
+
+    }
 </script>
 
 <script>
@@ -339,7 +361,6 @@
     function closeOrderDetail() {
         document.getElementById("orderDetailModal").classList.add("hidden");
     }
-
     async function generateInvoice(id)
     {
 
@@ -356,11 +377,24 @@
         loadOrders(offset); // refresh table to show PDF button
 
     }
+    async function deleteOrder(id)
+    {
 
-    function deleteOrder(id) {
-        alert("Delete Order : " + id);
+        if(!confirm("Are you sure you want to delete this order?")) return;
+
+        const res = await deleteOrderAPI(id);
+
+        if(!res.status)
+        {
+            alert("Delete failed");
+            return;
+        }
+
+        alert(res.message);
+
+        loadOrders(offset); // refresh table
+
     }
-
     function openPdf(url)
     {
         window.open(url, "_blank");

@@ -5,9 +5,17 @@
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Stocks</h1>
 
-        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-            + Add Product
-        </button>
+        <div class="flex gap-3">
+            <button class="bg-green-600 text-white px-4 py-2 rounded-lg">
+                Export Excel
+            </button>
+            <button class="bg-red-600 text-white px-4 py-2 rounded-lg">
+                Export PDF
+            </button>
+            <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+                + Add Product
+            </button>
+        </div>
     </div>
 
     <!-- Filters -->
@@ -55,13 +63,21 @@
 
             <thead class="bg-indigo-50">
                 <tr>
+
+                    <th class="px-6 py-3">
+                        <input type="checkbox" id="selectAll">
+                    </th>
+
+                    <th class="px-6 py-3">UID</th>
                     <th class="px-6 py-3">Name</th>
                     <th class="px-6 py-3">Size</th>
                     <th class="px-6 py-3">Color</th>
-                    <th class="px-6 py-3">Price</th>
+                    <th class="px-6 py-3">List Price</th>
+                    <th class="px-6 py-3">Sale Price</th>
                     <th class="px-6 py-3">Stock</th>
                     <th class="px-6 py-3">Status</th>
                     <th class="px-6 py-3">Action</th>
+
                 </tr>
             </thead>
 
@@ -93,7 +109,7 @@
 </div>
 
 <script>
-    const BASE_URL = "api.liwaas.com/api";
+    const BASE_URL = "https://api.liwaas.com/api";
 </script>
 
 <!-- ========================= -->
@@ -176,17 +192,41 @@
             
             <tr class="border-t">
 
-                <td class="px-6 py-4">${item.name}</td>
+                <td class="px-6 py-4">
+                    <input type="checkbox" class="rowCheckbox" value="${item.id}">
+                </td>
 
-                <td class="px-6 py-4">${item.size}</td>
+                <td class="px-6 py-4 font-semibold text-gray-700">
+                    ${item.uid}
+                </td>
 
-                <td class="px-6 py-4">${item.color}</td>
+                <td class="px-6 py-4">
+                    ${item.name}
+                </td>
 
-                <td class="px-6 py-4">₹${item.sale_price}</td>
+                <td class="px-6 py-4">
+                    ${item.size}
+                </td>
 
-                <td class="px-6 py-4">${item.stock}</td>
+                <td class="px-6 py-4">
+                    ${item.color}
+                </td>
 
-                <td class="px-6 py-4">${status}</td>
+                <td class="px-6 py-4">
+                    ₹${item.list_price}
+                </td>
+
+                <td class="px-6 py-4">
+                    ₹${item.sale_price}
+                </td>
+
+                <td class="px-6 py-4">
+                    ${item.stock}
+                </td>
+
+                <td class="px-6 py-4">
+                    ${status}
+                </td>
 
                 <td class="px-6 py-4 space-x-3">
 
@@ -211,6 +251,18 @@
         });
 
     }
+
+    document.addEventListener("change", function(e){
+        if(e.target.id === "selectAll")
+        {
+
+            const checked = e.target.checked;
+
+            document.querySelectorAll(".rowCheckbox")
+            .forEach(cb => cb.checked = checked);
+
+        }
+    });
 
     document.getElementById("nextBtn").onclick = () =>
     {

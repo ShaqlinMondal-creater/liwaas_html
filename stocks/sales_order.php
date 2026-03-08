@@ -49,8 +49,7 @@
 </div>
 
 <!-- View order modal -->
- <!-- SALES ORDER DETAIL MODAL -->
-
+<!-- SALES ORDER DETAIL MODAL -->
 <div id="orderDetailModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
 
     <div class="bg-white rounded-xl w-full max-w-3xl p-6">
@@ -60,17 +59,27 @@
             <button onclick="closeOrderDetail()">✕</button>
         </div>
 
-        <div class="mb-4">
-            <p><b>Order No:</b> <span id="detailOrderNo"></span></p>
-            <p><b>Client:</b> <span id="detailClient"></span></p>
-            <p><b>Date:</b> <span id="detailDate"></span></p>
+        <div class="mb-4 flex justify-between items-center">
+
+            <div>
+                <p><b>Order No:</b> <span id="detailOrderNo"></span></p>
+                <p><b>Client:</b> <span id="detailClient"></span></p>
+                <p><b>Date:</b> <span id="detailDate"></span></p>
+            </div>
+
+            <button id="detailPdfBtn" class="bg-purple-600 text-white px-4 py-2 rounded hidden">
+                View PDF
+            </button>
+
         </div>
 
         <table class="min-w-full text-left border">
 
             <thead class="bg-gray-100">
                 <tr>
-                    <th class="px-4 py-2">UID</th>
+                    <th class="px-4 py-2">Product</th>
+                    <th class="px-4 py-2">Size</th>
+                    <th class="px-4 py-2">Color</th>
                     <th class="px-4 py-2">Qty</th>
                     <th class="px-4 py-2">Price</th>
                     <th class="px-4 py-2">Tax</th>
@@ -266,6 +275,7 @@
         loadOrders(0);
     };
 </script>
+
 <script>
     async function viewOrder(id) {
 
@@ -280,19 +290,22 @@
 
         document.getElementById("detailOrderNo").innerText = order.sales_order_no;
         document.getElementById("detailClient").innerText = order.client ? order.client.name : "N/A";
-        document.getElementById("detailDate").innerText = new Date(order.created_at).toLocaleDateString();
+        document.getElementById("detailDate").innerText = order.date;
         document.getElementById("detailTax").innerText = order.total_tax;
         document.getElementById("detailTotal").innerText = order.grand_total;
 
         const table = document.getElementById("orderItemsTable");
-
         table.innerHTML = "";
 
         order.items.forEach(item => {
 
+            const product = item.product || {};
+
             table.innerHTML += `
                 <tr class="border-t">
-                    <td class="px-4 py-2">${item.uid}</td>
+                    <td class="px-4 py-2">${product.name ?? item.uid}</td>
+                    <td class="px-4 py-2">${product.size ?? "-"}</td>
+                    <td class="px-4 py-2">${product.color ?? "-"}</td>
                     <td class="px-4 py-2">${item.qty}</td>
                     <td class="px-4 py-2">₹${item.price}</td>
                     <td class="px-4 py-2">${item.tax}%</td>
@@ -302,9 +315,17 @@
 
         });
 
+        const pdfBtn = document.getElementById("detailPdfBtn");
+
+        if(order.pdf && order.pdf.url){
+            pdfBtn.classList.remove("hidden");
+            pdfBtn.onclick = () => window.open(order.pdf.url, "_blank");
+        } else {
+            pdfBtn.classList.add("hidden");
+        }
+
         document.getElementById("orderDetailModal").classList.remove("hidden");
         document.getElementById("orderDetailModal").classList.add("flex");
-
     }
     function closeOrderDetail() {
         document.getElementById("orderDetailModal").classList.add("hidden");

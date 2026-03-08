@@ -9,8 +9,8 @@
             <button class="bg-green-600 text-white px-4 py-2 rounded-lg">
                 Export Excel
             </button>
-            <button class="bg-red-600 text-white px-4 py-2 rounded-lg">
-                Export PDF
+            <button onclick="openSalesOrderModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg">
+                Generate Order
             </button>
             <button onclick="deleteSelected()" class="bg-red-700 text-white px-4 py-2 rounded-lg">
                 Delete Selected
@@ -165,6 +165,60 @@
 
 </div>
 
+<!-- Create Sales Order Modal -->
+<!-- SALES ORDER MODAL -->
+
+<div id="salesOrderModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+
+    <div class="bg-white rounded-xl w-full max-w-3xl p-6">
+
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Generate Sales Order</h2>
+            <button onclick="closeSalesModal()">✕</button>
+        </div>
+
+        <!-- Client -->
+
+        <select id="clientSelect" class="border rounded-lg px-3 py-2 w-full mb-4"></select>
+
+        <!-- Products -->
+
+        <div class="max-h-80 overflow-y-auto">
+
+            <table class="min-w-full text-left">
+
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-2">Product</th>
+                        <th class="px-4 py-2">Qty</th>
+                        <th class="px-4 py-2">Price</th>
+                        <th class="px-4 py-2">Tax %</th>
+                    </tr>
+                </thead>
+
+                <tbody id="orderItems"></tbody>
+
+            </table>
+
+        </div>
+
+        <div class="flex justify-end mt-4 gap-3">
+
+            <button onclick="closeSalesModal()" class="px-4 py-2 bg-gray-200 rounded">
+                Cancel
+            </button>
+
+            <button onclick="createSalesOrder()" class="px-4 py-2 bg-indigo-600 text-white rounded">
+                Create Order
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Create -->
 <script>
     const BASE_URL = "https://api.liwaas.com/api";
 </script>
@@ -242,6 +296,45 @@
 
     }
 
+    async function fetchClients() {
+
+        const token = localStorage.getItem("auth_token");
+
+        const response = await fetch(BASE_URL + "/stocks/clients/fetch", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            }
+
+        });
+
+        return await response.json();
+
+    }
+
+    async function createSalesOrderAPI(payload) {
+
+        const token = localStorage.getItem("auth_token");
+
+        const response = await fetch(BASE_URL + "/sales/create-order", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+
+            body: JSON.stringify(payload)
+
+        });
+
+        return await response.json();
+
+    }
 </script>
 
 <!-- ========================= -->
@@ -471,6 +564,136 @@
             alert("Delete failed");
         }
 
+    }
+
+    async function openSalesOrderModal() {
+
+        const selected = [];
+
+        document.querySelectorAll(".rowCheckbox:checked")
+            .forEach(cb => selected.push(cb.value));
+
+        if (selected.length === 0) {
+            alert("Select product first");
+            return;
+        }
+
+        document.getElementById("salesOrderModal").classList.remove("hidden");
+        document.getElementById("salesOrderModal").classList.add("flex");
+
+        loadOrderProducts(selected);
+        loadClients();
+
+    }
+
+    function loadOrderProducts(ids) {
+
+        const rows = document.querySelectorAll(".rowCheckbox");
+
+        const table = document.getElementById("orderItems");
+
+        table.innerHTML = "";
+
+        rows.forEach(row => {
+
+            if (ids.includes(row.value)) {
+
+                const tr = row.closest("tr");
+
+                const name = tr.children[2].innerText;
+                const uid = tr.children[1].innerText;
+                const price = tr.children[6].innerText.replace("₹", "");
+
+                table.innerHTML += `
+
+                    <tr>
+
+                        <td class="px-4 py-2">${name}
+                            <input type="hidden" class="item_uid" value="${uid}">
+                        </td>
+
+                        <td class="px-4 py-2">
+                            <input type="number" value="1" class="item_qty border px-2 py-1 w-20">
+                        </td>
+
+                        <td class="px-4 py-2">
+                            <input type="number" value="${price}" class="item_price border px-2 py-1 w-24">
+                        </td>
+
+                        <td class="px-4 py-2">
+                            <input type="number" value="18" class="item_tax border px-2 py-1 w-20">
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+
+        });
+
+    }
+
+    async function loadClients() {
+
+        const res = await fetchClients();
+
+        const select = document.getElementById("clientSelect");
+
+        select.innerHTML = "";
+
+        res.data.forEach(client => {
+
+            select.innerHTML += `
+                <option value="${client.id}">
+                    ${client.name} (${client.mobile})
+                </option>`;
+
+        });
+
+    }
+
+    async function createSalesOrder() {
+
+        const items = [];
+
+        document.querySelectorAll("#orderItems tr")
+            .forEach(row => {
+
+                items.push({
+
+                    uid: parseInt(row.querySelector(".item_uid").value),
+                    qty: parseInt(row.querySelector(".item_qty").value),
+                    price: parseFloat(row.querySelector(".item_price").value),
+                    tax: parseFloat(row.querySelector(".item_tax").value)
+
+                });
+
+            });
+
+        const payload = {
+
+            client_id: parseInt(document.getElementById("clientSelect").value),
+            items: items
+
+        };
+
+        const res = await createSalesOrderAPI(payload);
+
+        if (res.status) {
+
+            alert("Order Created : " + res.data.sales_order_no);
+
+            closeSalesModal();
+
+        }
+        else {
+            alert("Order failed");
+        }
+    }
+
+    function closeSalesModal() {
+        document.getElementById("salesOrderModal").classList.add("hidden");
     }
 
     window.onload = () =>

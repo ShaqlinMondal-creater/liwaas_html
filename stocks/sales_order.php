@@ -137,6 +137,28 @@
 
         return await response.json();
     }
+    async function generateInvoiceAPI(id) {
+
+        const token = localStorage.getItem("auth_token");
+
+        const response = await fetch(BASE_URL + "/stocks/sales-order/pdf", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+
+            body: JSON.stringify({
+                id: id
+            })
+
+        });
+
+        return await response.json();
+
+    }
 </script>
 
 <script>
@@ -175,7 +197,13 @@
 
         data.forEach(order => {
 
-            const date = new Date(order.created_at).toLocaleDateString();
+            const pdfButton = order.pdf
+            ? `<button onclick="openPdf('${order.pdf}')" class="text-purple-600">
+                    <i class="fas fa-file-pdf"></i>
+            </button>`
+            : `<button disabled class="text-gray-400 cursor-not-allowed">
+                    <i class="fas fa-file-pdf"></i>
+            </button>`;
 
             table.innerHTML += `
                 <tr class="border-t">
@@ -197,10 +225,11 @@
                     </td>
 
                     <td class="px-6 py-4">
-                        ${date}
+                        ${order.date}
                     </td>
 
                     <td class="px-6 py-4 space-x-3">
+
                         <button onclick="viewOrder(${order.id})" class="text-blue-600">
                             <i class="fas fa-eye"></i>
                         </button>
@@ -209,9 +238,12 @@
                             <i class="fas fa-file-invoice"></i>
                         </button>
 
+                        ${pdfButton}
+
                         <button onclick="deleteOrder(${order.id})" class="text-red-600">
                             <i class="fas fa-trash"></i>
                         </button>
+
                     </td>               
 
                 </tr>
@@ -278,14 +310,31 @@
         document.getElementById("orderDetailModal").classList.add("hidden");
     }
 
-    function generateInvoice(id) {
-        alert("Generate Invoice for Order : " + id);
+    async function generateInvoice(id)
+    {
+
+        const res = await generateInvoiceAPI(id);
+
+        if(!res.status)
+        {
+            alert("Failed to generate PDF");
+            return;
+        }
+
+        window.open(res.file_url, "_blank");
+
+        loadOrders(offset); // refresh table to show PDF button
+
     }
 
     function deleteOrder(id) {
         alert("Delete Order : " + id);
     }
-</script>
 
+    function openPdf(url)
+    {
+        window.open(url, "_blank");
+    }
+</script>
 
 <?php include 'footer.php'; ?>

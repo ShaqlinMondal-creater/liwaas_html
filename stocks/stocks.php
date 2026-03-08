@@ -210,14 +210,15 @@
                 <p>Total Tax: ₹<span id="orderTax">0</span></p>
                 <p class="text-lg font-bold">Grand Total: ₹<span id="orderTotal">0</span></p>
             </div>
-            <button onclick="closeSalesModal()" class="px-4 py-2 bg-gray-200 rounded">
-                Cancel
-            </button>
+            <div class="text-right mb-4 space-y-1">
+                <button onclick="closeSalesModal()" class="px-4 py-2 bg-gray-200 rounded">
+                    Cancel
+                </button>
 
-            <button onclick="createSalesOrder()" class="px-4 py-2 bg-indigo-600 text-white rounded">
-                Create Order
-            </button>
-
+                <button onclick="createSalesOrder()" class="px-4 py-2 bg-indigo-600 text-white rounded">
+                    Create Order
+                </button>
+            </div>
         </div>
 
     </div>

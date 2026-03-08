@@ -48,6 +48,49 @@
     </div>
 </div>
 
+<!-- View order modal -->
+ <!-- SALES ORDER DETAIL MODAL -->
+
+<div id="orderDetailModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+
+    <div class="bg-white rounded-xl w-full max-w-3xl p-6">
+
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Sales Order Detail</h2>
+            <button onclick="closeOrderDetail()">✕</button>
+        </div>
+
+        <div class="mb-4">
+            <p><b>Order No:</b> <span id="detailOrderNo"></span></p>
+            <p><b>Client:</b> <span id="detailClient"></span></p>
+            <p><b>Date:</b> <span id="detailDate"></span></p>
+        </div>
+
+        <table class="min-w-full text-left border">
+
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2">UID</th>
+                    <th class="px-4 py-2">Qty</th>
+                    <th class="px-4 py-2">Price</th>
+                    <th class="px-4 py-2">Tax</th>
+                    <th class="px-4 py-2">Subtotal</th>
+                </tr>
+            </thead>
+
+            <tbody id="orderItemsTable"></tbody>
+
+        </table>
+
+        <div class="mt-4 text-right">
+            <p><b>Total Tax:</b> ₹<span id="detailTax"></span></p>
+            <p class="text-lg font-bold"><b>Grand Total:</b> ₹<span id="detailTotal"></span></p>
+        </div>
+
+    </div>
+
+</div>
+
 <script>
     const BASE_URL = "https://api.liwaas.com/api";
 </script>
@@ -72,6 +115,27 @@
 
         return await response.json();
 
+    }
+    async function fetchOrderDetail(id) {
+
+        const token = localStorage.getItem("auth_token");
+
+        const response = await fetch(BASE_URL + "/stocks/sales-order/fetch-detail", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+
+            body: JSON.stringify({
+                id: id
+            })
+
+        });
+
+        return await response.json();
     }
 </script>
 
@@ -116,7 +180,7 @@
             table.innerHTML += `
                 <tr class="border-t">
 
-                    <td class="px-6 py-4 font-semibold text-indigo-600">
+                    <td onclick="viewOrder(${order.id})" class="px-6 py-4 font-semibold text-indigo-600 cursor-pointer">
                         ${order.sales_order_no}
                     </td>
 
@@ -171,8 +235,47 @@
     };
 </script>
 <script>
-    function viewOrder(id) {
-        alert("View Order : " + id);
+    async function viewOrder(id) {
+
+        const res = await fetchOrderDetail(id);
+
+        if (!res.status) {
+            alert("Failed to fetch order");
+            return;
+        }
+
+        const order = res.data;
+
+        document.getElementById("detailOrderNo").innerText = order.sales_order_no;
+        document.getElementById("detailClient").innerText = order.client ? order.client.name : "N/A";
+        document.getElementById("detailDate").innerText = new Date(order.created_at).toLocaleDateString();
+        document.getElementById("detailTax").innerText = order.total_tax;
+        document.getElementById("detailTotal").innerText = order.grand_total;
+
+        const table = document.getElementById("orderItemsTable");
+
+        table.innerHTML = "";
+
+        order.items.forEach(item => {
+
+            table.innerHTML += `
+                <tr class="border-t">
+                    <td class="px-4 py-2">${item.uid}</td>
+                    <td class="px-4 py-2">${item.qty}</td>
+                    <td class="px-4 py-2">₹${item.price}</td>
+                    <td class="px-4 py-2">${item.tax}%</td>
+                    <td class="px-4 py-2">₹${item.sub_total}</td>
+                </tr>
+            `;
+
+        });
+
+        document.getElementById("orderDetailModal").classList.remove("hidden");
+        document.getElementById("orderDetailModal").classList.add("flex");
+
+    }
+    function closeOrderDetail() {
+        document.getElementById("orderDetailModal").classList.add("hidden");
     }
 
     function generateInvoice(id) {
@@ -183,5 +286,6 @@
         alert("Delete Order : " + id);
     }
 </script>
+
 
 <?php include 'footer.php'; ?>

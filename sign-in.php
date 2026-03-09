@@ -251,10 +251,27 @@
                         localStorage.setItem('user_name', user.name);
                         localStorage.setItem('user_role', user.role);
 
+                        // if (user.role === 'admin') {
+                        //     window.location.href = 'admin/index.php';
+                        // } else if (user.role === 'customer') {
+                        //     window.location.href = 'index';
+                        // } else {
+                        //     alert("Invalid role. Redirecting to login.");
+                        //     window.location.href = 'sign-in';
+                        // }
+                        const params = new URLSearchParams(window.location.search);
+                        const redirectUrl = params.get("redirect");
+
                         if (user.role === 'admin') {
                             window.location.href = 'admin/index.php';
                         } else if (user.role === 'customer') {
-                            window.location.href = 'index';
+
+                            if (redirectUrl) {
+                                window.location.href = "/" + redirectUrl.replace(/^\/+/, "");
+                            } else {
+                                window.location.href = 'index';
+                            }
+
                         } else {
                             alert("Invalid role. Redirecting to login.");
                             window.location.href = 'sign-in';

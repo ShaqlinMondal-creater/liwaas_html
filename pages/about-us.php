@@ -177,7 +177,7 @@
 
 <!-- Call to Action -->
 
-<section class="py-24 bg-black text-white">
+<section class="py-24 bg-[#1A1A1A] text-white mb-1">
   <div class="max-w-7xl mx-auto px-4 text-center fade-up">
     <h2 class="text-4xl font-bold mb-6">Wear Confidence. Wear Liwaas.</h2>
     <p class="text-xl opacity-90 max-w-3xl mx-auto mb-8">Join thousands who trust Liwaas for everyday style and comfort.</p>

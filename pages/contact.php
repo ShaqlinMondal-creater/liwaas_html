@@ -273,7 +273,7 @@
                             referrerpolicy="no-referrer-when-downgrade" class="absolute inset-0">
                         </iframe>
                     </div>
-                    <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d916.9279804827393!2d88.10442551185585!3d23.18071201656489!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sazad%20nagar%20hospital%20more!5e0!3m2!1sen!2sin!4v1773090160123!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+                    
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Liwaas Flagship Store</h3>
                         <p class="text-gray-600 mb-4"><?php echo $baseAddress; ?>1</p>
@@ -319,7 +319,7 @@
                         </button>
                         <div class="px-6 pb-4 text-gray-600">
                             We offer standard shipping (5-7 business days) and express shipping (2-3 business days).
-                            Free shipping is available on orders over $99.
+                            Free shipping is available on orders over ₹599.
                         </div>
                     </div>
 
@@ -329,7 +329,7 @@
                             What is your return and exchange policy?
                         </button>
                         <div class="px-6 pb-4 text-gray-600">
-                            We accept returns within 30 days of purchase. Items must be unworn, unwashed, and in
+                            We accept returns within 14 days of purchase. Items must be unworn, unwashed, and in
                             original condition with tags attached.
                         </div>
                     </div>
@@ -348,21 +348,10 @@
                     <div class="bg-white rounded-lg shadow-md">
                         <button
                             class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors rounded-lg">
-                            Do you offer international shipping?
-                        </button>
-                        <div class="px-6 pb-4 text-gray-600">
-                            Yes, we ship to over 50 countries worldwide. International shipping rates and delivery times
-                            vary by destination.
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-lg shadow-md">
-                        <button
-                            class="w-full px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition-colors rounded-lg">
                             How can I contact customer service?
                         </button>
                         <div class="px-6 pb-4 text-gray-600">
-                            You can reach us via email at support@liwaas.com, phone at +1 (555) 123-4567, or through our
+                            You can reach us via email at <?php echo $baseEmail; ?>, phone at +91 <?php echo $basePhone; ?>, or through our
                             live chat feature on the website.
                         </div>
                     </div>

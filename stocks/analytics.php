@@ -3,7 +3,12 @@
 <!-- ================= DASHBOARD CONTENT ================= -->
 <div class="max-w-7xl mx-auto px-6 mt-12">
 
-    <h1 class="text-3xl font-bold mb-8 text-gray-800">Analytics Overview</h1>
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Analytics Overview</h1>
+        <a href="admin/index.php" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+            Admin Dashboard
+        </a>
+    </div>
 
     <!-- Analytics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-10">

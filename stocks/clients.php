@@ -125,7 +125,7 @@
 <script>
 
     const BASE_URL = "<?= $baseUrl ?>/api/admin/stocks/clients";
-
+    const token = localStorage.getItem("auth_token");
     /* ================= FETCH CLIENTS ================= */
 
     async function fetchClients(search = "") {
@@ -133,7 +133,8 @@
         const res = await fetch(`${BASE_URL}/fetch`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({ search })
         });
@@ -244,7 +245,8 @@
         const res = await fetch(`${BASE_URL}/create`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify(payload)
         });
@@ -274,7 +276,8 @@
 
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
 
             body: JSON.stringify(payload)
@@ -293,8 +296,14 @@
 
         if (!confirm("Delete this client?")) return;
 
+        const token = localStorage.getItem("auth_token");
+
         const res = await fetch(`${BASE_URL}/delete/${id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
         });
 
         const result = await res.json();

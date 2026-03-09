@@ -1,5 +1,7 @@
 <?php include 'header.php'; ?>
-
+<?php
+        $config = include('../admin/configs/config.php');
+?>
 <div class="max-w-7xl mx-auto px-6 mt-12">
 
     <div class="flex justify-between items-center mb-6">
@@ -227,7 +229,7 @@
 
 <!-- Create -->
 <script>
-    const BASE_URL = "https://api.liwaas.com/api";
+    const BASE_URL = "<?= $baseUrl ?>";
 </script>
 
 <!-- ========================= -->

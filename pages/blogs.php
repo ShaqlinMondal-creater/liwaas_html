@@ -2,7 +2,7 @@
 <?php include("../header.php"); ?>
 
     <!-- Hero Section -->
-    <section class="relative bg-gradient-to-br from-black via-orange-900 to-orange-400 text-white py-20">
+    <section class="relative text-white py-24 overflow-hidden" style="background: linear-gradient(135deg, #deb64c, #1a1a1a);">
         <div class="absolute inset-0 bg-black/20"></div>
         <div class="relative max-w-7xl mx-auto px-4 text-center">
             <h1 class="text-5xl md:text-7xl font-bold mb-6">Fashion Blog</h1>

@@ -7,8 +7,7 @@
 </style>
 
 <!-- Hero Section -->
-
-<section class="relative bg-gradient-to-br from-black via-orange-900 to-orange-500 text-white py-24 overflow-hidden">
+<section class="relative text-white py-24 overflow-hidden" style="background: linear-gradient(135deg, #deb64c, #1a1a1a);">
   <div class="absolute inset-0 bg-black/30"></div>
   <div class="absolute -top-24 -right-24 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl"></div>
   <div class="relative max-w-7xl mx-auto px-4 text-center fade-up">

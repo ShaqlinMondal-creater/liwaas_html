@@ -129,17 +129,23 @@
 
         const labels = [];
         const revenue = [];
+        const targets = [];
+        const orders = [];
 
         data.month_wise_data.forEach(m => {
 
             const key = Object.keys(m)[0];
-            labels.push(key);
+            const month = m[key];
 
-            revenue.push(m[key].revenue);
+            labels.push(key.charAt(0).toUpperCase() + key.slice(1));
+
+            revenue.push(month.revenue);
+            targets.push(month.target);
+            orders.push(month.orders);
 
         });
 
-        createChart(labels, revenue);
+        createChart(labels,revenue,targets,orders);
 
 
         /* ======================
@@ -189,35 +195,81 @@
     CREATE CHART
     ====================== */
 
-    function createChart(labels, data) {
+function createChart(labels, revenue, targets, orders) {
 
-        const ctx = document.getElementById('salesChart').getContext('2d');
+    const ctx = document.getElementById('salesChart').getContext('2d');
 
-        salesChart = new Chart(ctx, {
-            type: 'line',
+    salesChart = new Chart(ctx, {
+        type: 'bar',
 
-            data: {
-                labels: labels,
-                datasets: [{
+        data: {
+            labels: labels,
+
+            datasets: [
+
+                {
+                    label: 'Target Orders',
+                    data: targets,
+                    backgroundColor: '#E5E7EB'
+                },
+
+                {
+                    label: 'Orders Achieved',
+                    data: orders,
+                    backgroundColor: '#6366F1'
+                },
+
+                {
                     label: 'Revenue',
-                    data: data,
-                    borderColor: '#6366F1',
-                    backgroundColor: 'rgba(99,102,241,0.2)',
+                    data: revenue,
+                    type: 'line',
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16,185,129,0.2)',
                     tension: 0.4,
-                    fill: true
-                }]
+                    fill: true,
+                    yAxisID: 'y1'
+                }
+
+            ]
+
+        },
+
+        options: {
+            responsive: true,
+
+            interaction: {
+                mode: 'index',
+                intersect: false
             },
 
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: true }
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Orders'
+                    }
+                },
+
+                y1: {
+                    beginAtZero: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Revenue'
+                    },
+                    grid: {
+                        drawOnChartArea: false
+                    }
                 }
+
             }
 
-        });
+        }
 
-    }
+    });
+
+}
 
 
     loadAnalytics();

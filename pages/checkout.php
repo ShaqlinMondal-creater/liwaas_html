@@ -528,8 +528,7 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
             hidePageLoader();
             
             let seconds = 5;
-
-            const checkoutUrl = window.location.href;
+            const checkoutUrl = "pages/checkout";
 
             const timerInterval = setInterval(() => {
                 seconds--;
@@ -545,18 +544,21 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
                     <br><br>
                     Redirecting to login in <b id="redirectCounter">5</b> seconds...
                 `,
-                showConfirmButton: false,
-                showCloseButton: true,
-                closeButtonHtml: "✕",
-                customClass: {
-                    closeButton: "swal-cancel-btn"
-                },
+                showConfirmButton: true,
+                confirmButtonText: "Close",
+                confirmButtonColor: "#dc2626",
                 timer: 5000,
-                timerProgressBar: true,
-                willClose: () => {
-                    clearInterval(timerInterval);
+                timerProgressBar: true
+            }).then((result) => {
+
+                clearInterval(timerInterval);
+
+                // ✅ If timer finished → redirect
+                if (result.dismiss === Swal.DismissReason.timer) {
                     window.location.href = `../sign-in?redirect=${encodeURIComponent(checkoutUrl)}`;
                 }
+
+                // ❌ If user clicked Close → stay on page
             });
 
             return;

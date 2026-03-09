@@ -211,7 +211,7 @@
                         tension: 0.4,
                         fill: true,
                         yAxisID: 'y1'
-                    }
+                    },
                     {
                         label:'Items Sold',
                         data:itemsSold,

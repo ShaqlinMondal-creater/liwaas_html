@@ -80,14 +80,10 @@
 
 </div>
 
-
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-
     const BASE_URL = "<?= $baseUrl ?>/api/stocks/sales-order";
-
     let salesChart;
 
     async function loadAnalytics() {
@@ -101,7 +97,6 @@
         if (!result.status) return;
 
         const data = result.data;
-
 
         /* ======================
         TOTAL DATA
@@ -142,11 +137,9 @@
             revenue.push(month.revenue);
             targets.push(month.target);
             orders.push(month.orders);
-
         });
 
         createChart(labels,revenue,targets,orders);
-
 
         /* ======================
         TOP PRODUCTS
@@ -164,9 +157,7 @@
                 <td>₹${p.revenue}</td>
             </tr>
             `;
-
         });
-
 
         /* ======================
         CLIENT SALES
@@ -184,96 +175,80 @@
                 <td>₹${c.total_sales}</td>
             </tr>
             `;
-
         });
-
     }
-
-
 
     /* ======================
     CREATE CHART
     ====================== */
 
-function createChart(labels, revenue, targets, orders) {
+    function createChart(labels, revenue, targets, orders) {
+        const ctx = document.getElementById('salesChart').getContext('2d');
 
-    const ctx = document.getElementById('salesChart').getContext('2d');
-
-    salesChart = new Chart(ctx, {
-        type: 'bar',
-
-        data: {
-            labels: labels,
-
-            datasets: [
-
-                {
-                    label: 'Target Orders',
-                    data: targets,
-                    backgroundColor: '#E5E7EB'
-                },
-
-                {
-                    label: 'Orders Achieved',
-                    data: orders,
-                    backgroundColor: '#6366F1'
-                },
-
-                {
-                    label: 'Revenue',
-                    data: revenue,
-                    type: 'line',
-                    borderColor: '#10B981',
-                    backgroundColor: 'rgba(16,185,129,0.2)',
-                    tension: 0.4,
-                    fill: true,
-                    yAxisID: 'y1'
-                }
-
-            ]
-
-        },
-
-        options: {
-            responsive: true,
-
-            interaction: {
-                mode: 'index',
-                intersect: false
+        salesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Target Orders',
+                        data: targets,
+                        backgroundColor: '#E5E7EB'
+                    },
+                    {
+                        label: 'Orders Achieved',
+                        data: orders,
+                        backgroundColor: '#6366F1'
+                    },
+                    {
+                        label: 'Revenue',
+                        data: revenue,
+                        type: 'line',
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16,185,129,0.2)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y1'
+                    }
+                ]
             },
 
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Orders'
-                    }
+            options: {
+                responsive: true,
+
+                interaction: {
+                    mode: 'index',
+                    intersect: false
                 },
 
-                y1: {
-                    beginAtZero: true,
-                    position: 'right',
-                    title: {
-                        display: true,
-                        text: 'Revenue'
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Orders'
+                        }
                     },
-                    grid: {
-                        drawOnChartArea: false
+
+                    y1: {
+                        beginAtZero: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Revenue'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
                     }
+
                 }
 
             }
+        });
 
-        }
-
-    });
-
-}
-
-
+    }
     loadAnalytics();
-
 </script>
 
 <?php include 'footer.php'; ?>

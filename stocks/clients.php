@@ -33,6 +33,7 @@
                     <th class="px-6 py-3">Mobile</th>
                     <th class="px-6 py-3">Email</th>
                     <th class="px-6 py-3">Address</th>
+                    <th class="px-6 py-3">Status</th>
                     <th class="px-6 py-3">Action</th>
                 </tr>
             </thead>
@@ -302,7 +303,7 @@
             fetchClients();
         }
     }
-    
+
     /* ================= LOAD PAGE ================= */
 
     fetchClients();

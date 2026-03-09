@@ -6,53 +6,222 @@
     <h1 class="text-3xl font-bold mb-8 text-gray-800">Analytics Overview</h1>
 
     <!-- Analytics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-10">
 
-        <div class="bg-white rounded-2xl shadow-lg p-6 hover:scale-105 transition">
+        <div class="bg-white rounded-2xl shadow p-6">
             <p class="text-gray-500">Total Sales</p>
-            <h2 class="text-2xl font-bold mt-2">$25,000</h2>
+            <h2 id="total_sales" class="text-2xl font-bold mt-2">₹0</h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-lg p-6 hover:scale-105 transition">
+        <div class="bg-white rounded-2xl shadow p-6">
             <p class="text-gray-500">Total Orders</p>
-            <h2 class="text-2xl font-bold mt-2">1,240</h2>
+            <h2 id="total_orders" class="text-2xl font-bold mt-2">0</h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-lg p-6 hover:scale-105 transition">
-            <p class="text-gray-500">Products</p>
-            <h2 class="text-2xl font-bold mt-2">320</h2>
+        <div class="bg-white rounded-2xl shadow p-6">
+            <p class="text-gray-500">Total Tax</p>
+            <h2 id="total_tax" class="text-2xl font-bold mt-2">₹0</h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-lg p-6 hover:scale-105 transition">
-            <p class="text-gray-500">Customers</p>
-            <h2 class="text-2xl font-bold mt-2">870</h2>
+        <div class="bg-white rounded-2xl shadow p-6">
+            <p class="text-gray-500">Total Products</p>
+            <h2 id="total_products" class="text-2xl font-bold mt-2">0</h2>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow p-6">
+            <p class="text-gray-500">Low Stock</p>
+            <h2 id="low_stock" class="text-2xl font-bold mt-2">0</h2>
         </div>
 
     </div>
 
-    <!-- Chart Section -->
-    <div class="bg-white rounded-2xl shadow-lg p-6">
+
+    <!-- Chart -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
+        <h2 class="text-lg font-semibold mb-4">Monthly Revenue</h2>
         <canvas id="salesChart"></canvas>
+    </div>
+
+
+    <!-- Top Selling Products -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
+        <h2 class="text-lg font-semibold mb-4">Top Selling Products</h2>
+
+        <table class="w-full text-left">
+            <thead>
+                <tr class="border-b">
+                    <th class="py-2">Product</th>
+                    <th>Units Sold</th>
+                    <th>Revenue</th>
+                </tr>
+            </thead>
+
+            <tbody id="top_products"></tbody>
+        </table>
+    </div>
+
+
+    <!-- Sales By Clients -->
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+        <h2 class="text-lg font-semibold mb-4">Sales By Clients</h2>
+
+        <table class="w-full text-left">
+            <thead>
+                <tr class="border-b">
+                    <th class="py-2">Client</th>
+                    <th>Orders</th>
+                    <th>Total Sales</th>
+                </tr>
+            </thead>
+
+            <tbody id="sales_clients"></tbody>
+        </table>
     </div>
 
 </div>
 
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-const ctx = document.getElementById('salesChart').getContext('2d');
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [{
-            label: 'Sales',
-            data: [5000, 7000, 8000, 6000, 9000, 11000],
-            borderColor: '#6366F1',
-            backgroundColor: 'rgba(99,102,241,0.2)',
-            tension: 0.4,
-            fill: true
-        }]
-    },
-});
+
+    const BASE_URL = "<?= $baseUrl ?>/api/stocks/sales-order";
+
+    let salesChart;
+
+    async function loadAnalytics() {
+
+        const res = await fetch(`${BASE_URL}/analytics`, {
+            method: "POST"
+        });
+
+        const result = await res.json();
+
+        if (!result.status) return;
+
+        const data = result.data;
+
+
+        /* ======================
+        TOTAL DATA
+        ====================== */
+
+        document.getElementById("total_sales").innerText =
+            `₹${data.total_data.total_sales}`;
+
+        document.getElementById("total_orders").innerText =
+            data.total_data.total_orders;
+
+        document.getElementById("total_tax").innerText =
+            `₹${data.total_data.total_tax}`;
+
+        document.getElementById("total_products").innerText =
+            data.total_data.total_products;
+
+        document.getElementById("low_stock").innerText =
+            data.total_data.low_stock_products;
+
+
+        /* ======================
+        MONTH CHART
+        ====================== */
+
+        const labels = [];
+        const revenue = [];
+
+        data.month_wise_data.forEach(m => {
+
+            const key = Object.keys(m)[0];
+            labels.push(key);
+
+            revenue.push(m[key].revenue);
+
+        });
+
+        createChart(labels, revenue);
+
+
+        /* ======================
+        TOP PRODUCTS
+        ====================== */
+
+        const topProducts = document.getElementById("top_products");
+        topProducts.innerHTML = "";
+
+        data.top_selling_products.forEach(p => {
+
+            topProducts.innerHTML += `
+            <tr class="border-b">
+                <td class="py-2">${p.product_name}</td>
+                <td>${p.units_sold}</td>
+                <td>₹${p.revenue}</td>
+            </tr>
+            `;
+
+        });
+
+
+        /* ======================
+        CLIENT SALES
+        ====================== */
+
+        const clients = document.getElementById("sales_clients");
+        clients.innerHTML = "";
+
+        data.sales_by_clients.forEach(c => {
+
+            clients.innerHTML += `
+            <tr class="border-b">
+                <td class="py-2">${c.client_name}</td>
+                <td>${c.orders}</td>
+                <td>₹${c.total_sales}</td>
+            </tr>
+            `;
+
+        });
+
+    }
+
+
+
+    /* ======================
+    CREATE CHART
+    ====================== */
+
+    function createChart(labels, data) {
+
+        const ctx = document.getElementById('salesChart').getContext('2d');
+
+        salesChart = new Chart(ctx, {
+            type: 'line',
+
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue',
+                    data: data,
+                    borderColor: '#6366F1',
+                    backgroundColor: 'rgba(99,102,241,0.2)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true }
+                }
+            }
+
+        });
+
+    }
+
+
+    loadAnalytics();
+
 </script>
 
 <?php include 'footer.php'; ?>

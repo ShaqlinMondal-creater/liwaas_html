@@ -227,7 +227,7 @@
 
 <!-- Create -->
 <script>
-    const BASE_URL = "<?= $baseUrl ?>/api";
+    const BASE_URL = "<?= $baseUrl ?>/api/admin";
 </script>
 
 <!-- ========================= -->

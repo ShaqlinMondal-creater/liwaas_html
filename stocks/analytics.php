@@ -83,7 +83,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    const BASE_URL = "<?= $baseUrl ?>/api/stocks/sales-order";
+    const BASE_URL = "<?= $baseUrl ?>/api/admin/stocks/sales-order";
     let salesChart;
     const token = localStorage.getItem("auth_token");
     async function loadAnalytics() {

@@ -13,6 +13,10 @@
     $baseEmail = $config['BASE_EMAIL'];
     $basePhone = $config['BASE_PHONE'];
     $razorPayKey = $config['RAZORPAY_KEY'];
+
+    $wppLink = $config['WPP_CHANNEL_LINK'];
+    $instaLink = $config['INSTAGRAM_PROFILE_LINK'];
+    $fbLink = $config['FACEBOOK_PROFILE_LINK'];
 ?>
 <head>
     <meta charset="UTF-8" />

@@ -46,7 +46,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-800">Email Support</h3>
                 </div>
-                <p class="text-gray-600 mb-2"><strong>Email:</strong> support@liwaas.com</p>
+                <p class="text-gray-600 mb-2"><strong>Email:</strong> <?php echo $baseEmail; ?></p>
                 <p class="text-gray-600">For order queries, returns, refunds, and general support.</p>
             </div>
 
@@ -93,7 +93,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-800">Social Media</h3>
                 </div>
-                <p class="text-gray-600 mb-2"><strong>Instagram:</strong> @liwaas</p>
+                <p class="text-gray-600 mb-2"><strong>Instagram:</strong> <?php echo $instaLink; ?></p>
                 <p class="text-gray-600">DM us for quick responses.</p>
             </div>
 
@@ -199,13 +199,13 @@
                         <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
                         <input type="text" id="firstName" name="firstName"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
-                            placeholder="John">
+                            placeholder="Rohan">
                     </div>
                     <div>
                         <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
                         <input type="text" id="lastName" name="lastName"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
-                            placeholder="Doe">
+                            placeholder="Kumar">
                     </div>
                 </div>
                 <div class="grid md:grid-cols-2 gap-6">
@@ -213,13 +213,13 @@
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                         <input type="email" id="email" name="email"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
-                            placeholder="john@example.com">
+                            placeholder="rohan@email.com">
                     </div>
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
                         <input type="tel" id="phone" name="phone"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
-                            placeholder="+1 (555) 123-4567">
+                            placeholder="+91 98765 43210">
                     </div>
                 </div>
                 <div>
@@ -268,11 +268,12 @@
                     <div class="h-96 bg-gray-200 relative">
                         <!-- Google Maps Embed -->
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343008!2d-74.00425878459418!3d40.74844097932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf5c1654f3%3A0xc80f9cfce5383d5d!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1635959655654!5m2!1sen!2sus"
+                            src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d916.9279804827393!2d88.10442551185585!3d23.18071201656489!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sazad%20nagar%20hospital%20more!5e0!3m2!1sen!2sin!4v1773090160123!5m2!1sen!2sin"
                             width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade" class="absolute inset-0">
                         </iframe>
                     </div>
+                    <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d916.9279804827393!2d88.10442551185585!3d23.18071201656489!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sazad%20nagar%20hospital%20more!5e0!3m2!1sen!2sin!4v1773090160123!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-2">Liwaas Flagship Store</h3>
                         <p class="text-gray-600 mb-4"><?php echo $baseAddress; ?>1</p>

@@ -524,12 +524,39 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
         if (!makeUserData.success) {
             submitBtn.disabled = false;
             submitBtn.textContent = "Save Address";
-            alert("Failed to create user.");
+            // alert("Failed to create user.");
             hidePageLoader();
+            
+            let seconds = 5;
+
+            const checkoutUrl = window.location.href;
+
+            const timerInterval = setInterval(() => {
+                seconds--;
+                const el = document.getElementById("redirectCounter");
+                if (el) el.textContent = seconds;
+            }, 1000);
+
             Swal.fire({
                 icon: "warning",
                 title: "Account Already Exists",
-                text: makeUserData.message || "User already exists. Kindly login first."
+                html: `
+                    ${makeUserData.message || "User already exists. Kindly login first."}
+                    <br><br>
+                    Redirecting to login in <b id="redirectCounter">5</b> seconds...
+                `,
+                showConfirmButton: false,
+                showCloseButton: true,
+                closeButtonHtml: "✕",
+                customClass: {
+                    closeButton: "swal-cancel-btn"
+                },
+                timer: 5000,
+                timerProgressBar: true,
+                willClose: () => {
+                    clearInterval(timerInterval);
+                    window.location.href = `../sign-in?redirect=${encodeURIComponent(checkoutUrl)}`;
+                }
             });
 
             return;

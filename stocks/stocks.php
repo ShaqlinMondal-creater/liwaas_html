@@ -1,6 +1,6 @@
 <?php include 'header.php'; ?>
 <?php
-        $config = include('../admin/configs/config.php');
+    $config = include('../admin/configs/config.php');
 ?>
 <div class="max-w-7xl mx-auto px-6 mt-12">
 

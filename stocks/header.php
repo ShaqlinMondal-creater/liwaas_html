@@ -22,26 +22,31 @@
 
 <!-- ================= NOTCH NAVBAR ================= -->
 <div class="flex justify-center mt-6">
-    <div class="bg-white shadow-xl rounded-full px-8 py-4 flex space-x-10 items-center">
-        
-        <a href="analytics.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600">
-            <i class="fas fa-chart-line text-xl"></i>
+    <div class="bg-white shadow-xl rounded-full px-10 py-4 flex space-x-12 items-center">
+
+        <a href="analytics.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600 transition">
+            <i class="fas fa-chart-pie text-xl"></i>
             <span class="text-xs mt-1">Analytics</span>
         </a>
 
-        <a href="stocks.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600">
-            <i class="fas fa-box text-xl"></i>
+        <a href="stocks.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600 transition">
+            <i class="fas fa-boxes-stacked text-xl"></i>
             <span class="text-xs mt-1">Stocks</span>
         </a>
 
-        <a href="sales_order.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600">
-            <i class="fas fa-shopping-cart text-xl"></i>
+        <a href="sales_order.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600 transition">
+            <i class="fas fa-file-invoice text-xl"></i>
             <span class="text-xs mt-1">Sales Orders</span>
         </a>
 
-        <a href="sales_invoice.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600">
-            <i class="fas fa-truck text-xl"></i>
+        <a href="sales_invoice.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600 transition">
+            <i class="fas fa-receipt text-xl"></i>
             <span class="text-xs mt-1">Sales Invoices</span>
+        </a>
+
+        <a href="clients.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600 transition">
+            <i class="fas fa-users text-xl"></i>
+            <span class="text-xs mt-1">Clients</span>
         </a>
 
     </div>

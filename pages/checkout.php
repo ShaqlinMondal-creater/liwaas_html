@@ -526,6 +526,12 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
             submitBtn.textContent = "Save Address";
             alert("Failed to create user.");
             hidePageLoader();
+            Swal.fire({
+                icon: "warning",
+                title: "Account Already Exists",
+                text: makeUserData.message || "User already exists. Kindly login first."
+            });
+
             return;
         }
 

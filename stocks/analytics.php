@@ -85,11 +85,15 @@
 <script>
     const BASE_URL = "<?= $baseUrl ?>/api/stocks/sales-order";
     let salesChart;
-
+    const token = localStorage.getItem("auth_token");
     async function loadAnalytics() {
 
         const res = await fetch(`${BASE_URL}/analytics`, {
-            method: "POST"
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
         });
 
         const result = await res.json();

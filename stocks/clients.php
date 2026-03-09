@@ -84,7 +84,7 @@
 
 <script>
 
-    const BASE_URL = "<?= $baseUrl ?>/api//stocks/clients";
+    const BASE_URL = "<?= $baseUrl ?>/api/stocks/clients";
 
     /* ================= FETCH CLIENTS ================= */
 

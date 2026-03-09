@@ -13,7 +13,10 @@
         body{font-family:'Shadeerah Demo',sans-serif!important;}
     </style>
 </head>
-
+<?php
+    $config = include('../admin/configs/config.php');
+    $baseUrl   = $config['API_BASE_URL'];
+?>
 <body class="bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen">
 
 <!-- ================= NOTCH NAVBAR ================= -->

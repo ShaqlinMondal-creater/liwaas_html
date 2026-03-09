@@ -126,6 +126,7 @@
         const revenue = [];
         const targets = [];
         const orders = [];
+        const itemsSold = [];
 
         data.month_wise_data.forEach(m => {
 
@@ -137,9 +138,10 @@
             revenue.push(month.revenue);
             targets.push(month.target);
             orders.push(month.orders);
+            itemsSold.push(month.items_sold);
         });
 
-        createChart(labels,revenue,targets,orders);
+        createChart(labels,revenue,targets,orders,itemsSold);
 
         /* ======================
         TOP PRODUCTS
@@ -182,7 +184,7 @@
     CREATE CHART
     ====================== */
 
-    function createChart(labels, revenue, targets, orders) {
+    function createChart(labels, revenue, targets, orders, itemsSold) {
         const ctx = document.getElementById('salesChart').getContext('2d');
 
         salesChart = new Chart(ctx, {
@@ -210,6 +212,11 @@
                         fill: true,
                         yAxisID: 'y1'
                     }
+                    {
+                        label:'Items Sold',
+                        data:itemsSold,
+                        backgroundColor:'#F59E0B'
+                    },
                 ]
             },
 

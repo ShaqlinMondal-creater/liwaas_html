@@ -104,7 +104,7 @@
 </div>
 
 <script>
-    const BASE_URL = "https://api.liwaas.com/api";
+    const BASE_URL = "<?= $baseUrl ?>/api";
 </script>
 
 <script>

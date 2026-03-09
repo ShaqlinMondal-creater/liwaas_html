@@ -36,12 +36,12 @@
         |
         <a href="sales_order.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600 transition">
             <i class="fas fa-file-invoice text-xl"></i>
-            <span class="text-xs mt-1">Sales Orders</span>
+            <span class="text-xs mt-1">S Orders</span>
         </a>
         |   
         <a href="sales_invoice.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600 transition">
             <i class="fas fa-receipt text-xl"></i>
-            <span class="text-xs mt-1">Sales Invoices</span>
+            <span class="text-xs mt-1">S Invoices</span>
         </a>
         |
         <a href="clients.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600 transition">

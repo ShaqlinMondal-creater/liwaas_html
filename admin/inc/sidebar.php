@@ -75,6 +75,15 @@
                     </a>
                 </div>
 
+                <div class="menu-item">
+                    <a href="index.php" class="menu-link flex items-center grow border border-transparent gap-[10px] ps-[10px] pe-[10px] py-[6px] hover:text-primary <?= menuActive('../stocks/analytics.php') ?>" tabindex="0">
+                        <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
+                            <i class="ki-filled ki-element-11 text-lg"></i>
+                        </span>
+                        <span class="menu-title text-sm font-medium">Stocks</span>
+                    </a>
+                </div>
+
                 <!-- USER SECTION -->
                 <div class="menu-item pt-2.25 pb-px">
                     <span class="menu-heading uppercase text-2sm font-medium text-gray-500 ps-[10px] pe-[10px]">

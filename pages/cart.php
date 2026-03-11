@@ -393,24 +393,38 @@
           // ✅ Shipping calculation
           const shippingElement = document.getElementById("shipping");
           let shipping = 0;
-          if (subtotal > 0 && subtotal < 200) {
-            shipping = 120;
-            shippingElement.textContent = `₹${shipping.toFixed(2)}`;
-            shippingElement.classList.remove("text-green-600");
-            shippingElement.classList.add("text-gray-900");
-          } else if (subtotal >= 3500) {
+
+          const shippingEnabled = false; // if true use the logic else free
+
+          if (!shippingEnabled) {
+
             shipping = 0;
-            shippingElement.textContent = "Free";
+            shippingElement.textContent = "₹0.00";
             shippingElement.classList.remove("text-gray-900");
             shippingElement.classList.add("text-green-600");
+
           } else {
-            shippingElement.textContent = "₹0.00";
-            shippingElement.classList.remove("text-green-600");
-            shippingElement.classList.add("text-gray-900");
+
+            if (subtotal > 0 && subtotal < 600) {
+
+              shipping = 120;
+              shippingElement.textContent = `₹${shipping.toFixed(2)}`;
+              shippingElement.classList.remove("text-green-600");
+              shippingElement.classList.add("text-gray-900");
+
+            } else {
+
+              shipping = 0;
+              shippingElement.textContent = "Free";
+              shippingElement.classList.remove("text-gray-900");
+              shippingElement.classList.add("text-green-600");
+
+            }
+
           }
 
-          // ✅ Total = subtotal + tax + shipping
-          const total = subtotal +  shipping;
+          // ✅ Total = subtotal + shipping
+          const total = subtotal + shipping;
           totalElement.textContent = `₹${total.toFixed(2)}`;
 
           // ✅ Enable/Disable checkout button

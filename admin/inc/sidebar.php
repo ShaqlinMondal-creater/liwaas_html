@@ -263,3 +263,41 @@
     </div>
 </div>
 
+<script>
+    // 🚪 Handle Logout
+    document.addEventListener('DOMContentLoaded', () => {
+        const logoutLinks = document.querySelectorAll('a[href="#"]');
+
+        logoutLinks.forEach(link => {
+            link.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                const token = localStorage.getItem('auth_token');
+                if (!token) return window.location.href = 'sign-in';
+
+                try {
+                    const response = await fetch('<?php echo $baseUrl; ?>/api/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        // Clear all user data
+                        localStorage.clear();
+                        window.location.href = 'sign-in';
+                    } else {
+                        alert(result.message || 'Logout failed.');
+                    }
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    alert('An error occurred during logout.');
+                }
+            });
+        });
+    });
+</script>

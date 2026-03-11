@@ -16,9 +16,10 @@ return [
   'WPP_CHANNEL_LINK'   => '@liwaas',
   'INSTAGRAM_PROFILE_LINK'   => '@liwaas',
   'FACEBOOK_PROFILE_LINK'   => '@liwaas',
-
-  'RAZORPAY_KEY' => 'rzp_test_8WG68Pg2DZy2bj', // Replace with your Razorpay Key ID
   
+  // 'RAZORPAY_KEY' => 'rzp_test_8WG68Pg2DZy2bj', // Replace with your Razorpay Key ID
+  'RAZORPAY_KEY' => 'rzp_live_SPysP9sHVTwSBf',
+
   // Google Auth Setup
   'API_KEY' =>'AIzaSyBhczhhGDgEisFpQfzFbvhpc0vlXuHFVg8',
   'AUTH_DOMAIN' => 'liwaas-001.firebaseapp.com',

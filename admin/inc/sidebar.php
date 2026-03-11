@@ -273,7 +273,7 @@
                 e.preventDefault();
 
                 const token = localStorage.getItem('auth_token');
-                if (!token) return window.location.href = 'sign-in';
+                if (!token) return window.location.href = '../sign-in';
 
                 try {
                     const response = await fetch('<?php echo $baseUrl; ?>/api/logout', {
@@ -289,7 +289,7 @@
                     if (result.success) {
                         // Clear all user data
                         localStorage.clear();
-                        window.location.href = 'sign-in';
+                        window.location.href = '../sign-in';
                     } else {
                         alert(result.message || 'Logout failed.');
                     }

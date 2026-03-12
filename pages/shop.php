@@ -386,16 +386,20 @@
                 }
             });
 
+            // slider.noUiSlider.on('update', function (values) {
+            //     if (minInput) minInput.value = values[0];
+            //     if (maxInput) maxInput.value = values[1];
+            // });
             slider.noUiSlider.on('update', function (values) {
-                if (minInput) minInput.value = values[0];
-                if (maxInput) maxInput.value = values[1];
+                if (minInput) minInput.value = Number(values[0]).toFixed(2);
+                if (maxInput) maxInput.value = Number(values[1]).toFixed(2);
             });
 
             slider.noUiSlider.on('change', function (values) {
                 resetAllFiltersExcept("price");
 
-                filters.min_price = parseInt(values[0]);
-                filters.max_price = parseInt(values[1]);
+                filters.min_price = parseFloat(values[0]);
+                filters.max_price = parseFloat(values[1]);
 
                 fetchAndRenderProducts();
             });

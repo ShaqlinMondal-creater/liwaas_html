@@ -789,6 +789,7 @@ async function deleteAddress(addressId) {
 
 <script>
 let cartData = [];
+let cartShipping = 0;
 
 async function fetchCheckoutCart() {
     try {
@@ -814,6 +815,7 @@ async function fetchCheckoutCart() {
 
         if (result.success) {
             cartData = result.data || [];
+            cartShipping = result.shipping || 0;
             renderSummary();
         } else {
             cartData = [];
@@ -852,7 +854,7 @@ function renderSummary() {
     cartData.forEach(item => {
         const variation = item.variation || {};
         const lineTotal = parseFloat(item.total_price) || 0;
-        subtotal += lineTotal;
+        subtotal += Number(lineTotal);
 
         const row = document.createElement("div");
         row.className = "flex justify-between text-sm";
@@ -864,7 +866,8 @@ function renderSummary() {
     });
 
     // Shipping rule: ₹120 if subtotal > 200
-    let shipping = subtotal > 200 ? 0 : 120;
+    // let shipping = subtotal > 200 ? 0 : 120;
+    let shipping = cartShipping;
     let finalSubtotal = subtotal;
 
     if (appliedCoupon && discountAmount > 0) {
@@ -877,7 +880,7 @@ function renderSummary() {
     } else {
         subtotalEl.textContent = `₹${subtotal.toFixed(2)}`;
     }
-    shippingEl.textContent = shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`;
+    shippingEl.textContent = shipping === 0 ? "Free" : `₹${Number(shipping).toFixed(2)}`;
     totalEl.textContent = `₹${(finalSubtotal + shipping).toFixed(2)}`;
 
     placeBtn.disabled = false;

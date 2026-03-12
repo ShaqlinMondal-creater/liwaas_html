@@ -76,8 +76,11 @@
         product.image_url ||
         'https://via.placeholder.com/300x300?text=No+Image';
 
-      const sellPrice = Number(variation.sell_price) || 0;
-      const regularPrice = Number(variation.regular_price) || sellPrice;
+      const sellPrice = parseFloat(variation.sell_price) || 0;
+      const regularPrice = parseFloat(variation.regular_price) || sellPrice;
+
+      const formattedSellPrice = sellPrice.toFixed(2);
+      const formattedRegularPrice = regularPrice.toFixed(2);
 
       let discountPercent = 0;
       if (regularPrice > sellPrice) {
@@ -112,10 +115,10 @@
               <div class="flex items-center justify-between gap-2">
                 <!-- Price -->
                 <div class="flex items-center gap-2">
-                  <span class="text-lg font-bold text-gray-900">₹${sellPrice}</span>
+                  <span class="text-lg font-bold text-gray-900">₹${formattedSellPrice}</span>
                   ${
                     regularPrice > sellPrice
-                      ? `<span class="text-sm text-gray-500 line-through">₹${regularPrice}</span>`
+                      ? `<span class="text-sm text-gray-500 line-through">₹${formattedRegularPrice}</span>`
                       : ``
                   }
                 </div>

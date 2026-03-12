@@ -815,12 +815,13 @@ async function fetchCheckoutCart() {
 
         if (result.success) {
             cartData = result.data || [];
-            cartShipping = result.shipping || 0;
-            renderSummary();
+            cartShipping = Number(result.shipping) || 0;
         } else {
             cartData = [];
-            renderSummary();
+            cartShipping = 0;
         }
+
+        renderSummary();
 
     } catch (err) {
         console.error("Checkout cart error:", err);
@@ -867,7 +868,7 @@ function renderSummary() {
 
     // Shipping rule: ₹120 if subtotal > 200
     // let shipping = subtotal > 200 ? 0 : 120;
-    let shipping = cartShipping;
+    let shipping = Number(cartShipping) || 0;
     let finalSubtotal = subtotal;
 
     if (appliedCoupon && discountAmount > 0) {

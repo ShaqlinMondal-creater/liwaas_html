@@ -148,6 +148,7 @@
         const cartCountElements = document.querySelectorAll("[data-cart-count]");
 
         let cartData = [];
+        let cartShipping = 0;
         const baseUrl = "<?= $baseUrl ?>";
         /* ---------------- GET CART ---------------- */
         async function fetchCart() {
@@ -188,7 +189,7 @@
 
             if (result.success) {
               cartData = result.data || [];
-
+              cartShipping = Number(result.shipping) || 0;
               // If backend generated new temp_id for first guest
               if (!authToken && result.temp_id) {
                 localStorage.setItem("guest_token", result.temp_id);
@@ -246,7 +247,7 @@
                       <p class="mt-1 text-sm text-gray-500">Size: ${variation.size || "-"} </p>
                     </div>
                     <p class="text-sm font-medium text-gray-900" data-price data-original-price="${item.sell_price}">
-                      ₹${item.total_price}
+                      ₹${Number(item.total_price).toFixed(2)}
                     </p>
                   </div>
                   <div class="mt-4 flex items-center justify-between">
@@ -390,37 +391,18 @@
           // Subtotal display
           subtotalElement.textContent = `₹${subtotal.toFixed(2)}`;
 
-          // ✅ Shipping calculation
           const shippingElement = document.getElementById("shipping");
-          let shipping = 0;
 
-          const shippingEnabled = false; // if true use the logic else free
+          let shipping = Number(cartShipping) || 0;
 
-          if (!shippingEnabled) {
-
-            shipping = 0;
-            shippingElement.textContent = "₹0.00";
+          if (shipping === 0) {
+            shippingElement.textContent = "Free";
             shippingElement.classList.remove("text-gray-900");
             shippingElement.classList.add("text-green-600");
-
           } else {
-
-            if (subtotal > 0 && subtotal < 600) {
-
-              shipping = 120;
-              shippingElement.textContent = `₹${shipping.toFixed(2)}`;
-              shippingElement.classList.remove("text-green-600");
-              shippingElement.classList.add("text-gray-900");
-
-            } else {
-
-              shipping = 0;
-              shippingElement.textContent = "Free";
-              shippingElement.classList.remove("text-gray-900");
-              shippingElement.classList.add("text-green-600");
-
-            }
-
+            shippingElement.textContent = `₹${shipping.toFixed(2)}`;
+            shippingElement.classList.remove("text-green-600");
+            shippingElement.classList.add("text-gray-900");
           }
 
           // ✅ Total = subtotal + shipping

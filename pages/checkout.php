@@ -493,9 +493,9 @@ document.querySelector("#addressModal form").addEventListener("submit", async fu
     const email   = form.querySelector('input[type="email"]').value;
     const mobile  = form.querySelector('input[type="tel"]').value;
     const address = form.querySelector('textarea').value;
-    const state   = form.querySelectorAll('input[type="text"]')[1].value;
-    const city    = form.querySelectorAll('input[type="text"]')[2].value;
-    const pincode = form.querySelectorAll('input[type="text"]')[3].value;
+    const state   = document.getElementById("stateInput").value;
+    const city    = document.getElementById("cityInput").value;
+    const pincode = document.getElementById("pincodeInput").value;
     const isDefault = form.querySelector('#defaultAddress').checked;
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;

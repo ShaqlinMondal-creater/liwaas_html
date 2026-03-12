@@ -338,30 +338,6 @@
         document.getElementById('avatar').textContent = firstLetter;
     </script>
 
-    <script>
-        // let COLOR_MAP = {};
-
-        // async function loadColorMap() {
-        //     try {
-        //     const res = await fetch("../stat-json/color.json");
-        //     const json = await res.json();
-
-        //     json.colors.forEach(c => {
-        //         COLOR_MAP[c.name.toLowerCase()] = c.code;
-        //     });
-
-        //     console.log("Color map loaded:", COLOR_MAP);
-        //     } catch (err) {
-        //     console.error("Failed to load color map:", err);
-        //     }
-        // }
-
-        // function getColorCode(colorName) {
-        //     if (!colorName) return "#e5e7eb"; // fallback gray
-        //     return COLOR_MAP[colorName.toLowerCase()] || "#e5e7eb";
-        // }
-    </script>
-
     <!-- Apis Setup -->
     <script>
         const baseUrl = "<?= $baseUrl ?>"; // already set from PHP config
@@ -1107,7 +1083,7 @@
                                     <span>${item.quantity} pcs.</span>
                                 </p>
                                 <div class="flex items-center justify-between mt-2">
-                                    <span class="font-bold text-base">₹${item.sell_price}</span>
+                                    <span class="font-bold text-base">₹${parseFloat(item.sell_price).toFixed(2)}</span>
                                     <button onclick='window.location.href = "pages/product-detail?id=${variation.uid}"' class="grad-btn absolute right-0 bottom-6 md:bottom-4 inline-flex items-center gap-1 px-4 py-4 md:px-3 md:py-2 text-sm md:text-base rounded-l-full font-semibold">
                                         View Product
                                     </button>

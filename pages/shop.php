@@ -578,8 +578,11 @@
             const variationAID = product.variations?.[0]?.aid || null;
             const variationUID = product.variations?.[0]?.uid || null;
 
-            const sellPrice = Number(product.variations?.[0]?.sell_price) || 0;
-            const regularPrice = Number(product.variations?.[0]?.regular_price) || sellPrice;
+            const sellPrice = parseFloat(product.variations?.[0]?.sell_price) || 0;
+            const regularPrice = parseFloat(product.variations?.[0]?.regular_price) || sellPrice;
+
+            const formattedSellPrice = sellPrice.toFixed(2);
+            const formattedRegularPrice = regularPrice.toFixed(2);
 
             let discountPercent = 0;
             if (regularPrice > sellPrice) {
@@ -600,10 +603,11 @@
                         loading="lazy"
                     >
 
-                    <!-- Wishlist (KEEP) -->
-                    <button class="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100 wishlist-btn">
-                        <i data-lucide="heart" class="w-5 h-5"></i>
-                    </button>
+                    ${discountPercent > 0 
+                        ? `<span class="absolute top-3 left-3 bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-md shadow">
+                            ${discountPercent}% OFF
+                        </span>`
+                        : ``}
                     </div>
 
                     <!-- Info -->
@@ -613,10 +617,10 @@
 
                     <!-- Price -->
                     <div class="flex flex-col mb-3">
-                        <span class="text-lg font-bold text-gray-900">₹${sellPrice}</span>
+                        <span class="text-lg font-bold text-gray-900">₹${formattedSellPrice}</span>
                         ${
                             regularPrice > sellPrice
-                            ? `<span class="text-sm text-gray-500 line-through">₹${regularPrice}</span>`
+                            ? `<span class="text-sm text-gray-500 line-through">₹${formattedRegularPrice}</span>`
                             : ``
                         }
                     </div>

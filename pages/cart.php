@@ -295,12 +295,7 @@
 
             const result = await res.json();
             if (result.success) {
-              // Update local cart data with response
-              const updatedItem = result.data;
-              cartData = cartData.map(i =>
-                i.cart_id === cartId ? { ...i, ...updatedItem } : i
-              );
-              renderCart();
+              await fetchCart(); // ✅ Re-fetch cart from backend
             } else {
               console.error("Update failed:", result.message);
             }

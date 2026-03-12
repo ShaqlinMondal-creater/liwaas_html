@@ -590,12 +590,17 @@
           }
 
           // Update price display (format as integer)
-          document.querySelector(".sale_price").innerText = `₹${Math.round(sellPrice)}`;
-          document.querySelector(".regular_price").innerText = `₹${Math.round(regularPrice)}`;
+          // document.querySelector(".sale_price").innerText = `₹${Math.round(sellPrice)}`;
+          // document.querySelector(".regular_price").innerText = `₹${Math.round(regularPrice)}`;
+
+          // Update price display (correct format)
+          document.querySelector(".sale_price").innerText = `₹${parseFloat(sellPrice).toFixed(2)}`;
+          document.querySelector(".regular_price").innerText = `₹${parseFloat(regularPrice).toFixed(2)}`;
           
           const mobilePrice = document.getElementById("mobilePrice");
           if (mobilePrice) {
-            mobilePrice.innerText = `₹${Math.round(sellPrice)}`;
+            // mobilePrice.innerText = `₹${Math.round(sellPrice)}`;
+            mobilePrice.innerText = `₹${parseFloat(sellPrice).toFixed(2)}`;
           }
 
           // Update discount

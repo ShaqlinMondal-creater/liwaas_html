@@ -52,8 +52,6 @@
     }
 </style>
 
-<?php include("../footer.php"); ?>
-
 <script>
     const baseUrl = "<?= $baseUrl ?>";
 

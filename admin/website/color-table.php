@@ -259,7 +259,7 @@
         .then(result => {
             if (result.isConfirmed) {
                 fetch(`${baseUrl}/api/admin/colors/delete`, {
-                    method: "POST",
+                    method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`

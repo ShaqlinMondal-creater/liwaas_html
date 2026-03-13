@@ -564,11 +564,13 @@
           variantItem.querySelector("input[placeholder='Regular Price']").value = variant.regular_price;
           variantItem.querySelector("input[placeholder='Sale Price']").value = variant.sell_price || variant.sale_price;
           variantItem.querySelector("input[placeholder='Size']").value = variant.size;
-          variantItem.querySelector(".color-value").value = variant.color;
           if (variant.color) {
-            variantItem.querySelector(".color-text").textContent = variant.color;
+            variantItem.querySelector(".color-value").value = variant.color.name;
+
+            variantItem.querySelector(".color-text").textContent = variant.color.name;
             variantItem.querySelector(".color-text").classList.remove("text-gray-500");
           }
+
           // variantItem.querySelector(".color-text").classList.remove("text-gray-500");
           variantItem.querySelector("input[placeholder='Stock']").value = variant.stock;
 
@@ -576,7 +578,7 @@
           // initColorDropdown(dropdown);
 
           if (variant.color) {
-            const color = allColors.find(c => c.name === variant.color);
+            const color = allColors.find(c => c.name === variant.color.name);
 
             if (color) {
               const dot = dropdown.querySelector(".color-dot");

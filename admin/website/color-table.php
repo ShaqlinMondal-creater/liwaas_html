@@ -15,7 +15,7 @@
             </div>
 
             <div class="card-body">
-                <div id="colors_grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div id="colors_grid" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     <!--  -->
                 </div>
             </div>
@@ -25,30 +25,29 @@
 
 <style>
     .color-card {
-        border: 1px solid #e5e7eb;
         border-radius: 12px;
-        padding: 14px;
-        background: #fff;
+        padding: 20px;
         text-align: center;
         transition: 0.2s;
+        color: #fff;
+        position: relative;
     }
 
     .color-card:hover {
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-    }
-
-    .color-circle {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin: auto;
-        border: 2px solid #e5e7eb;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.15);
     }
 
     .color-name {
         font-weight: 600;
-        margin-top: 10px;
-        font-size: 14px;
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+
+    .color-actions {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
     }
 </style>
 
@@ -67,23 +66,30 @@
                 grid.innerHTML = "";
                 res.data.forEach(color => {
                     grid.innerHTML += `
-                        <div class="color-card">
+                        <div class="color-card" style="background:${color.code}">
 
-                            <div class="color-circle" style="background:${color.code}">
-                            </div>
                             <div class="color-name">
                                 ${color.name}
+                                <div style="font-size:12px;opacity:0.9">${color.code}</div>
                             </div>
-                            <div class="flex justify-center gap-2 mt-3">
-                                <button class="btn btn-xs btn-primary" onclick="openUpdateColor('${color.name}','${color.code}')">
+
+                            <div class="color-actions">
+
+                                <button class="btn btn-xs btn-light"
+                                onclick="openUpdateColor('${color.name}','${color.code}')">
                                     Update
                                 </button>
-                                <button class="btn btn-xs btn-danger" onclick="deleteColor('${color.name}')">
+
+                                <button class="btn btn-xs btn-dark"
+                                onclick="deleteColor('${color.name}')">
                                     Delete
                                 </button>
+
                             </div>
+
                         </div>
                     `;
+
                 });
 
             });

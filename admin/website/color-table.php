@@ -53,6 +53,7 @@
 
 <script>
     const baseUrl = "<?= $baseUrl ?>";
+    const token = localStorage.getItem("auth_token");
 
     /* ---------------- FETCH COLORS ---------------- */
     function fetchColors() {
@@ -94,83 +95,16 @@
     }
 
     /* ---------------- ADD COLOR ---------------- */
-    // function openAddColor() {
-
-    //     Swal.fire({
-
-    //         title: "Add Color",
-
-    //         html: `
-    //             <input id="color_name" class="swal2-input" placeholder="Color Name">
-    //             <div style="margin-top:10px;">
-    //                 <label style="font-size:13px;">Choose Color</label>
-    //                 <input type="color" id="color_picker" value="#000000" style="width:100%;height:40px;border:none;">
-    //                 <input id="color_code" class="swal2-input" placeholder="#000000">
-    //             </div>
-    //         `,
-
-    //         confirmButtonText: "Add Color",
-    //         confirmButtonColor: "#16a34a",
-    //         showCancelButton: true,
-    //         preConfirm: () => {
-    //             const name = document.getElementById("color_name").value;
-    //             const code = document.getElementById("color_code").value;
-    //             if (!name || !code) {
-    //                 Swal.showValidationMessage("Name and Code required");
-    //                 return false;
-    //             }
-
-    //             return fetch(`${baseUrl}/api/colors/add`, {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json"
-    //                 },
-
-    //                 body: JSON.stringify({
-    //                     name: name,
-    //                     code: code
-    //                 })
-    //             })
-    //                 .then(res => res.json())
-    //                 .then(data => {
-    //                     if (!data.success) throw new Error(data.message);
-    //                     return data;
-    //                 });
-    //         }
-    //     })
-    //     .then(result => {
-    //         if (result.isConfirmed) {
-    //             Swal.fire(
-    //                 "Success",
-    //                 "Color Added Successfully",
-    //                 "success"
-    //             );
-    //             fetchColors();
-    //         }
-    //     });
-    // }
-
     function openAddColor() {
-
         Swal.fire({
 
             title: "Add Color",
-
             html: `
                 <input id="color_name" class="swal2-input" placeholder="Color Name">
-
                 <div style="margin-top:10px;">
-                <label style="font-size:13px;">Choose Color</label>
-
-                <input type="color"
-                id="color_picker"
-                value="#000000"
-                style="width:100%;height:40px;border:none;margin-top:5px;">
-
-                <input id="color_code"
-                class="swal2-input"
-                placeholder="#000000"
-                value="#000000">
+                    <label style="font-size:13px;">Choose Color</label>
+                    <input type="color" id="color_picker" value="#000000" style="width:100%;height:40px;border:none;margin-top:5px;">
+                    <input id="color_code" class="swal2-input" placeholder="#000000" value="#000000">
                 </div>
             `,
 
@@ -182,57 +116,41 @@
 
                 const picker = document.getElementById("color_picker");
                 const code = document.getElementById("color_code");
-
                 /* picker → input */
                 picker.addEventListener("input", () => {
                     code.value = picker.value;
                 });
-
                 /* input → picker */
                 code.addEventListener("input", () => {
-
                     if (/^#[0-9A-Fa-f]{6}$/.test(code.value)) {
                         picker.value = code.value;
                     }
-
                 });
-
             },
-
             preConfirm: () => {
-
                 const name = document.getElementById("color_name").value.trim();
                 const code = document.getElementById("color_code").value.trim();
-
                 if (!name || !code) {
-
                     Swal.showValidationMessage("Color name and code required");
                     return false;
-
                 }
 
-                return fetch(`${baseUrl}/api/colors/add`, {
-
+                return fetch(`${baseUrl}/api/admin/colors/add`, {
                     method: "POST",
-
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
                     },
-
                     body: JSON.stringify({
                         name: name,
                         code: code
                     })
-
                 })
                     .then(res => res.json())
                     .then(data => {
-
                         if (!data.success) throw new Error(data.message);
                         return data;
-
                     });
-
             }
 
         })
@@ -255,71 +173,17 @@
     }
 
     /* ---------------- UPDATE COLOR ---------------- */
-    // function openUpdateColor(oldName, oldCode) {
-
-    //     Swal.fire({
-    //         title: "Update Color",
-    //         html: `
-    //             <input id="color_name" class="swal2-input" value="${oldName}">
-    //             <input id="color_code" class="swal2-input" value="${oldCode}">
-    //         `,
-
-    //         confirmButtonText: "Update",
-    //         confirmButtonColor: "#2563eb",
-    //         showCancelButton: true,
-    //         preConfirm: () => {
-    //             const name = document.getElementById("color_name").value;
-    //             const code = document.getElementById("color_code").value;
-    //             return fetch(`${baseUrl}/api/colors/update`, {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json"
-    //                 },
-    //                 body: JSON.stringify({
-    //                     old_name: oldName,
-    //                     name: name,
-    //                     code: code
-    //                 })
-    //             })
-    //             .then(res => res.json())
-    //             .then(data => {
-    //                 if (!data.success) throw new Error(data.message);
-    //                 return data;
-    //             });
-    //         }
-    //     })
-    //     .then(result => {
-    //         if (result.isConfirmed) {
-    //             Swal.fire(
-    //                 "Updated",
-    //                 "Color Updated Successfully",
-    //                 "success"
-    //             );
-    //             fetchColors();
-    //         }
-    //     });
-    // }
-
     function openUpdateColor(oldName, oldCode) {
         Swal.fire({
 
             title: "Update Color",
-
             html: `
-            <input id="color_name" class="swal2-input" value="${oldName}">
-
-            <div style="margin-top:10px;">
-            <label style="font-size:13px;">Choose Color</label>
-
-            <input type="color"
-            id="color_picker"
-            value="${oldCode}"
-            style="width:100%;height:40px;border:none;margin-top:5px;">
-
-            <input id="color_code"
-            class="swal2-input"
-            value="${oldCode}">
-            </div>
+                <input id="color_name" class="swal2-input" value="${oldName}">
+                <div style="margin-top:10px;">
+                    <label style="font-size:13px;">Choose Color</label>
+                    <input type="color" id="color_picker" value="${oldCode}" style="width:100%;height:40px;border:none;margin-top:5px;">
+                    <input id="color_code" class="swal2-input" value="${oldCode}">
+                </div>
             `,
 
             confirmButtonText: "Update",
@@ -327,7 +191,6 @@
             showCancelButton: true,
 
             didOpen: () => {
-
                 const picker = document.getElementById("color_picker");
                 const code = document.getElementById("color_code");
 
@@ -335,50 +198,36 @@
                 picker.addEventListener("input", () => {
                     code.value = picker.value;
                 });
-
                 /* input → picker */
                 code.addEventListener("input", () => {
-
                     if (/^#[0-9A-Fa-f]{6}$/.test(code.value)) {
                         picker.value = code.value;
                     }
-
                 });
-
             },
 
             preConfirm: () => {
-
                 const name = document.getElementById("color_name").value.trim();
                 const code = document.getElementById("color_code").value.trim();
-
-                return fetch(`${baseUrl}/api/colors/update`, {
+                return fetch(`${baseUrl}/api/admin/colors/update`, {
 
                     method: "POST",
-
                     headers: {
-                        "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                     },
-
                     body: JSON.stringify({
-
                         old_name: oldName,
                         name: name,
                         code: code
-
                     })
-
                 })
-                    .then(res => res.json())
-                    .then(data => {
-
-                        if (!data.success) throw new Error(data.message);
-                        return data;
-
-                    });
-
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) throw new Error(data.message);
+                    return data;
+                });
             }
-
         })
         .then(result => {
 
@@ -412,7 +261,8 @@
                 fetch(`${baseUrl}/api/colors/delete`, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
                     },
                     body: JSON.stringify({ name: name })
                 })

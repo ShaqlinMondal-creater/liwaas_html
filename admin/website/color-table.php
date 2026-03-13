@@ -258,7 +258,7 @@
         })
         .then(result => {
             if (result.isConfirmed) {
-                fetch(`${baseUrl}/api/colors/delete`, {
+                fetch(`${baseUrl}/api/admin/colors/delete`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

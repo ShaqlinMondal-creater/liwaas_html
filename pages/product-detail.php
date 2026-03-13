@@ -324,7 +324,7 @@
 
         // ========== GLOBAL VARIABLES ==========
         const BASE_URL = "<?= $baseUrl ?>";
-        const STATIC_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+        const STATIC_SIZES = ["S", "M", "L", "XL", "XXL"];
         
         let images = [];
         let variations = [];

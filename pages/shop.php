@@ -123,9 +123,9 @@
 
                         <!-- Min-Max Inputs -->
                         <div class="flex items-center space-x-4">
-                            <input type="number" id="desk-min-price" class="min-price w-full px-3 py-2 border rounded-lg text-center" placeholder="Min">
+                            <input type="number" id="desk-min-price" class="min-price w-full px-1 py-2 border rounded-lg text-center" placeholder="Min">
                             <span class="text-gray-500">to</span>
-                            <input type="number" id="desk-max-price" class="max-price w-full px-3 py-2 border rounded-lg text-center" placeholder="Max">
+                            <input type="number" id="desk-max-price" class="max-price w-full px-1 py-2 border rounded-lg text-center" placeholder="Max">
                         </div>
                     </div>
                 </div>

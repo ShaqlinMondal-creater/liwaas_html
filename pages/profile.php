@@ -710,32 +710,68 @@
                 // ✅ Cancel event
                 document.querySelectorAll(".cancel-btn").forEach(btn => {
                     btn.addEventListener("click", async () => {
+
                         const orderId = btn.dataset.orderId;
                         if (!orderId) return;
 
-                        if (!confirm("Are you sure you want to cancel this order?")) return;
+                        const confirm = await Swal.fire({
+                            title: "Cancel Order?",
+                            text: "Are you sure you want to cancel this order?",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#dc2626",
+                            cancelButtonColor: "#6b7280",
+                            confirmButtonText: "Yes, cancel it"
+                        });
+
+                        if (!confirm.isConfirmed) return;
 
                         try {
-                            const res = await fetch(`${baseUrl}/api/customer/order/cancel`, {
+
+                            const res = await fetch(`${baseUrl}/api/customer/order/cancel-order/${orderId}`, {
                                 method: "POST",
                                 headers: {
-                                    Authorization: `Bearer ${authToken}`,
+                                    "Authorization": `Bearer ${authToken}`,
                                     "Content-Type": "application/json"
-                                },
-                                body: JSON.stringify({ id: orderId })
+                                }
                             });
+
                             const data = await res.json();
 
-                            if (data.success) {
-                                alert("Order cancelled successfully!");
+                            if (res.ok) {
+
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Order Cancelled",
+                                    text: data.message,
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+
                                 loadOrders(); // refresh orders
+
                             } else {
-                                alert(data.message || "Failed to cancel order");
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Failed",
+                                    text: data.message || "Unable to cancel order"
+                                });
+
                             }
+
                         } catch (err) {
+
                             console.error("Cancel error:", err);
-                            alert("Something went wrong while cancelling.");
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: "Something went wrong"
+                            });
+
                         }
+
                     });
                 });
 

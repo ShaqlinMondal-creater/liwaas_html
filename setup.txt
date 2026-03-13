@@ -192,11 +192,5 @@ Delete Messege notification
 
 
 ---->
-1. product detail page : on create wishlist should toast
-
-1. on place order email mobile no : NA & the tax calculation 
 2. update order status time , pdf footer need to update details 
 3. frontend: contact page update data and color
-5. create a stocks page : and create invoice there and give the pdf(sales order, sales invoice(full payment only))
-
-6. cart api need update : have pass the Shipping if subtotal below 600 then add shipping charges

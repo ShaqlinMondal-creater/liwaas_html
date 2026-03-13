@@ -92,7 +92,7 @@
                 </div>
 
                 <!-- PUBLIC PROFILE -->
-                <div class="menu-item <?= menuShow(['account.php','development.php','profile.php','mark_product.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
+                <div class="menu-item <?= menuShow(['account.php','development.php','profile.php','mark_product.php','color-table.php']) ?>" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
                     <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] ps-[10px] pe-[10px] py-[6px]">
                         <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
                             <i class="ki-filled ki-profile-circle text-lg"></i>
@@ -127,6 +127,12 @@
                             <a href="website/mark_product.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('mark_product.php') ?>">
                                 <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('mark_product.php') ?>"></span>
                                 <span class="menu-title text-2sm">Mark Product</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="website/color-table.php" class="menu-link border border-transparent items-center grow hover:bg-secondary-active dark:hover:bg-coal-300 hover:rounded-lg gap-[14px] ps-[10px] pe-[10px] py-[8px] <?= menuActive('color-table.php') ?>">
+                                <span class="menu-bullet flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 <?= bulletActive('color-table.php') ?>"></span>
+                                <span class="menu-title text-2sm">Colors</span>
                             </a>
                         </div>
                     </div>

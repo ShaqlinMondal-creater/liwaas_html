@@ -288,6 +288,7 @@
   const baseUrl = "<?= $baseUrl ?>";
   const token = localStorage.getItem("auth_token");
   let currentProduct = null;
+  let allColors = [];
 
   function fetchBrands() {
     fetch(`${baseUrl}/api/allBrands`, {
@@ -345,45 +346,71 @@
     .catch(err => console.error("Category fetch error:", err));
   }
 
-  async function loadColors() {
+  function initColorDropdown(dropdown) {
+
+    const menu = dropdown.querySelector(".color-menu");
+    const btn = dropdown.querySelector(".color-btn");
+    const dot = dropdown.querySelector(".color-dot");
+    const text = dropdown.querySelector(".color-text");
+    const input = dropdown.querySelector(".color-value");
+
+    menu.innerHTML = "";
+
+    allColors.forEach(color => {
+
+      const item = document.createElement("div");
+
+      item.innerHTML = `
+        <span style="background:${color.code}" 
+          class="w-4 h-4 rounded-full border"></span>
+        <span>${color.name}</span>
+      `;
+
+      item.onclick = () => {
+
+        dot.style.backgroundColor = color.code;
+        dot.style.borderColor = "#64748b";
+
+        text.textContent = color.name;
+        text.classList.remove("text-gray-500");
+
+        input.value = color.name;
+
+        menu.classList.add("hidden");
+
+      };
+
+      menu.appendChild(item);
+
+    });
+
+    btn.onclick = () => {
+      menu.classList.toggle("hidden");
+    };
+  }
+
+  function loadColors() {
+    document.querySelectorAll(".color-dropdown").forEach(dropdown => {
+      initColorDropdown(dropdown);
+    });
+  }
+
+  async function fetchColors() {
     try {
-      const res = await fetch("./configs/color.json");
-      const data = await res.json();
 
-      document.querySelectorAll(".color-dropdown").forEach(dropdown => {
-        const menu = dropdown.querySelector(".color-menu");
-        const btn = dropdown.querySelector(".color-btn");
-        const dot = dropdown.querySelector(".color-dot");
-        const text = dropdown.querySelector(".color-text");
-        const input = dropdown.querySelector(".color-value");
+      const res = await fetch(`${baseUrl}/api/colors/getAll`);
+      const result = await res.json();
 
-        menu.innerHTML = "";
+      if (result.success) {
+        allColors = result.data;
+        loadColors();
+      }
 
-        data.colors.forEach(color => {
-          const item = document.createElement("div");
-          item.innerHTML = `
-            <span style="background:${color.code}" class="w-6 h-4 rounded-full border"></span>
-            <span>${color.name}</span>
-          `;
-
-          item.onclick = () => {
-            dot.style.backgroundColor = color.code;
-            dot.style.borderColor = "#64748b";
-            text.textContent = color.name;
-            text.classList.remove("text-gray-500");
-            input.value = color.name;
-            menu.classList.add("hidden");
-          };
-
-          menu.appendChild(item);
-        });
-
-        btn.onclick = () => menu.classList.toggle("hidden");
-      });
     } catch (err) {
-      console.error("Color load error:", err);
+      console.error("Color API error:", err);
     }
   }
+
 
   function createImageCard(imageId, imageUrl, onDelete) {
     const card = document.createElement("div");
@@ -401,103 +428,72 @@
     return card;
   }
 
-async function deleteProductImage(imageId) {
-  const confirmed = confirm("Are you sure you want to delete this image?");
-  if (!confirmed) return;
+  async function deleteProductImage(imageId) {
+    const confirmed = confirm("Are you sure you want to delete this image?");
+    if (!confirmed) return;
 
-  if (!currentProduct || !currentProduct.aid) {
-    alert("Product not loaded properly");
-    return;
-  }
-
-  try {
-    const res = await fetch(`${baseUrl}/api/admin/upload/delete-images`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        aid: currentProduct.aid,
-        ids: String(imageId) // API expects string
-      })
-    });
-
-    const result = await res.json();
-
-    if (result.success) {
-      alert(result.message);
-      await loadProduct(); // refresh images without reload
-    } else {
-      alert("Failed to delete image");
+    if (!currentProduct || !currentProduct.aid) {
+      alert("Product not loaded properly");
+      return;
     }
 
-  } catch (err) {
-    alert("Error deleting image: " + err.message);
-  }
-}
+    try {
+      const res = await fetch(`${baseUrl}/api/admin/upload/delete-images`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          aid: currentProduct.aid,
+          ids: String(imageId) // API expects string
+        })
+      });
 
-async function deleteVariationImage(imageId, uid) {
-  const confirmed = confirm("Are you sure you want to delete this image?");
-  if (!confirmed) return;
+      const result = await res.json();
 
-  try {
-    const res = await fetch(`${baseUrl}/api/admin/upload/delete-variation-images`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        uid: String(uid),
-        ids: String(imageId)
-      })
-    });
+      if (result.success) {
+        alert(result.message);
+        await loadProduct(); // refresh images without reload
+      } else {
+        alert("Failed to delete image");
+      }
 
-    const result = await res.json();
-
-    if (result.success) {
-      alert(result.message);
-      await loadProduct(); // smooth refresh
-    } else {
-      alert("Failed to delete variation image");
+    } catch (err) {
+      alert("Error deleting image: " + err.message);
     }
-
-  } catch (err) {
-    alert("Error deleting variation image: " + err.message);
   }
-}
 
+  async function deleteVariationImage(imageId, uid) {
+    const confirmed = confirm("Are you sure you want to delete this image?");
+    if (!confirmed) return;
 
-  // async function uploadVariationImages(aid, uid, files) {
-  //   if (!files.length) return;
+    try {
+      const res = await fetch(`${baseUrl}/api/admin/upload/delete-variation-images`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          uid: String(uid),
+          ids: String(imageId)
+        })
+      });
 
-  //   const formData = new FormData();
-  //   formData.append("aid", aid);
-  //   formData.append("uid", uid);
+      const result = await res.json();
 
-  //   for (let file of files) {
-  //     formData.append("file[]", file);
-  //   }
+      if (result.success) {
+        alert(result.message);
+        await loadProduct(); // smooth refresh
+      } else {
+        alert("Failed to delete variation image");
+      }
 
-  //   try {
-  //     const res = await fetch(`${baseUrl}/api/admin/upload/variation-images`, {
-  //       method: "POST",
-  //       headers: { Authorization: `Bearer ${token}` },
-  //       body: formData
-  //     });
-
-  //     const result = await res.json();
-  //     if (result.success) {
-  //       alert("Images uploaded successfully");
-  //       location.reload();
-  //     } else {
-  //       alert("Failed to upload images: " + result.message);
-  //     }
-  //   } catch (err) {
-  //     alert("Error uploading images: " + err.message);
-  //   }
-  // }
+    } catch (err) {
+      alert("Error deleting variation image: " + err.message);
+    }
+  }
 
   async function loadProduct() {
     const AID = new URLSearchParams(window.location.search).get("AID");
@@ -541,7 +537,6 @@ async function deleteVariationImage(imageId, uid) {
       // Load brands and categories
       fetchBrands();
       fetchCategories();
-      loadColors();
 
       if (isVariant) {
         // Show variant fields
@@ -570,27 +565,33 @@ async function deleteVariationImage(imageId, uid) {
           variantItem.querySelector("input[placeholder='Sale Price']").value = variant.sell_price || variant.sale_price;
           variantItem.querySelector("input[placeholder='Size']").value = variant.size;
           variantItem.querySelector(".color-value").value = variant.color;
-          variantItem.querySelector(".color-text").textContent = variant.color;
-          variantItem.querySelector(".color-text").classList.remove("text-gray-500");
+          if (variant.color) {
+            variantItem.querySelector(".color-text").textContent = variant.color;
+            variantItem.querySelector(".color-text").classList.remove("text-gray-500");
+          }
+          // variantItem.querySelector(".color-text").classList.remove("text-gray-500");
           variantItem.querySelector("input[placeholder='Stock']").value = variant.stock;
 
-          setTimeout(() => {
-            const dropdown = variantItem.querySelector(".color-dropdown");
-            const colorValue = variant.color;
+          const dropdown = variantItem.querySelector(".color-dropdown");
+          // initColorDropdown(dropdown);
 
-            const menuItems = dropdown.querySelectorAll(".color-menu div");
+          if (variant.color) {
+            const color = allColors.find(c => c.name === variant.color);
 
-            menuItems.forEach(item => {
-              const name = item.querySelector("span:last-child").textContent;
-              const dotSpan = item.querySelector("span:first-child");
+            if (color) {
+              const dot = dropdown.querySelector(".color-dot");
+              const text = dropdown.querySelector(".color-text");
+              const input = dropdown.querySelector(".color-value");
 
-              if (name === colorValue) {
-                variantItem.querySelector(".color-dot").style.backgroundColor =
-                  dotSpan.style.background;
-              }
-            });
-          }, 300);
+              dot.style.backgroundColor = color.code;
+              dot.style.borderColor = "#64748b";
 
+              text.textContent = color.name;
+              text.classList.remove("text-gray-500");
+
+              input.value = color.name;
+            }
+          }
 
           // Load images
           const imagesWrapper = variantItem.querySelector(".images-wrapper");
@@ -667,19 +668,17 @@ async function deleteVariationImage(imageId, uid) {
           colorText.textContent = product.color;
           colorText.classList.remove("text-gray-500");
 
-          setTimeout(() => {
-            const dropdown = document.querySelector("#simple_fields .color-dropdown");
-            const items = dropdown.querySelectorAll(".color-menu div");
+          const dropdown = document.querySelector("#simple_fields .color-dropdown");
+          // initColorDropdown(dropdown);
 
-            items.forEach(item => {
-              const name = item.querySelector("span:last-child").textContent;
-              const dotSpan = item.querySelector("span:first-child");
+          if (product.color) {
 
-              if (name === product.color) {
-                colorDot.style.backgroundColor = dotSpan.style.background;
-              }
-            });
-          }, 300);
+            const color = allColors.find(c => c.name === product.color);
+            if (color) {
+              colorDot.style.backgroundColor = color.code;
+              colorDot.style.borderColor = "#64748b";
+            }
+          }
         }
       }
 
@@ -698,8 +697,9 @@ async function deleteVariationImage(imageId, uid) {
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    loadProduct();
+  document.addEventListener("DOMContentLoaded", async () => {
+    await fetchColors();   // load colors first
+    await loadProduct();
 
     const form = document.getElementById("update_product_form");
     const cancelBtn = document.getElementById("cancel_btn");
@@ -777,7 +777,14 @@ async function deleteVariationImage(imageId, uid) {
         }
       });
 
-      loadColors();
+      const dropdown = clone.querySelector(".color-dropdown");
+
+      dropdown.querySelector(".color-dot").style.backgroundColor = "";
+      dropdown.querySelector(".color-text").textContent = "Select Color";
+      dropdown.querySelector(".color-text").classList.add("text-gray-500");
+      dropdown.querySelector(".color-value").value = "";
+
+      initColorDropdown(dropdown);
     });
 
     // Add spec row

@@ -209,9 +209,9 @@
             preConfirm: () => {
                 const name = document.getElementById("color_name").value.trim();
                 const code = document.getElementById("color_code").value.trim();
-                return fetch(`${baseUrl}/api/admin/colors/update`, {
+                return fetch(`${baseUrl}/api/admin/colors/edit`, {
 
-                    method: "POST",
+                    method: "PUT",
                     headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`

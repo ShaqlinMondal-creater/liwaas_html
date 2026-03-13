@@ -616,10 +616,25 @@
                                     Track Order
                                 </button>
                                 <button
-                                    class="cancel-btn text-sm text-red-600 hover:text-red-700 flex items-center gap-1"
+                                    class="cancel-btn text-sm flex items-center gap-1 px-3 py-1 rounded
+                                    ${
+                                        normalizedStatus === "cancelled"
+                                            ? "bg-red-100 text-red-500 cursor-not-allowed"
+                                        : normalizedStatus === "completed"
+                                            ? "bg-green-100 text-green-600 cursor-not-allowed"
+                                        : "text-red-600 hover:text-red-700"
+                                    }"
                                     data-order-id="${order.id}"
-                                    ${["delivered","cancel"].includes(normalizedStatus) ? "disabled" : ""}
+                                    ${
+                                        normalizedStatus === "cancelled" || normalizedStatus === "completed"
+                                        ? "disabled"
+                                        : ""
+                                    }
                                 >
+                                    <i data-lucide="x-circle" class="w-4 h-4"></i>
+                                    Cancel
+                                </button>
+
                                     <i data-lucide="x-circle" class="w-4 h-4"></i>
                                     Cancel
                                 </button>

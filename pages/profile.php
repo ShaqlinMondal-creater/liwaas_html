@@ -529,7 +529,16 @@
 
                     // ✅ Create order card
                     const card = document.createElement("div");
-                    card.className = "bg-white rounded-xl shadow-sm border p-6";
+                    let cardBg = "bg-white";
+
+                    if (normalizedStatus === "cancelled") {
+                        cardBg = "bg-red-50 border-red-200";
+                    }
+                    else if (normalizedStatus === "completed") {
+                        cardBg = "bg-green-50 border-green-200";
+                    }
+
+                    card.className = `${cardBg} rounded-xl shadow-sm border p-6`;
 
                     card.innerHTML = `
                         <div class="flex justify-between items-start mb-4">

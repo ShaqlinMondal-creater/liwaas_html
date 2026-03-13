@@ -634,10 +634,6 @@
                                     <i data-lucide="x-circle" class="w-4 h-4"></i>
                                     Cancel
                                 </button>
-
-                                    <i data-lucide="x-circle" class="w-4 h-4"></i>
-                                    Cancel
-                                </button>
                             </div>
                             ${order.invoice_link 
                                 ? `<button class="text-sm text-blue-600 hover:underline" 

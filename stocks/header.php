@@ -22,7 +22,7 @@
 
 <!-- ================= NOTCH NAVBAR ================= -->
 <div class="flex justify-center mt-6">
-    <div class="bg-white shadow-xl rounded-full px-8 py-4 flex space-x-6 items-center">
+    <div class="bg-white shadow-xl rounded-full px-4 py-4 flex space-x-6 items-center">
 
         <a href="analytics.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600 transition">
             <i class="fas fa-chart-pie text-xl"></i>

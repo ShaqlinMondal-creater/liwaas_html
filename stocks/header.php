@@ -49,5 +49,10 @@
             <span class="text-xs mt-1">Clients</span>
         </a>
 
+        <a href="reviews.php" class="flex flex-col items-center text-gray-600 hover:text-indigo-600 transition">
+            <i class="fas fa-star text-xl"></i>
+            <span class="text-xs mt-1">Reviews</span>
+        </a>
+
     </div>
 </div>

@@ -141,6 +141,12 @@ Fetch Coupons -> Done ✅
 Delete Coupons -> Done ✅
 Update Coupons -> Done ✅
 
+Colors:
+Add Color -> Done ✅
+Fetch Colors -> Done ✅
+Delete Color -> Done ✅
+Update Color -> Done ✅
+
 Products:
 Add product -> Done ✅ 
 Fetch product -> Done ✅ 

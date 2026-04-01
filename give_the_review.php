@@ -178,10 +178,16 @@
                 formData.append("upload_images[]", files[i]);
             }
 
-            // 🔥 USER LOGIC
-            if(!token)
-            {
-                formData.append("user", param_user ? param_user : "temp_user");
+            // 🔥 USER HANDLING (FINAL CORRECT)
+            if (token) {
+                // Logged in → backend will handle user name
+            } else {
+                // Guest user
+                if (param_user && param_user.trim() !== "") {
+                    formData.append("user", param_user);
+                } else {
+                    formData.append("user", "temp_user");
+                }
             }
 
             try {

@@ -15,6 +15,7 @@
         <link href="assets/brand/fav_icon.png" rel="shortcut icon" />
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://fonts.cdnfonts.com/css/shadeerah-demo" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
         <style>
             body { font-family: 'Shadeerah Demo', sans-serif !important; }
                         
@@ -78,111 +79,136 @@
             </div>
         </div>
 
-<script>
+        <div id="successPopup" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+            <div class="bg-white p-8 rounded-xl text-center shadow-xl animate-bounce">
+                <h2 class="text-2xl font-bold text-green-600 mb-2">🎉 Success!</h2>
+                <p class="text-gray-700">Review submitted successfully</p>
+            </div>
+        </div>
 
-    const urlParams = new URLSearchParams(window.location.search);
+    <script>
 
-    // GET PARAMS
-    const param_product = urlParams.get("product_id");
-    const param_aid = urlParams.get("aid");
-    const param_uid = urlParams.get("uid");
-    const param_user = urlParams.get("user");
+        const urlParams = new URLSearchParams(window.location.search);
 
-    // AUTO FILL INPUTS
-    if(param_product) document.getElementById("product_id").value = param_product;
-    if(param_aid) document.getElementById("aid").value = param_aid;
-    if(param_uid) document.getElementById("uid").value = param_uid;
+        // GET PARAMS
+        const param_product = urlParams.get("product_id");
+        const param_aid = urlParams.get("aid");
+        const param_uid = urlParams.get("uid");
+        const param_user = urlParams.get("user");
 
-    const BASE_URL = "<?php echo $baseUrl; ?>/api"; // 🔁 change this
+        // AUTO FILL INPUTS
+        if(param_product) document.getElementById("product_id").value = param_product;
+        if(param_aid) document.getElementById("aid").value = param_aid;
+        if(param_uid) document.getElementById("uid").value = param_uid;
 
-    let selectedRating = 0;
+        const BASE_URL = "<?php echo $baseUrl; ?>/api"; // 🔁 change this
 
-    // ⭐ STAR SYSTEM
-    const starsContainer = document.getElementById("stars");
-    starsContainer.innerHTML = [1,2,3,4,5].map(i =>
-        `<span data-value="${i}" class="star cursor-pointer text-gray-400">★</span>`
-    ).join("");
+        let selectedRating = 0;
 
-    document.querySelectorAll(".star").forEach(star => {
-        star.addEventListener("click", function () {
-            selectedRating = this.dataset.value;
-            updateStars();
-        });
-    });                                                                                                             
+        // ⭐ STAR SYSTEM
+        const starsContainer = document.getElementById("stars");
+        starsContainer.innerHTML = [1,2,3,4,5].map(i =>
+            `<span data-value="${i}" class="star cursor-pointer text-gray-400">★</span>`
+        ).join("");
 
-    function updateStars() {
         document.querySelectorAll(".star").forEach(star => {
-            star.classList.toggle("text-yellow-400", star.dataset.value <= selectedRating);
-            star.classList.toggle("text-gray-400", star.dataset.value > selectedRating);
-        });
-    }
-
-    // 📸 IMAGE PREVIEW
-    document.getElementById("images").addEventListener("change", function () {
-        const preview = document.getElementById("preview");
-        preview.innerHTML = "";
-
-        Array.from(this.files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = e => {
-                preview.innerHTML += `<img src="${e.target.result}" class="w-16 h-16 object-cover rounded">`;
-            };
-            reader.readAsDataURL(file);
-        });
-    });
-
-    // 🚀 SUBMIT REVIEW (UPDATED API)
-    document.getElementById("reviewForm").addEventListener("submit", async function(e){
-        e.preventDefault();
-
-        const token = localStorage.getItem("auth_token");
-
-        const formData = new FormData();
-
-        formData.append("products_id", document.getElementById("product_id").value);
-        formData.append("aid", document.getElementById("aid").value);
-        formData.append("uid", document.getElementById("uid").value);
-        formData.append("total_star", selectedRating);
-        formData.append("comments", document.getElementById("comment").value);
-
-        // 📸 images
-        const files = document.getElementById("images").files;
-        for (let i = 0; i < files.length; i++) {
-            formData.append("upload_images[]", files[i]);
-        }
-
-        // 🔥 USER LOGIC
-        if(!token)
-        {
-            formData.append("user", param_user ? param_user : "temp_user");
-        }
-
-        try {
-
-            const res = await fetch(`${BASE_URL}/reviews/create`, {
-                method: "POST",
-                headers: token ? {
-                    "Authorization": "Bearer " + token
-                } : {}, // ❗ no header if no token
-                body: formData
+            star.addEventListener("click", function () {
+                selectedRating = this.dataset.value;
+                updateStars();
             });
+        });                                                                                                             
 
-            const data = await res.json();
+        function updateStars() {
+            document.querySelectorAll(".star").forEach(star => {
+                star.classList.toggle("text-yellow-400", star.dataset.value <= selectedRating);
+                star.classList.toggle("text-gray-400", star.dataset.value > selectedRating);
+            });
+        }
 
-            if(data.success){
-                alert("✅ Review submitted successfully!");
-                location.reload();
-            } else {
-                alert("❌ " + data.message);
+        // 📸 IMAGE PREVIEW
+        document.getElementById("images").addEventListener("change", function () {
+            const preview = document.getElementById("preview");
+            preview.innerHTML = "";
+
+            Array.from(this.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    preview.innerHTML += `<img src="${e.target.result}" class="w-16 h-16 object-cover rounded">`;
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // 🚀 SUBMIT REVIEW (UPDATED API)
+        document.getElementById("reviewForm").addEventListener("submit", async function(e){
+            e.preventDefault();
+
+            const token = localStorage.getItem("auth_token");
+
+            const formData = new FormData();
+
+            formData.append("products_id", document.getElementById("product_id").value);
+            formData.append("aid", document.getElementById("aid").value);
+            formData.append("uid", document.getElementById("uid").value);
+            formData.append("total_star", selectedRating);
+            formData.append("comments", document.getElementById("comment").value);
+
+            // 📸 images
+            const files = document.getElementById("images").files;
+            for (let i = 0; i < files.length; i++) {
+                formData.append("upload_images[]", files[i]);
             }
 
-        } catch(err){
-            console.error(err);
-            alert("Server error!");
-        }
-    });
+            // 🔥 USER LOGIC
+            if(!token)
+            {
+                formData.append("user", param_user ? param_user : "temp_user");
+            }
 
-</script>
+            try {
+
+                const res = await fetch(`${BASE_URL}/reviews/create`, {
+                    method: "POST",
+                    headers: token ? {
+                        "Authorization": "Bearer " + token
+                    } : {}, // ❗ no header if no token
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if(data.success){
+                    showSuccessAndRedirect();
+                } else {
+                    alert("❌ " + data.message);
+                }
+
+            } catch(err){
+                console.error(err);
+                alert("Server error!");
+            }
+        });
+
+        function showSuccessAndRedirect()
+        {
+            // 🎉 blast effect
+            confetti({
+                particleCount: 150,
+                spread: 90,
+                origin: { y: 0.6 }
+            });
+
+            const popup = document.getElementById("successPopup");
+
+            popup.classList.remove("hidden");
+            popup.classList.add("flex");
+
+            setTimeout(() => {
+                window.location.href = "https://liwaas.com";
+            }, 2000);
+        }
+
+    </script>
 
 </body>
 </html>

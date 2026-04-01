@@ -3,58 +3,37 @@
 <div class="max-w-7xl mx-auto px-6 mt-12">
 
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">Stocks</h1>
-
-        <div class="flex flex-wrap gap-3 md:flex-nowrap">
-            <button class="bg-green-600 text-white px-4 py-2 rounded-lg">
-                Export Excel
-            </button>
-            <button onclick="openSalesOrderModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg">
-                Generate Order
-            </button>
-            <button onclick="deleteSelected()" class="bg-red-700 text-white px-4 py-2 rounded-lg">
-                Delete Selected
-            </button>
-            <button onclick="openAddModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-                + Add Product
-            </button>
-        </div>
+        <h1 class="text-3xl font-bold text-gray-800">Reviews</h1>
     </div>
 
     <!-- Filters -->
     <div class="bg-white shadow rounded-xl p-4 mb-6">
 
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
 
-            <input 
-                id="search"
-                type="text"
-                placeholder="Search product..."
-                class="border rounded-lg px-3 py-2"
-            >
+            <input id="product_name" placeholder="Product Name" class="border rounded-lg px-3 py-2">
 
-            <select id="size" class="border rounded-lg px-3 py-2">
-                <option value="">All Size</option>
-                <option>S</option>
-                <option>M</option>
-                <option>L</option>
-                <option>XL</option>
+            <input id="aid" placeholder="AID" class="border rounded-lg px-3 py-2">
+
+            <input id="uid" placeholder="UID" class="border rounded-lg px-3 py-2">
+
+            <input id="user_name" placeholder="User Name" class="border rounded-lg px-3 py-2">
+
+            <select id="total_star" class="border rounded-lg px-3 py-2">
+                <option value="">All Stars</option>
+                <option value="5">5 ⭐</option>
+                <option value="4">4 ⭐</option>
+                <option value="3">3 ⭐</option>
+                <option value="2">2 ⭐</option>
+                <option value="1">1 ⭐</option>
             </select>
 
-            <select id="color" class="border rounded-lg px-3 py-2">
-                <option value="">All Color</option>
-                <option>Matt Black</option>
-                <option>Royal Red</option>
-                <option>Peace White</option>
-            </select>
+        </div>
 
-            <button 
-                onclick="loadStocks(0)"
-                class="bg-indigo-600 text-white rounded-lg"
-            >
+        <div class="mt-4">
+            <button onclick="loadReviews()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg">
                 Filter
             </button>
-
         </div>
 
     </div>
@@ -62,50 +41,23 @@
     <!-- Table -->
     <div class="bg-white rounded-2xl shadow-lg overflow-x-auto">
 
-        <table class="min-w-full text-left">
+        <table class="min-w-[900px] text-left">
 
             <thead class="bg-indigo-50">
                 <tr>
-
-                    <th class="px-6 py-3">
-                        <input type="checkbox" id="selectAll">
-                    </th>
-
+                    <th class="px-6 py-3">Product</th>
+                    <th class="px-6 py-3">User</th>
+                    <th class="px-6 py-3">AID</th>
                     <th class="px-6 py-3">UID</th>
-                    <th class="px-6 py-3">Name</th>
-                    <th class="px-6 py-3">Size</th>
-                    <th class="px-6 py-3">Color</th>
-                    <th class="px-6 py-3">List Price</th>
-                    <th class="px-6 py-3">Sale Price</th>
-                    <th class="px-6 py-3">Stock</th>
-                    <th class="px-6 py-3">Status</th>
-                    <th class="px-6 py-3">Action</th>
-
+                    <th class="px-6 py-3">Rating</th>
+                    <th class="px-6 py-3">Comment</th>
+                    <th class="px-6 py-3">Images</th>
                 </tr>
             </thead>
 
-            <tbody id="stocksTable"></tbody>
+            <tbody id="reviewTable"></tbody>
 
         </table>
-
-    </div>
-
-    <!-- Pagination -->
-    <div class="flex justify-between mt-6">
-
-        <button 
-            id="prevBtn"
-            class="bg-gray-200 px-4 py-2 rounded"
-        >
-            Previous
-        </button>
-
-        <button 
-            id="nextBtn"
-            class="bg-gray-200 px-4 py-2 rounded"
-        >
-            Next
-        </button>
 
     </div>
 
@@ -235,112 +187,20 @@
 <!-- ========================= -->
 
 <script>
-    async function fetchStocks(filters)
+    async function fetchReviews(filters)
     {
-
         const token = localStorage.getItem("auth_token");
 
-        const response = await fetch(BASE_URL + "/stocks/get-stock",{
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer "+token
-            },
-
-            body:JSON.stringify(filters)
-
-        });
-
-        return await response.json();
-
-    }
-
-    async function addStockAPI(payload)
-    {
-
-        const token = localStorage.getItem("auth_token");
-
-        const response = await fetch(BASE_URL + "/stocks/add-stock",{
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer "+token
-            },
-
-            body:JSON.stringify(payload)
-
-        });
-
-        return await response.json();
-
-    }
-
-    async function deleteStockAPI(ids)
-    {
-
-        const token = localStorage.getItem("auth_token");
-
-        const response = await fetch(BASE_URL + "/stocks/delete-stock",{
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer "+token
-            },
-
-            body:JSON.stringify({
-                ids: ids
-            })
-
-        });
-
-        return await response.json();
-
-    }
-
-    async function fetchClients() {
-
-        const token = localStorage.getItem("auth_token");
-
-        const response = await fetch(BASE_URL + "/stocks/clients/fetch", {
-
+        const res = await fetch(BASE_URL + "/reviews", {
             method: "POST",
-
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
-            }
-
-        });
-
-        return await response.json();
-
-    }
-
-    async function createSalesOrderAPI(payload) {
-
-        const token = localStorage.getItem("auth_token");
-
-        const response = await fetch(BASE_URL + "/stocks/sales-order/create", {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
+                "Content-Type":"application/json",
+                "Authorization":"Bearer " + token
             },
-
-            body: JSON.stringify(payload)
-
+            body: JSON.stringify(filters)
         });
 
-        return await response.json();
-
+        return await res.json();
     }
 </script>
 
@@ -354,404 +214,88 @@
     let limit = 10;
     let total = 0;
 
-    async function loadStocks(newOffset = 0)
+    async function loadReviews()
     {
-
-        offset = newOffset;
-
         const filters = {
 
-            search:document.getElementById("search").value,
-            size:document.getElementById("size").value,
-            color:document.getElementById("color").value,
-            limit:limit,
-            offset:offset
+            product_name: document.getElementById("product_name").value,
+            aid: document.getElementById("aid").value,
+            uid: document.getElementById("uid").value,
+            user_name: document.getElementById("user_name").value,
+            total_star: document.getElementById("total_star").value
 
         };
 
-        const response = await fetchStocks(filters);
+        const res = await fetchReviews(filters);
 
-        if(!response.status) return;
+        if(!res.success) return;
 
-        total = response.total;
-
-        renderStocks(response.data);
-
+        renderReviews(res.data);
     }
 
-    function renderStocks(data)
+    function renderReviews(data)
     {
-
-        const table = document.getElementById("stocksTable");
+        const table = document.getElementById("reviewTable");
 
         table.innerHTML = "";
 
         data.forEach(item => {
 
-            const status = item.status == 1
-            ? `<span class="text-green-600">Active</span>`
-            : `<span class="text-red-600">Inactive</span>`;
-
-            table.innerHTML += `
-            
-            <tr class="border-t">
-
-                <td class="px-6 py-4">
-                    <input type="checkbox" class="rowCheckbox" value="${item.id}">
-                </td>
-
-                <td class="px-6 py-4 font-semibold text-gray-700">
-                    ${item.uid}
-                </td>
-
-                <td class="px-6 py-4">
-                    ${item.name}
-                </td>
-
-                <td class="px-6 py-4">
-                    ${item.size}
-                </td>
-
-                <td class="px-6 py-4">
-                    ${item.color}
-                </td>
-
-                <td class="px-6 py-4">
-                    ₹${item.list_price}
-                </td>
-
-                <td class="px-6 py-4">
-                    ₹${item.sale_price}
-                </td>
-
-                <td class="px-6 py-4">
-                    ${item.stock}
-                </td>
-
-                <td class="px-6 py-4">
-                    ${status}
-                </td>
-
-                <td class="px-6 py-4 space-x-3">
-
-                    <button class="text-blue-600">
-                        <i class="fas fa-eye"></i>
-                    </button>
-
-                    <button class="text-yellow-600">
-                        <i class="fas fa-edit"></i>
-                    </button>
-
-                    <button onclick="deleteSingle(${item.id})" class="text-red-600">
-                        <i class="fas fa-trash"></i>
-                    </button>
-
-                </td>
-
-            </tr>
-            
-            `;
-
-        });
-
-    }
-
-    document.addEventListener("change", function(e){
-        if(e.target.id === "selectAll")
-        {
-
-            const checked = e.target.checked;
-
-            document.querySelectorAll(".rowCheckbox")
-            .forEach(cb => cb.checked = checked);
-
-        }
-    });
-
-    document.getElementById("nextBtn").onclick = () =>
-    {
-        if(offset + limit < total)
-        loadStocks(offset + limit);
-    };
-
-    document.getElementById("prevBtn").onclick = () =>
-    {
-        if(offset - limit >= 0)
-        loadStocks(offset - limit);
-    };
-
-    // Add Product Modal codes
-    function openAddModal()
-    {
-        document.getElementById("addProductModal").classList.remove("hidden");
-        document.getElementById("addProductModal").classList.add("flex");
-    }
-    function closeAddModal()
-    {
-        document.getElementById("addProductModal").classList.add("hidden");
-    }
-    async function addProduct()
-    {
-
-        const payload = {
-
-            name:document.getElementById("p_name").value,
-            size:document.getElementById("p_size").value,
-            color:document.getElementById("p_color").value,
-            list_price:parseFloat(document.getElementById("p_list_price").value),
-            sale_price:parseFloat(document.getElementById("p_sale_price").value),
-            stock:parseInt(document.getElementById("p_stock").value),
-            status:parseInt(document.getElementById("p_status").value)
-
-        };
-
-        const res = await addStockAPI(payload);
-
-        if(res.status)
-        {
-
-            alert(res.message);
-
-            closeAddModal();
-
-            loadStocks(0); // refresh table
-
-        }
-        else
-        {
-            alert("Failed to add product");
-        }
-
-    }
-
-    async function deleteSingle(id)
-    {
-
-        if(!confirm("Delete this product?")) return;
-
-        const res = await deleteStockAPI([id]);
-
-        if(res.status)
-        {
-            alert(res.message);
-            loadStocks(offset);
-        }
-        else
-        {
-            alert("Delete failed");
-        }
-
-    }
-
-    async function deleteSelected()
-    {
-
-        const ids = [];
-
-        document.querySelectorAll(".rowCheckbox:checked")
-        .forEach(cb => ids.push(parseInt(cb.value)));
-
-        if(ids.length === 0)
-        {
-            alert("Select products first");
-            return;
-        }
-
-        if(!confirm("Delete selected products?")) return;
-
-        const res = await deleteStockAPI(ids);
-
-        if(res.status)
-        {
-            alert(res.message);
-            loadStocks(offset);
-        }
-        else
-        {
-            alert("Delete failed");
-        }
-
-    }
-
-    async function openSalesOrderModal() {
-
-        const selected = [];
-
-        document.querySelectorAll(".rowCheckbox:checked")
-        .forEach(cb => selected.push(parseInt(cb.value)));
-
-        if (selected.length === 0) {
-            alert("Select product first");
-            return;
-        }
-        document.getElementById("orderItems").innerHTML = "";
-        document.getElementById("salesOrderModal").classList.remove("hidden");
-        document.getElementById("salesOrderModal").classList.add("flex");
-
-        loadOrderProducts(selected);
-        loadClients();
-
-    }
-
-    function loadOrderProducts(ids) {
-
-        const rows = document.querySelectorAll(".rowCheckbox");
-
-        const table = document.getElementById("orderItems");
-
-        table.innerHTML = "";
-
-        rows.forEach(row => {
-
-            if (ids.includes(parseInt(row.value))) {
-
-                const tr = row.closest("tr");
-
-                const uid = tr.children[1].innerText.trim();
-                const name = tr.children[2].innerText.trim();
-                const price = tr.children[6].innerText.replace("₹","").trim();
-
-                table.innerHTML += `
-
-                    <tr class="orderRow">
-                        <td class="px-4 py-2">${name}
-                            <input type="hidden" class="item_uid" value="${uid}">
-                        </td>
-
-                        <td class="px-4 py-2">
-                            <input type="number" value="1" class="item_qty border px-2 py-1 w-20" oninput="calculateOrderTotal()">
-                        </td>
-
-                        <td class="px-4 py-2">
-                            <input type="number" value="${price}" class="item_price border px-2 py-1 w-24" oninput="calculateOrderTotal()">
-                        </td>
-
-                        <td class="px-4 py-2">
-                            <input type="number" value="5" class="item_tax border px-2 py-1 w-20" oninput="calculateOrderTotal()">
-                        </td>
-
-                        <td class="px-4 py-2">
-                            <button onclick="removeOrderRow(this)" class="text-red-600">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
+            const stars = "⭐".repeat(item.total_star);
+
+            let images = "";
+
+            if(item.upload_images.length > 0){
+                images = item.upload_images.map(img => `
+                    <img src="${img}" class="w-12 h-12 rounded object-cover inline-block mr-1 cursor-pointer" onclick="openImage('${img}')">
+                `).join("");
+            } else {
+                images = `<span class="text-gray-400">No Image</span>`;
             }
 
+            table.innerHTML += `
+                <tr class="border-t">
+
+                    <td class="px-6 py-4">
+                        ${item.product?.name ?? "-"}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        ${item.user?.name ?? "-"}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        ${item.aid}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        ${item.uid}
+                    </td>
+
+                    <td class="px-6 py-4 text-yellow-500">
+                        ${stars}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        ${item.comments}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        ${images}
+                    </td>
+
+                </tr>
+            `;
         });
-        calculateOrderTotal();
-
     }
 
-    function removeOrderRow(btn)
+    function openImage(url)
     {
-        const row = btn.closest("tr");
-        row.remove();
-        calculateOrderTotal();
+        window.open(url, "_blank");
     }
 
-    function calculateOrderTotal()
-    {
-
-        let taxable = 0;
-        let totalTax = 0;
-
-        document.querySelectorAll("#orderItems tr").forEach(row => {
-
-            const qty = parseFloat(row.querySelector(".item_qty").value) || 0;
-            const price = parseFloat(row.querySelector(".item_price").value) || 0;
-            const tax = parseFloat(row.querySelector(".item_tax").value) || 0;
-
-            const subTotal = qty * price;
-            const taxAmount = subTotal * tax / 100;
-
-            taxable += subTotal;
-            totalTax += taxAmount;
-
-        });
-
-        const grandTotal = taxable + totalTax;
-
-        document.getElementById("orderTaxable").innerText = taxable.toFixed(2);
-        document.getElementById("orderTax").innerText = totalTax.toFixed(2);
-        document.getElementById("orderTotal").innerText = grandTotal.toFixed(2);
-
-    }
-
-    async function loadClients() {
-
-        const res = await fetchClients();
-
-        const select = document.getElementById("clientSelect");
-
-        select.innerHTML = "";
-
-        res.data.forEach(client => {
-
-            select.innerHTML += `
-                <option value="${client.id}">
-                    ${client.name} - ${client.owner_name} (${client.mobile})
-                </option>`;
-
-        });
-
-    }
-
-    async function createSalesOrder() {
-
-        const items = [];
-
-        document.querySelectorAll("#orderItems tr")
-            .forEach(row => {
-
-                items.push({
-
-                    uid: parseInt(row.querySelector(".item_uid").value),
-                    qty: parseInt(row.querySelector(".item_qty").value),
-                    price: parseFloat(row.querySelector(".item_price").value),
-                    tax: parseFloat(row.querySelector(".item_tax").value)
-
-                });
-
-            });
-
-        const payload = {
-
-            client_id: parseInt(document.getElementById("clientSelect").value),
-            items: items
-
-        };
-
-        if(!payload.client_id){
-            alert("Select client");
-            return;
-        }
-
-        const res = await createSalesOrderAPI(payload);
-
-        if (res.status) {
-
-            alert("Order Created : " + res.data.sales_order_no);
-
-            closeSalesModal();
-
-            document.querySelectorAll(".rowCheckbox").forEach(cb => cb.checked = false);
-            document.getElementById("selectAll").checked = false;
-
-        }
-        else {
-            alert("Order failed");
-        }
-    }
-
-    function closeSalesModal() {
-        document.getElementById("salesOrderModal").classList.add("hidden");
-    }
-
-    window.onload = () =>
-    {
-        loadStocks(0);
+    window.onload = () => {
+        loadReviews();
     };
 </script>
 

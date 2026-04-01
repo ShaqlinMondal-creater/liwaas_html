@@ -178,17 +178,24 @@
                 formData.append("upload_images[]", files[i]);
             }
 
-            // 🔥 USER HANDLING (FINAL CORRECT)
+            // 🔥 FINAL USER LOGIC (AS YOU REQUESTED)
+            let userValue = "";
+
             if (token) {
-                // Logged in → backend will handle user name
-            } else {
-                // Guest user
-                if (param_user && param_user.trim() !== "") {
-                    formData.append("user", param_user);
-                } else {
-                    formData.append("user", "temp_user");
-                }
+                // ✅ 1. If token exists → send token as user
+                userValue = token;
+            } 
+            else if (param_user && param_user.trim() !== "") {
+                // ✅ 2. If param user exists
+                userValue = param_user;
+            } 
+            else {
+                // ✅ 3. Fallback
+                userValue = "temp_user";
             }
+
+            // ALWAYS SEND USER
+            formData.append("user", userValue);
 
             try {
 

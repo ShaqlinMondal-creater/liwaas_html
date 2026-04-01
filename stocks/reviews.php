@@ -179,7 +179,7 @@
 
 <!-- Create -->
 <script>
-    const BASE_URL = "<?= $baseUrl ?>/api/admin";
+    const BASE_URL = "<?= $baseUrl ?>/api";
 </script>
 
 <!-- ========================= -->

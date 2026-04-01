@@ -80,6 +80,19 @@
 
 <script>
 
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // GET PARAMS
+    const param_product = urlParams.get("product_id");
+    const param_aid = urlParams.get("aid");
+    const param_uid = urlParams.get("uid");
+    const param_user = urlParams.get("user");
+
+    // AUTO FILL INPUTS
+    if(param_product) document.getElementById("product_id").value = param_product;
+    if(param_aid) document.getElementById("aid").value = param_aid;
+    if(param_uid) document.getElementById("uid").value = param_uid;
+
     const BASE_URL = "<?php echo $baseUrl; ?>"; // 🔁 change this
 
     let selectedRating = 0;
@@ -126,25 +139,31 @@
 
         const formData = new FormData();
 
-        // ✅ REQUIRED FIELDS (as per your API)
         formData.append("products_id", document.getElementById("product_id").value);
         formData.append("aid", document.getElementById("aid").value);
         formData.append("uid", document.getElementById("uid").value);
         formData.append("total_star", selectedRating);
         formData.append("comments", document.getElementById("comment").value);
 
-        // ✅ FILE FIELD NAME FIXED (IMPORTANT)
+        // 📸 images
         const files = document.getElementById("images").files;
         for (let i = 0; i < files.length; i++) {
-            formData.append("upload_images[]", files[i]); // ⚠ IMPORTANT CHANGE
+            formData.append("upload_images[]", files[i]);
+        }
+
+        // 🔥 USER LOGIC
+        if(!token)
+        {
+            formData.append("user", param_user ? param_user : "temp_user");
         }
 
         try {
+
             const res = await fetch(`${BASE_URL}/reviews/create`, {
                 method: "POST",
-                headers: {
+                headers: token ? {
                     "Authorization": "Bearer " + token
-                },
+                } : {}, // ❗ no header if no token
                 body: formData
             });
 

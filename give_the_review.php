@@ -35,21 +35,21 @@
 
             <div class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-xl w-full max-w-xl fade-in">
 
-                <h2 class="text-3xl font-bold mb-6 text-center">✍️ Add Review</h2>
+                <h2 class="text-3xl font-bold mb-6 text-center text-gray-100">✍️ Add Review</h2>
 
                 <form id="reviewForm">
                     
                     <!-- Product ID -->
                     <input type="text" id="product_id" placeholder="Product ID"
-                        class="w-full p-3 mb-3 rounded-lg bg-gray-800 outline-none">
+                        class="w-full p-3 mb-3 rounded-lg bg-gray-100 outline-none">
 
                     <!-- AID -->
                     <input type="text" id="aid" placeholder="AID (Product Code)"
-                        class="w-full p-3 mb-3 rounded-lg bg-gray-800">
+                        class="w-full p-3 mb-3 rounded-lg bg-gray-100">
 
                     <!-- UID -->
                     <input type="text" id="uid" placeholder="User UID"
-                        class="w-full p-3 mb-4 rounded-lg bg-gray-800">
+                        class="w-full p-3 mb-4 rounded-lg bg-gray-100">
 
                     <!-- Rating -->
                     <div class="mb-4">
@@ -59,7 +59,7 @@
 
                     <!-- Comment -->
                     <textarea id="comment" placeholder="Write your review..."
-                        class="w-full p-3 mb-4 rounded-lg bg-gray-800"></textarea>
+                        class="w-full p-3 mb-4 rounded-lg bg-gray-100"></textarea>
 
                     <!-- Image Upload -->
                     <input type="file" id="images" multiple class="w-full mb-4">

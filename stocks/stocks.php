@@ -351,7 +351,7 @@
 <script>
 
     let offset = 0;
-    let limit = 10;
+    let limit = 40;
     let total = 0;
 
     async function loadStocks(newOffset = 0)

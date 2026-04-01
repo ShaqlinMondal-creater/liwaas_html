@@ -29,13 +29,6 @@
             </select>
 
         </div>
-
-        <div class="mt-4">
-            <button onclick="loadReviews()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg">
-                Filter
-            </button>
-        </div>
-
     </div>
 
     <!-- Table -->
@@ -77,7 +70,43 @@
 
 </div>
 
-<!-- Create -->
+<!-- UPDATE REVIEW MODAL -->
+<div id="updateModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+
+    <div class="bg-white rounded-xl w-full max-w-lg p-6">
+
+        <div class="flex justify-between mb-4">
+            <h2 class="text-xl font-bold">Update Review</h2>
+            <button onclick="closeUpdateModal()">✕</button>
+        </div>
+
+        <input type="hidden" id="u_id">
+
+        <div class="space-y-3">
+
+            <select id="u_star" class="border rounded-lg px-3 py-2 w-full">
+                <option value="5">5 ⭐</option>
+                <option value="4">4 ⭐</option>
+                <option value="3">3 ⭐</option>
+                <option value="2">2 ⭐</option>
+                <option value="1">1 ⭐</option>
+            </select>
+
+            <textarea id="u_comment" class="border rounded-lg px-3 py-2 w-full" placeholder="Comment"></textarea>
+
+            <input type="file" id="u_images" multiple class="border rounded-lg px-3 py-2 w-full">
+
+        </div>
+
+        <div class="flex justify-end mt-4 gap-3">
+            <button onclick="closeUpdateModal()" class="bg-gray-200 px-4 py-2 rounded">Cancel</button>
+            <button onclick="saveUpdate()" class="bg-indigo-600 text-white px-4 py-2 rounded">Save</button>
+        </div>
+
+    </div>
+
+</div>
+
 <script>
     const BASE_URL = "<?= $baseUrl ?>/api";
 </script>
@@ -87,6 +116,17 @@
 <!-- ========================= -->
 
 <script>
+    let debounceTimer;
+
+    function autoFilter()
+    {
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+            loadReviews();
+        }, 400); // smooth delay
+    }
+
     async function fetchReviews(filters)
     {
         const token = localStorage.getItem("auth_token");
@@ -205,13 +245,11 @@
 
         const token = localStorage.getItem("auth_token");
 
-        const res = await fetch(BASE_URL + "/reviews/delete", {
+        const res = await fetch(BASE_URL + "/admin/reviews/delete/" + id, {
             method: "DELETE",
             headers: {
-                "Content-Type":"application/json",
                 "Authorization":"Bearer " + token
-            },
-            body: JSON.stringify({ id })
+            }
         });
 
         const data = await res.json();
@@ -226,7 +264,68 @@
 
     function updateReview(id)
     {
-        alert("Update Review ID: " + id);
+        const rows = document.querySelectorAll("#reviewTable tr");
+
+        rows.forEach(row => {
+
+            const btn = row.querySelector("button.text-yellow-600");
+
+            if(btn && btn.getAttribute("onclick").includes(id))
+            {
+                document.getElementById("u_id").value = id;
+
+                const comment = row.children[5].innerText;
+                const stars = row.children[4].innerText.length;
+
+                document.getElementById("u_comment").value = comment;
+                document.getElementById("u_star").value = stars;
+            }
+
+        });
+
+        document.getElementById("updateModal").classList.remove("hidden");
+        document.getElementById("updateModal").classList.add("flex");
+    }
+
+    function closeUpdateModal()
+    {
+        document.getElementById("updateModal").classList.add("hidden");
+    }
+
+    async function saveUpdate()
+    {
+        const id = document.getElementById("u_id").value;
+
+        const formData = new FormData();
+
+        formData.append("total_star", document.getElementById("u_star").value);
+        formData.append("comments", document.getElementById("u_comment").value);
+
+        const files = document.getElementById("u_images").files;
+
+        for(let i=0; i<files.length; i++){
+            formData.append("upload_images[]", files[i]);
+        }
+
+        const token = localStorage.getItem("auth_token");
+
+        const res = await fetch(BASE_URL + "/admin/reviews/update/" + id, {
+            method: "POST",
+            headers: {
+                "Authorization":"Bearer " + token
+            },
+            body: formData
+        });
+
+        const data = await res.json();
+
+        if(data.success){
+            alert(data.message);
+            closeUpdateModal();
+            loadReviews();
+        } else {
+            alert("Update failed");
+        }
     }
 
     function openImage(url)
@@ -245,6 +344,11 @@
     {
         document.getElementById("imageModal").classList.add("hidden");
     }
+
+    document.querySelectorAll("#product_name, #aid, #uid, #user_name, #total_star")
+    .forEach(el => {
+        el.addEventListener("input", autoFilter);
+    });
 
     window.onload = () => {
         loadReviews();

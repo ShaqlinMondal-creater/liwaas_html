@@ -93,7 +93,7 @@
     if(param_aid) document.getElementById("aid").value = param_aid;
     if(param_uid) document.getElementById("uid").value = param_uid;
 
-    const BASE_URL = "<?php echo $baseUrl; ?>"; // 🔁 change this
+    const BASE_URL = "<?php echo $baseUrl; ?>/api"; // 🔁 change this
 
     let selectedRating = 0;
 

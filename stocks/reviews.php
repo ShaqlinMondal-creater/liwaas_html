@@ -39,26 +39,28 @@
     </div>
 
     <!-- Table -->
-    <div class="bg-white rounded-2xl shadow-lg overflow-x-auto">
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div class="overflow-x-auto">
 
-        <table class="min-w-[900px] text-left">
+            <table class="min-w-[900px] text-left">
 
-            <thead class="bg-indigo-50">
-                <tr>
-                    <th class="px-6 py-3">Product</th>
-                    <th class="px-6 py-3">User</th>
-                    <th class="px-6 py-3">AID</th>
-                    <th class="px-6 py-3">UID</th>
-                    <th class="px-6 py-3">Rating</th>
-                    <th class="px-6 py-3">Comment</th>
-                    <th class="px-6 py-3">Images</th>
-                </tr>
-            </thead>
+                <thead class="bg-indigo-50">
+                    <tr>
+                        <th class="px-6 py-3">Product</th>
+                        <th class="px-6 py-3">User</th>
+                        <th class="px-6 py-3">AID</th>
+                        <th class="px-6 py-3">UID</th>
+                        <th class="px-6 py-3">Rating</th>
+                        <th class="px-6 py-3">Comment</th>
+                        <th class="px-6 py-3">Images</th>
+                    </tr>
+                </thead>
 
-            <tbody id="reviewTable"></tbody>
+                <tbody id="reviewTable"></tbody>
 
-        </table>
+            </table>
 
+        </div>
     </div>
 
 </div>

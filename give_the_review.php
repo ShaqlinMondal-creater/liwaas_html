@@ -125,6 +125,25 @@
             });
         }
 
+        function showSuccessAndRedirect()
+        {
+            // 🎉 blast effect
+            confetti({
+                particleCount: 150,
+                spread: 90,
+                origin: { y: 0.6 }
+            });
+
+            const popup = document.getElementById("successPopup");
+
+            popup.classList.remove("hidden");
+            popup.classList.add("flex");
+
+            setTimeout(() => {
+                window.location.href = "https://liwaas.com";
+            }, 2000);
+        }
+
         // 📸 IMAGE PREVIEW
         document.getElementById("images").addEventListener("change", function () {
             const preview = document.getElementById("preview");
@@ -188,25 +207,6 @@
                 alert("Server error!");
             }
         });
-
-        function showSuccessAndRedirect()
-        {
-            // 🎉 blast effect
-            confetti({
-                particleCount: 150,
-                spread: 90,
-                origin: { y: 0.6 }
-            });
-
-            const popup = document.getElementById("successPopup");
-
-            popup.classList.remove("hidden");
-            popup.classList.add("flex");
-
-            setTimeout(() => {
-                window.location.href = "https://liwaas.com";
-            }, 2000);
-        }
 
     </script>
 

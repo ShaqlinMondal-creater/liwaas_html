@@ -62,31 +62,36 @@
     <!-- Table -->
     <div class="bg-white rounded-2xl shadow-lg">
 
-        <!-- Table Header -->
-        <table class="min-w-full text-left">
-            <thead class="bg-indigo-50 sticky top-0 z-10">
-                <tr>
-                    <th class="px-6 py-3">
-                        <input type="checkbox" id="selectAll">
-                    </th>
-                    <th class="px-6 py-3">UID</th>
-                    <th class="px-6 py-3">Name</th>
-                    <th class="px-6 py-3">Size</th>
-                    <th class="px-6 py-3">Color</th>
-                    <th class="px-6 py-3">List Price</th>
-                    <th class="px-6 py-3">Sale Price</th>
-                    <th class="px-6 py-3">Stock</th>
-                    <th class="px-6 py-3">Status</th>
-                    <th class="px-6 py-3">Action</th>
-                </tr>
-            </thead>
-        </table>
+        <div class="overflow-x-auto">
 
-        <!-- Scrollable Body -->
-        <div class="max-h-[400px] overflow-y-auto overflow-x-auto">
-            <table class="min-w-full text-left">
-                <tbody id="stocksTable"></tbody>
-            </table>
+            <!-- 👇 ADD THIS WRAPPER -->
+            <div class="max-h-[400px] overflow-y-auto">
+
+                <table class="min-w-full text-left">
+
+                    <thead class="bg-indigo-50 sticky top-0 z-10">
+                        <tr>
+                            <th class="px-6 py-3">
+                                <input type="checkbox" id="selectAll">
+                            </th>
+                            <th class="px-6 py-3">UID</th>
+                            <th class="px-6 py-3">Name</th>
+                            <th class="px-6 py-3">Size</th>
+                            <th class="px-6 py-3">Color</th>
+                            <th class="px-6 py-3">List Price</th>
+                            <th class="px-6 py-3">Sale Price</th>
+                            <th class="px-6 py-3">Stock</th>
+                            <th class="px-6 py-3">Status</th>
+                            <th class="px-6 py-3">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="stocksTable"></tbody>
+
+                </table>
+
+            </div>
+
         </div>
 
     </div>

@@ -122,7 +122,7 @@
     document.getElementById("reviewForm").addEventListener("submit", async function(e){
         e.preventDefault();
 
-        const token = "96|d1aZrpxcdq1XcBFZcW0fJ2Stu8iCyfD41yOzVALSa8b0d2d8";
+        const token = localStorage.getItem("auth_token");
 
         const formData = new FormData();
 
@@ -140,7 +140,7 @@
         }
 
         try {
-            const res = await fetch(`${BASE_URL}/customer/reviews/create`, {
+            const res = await fetch(`${BASE_URL}/reviews/create`, {
                 method: "POST",
                 headers: {
                     "Authorization": "Bearer " + token

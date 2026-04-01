@@ -42,7 +42,7 @@
     <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
         <div class="overflow-x-auto">
 
-            <table class="min-w-[900px] text-left">
+            <table class="min-w-full text-left">
 
                 <thead class="bg-indigo-50">
                     <tr>
@@ -73,120 +73,6 @@
         <button onclick="closeImageModal()" class="absolute -top-10 right-0 text-white text-2xl">✕</button>
 
         <img id="modalImage" class="max-h-[80vh] rounded-lg shadow-lg">
-    </div>
-
-</div>
-
-<!-- ADD PRODUCT MODAL -->
-
-<div id="addProductModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
-
-    <div class="bg-white rounded-xl w-full max-w-lg p-6">
-
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">Add Product</h2>
-            <button onclick="closeAddModal()" class="text-gray-500">✕</button>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-
-            <input id="p_name" placeholder="Product Name" class="border rounded-lg px-3 py-2 col-span-2">
-
-            <select id="p_size" class="border rounded-lg px-3 py-2">
-                <option value="">Size</option>
-                <option>S</option>
-                <option>M</option>
-                <option>L</option>
-                <option>XL</option>
-            </select>
-
-            <input id="p_color" placeholder="Color" class="border rounded-lg px-3 py-2">
-
-            <input id="p_list_price" type="number" placeholder="List Price" class="border rounded-lg px-3 py-2">
-
-            <input id="p_sale_price" type="number" placeholder="Sale Price" class="border rounded-lg px-3 py-2">
-
-            <input id="p_stock" type="number" placeholder="Stock" class="border rounded-lg px-3 py-2">
-
-            <select id="p_status" class="border rounded-lg px-3 py-2">
-                <option value="1">Active</option>
-                <option value="0">Inactive</option>
-            </select>
-
-        </div>
-
-        <div class="flex justify-end gap-3 mt-6">
-
-            <button onclick="closeAddModal()" class="px-4 py-2 bg-gray-200 rounded-lg">
-                Cancel
-            </button>
-
-            <button onclick="addProduct()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">
-                Save
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- Create Sales Order Modal -->
-<!-- SALES ORDER MODAL -->
-
-<div id="salesOrderModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
-
-    <div class="bg-white rounded-xl w-full max-w-3xl p-6 mx-4">
-
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">Generate Sales Order</h2>
-            <button onclick="closeSalesModal()">✕</button>
-        </div>
-
-        <!-- Client -->
-
-        <select id="clientSelect" class="border rounded-lg px-3 py-2 w-full mb-4"></select>
-
-        <!-- Products -->
-
-        <div class="max-h-100 overflow-y-auto overflow-x-auto">
-
-            <table class="min-w-full text-left">
-
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="px-4 py-2">Product</th>
-                        <th class="px-4 py-2">Qty</th>
-                        <th class="px-4 py-2">Price</th>
-                        <th class="px-4 py-2">Tax %</th>
-                        <th class="px-4 py-2"></th>
-                    </tr>
-                </thead>
-
-                <tbody id="orderItems"></tbody>
-
-            </table>
-
-        </div>
-
-        <div class="flex justify-end mt-4 gap-3">
-
-            <div class="text-right mb-4 space-y-1">
-                <p>Taxable Amount: ₹<span id="orderTaxable">0</span></p>
-                <p>Total Tax: ₹<span id="orderTax">0</span></p>
-                <p class="text-lg font-bold">Grand Total: ₹<span id="orderTotal">0</span></p>
-            </div>
-            <div class="text-right mb-4 space-y-1">
-                <button onclick="closeSalesModal()" class="px-4 py-2 bg-gray-200 rounded">
-                    Cancel
-                </button>
-
-                <button onclick="createSalesOrder()" class="px-4 py-2 bg-indigo-600 text-white rounded">
-                    Create Order
-                </button>
-            </div>
-        </div>
-
     </div>
 
 </div>

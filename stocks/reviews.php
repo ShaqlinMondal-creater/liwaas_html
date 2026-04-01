@@ -203,7 +203,7 @@
                     </td>
 
                     <td class="px-6 py-4">
-                        ${item.user?.name ?? "-"}
+                        ${item.user ?? "-"}
                     </td>
 
                     <td class="px-6 py-4">${item.aid}</td>

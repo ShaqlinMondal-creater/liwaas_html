@@ -131,7 +131,7 @@
     {
         const token = localStorage.getItem("auth_token");
 
-        const res = await fetch(BASE_URL + "/reviews", {
+        const res = await fetch(BASE_URL + "/reviews/fetch", {
             method: "POST",
             headers: {
                 "Content-Type":"application/json",

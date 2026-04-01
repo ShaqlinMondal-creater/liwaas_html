@@ -53,6 +53,7 @@
                         <th class="px-6 py-3">Rating</th>
                         <th class="px-6 py-3">Comment</th>
                         <th class="px-6 py-3">Images</th>
+                        <th class="px-6 py-3">Action</th>
                     </tr>
                 </thead>
 
@@ -61,6 +62,17 @@
             </table>
 
         </div>
+    </div>
+
+</div>
+
+<!-- IMAGE MODAL -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+
+    <div class="relative">
+        <button onclick="closeImageModal()" class="absolute -top-10 right-0 text-white text-2xl">✕</button>
+
+        <img id="modalImage" class="max-h-[80vh] rounded-lg shadow-lg">
     </div>
 
 </div>
@@ -249,7 +261,9 @@
 
             if(item.upload_images.length > 0){
                 images = item.upload_images.map(img => `
-                    <img src="${img}" class="w-12 h-12 rounded object-cover inline-block mr-1 cursor-pointer" onclick="openImage('${img}')">
+                    <img src="${img}" 
+                        class="w-12 h-12 rounded object-cover inline-block mr-1 cursor-pointer border"
+                        onclick="openImageModal('${img}')">
                 `).join("");
             } else {
                 images = `<span class="text-gray-400">No Image</span>`;
@@ -266,19 +280,15 @@
                         ${item.user?.name ?? "-"}
                     </td>
 
-                    <td class="px-6 py-4">
-                        ${item.aid}
-                    </td>
+                    <td class="px-6 py-4">${item.aid}</td>
 
-                    <td class="px-6 py-4">
-                        ${item.uid}
-                    </td>
+                    <td class="px-6 py-4">${item.uid}</td>
 
                     <td class="px-6 py-4 text-yellow-500">
                         ${stars}
                     </td>
 
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-4 max-w-xs truncate">
                         ${item.comments}
                     </td>
 
@@ -286,14 +296,68 @@
                         ${images}
                     </td>
 
+                    <td class="px-6 py-4 space-x-3">
+
+                        <button onclick="updateReview(${item.id})" class="text-yellow-600">
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                        <button onclick="deleteReview(${item.id})" class="text-red-600">
+                            <i class="fas fa-trash"></i>
+                        </button>
+
+                    </td>
+
                 </tr>
             `;
         });
     }
 
+    async function deleteReview(id)
+    {
+        if(!confirm("Delete this review?")) return;
+
+        const token = localStorage.getItem("auth_token");
+
+        const res = await fetch(BASE_URL + "/reviews/delete", {
+            method: "DELETE",
+            headers: {
+                "Content-Type":"application/json",
+                "Authorization":"Bearer " + token
+            },
+            body: JSON.stringify({ id })
+        });
+
+        const data = await res.json();
+
+        if(data.success){
+            alert(data.message);
+            loadReviews();
+        } else {
+            alert("Delete failed");
+        }
+    }
+
+    function updateReview(id)
+    {
+        alert("Update Review ID: " + id);
+    }
+
     function openImage(url)
     {
         window.open(url, "_blank");
+    }
+
+    function openImageModal(url)
+    {
+        document.getElementById("modalImage").src = url;
+        document.getElementById("imageModal").classList.remove("hidden");
+        document.getElementById("imageModal").classList.add("flex");
+    }
+
+    function closeImageModal()
+    {
+        document.getElementById("imageModal").classList.add("hidden");
     }
 
     window.onload = () => {

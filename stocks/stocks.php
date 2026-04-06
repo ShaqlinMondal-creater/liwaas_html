@@ -69,7 +69,7 @@
 
                 <table class="min-w-full text-left">
 
-                    <thead class="bg-indigo-50 sticky top-0 z-10">
+                    <thead class="bg-indigo-50 sticky top-0 z-9">
                         <tr>
                             <th class="px-6 py-3">
                                 <input type="checkbox" id="selectAll">

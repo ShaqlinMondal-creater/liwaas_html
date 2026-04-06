@@ -184,8 +184,33 @@
         </div>
 
         <!-- Client -->
+        <div class="mb-4">
 
-        <select id="clientSelect" class="border rounded-lg px-3 py-2 w-full mb-4"></select>
+            <select id="clientSelect" class="border rounded-lg px-3 py-2 w-full mb-2"></select>
+
+            <!-- Checkbox -->
+            <label class="flex items-center gap-2 mb-2">
+                <input type="checkbox" id="newCustomerToggle">
+                Add New Customer
+            </label>
+
+            <!-- Hidden Fields -->
+            <div id="newCustomerFields" class="hidden space-y-2">
+
+                <input id="new_name" placeholder="Customer Name"
+                    class="border rounded-lg px-3 py-2 w-full">
+
+                <input id="new_mobile" placeholder="Mobile Number"
+                    class="border rounded-lg px-3 py-2 w-full">
+
+                <button onclick="addNewCustomer()"
+                    class="bg-green-600 text-white px-3 py-2 rounded-lg w-full">
+                    Save Customer
+                </button>
+
+            </div>
+
+        </div>
 
         <!-- Products -->
 
@@ -348,6 +373,24 @@
         return await response.json();
 
     }
+
+    async function addCustomerAPI(payload) {
+
+        const token = localStorage.getItem("auth_token");
+
+        const response = await fetch(BASE_URL + "/stocks/clients/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify(payload)
+        });
+
+        return await response.json();
+    }
+
+
 </script>
 
 <!-- ========================= -->
@@ -355,6 +398,18 @@
 <!-- ========================= -->
 
 <script>
+
+    document.getElementById("newCustomerToggle").addEventListener("change", function () {
+
+        const fields = document.getElementById("newCustomerFields");
+
+        if (this.checked) {
+            fields.classList.remove("hidden");
+        } else {
+            fields.classList.add("hidden");
+        }
+
+    });
 
     let offset = 0;
     let limit = 40;
@@ -760,6 +815,43 @@
 
     function closeSalesModal() {
         document.getElementById("salesOrderModal").classList.add("hidden");
+    }
+
+    async function addNewCustomer() {
+
+        const name = document.getElementById("new_name").value;
+        const mobile = document.getElementById("new_mobile").value;
+
+        if (!name || !mobile) {
+            alert("Enter name and mobile");
+            return;
+        }
+
+        const res = await addCustomerAPI({
+            name: name,
+            mobile: mobile
+        });
+
+        if (res.status) {
+
+            alert("Customer Added");
+
+            // Reload dropdown
+            await loadClients();
+
+            // Auto select new customer
+            document.getElementById("clientSelect").value = res.data.id;
+
+            // Reset fields
+            document.getElementById("new_name").value = "";
+            document.getElementById("new_mobile").value = "";
+            document.getElementById("newCustomerToggle").checked = false;
+            document.getElementById("newCustomerFields").classList.add("hidden");
+
+        } else {
+            alert("Failed to add customer");
+        }
+
     }
 
     // ===== AUTO FILTER START =====

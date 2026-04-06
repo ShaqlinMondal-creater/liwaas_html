@@ -48,12 +48,12 @@
                 <option>Peace White</option>
             </select>
 
-            <button 
+            <!-- <button 
                 onclick="loadStocks(0)"
                 class="bg-indigo-600 text-white rounded-lg"
             >
                 Filter
-            </button>
+            </button> -->
 
         </div>
 
@@ -754,6 +754,32 @@
     function closeSalesModal() {
         document.getElementById("salesOrderModal").classList.add("hidden");
     }
+
+    // ===== AUTO FILTER START =====
+    document.addEventListener("DOMContentLoaded", function () {
+
+        let searchTimeout;
+
+        document.getElementById("search").addEventListener("input", function () {
+
+            clearTimeout(searchTimeout);
+
+            searchTimeout = setTimeout(() => {
+                loadStocks(0);
+            }, 500);
+
+        });
+
+        document.getElementById("size").addEventListener("change", function () {
+            loadStocks(0);
+        });
+
+        document.getElementById("color").addEventListener("change", function () {
+            loadStocks(0);
+        });
+
+    });
+    // ===== AUTO FILTER END =====
 
     window.onload = () =>
     {

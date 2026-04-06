@@ -189,7 +189,7 @@
 
         <!-- Products -->
 
-        <div class="max-h-100 overflow-y-auto overflow-x-auto">
+        <div class="max-h-[300px] overflow-y-auto overflow-x-auto">
 
             <table class="min-w-full text-left">
 
@@ -615,12 +615,15 @@
 
                 const uid = tr.children[1].innerText.trim();
                 const name = tr.children[2].innerText.trim();
+                const size = tr.children[3].innerText.trim();
                 const price = tr.children[6].innerText.replace("₹","").trim();
 
                 table.innerHTML += `
 
                     <tr class="orderRow">
-                        <td class="px-4 py-2">${name}
+                        <td class="px-4 py-2">
+                            ${name} <br>
+                            <span class="text-xs text-gray-500">Size: ${size}</span>
                             <input type="hidden" class="item_uid" value="${uid}">
                         </td>
 
@@ -633,7 +636,11 @@
                         </td>
 
                         <td class="px-4 py-2">
-                            <input type="number" value="5" class="item_tax border px-2 py-1 w-20" oninput="calculateOrderTotal()">
+                            <select class="item_tax border px-2 py-1 w-20" onchange="calculateOrderTotal()">
+                                <option value="0">0%</option>
+                                <option value="5" selected>5%</option>
+                                <option value="12">12%</option>
+                            </select>
                         </td>
 
                         <td class="px-4 py-2">

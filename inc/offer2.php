@@ -17,6 +17,7 @@
       top: -100px;
       transform: rotate(-20deg);
       transition: all 1s ease;
+      display: none; /* Hidden on mobile */
     }
 
     .circle-badge {
@@ -307,6 +308,7 @@
         height: 400px;
         right: -100px;
         top: -50px;
+        display: none; /* Hidden on mobile */
       }
 
       .circle-badge {

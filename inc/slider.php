@@ -37,6 +37,7 @@
         slide.className = 'swiper-slide relative';
 
         slide.innerHTML = `
+        <a href="/pages/shop" class="block w-full h-full">
           <img
             src="${file_path}"
             alt="${purpose_name || ''}"
@@ -44,12 +45,8 @@
             loading="lazy"
           />
           <div class="slide-overlay"></div>
-          <div
-            class="absolute bottom-6 left-6 max-w-[80%] z-20 text-white"
-          >
-            
-          </div>
-        `;
+        </a>
+      `;
 
         wrapper.appendChild(slide);
       });

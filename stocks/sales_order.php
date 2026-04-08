@@ -19,15 +19,22 @@
                 </button>
 
             </div>
-            <div class="flex gap-3 mb-4">
-                <button onclick="bulkDelete()" class="bg-red-600 text-white px-4 py-2 rounded">
-                    Delete Selected
-                </button>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
 
-                <button onclick="bulkInvoice()" class="bg-green-600 text-white px-4 py-2 rounded">
-                    Generate Invoice
-                </button>
+                <div class="flex flex-wrap gap-2">
+
+                    <button onclick="bulkDelete()" 
+                        class="bg-red-600 text-white px-4 py-2 rounded w-full sm:w-auto">
+                        Delete Selected
+                    </button>
+
+                    <button onclick="bulkInvoice()" 
+                        class="bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto">
+                        Generate Invoice
+                    </button>
+                </div>
             </div>
+
         </div>
 
         <table class="min-w-full text-left">
@@ -167,23 +174,16 @@
 
         const token = localStorage.getItem("auth_token");
 
-        const response = await fetch(BASE_URL + "/stocks/sales-order/pdf", {
-
+        const response = await fetch(BASE_URL + "/stocks/sales-order/generate-invoice", {
             method: "POST",
-
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + token
             },
-
-            body: JSON.stringify({
-                id: id
-            })
-
+            body: JSON.stringify({ id: id })
         });
 
         return await response.json();
-
     }
     async function deleteOrderAPI(id) {
 

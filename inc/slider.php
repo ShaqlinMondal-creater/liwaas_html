@@ -40,7 +40,7 @@
           <img
             src="${file_path}"
             alt="${purpose_name || ''}"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-contain"
             loading="lazy"
           />
           <div class="slide-overlay"></div>

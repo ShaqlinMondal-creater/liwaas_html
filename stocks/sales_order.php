@@ -8,33 +8,25 @@
     </div>
 
     <div class="bg-white rounded-2xl shadow-lg overflow-x-auto">
-        <div class="bg-white shadow rounded-xl p-4 mb-6">
-
-            <div class="flex gap-4">
-
-                <input id="search" type="text" placeholder="Search Order No..." class="border rounded-lg px-3 py-2 w-64">
-
-                <button onclick="loadOrders(0)" class="bg-indigo-600 text-white px-4 py-2 rounded-lg">
-                    Search
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            <!-- LEFT: BULK BUTTONS -->
+            <div class="flex flex-wrap gap-2">
+                <button onclick="bulkDelete()" 
+                    class="bg-red-600 text-white px-4 py-2 rounded">
+                    Delete Selected
                 </button>
 
-            </div>
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-
-                <div class="flex flex-wrap gap-2">
-
-                    <button onclick="bulkDelete()" 
-                        class="bg-red-600 text-white px-4 py-2 rounded w-full sm:w-auto">
-                        Delete Selected
-                    </button>
-
-                    <button onclick="bulkInvoice()" 
-                        class="bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto">
-                        Generate Invoice
-                    </button>
-                </div>
+                <button onclick="bulkInvoice()" 
+                    class="bg-green-600 text-white px-4 py-2 rounded">
+                    Generate Invoice
+                </button>
             </div>
 
+            <!-- RIGHT: SEARCH -->
+            <div class="w-full sm:w-64">
+                <input id="search" type="text" placeholder="Search Order No..."
+                    class="border rounded-lg px-3 py-2 w-full">
+            </div>
         </div>
 
         <table class="min-w-full text-left">
@@ -129,6 +121,22 @@
 </script>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        let searchTimeout;
+
+        document.getElementById("search").addEventListener("input", function () {
+
+            clearTimeout(searchTimeout);
+
+            searchTimeout = setTimeout(() => {
+                loadOrders(0);
+            }, 500);
+
+        });
+
+    });
+
     async function fetchOrders(filters) {
 
         const token = localStorage.getItem("auth_token");

@@ -406,75 +406,82 @@
 
 <script>
 // JSON Configuration
-const sliderConfig = [
-  {
-    title: "MEGA SALE",
-    subtitle: "Clearance Offer",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
-    discount: "60%",
-    image: "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=600",
-    gradient: "linear-gradient(135deg, #7c3aed30 0%, #a955f73d 30%, #ec489a30 60%, #fe7e2341 100%)",
-    diagonalColor: "linear-gradient(45deg, #fbbf24 0%, #fcd34d 50%, #fef08a 100%)",
-    badgeColor: "radial-gradient(circle at 30% 30%, #f472b6, #ec4899, #db2777)",
-    buttonColor: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
-    bag1Color: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
-    bag2Color: "linear-gradient(135deg, #ff6b35 0%, #f97316 100%)",
-    bag3Color: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
-    handleColor: "#fbbf24"
-  },
-  {
-    title: "SUMMER SALE",
-    subtitle: "Special Collection",
-    description: "Enjoy amazing discounts on our latest summer collection. Limited time offer with exclusive deals on premium products.",
-    discount: "50%",
-    image: "https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg?auto=compress&cs=tinysrgb&w=600",
-    gradient: "linear-gradient(135deg, #0ea4e936 0%, #06b5d41f 30%, #10b9813f 60%, #fbbe2437 100%)",
-    diagonalColor: "linear-gradient(45deg, #fca5a5 0%, #fecaca 50%, #fee2e2 100%)",
-    badgeColor: "radial-gradient(circle at 30% 30%, #93c5fd, #60a5fa, #3b82f6)",
-    buttonColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-    bag1Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
-    bag2Color: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
-    bag3Color: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
-    handleColor: "#fbbf24"
-  },
-  {
-    title: "FLASH DEAL",
-    subtitle: "Limited Time Offer",
-    description: "Don't miss out on our biggest flash sale. Grab your favorite items at unbeatable prices before stocks run out.",
-    discount: "75%",
-    image: "https://images.pexels.com/photos/3962286/pexels-photo-3962286.jpeg?auto=compress&cs=tinysrgb&w=600",
-    gradient: "linear-gradient(135deg, #ec4899 0%, #f43f5e 30%, #fb923c 60%, #eab308 100%)",
-    diagonalColor: "linear-gradient(45deg, #c7d2fe 0%, #dbeafe 50%, #e0e7ff 100%)",
-    badgeColor: "radial-gradient(circle at 30% 30%, #fbbf24, #f59e0b, #d97706)",
-    buttonColor: "linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)",
-    bag1Color: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
-    bag2Color: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
-    bag3Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
-    handleColor: "#06b6d4"
-  },
-  {
-    title: "MIDNIGHT SALE",
-    subtitle: "Exclusive Midnight Deals",
-    description: "Shop the best midnight deals with incredible savings. Extended hours available just for you tonight.",
-    discount: "80%",
-    image: "https://images.pexels.com/photos/1452860/pexels-photo-1452860.jpeg?auto=compress&cs=tinysrgb&w=600",
-    gradient: "linear-gradient(135deg, #1e293b 0%, #3b82f6 30%, #8b5cf6 60%, #ec4899 100%)",
-    diagonalColor: "linear-gradient(45deg, #ddd6fe 0%, #e9d5ff 50%, #f3e8ff 100%)",
-    badgeColor: "radial-gradient(circle at 30% 30%, #818cf8, #6366f1, #4f46e5)",
-    buttonColor: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-    bag1Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
-    bag2Color: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
-    bag3Color: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
-    handleColor: "#60a5fa"
-  }
-];
+// const sliderConfig = [
+//   {
+//     title: "MEGA SALE",
+//     subtitle: "Clearance Offer",
+//     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+//     discount: "60%",
+//     image: "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=600",
+//     gradient: "linear-gradient(135deg, #7c3aed30 0%, #a955f73d 30%, #ec489a30 60%, #fe7e2341 100%)",
+//     diagonalColor: "linear-gradient(45deg, #fbbf24 0%, #fcd34d 50%, #fef08a 100%)",
+//     badgeColor: "radial-gradient(circle at 30% 30%, #f472b6, #ec4899, #db2777)",
+//     buttonColor: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+//     bag1Color: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
+//     bag2Color: "linear-gradient(135deg, #ff6b35 0%, #f97316 100%)",
+//     bag3Color: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+//     handleColor: "#fbbf24"
+//   },
+//   {
+//     title: "SUMMER SALE",
+//     subtitle: "Special Collection",
+//     description: "Enjoy amazing discounts on our latest summer collection. Limited time offer with exclusive deals on premium products.",
+//     discount: "50%",
+//     image: "https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg?auto=compress&cs=tinysrgb&w=600",
+//     gradient: "linear-gradient(135deg, #0ea4e936 0%, #06b5d41f 30%, #10b9813f 60%, #fbbe2437 100%)",
+//     diagonalColor: "linear-gradient(45deg, #fca5a5 0%, #fecaca 50%, #fee2e2 100%)",
+//     badgeColor: "radial-gradient(circle at 30% 30%, #93c5fd, #60a5fa, #3b82f6)",
+//     buttonColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+//     bag1Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
+//     bag2Color: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+//     bag3Color: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+//     handleColor: "#fbbf24"
+//   },
+//   {
+//     title: "FLASH DEAL",
+//     subtitle: "Limited Time Offer",
+//     description: "Don't miss out on our biggest flash sale. Grab your favorite items at unbeatable prices before stocks run out.",
+//     discount: "75%",
+//     image: "https://images.pexels.com/photos/3962286/pexels-photo-3962286.jpeg?auto=compress&cs=tinysrgb&w=600",
+//     gradient: "linear-gradient(135deg, #ec4899 0%, #f43f5e 30%, #fb923c 60%, #eab308 100%)",
+//     diagonalColor: "linear-gradient(45deg, #c7d2fe 0%, #dbeafe 50%, #e0e7ff 100%)",
+//     badgeColor: "radial-gradient(circle at 30% 30%, #fbbf24, #f59e0b, #d97706)",
+//     buttonColor: "linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)",
+//     bag1Color: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
+//     bag2Color: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
+//     bag3Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
+//     handleColor: "#06b6d4"
+//   },
+//   {
+//     title: "MIDNIGHT SALE",
+//     subtitle: "Exclusive Midnight Deals",
+//     description: "Shop the best midnight deals with incredible savings. Extended hours available just for you tonight.",
+//     discount: "80%",
+//     image: "https://images.pexels.com/photos/1452860/pexels-photo-1452860.jpeg?auto=compress&cs=tinysrgb&w=600",
+//     gradient: "linear-gradient(135deg, #1e293b 0%, #3b82f6 30%, #8b5cf6 60%, #ec4899 100%)",
+//     diagonalColor: "linear-gradient(45deg, #ddd6fe 0%, #e9d5ff 50%, #f3e8ff 100%)",
+//     badgeColor: "radial-gradient(circle at 30% 30%, #818cf8, #6366f1, #4f46e5)",
+//     buttonColor: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+//     bag1Color: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
+//     bag2Color: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+//     bag3Color: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+//     handleColor: "#60a5fa"
+//   }
+// ];
 
+// let currentOfferSlide = 0;
+// const totalSlides = sliderConfig.length;
+// let autoSlideInterval;
+
+let sliderConfig = [];
 let currentOfferSlide = 0;
-const totalSlides = sliderConfig.length;
+let totalSlides = 0;
 let autoSlideInterval;
 
 function createSlides() {
   const slidesContainer = document.getElementById('slides');
+  slidesContainer.innerHTML = ''; // 🔥 FIX
+  
   sliderConfig.forEach((config, index) => {
     const slide = document.createElement('div');
     slide.className = `slide gradient-bg flex items-center justify-center relative ${index === 0 ? 'is-active' : ''}`;
@@ -521,9 +528,9 @@ function createSlides() {
             ${config.description}
           </p>
 
-          <button class="read-more-btn" style="background: ${config.buttonColor}">
-            READ MORE
-          </button>
+          <a href="${config.link}" class="read-more-btn" style="background: ${config.buttonColor}">
+            SHOP NOW
+          </a>
         </div>
       </div>
     `;
@@ -534,6 +541,8 @@ function createSlides() {
 
 function createDots() {
   const dotsContainer = document.getElementById('dotsContainer');
+  dotsContainer.innerHTML = ''; // ✅ ADD THIS
+
   sliderConfig.forEach((_, index) => {
     const dot = document.createElement('div');
     dot.className = `dot ${index === 0 ? 'active' : ''}`;
@@ -583,7 +592,92 @@ function resetAutoSlide() {
   startAutoSlide();
 }
 
-function init() {
+// 🎨 Random colors
+function getRandomColors() {
+  const colors = [
+    {
+      gradient: "linear-gradient(135deg, #7c3aed30, #ec489a30, #fe7e2341)",
+      diagonalColor: "linear-gradient(45deg, #fbbf24, #fef08a)",
+      badgeColor: "radial-gradient(circle, #f472b6, #db2777)",
+      buttonColor: "linear-gradient(135deg, #ef4444, #dc2626)",
+      bag1Color: "#06b6d4",
+      bag2Color: "#f97316",
+      bag3Color: "#22c55e",
+      handleColor: "#fbbf24"
+    },
+    {
+      gradient: "linear-gradient(135deg, #0ea5e9, #10b981, #fbbf24)",
+      diagonalColor: "linear-gradient(45deg, #fecaca, #fee2e2)",
+      badgeColor: "radial-gradient(circle, #60a5fa, #3b82f6)",
+      buttonColor: "linear-gradient(135deg, #10b981, #059669)",
+      bag1Color: "#ec4899",
+      bag2Color: "#8b5cf6",
+      bag3Color: "#f59e0b",
+      handleColor: "#fbbf24"
+    }
+  ];
+
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+// 🎯 Extract % from comment
+function extractDiscount(text) {
+  const match = text.match(/(\d+)%/);
+  return match ? match[1] + "%" : "50%";
+}
+
+// 🚀 Fetch API
+async function fetchOffers() {
+  try {
+    const res = await fetch('<?= $baseUrl ?>/api/extras/getall', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        purpose_name: "offers",
+        show_status: "1"
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success && data.data.length > 0) {
+      sliderConfig = data.data.map(item => {
+        const colors = getRandomColors();
+
+        return {
+          title: item.highlights || "Trending Offers",
+          subtitle: "Limited Deal",
+          description: "offer section",
+          discount: extractDiscount(item.comments || ""),
+          image: item.file_path,
+          link: "/pages/shop/trending-offers",
+          ...colors
+        };
+      });
+
+      totalSlides = sliderConfig.length;
+      return true;
+    }
+
+    return false;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
+
+async function init() {
+  const ok = await fetchOffers();
+
+  if (!ok) {
+    document.getElementById('slides').innerHTML = `
+      <div class="text-white text-center mt-20">
+        No offers available right now
+      </div>
+    `;
+    return;
+  }
+
   createSlides();
   createDots();
   startAutoSlide();

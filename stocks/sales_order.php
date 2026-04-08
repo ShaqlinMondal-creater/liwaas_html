@@ -8,7 +8,13 @@
     </div>
 
     <div class="bg-white rounded-2xl shadow-lg overflow-x-auto">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 m-4">
+            <!-- RIGHT: SEARCH -->
+            <div class="w-full sm:w-64">
+                <input id="search" type="text" placeholder="Search Order No..."
+                    class="border rounded-lg px-3 py-2 w-full">
+            </div>
+
             <!-- LEFT: BULK BUTTONS -->
             <div class="flex flex-wrap gap-2">
                 <button onclick="bulkDelete()" 
@@ -20,12 +26,6 @@
                     class="bg-green-600 text-white px-4 py-2 rounded">
                     Generate Invoice
                 </button>
-            </div>
-
-            <!-- RIGHT: SEARCH -->
-            <div class="w-full sm:w-64">
-                <input id="search" type="text" placeholder="Search Order No..."
-                    class="border rounded-lg px-3 py-2 w-full">
             </div>
         </div>
 

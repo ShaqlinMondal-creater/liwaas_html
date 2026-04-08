@@ -21,14 +21,29 @@
             </div>
 
         </div>
+        <div class="flex gap-3 mb-4">
+            <button onclick="bulkDelete()" class="bg-red-600 text-white px-4 py-2 rounded">
+                Delete Selected
+            </button>
+
+            <button onclick="bulkInvoice()" class="bg-green-600 text-white px-4 py-2 rounded">
+                Generate Invoice
+            </button>
+        </div>
+
         <table class="min-w-full text-left">
             <thead class="bg-indigo-50">
                 <tr>
+                    <th class="px-6 py-3">
+                        <input type="checkbox" id="selectAllOrders">
+                    </th>
 
                     <th class="px-6 py-3">Order No</th>
                     <th class="px-6 py-3">Client</th>
                     <th class="px-6 py-3">Total Amount</th>
                     <th class="px-6 py-3">Tax</th>
+                    <th class="px-6 py-3">Status</th>
+                    <th class="px-6 py-3">Payment</th>
                     <th class="px-6 py-3">Date</th>
                     <th class="px-6 py-3">Action</th>
 
@@ -73,7 +88,7 @@
 
         </div>
 
-        <div class="overflow-x-auto scrollbar-thin">
+        <div class="max-h-[300px] overflow-y-auto overflow-x-auto">
             <table class="min-w-full text-left border">
 
                 <thead class="bg-gray-100">
@@ -242,6 +257,10 @@
             table.innerHTML += `
                 <tr class="border-t">
 
+                    <td class="px-6 py-4">
+                        <input type="checkbox" class="orderCheckbox" value="${order.id}">
+                    </td>
+
                     <td onclick="viewOrder(${order.id})" class="px-6 py-4 font-semibold text-indigo-600 cursor-pointer">
                         ${order.sales_order_no}
                     </td>
@@ -256,6 +275,18 @@
 
                     <td class="px-6 py-4">
                         ₹${order.total_tax}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded">
+                            ${order.status || "Pending"}
+                        </span>
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 text-xs bg-red-100 text-red-600 rounded">
+                            ${order.payment_status || "Pending"}
+                        </span>
                     </td>
 
                     <td class="px-6 py-4">
@@ -285,6 +316,15 @@
         });
 
     }
+
+    document.addEventListener("change", function(e){
+        if(e.target.id === "selectAllOrders"){
+            const checked = e.target.checked;
+
+            document.querySelectorAll(".orderCheckbox")
+                .forEach(cb => cb.checked = checked);
+        }
+    });
 
     document.getElementById("nextBtn").onclick = () => {
         if (offset + limit < total)
@@ -330,7 +370,7 @@
 
         order.items.forEach(item => {
 
-            const product = item.product || {};
+            const product = item.product ?? {};
 
             table.innerHTML += `
                 <tr class="border-t">
@@ -400,5 +440,50 @@
         window.open(url, "_blank");
     }
 </script>
+<script>
+    function getSelectedOrders() {
 
+        const ids = [];
+
+        document.querySelectorAll(".orderCheckbox:checked")
+            .forEach(cb => ids.push(parseInt(cb.value)));
+
+        return ids;
+    }
+
+    async function bulkDelete() {
+
+        const ids = getSelectedOrders();
+
+        if(ids.length === 0){
+            alert("Select orders first");
+            return;
+        }
+
+        if(!confirm("Delete selected orders?")) return;
+
+        for(const id of ids){
+            await deleteOrderAPI(id);
+        }
+
+        loadOrders(offset);
+    }
+
+    async function bulkInvoice() {
+
+        const ids = getSelectedOrders();
+
+        if(ids.length === 0){
+            alert("Select orders first");
+            return;
+        }
+
+        for(const id of ids){
+            await generateInvoiceAPI(id);
+        }
+
+        alert("Invoices generated");
+        loadOrders(offset);
+    }
+</script>
 <?php include 'footer.php'; ?>

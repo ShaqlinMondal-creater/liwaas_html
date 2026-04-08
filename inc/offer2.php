@@ -526,10 +526,6 @@ function createSlides() {
             ${config.subtitle}
           </h2>
 
-          <p class="text-white text-sm md:text-base leading-relaxed mb-8 opacity-90">
-            ${config.description}
-          </p>
-
           <a href="${config.link}" class="read-more-btn" style="background: ${config.buttonColor}">
             SHOP NOW
           </a>
@@ -667,8 +663,7 @@ async function fetchOffers() {
         // 🎯 Return config
         return {
           title: item.highlights || "Offers",
-          subtitle: "Limited Deal",
-          description: comment, // ✅ comment as description
+          subtitle: comment || "Don't miss out on our exclusive offers!",
           discount: discount,   // ✅ only if exists
           image: item.file_path,
           link: link,

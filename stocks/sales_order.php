@@ -19,16 +19,15 @@
                 </button>
 
             </div>
+            <div class="flex gap-3 mb-4">
+                <button onclick="bulkDelete()" class="bg-red-600 text-white px-4 py-2 rounded">
+                    Delete Selected
+                </button>
 
-        </div>
-        <div class="flex gap-3 mb-4">
-            <button onclick="bulkDelete()" class="bg-red-600 text-white px-4 py-2 rounded">
-                Delete Selected
-            </button>
-
-            <button onclick="bulkInvoice()" class="bg-green-600 text-white px-4 py-2 rounded">
-                Generate Invoice
-            </button>
+                <button onclick="bulkInvoice()" class="bg-green-600 text-white px-4 py-2 rounded">
+                    Generate Invoice
+                </button>
+            </div>
         </div>
 
         <table class="min-w-full text-left">

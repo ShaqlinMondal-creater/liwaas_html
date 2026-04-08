@@ -374,11 +374,11 @@
 
     }
 
-    async function addCustomerAPI(payload) {
+    async function createClientFromModal(payload) {
 
         const token = localStorage.getItem("auth_token");
 
-        const response = await fetch(BASE_URL + "/stocks/clients/add", {
+        const res = await fetch(`${BASE_URL}/stocks/clients/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -387,10 +387,8 @@
             body: JSON.stringify(payload)
         });
 
-        return await response.json();
+        return await res.json();
     }
-
-
 </script>
 
 <!-- ========================= -->
@@ -399,15 +397,22 @@
 
 <script>
 
-    document.getElementById("newCustomerToggle").addEventListener("change", function () {
+    document.addEventListener("DOMContentLoaded", function () {
 
-        const fields = document.getElementById("newCustomerFields");
+        document.getElementById("newCustomerToggle").addEventListener("change", function () {
 
-        if (this.checked) {
-            fields.classList.remove("hidden");
-        } else {
-            fields.classList.add("hidden");
-        }
+            const fields = document.getElementById("newCustomerFields");
+            const select = document.getElementById("clientSelect");
+
+            if (this.checked) {
+                fields.classList.remove("hidden");
+                select.disabled = true; // 🔥 better UX
+            } else {
+                fields.classList.add("hidden");
+                select.disabled = false;
+            }
+
+        });
 
     });
 
@@ -755,15 +760,15 @@
 
         select.innerHTML = "";
 
+        if (!res.success) return;
+
         res.data.forEach(client => {
 
             select.innerHTML += `
                 <option value="${client.id}">
                     ${client.name} - ${client.owner_name} (${client.mobile})
                 </option>`;
-
         });
-
     }
 
     async function createSalesOrder() {
@@ -819,39 +824,40 @@
 
     async function addNewCustomer() {
 
-        const name = document.getElementById("new_name").value;
-        const mobile = document.getElementById("new_mobile").value;
+        const payload = {
+            name: document.getElementById("new_name").value,
+            owner_name: document.getElementById("new_name").value,
+            mobile: document.getElementById("new_mobile").value,
+            email: "",
+            address: ""
+        };
 
-        if (!name || !mobile) {
+        if (!payload.name || !payload.mobile) {
             alert("Enter name and mobile");
             return;
         }
 
-        const res = await addCustomerAPI({
-            name: name,
-            mobile: mobile
-        });
+        const result = await createClientFromModal(payload);
 
-        if (res.status) {
+        if (result.success) {
 
             alert("Customer Added");
 
-            // Reload dropdown
             await loadClients();
 
-            // Auto select new customer
-            document.getElementById("clientSelect").value = res.data.id;
+            const select = document.getElementById("clientSelect");
+            select.value = result.data?.id || select.options[select.options.length - 1].value;
 
-            // Reset fields
+            // Reset UI
             document.getElementById("new_name").value = "";
             document.getElementById("new_mobile").value = "";
             document.getElementById("newCustomerToggle").checked = false;
             document.getElementById("newCustomerFields").classList.add("hidden");
+            select.disabled = false;
 
         } else {
             alert("Failed to add customer");
         }
-
     }
 
     // ===== AUTO FILTER START =====

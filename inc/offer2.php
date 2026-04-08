@@ -497,9 +497,11 @@ function createSlides() {
       <div class="diagonal-shape" style="background: ${config.diagonalColor}"></div>
 
       <div class="circle-badge pulse-circle" style="background: ${config.badgeColor}">
-        <div class="circle-badge-text">
-          ${config.discount}<span class="off">OFF</span>
-        </div>
+        ${config.discount ? `
+          <div class="circle-badge-text">
+            ${config.discount}<span class="off">OFF</span>
+          </div>
+        ` : ''}
       </div>
 
       <div class="shopping-bag bag-1 float-animation" style="background: ${config.bag1Color}">
@@ -644,13 +646,32 @@ async function fetchOffers() {
       sliderConfig = data.data.map(item => {
         const colors = getRandomColors();
 
+        const comment = item.comments || "";
+        const discountMatch = comment.match(/(\d+)%/);
+
+        // 🔗 Dynamic link
+        let link = "/pages/shop";
+        if (item.highlights?.toLowerCase().includes("trending")) {
+          link = "/pages/shop?offer=trending";
+        } else if (item.highlights?.toLowerCase().includes("new")) {
+          link = "/pages/shop?offer=new-arrival";
+        } else if (item.highlights?.toLowerCase().includes("gallary")) {
+          link = "/pages/shop?offer=gallary";
+        } else if (item.highlights?.toLowerCase().includes("premium")) {
+          link = "/pages/shop?offer=premium";
+        }
+
+        // 🎯 Discount (only if exists)
+        let discount = discountMatch ? discountMatch[1] + "%" : "";
+
+        // 🎯 Return config
         return {
-          title: item.highlights || "Trending Offers",
+          title: item.highlights || "Offers",
           subtitle: "Limited Deal",
-          description: "offer section",
-          discount: extractDiscount(item.comments || ""),
+          description: comment, // ✅ comment as description
+          discount: discount,   // ✅ only if exists
           image: item.file_path,
-          link: "/pages/shop/trending-offers",
+          link: link,
           ...colors
         };
       });

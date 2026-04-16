@@ -22,7 +22,7 @@
                     Delete Selected
                 </button>
 
-                <button onclick="bulkInvoice()" 
+                <button onclick="generateSalesInvoice()" 
                     class="bg-green-600 text-white px-4 py-2 rounded">
                     Generate Invoice
                 </button>
@@ -306,7 +306,7 @@
                             <i class="fas fa-eye"></i>
                         </button>
 
-                        <button onclick="generateInvoice(${order.id})" class="text-green-600">
+                        <button onclick="generateSalesOrder(${order.id})" class="text-green-600">
                             <i class="fas fa-file-invoice"></i>
                         </button>
 
@@ -408,22 +408,31 @@
     function closeOrderDetail() {
         document.getElementById("orderDetailModal").classList.add("hidden");
     }
-    async function generateInvoice(id)
+    async function generateSalesOrder(id)
     {
+        const token = localStorage.getItem("auth_token");
 
-        const res = await generateInvoiceAPI(id);
+        const response = await fetch(BASE_URL + "/stocks/sales-order/pdf", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({ id: id })
+        });
 
-        if(!res.status)
-        {
-            alert("Failed to generate PDF");
+        const res = await response.json();
+
+        if(!res.status){
+            alert("Failed to generate Sales Order PDF");
             return;
         }
 
         window.open(res.file_url, "_blank");
 
-        loadOrders(offset); // refresh table to show PDF button
-
+        loadOrders(offset);
     }
+
     async function deleteOrder(id)
     {
 
@@ -476,7 +485,7 @@
         loadOrders(offset);
     }
 
-    async function bulkInvoice() {
+    async function generateSalesInvoice() {
 
         const ids = getSelectedOrders();
 
@@ -485,11 +494,26 @@
             return;
         }
 
-        for(const id of ids){
-            await generateInvoiceAPI(id);
+        const token = localStorage.getItem("auth_token");
+
+        const response = await fetch(BASE_URL + "/stocks/sales-order/generate-invoice", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({ ids: ids })
+        });
+
+        const res = await response.json();
+
+        if(!res.status){
+            alert("Bulk invoice generation failed");
+            return;
         }
 
-        alert("Invoices generated");
+        alert("Invoices generated successfully");
+
         loadOrders(offset);
     }
 </script>

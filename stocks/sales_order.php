@@ -498,6 +498,7 @@
         });
     }
     let editingOrderId = null;
+    
     async function editOrder(id) {
         await loadClientsForEdit();
         editingOrderId = id;

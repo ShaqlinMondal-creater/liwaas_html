@@ -484,10 +484,10 @@
 
         const result = await res.json();
 
-        if (!result.status) return;
+        if (!result.success) return;
 
         const select = document.getElementById("edit_client");
-        select.innerHTML = "";
+        select.innerHTML = `<option value="">Select Client</option>`;
 
         result.data.forEach(client => {
             select.innerHTML += `
@@ -498,7 +498,7 @@
         });
     }
     let editingOrderId = null;
-    
+
     async function editOrder(id) {
         await loadClientsForEdit();
         editingOrderId = id;
@@ -513,7 +513,9 @@
         const order = res.data;
 
         document.getElementById("edit_order_no").value = order.sales_order_no;
-        document.getElementById("edit_client").value = order.client?.id || "";
+        setTimeout(() => {
+            document.getElementById("edit_client").value = order.client?.id || "";
+        }, 100);
         document.getElementById("edit_date").value = order.date;
 
         const table = document.getElementById("editItemsTable");

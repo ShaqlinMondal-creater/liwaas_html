@@ -261,7 +261,7 @@
         const token = localStorage.getItem("auth_token");
 
         const res = await fetch(`${BASE_URL}/stocks/sales-order/update/${id}`, {
-            method: "PUT",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + token
@@ -625,6 +625,7 @@
         window.open(url, "_blank");
     }
 </script>
+
 <script>
     function getSelectedOrders() {
 

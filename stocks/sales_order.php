@@ -127,6 +127,7 @@
 
         <!-- Basic Info -->
         <div class="grid grid-cols-2 gap-4 mb-4">
+            <select id="edit_client" class="border px-3 py-2 rounded"></select>
             <input id="edit_order_no" class="border px-3 py-2 rounded" placeholder="Order No">
             <input id="edit_date" class="border px-3 py-2 rounded" placeholder="Date">
         </div>
@@ -270,6 +271,7 @@
 
         return await res.json();
     }
+    
 </script>
 
 <script>
@@ -468,8 +470,35 @@
         document.getElementById("orderDetailModal").classList.add("hidden");
     }
 
-    let editingOrderId = null;
+    async function loadClientsForEdit() {
 
+        const token = localStorage.getItem("auth_token");
+
+        const res = await fetch(BASE_URL + "/stocks/clients/fetch", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            }
+        });
+
+        const result = await res.json();
+
+        if (!result.status) return;
+
+        const select = document.getElementById("edit_client");
+        select.innerHTML = "";
+
+        result.data.forEach(client => {
+            select.innerHTML += `
+                <option value="${client.id}">
+                    ${client.name} (${client.mobile})
+                </option>
+            `;
+        });
+    }
+    let editingOrderId = null;
+    await loadClientsForEdit();
     async function editOrder(id) {
 
         editingOrderId = id;
@@ -484,6 +513,7 @@
         const order = res.data;
 
         document.getElementById("edit_order_no").value = order.sales_order_no;
+        document.getElementById("edit_client").value = order.client?.id || "";
         document.getElementById("edit_date").value = order.date;
 
         const table = document.getElementById("editItemsTable");
@@ -526,7 +556,7 @@
         });
 
         const payload = {
-            client_id: 6, // later dynamic
+            client_id: document.getElementById("edit_client").value, // later dynamic
             date: document.getElementById("edit_date").value,
             sales_order_no: document.getElementById("edit_order_no").value,
             items: items

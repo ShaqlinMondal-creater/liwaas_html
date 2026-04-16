@@ -559,7 +559,7 @@
 
         const payload = {
             client_id: document.getElementById("edit_client").value, // later dynamic
-            date: document.getElementById("edit_date").value,
+            so_date: document.getElementById("edit_date").value,
             sales_order_no: document.getElementById("edit_order_no").value,
             items: items
         };

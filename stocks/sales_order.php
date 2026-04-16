@@ -580,13 +580,21 @@
 
         });
 
+        const rawDate = document.getElementById("edit_date").value;
+
+        const parts = rawDate.split("-");
+        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
         const payload = {
-            client_id: document.getElementById("edit_client").value, // later dynamic
-            so_date: document.getElementById("edit_date").value,
+            client_id: document.getElementById("edit_client").value,
+            so_date: formattedDate,
             sales_order_no: document.getElementById("edit_order_no").value,
-            paid_amount: parseFloat(document.getElementById("edit_paid_amount").value) || 0,
+
             status: document.getElementById("edit_status").value,
             payment_status: document.getElementById("edit_payment_status").value,
+
+            paid_amount: parseFloat(document.getElementById("edit_paid_amount").value) || 0,
+
             items: items
         };
 

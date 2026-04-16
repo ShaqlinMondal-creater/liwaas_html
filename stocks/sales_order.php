@@ -127,9 +127,27 @@
 
         <!-- Basic Info -->
         <div class="grid grid-cols-2 gap-4 mb-4">
+
             <select id="edit_client" class="border px-3 py-2 rounded"></select>
+
             <input id="edit_order_no" class="border px-3 py-2 rounded" placeholder="Order No">
+
             <input id="edit_date" class="border px-3 py-2 rounded" placeholder="Date">
+
+            <!-- STATUS -->
+            <select id="edit_status" class="border px-3 py-2 rounded">
+                <option value="pending">Pending</option>
+                <option value="on process">On Process</option>
+                <option value="completed">Completed</option>
+            </select>
+
+            <!-- PAYMENT STATUS -->
+            <select id="edit_payment_status" class="border px-3 py-2 rounded">
+                <option value="pending">Pending</option>
+                <option value="partial payment">Partial Payment</option>
+                <option value="completed">Completed</option>
+            </select>
+
         </div>
 
         <!-- Items Table -->
@@ -517,6 +535,8 @@
             document.getElementById("edit_client").value = order.client?.id || "";
         }, 100);
         document.getElementById("edit_date").value = order.date;
+        document.getElementById("edit_status").value = order.status || "pending";
+        document.getElementById("edit_payment_status").value = order.payment_status || "pending";
 
         const table = document.getElementById("editItemsTable");
         table.innerHTML = "";
@@ -561,6 +581,8 @@
             client_id: document.getElementById("edit_client").value, // later dynamic
             so_date: document.getElementById("edit_date").value,
             sales_order_no: document.getElementById("edit_order_no").value,
+            status: document.getElementById("edit_status").value,
+            payment_status: document.getElementById("edit_payment_status").value,
             items: items
         };
 

@@ -116,6 +116,46 @@
 
 </div>
 
+<div id="editOrderModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+
+    <div class="bg-white rounded-xl w-full max-w-4xl p-6">
+
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Edit Sales Order</h2>
+            <button onclick="closeEditModal()">✕</button>
+        </div>
+
+        <!-- Basic Info -->
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <input id="edit_order_no" class="border px-3 py-2 rounded" placeholder="Order No">
+            <input id="edit_date" class="border px-3 py-2 rounded" placeholder="Date">
+        </div>
+
+        <!-- Items Table -->
+        <div class="max-h-[300px] overflow-y-auto border rounded">
+            <table class="w-full text-left">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-3 py-2">UID</th>
+                        <th class="px-3 py-2">Qty</th>
+                        <th class="px-3 py-2">Price</th>
+                        <th class="px-3 py-2">Tax</th>
+                    </tr>
+                </thead>
+                <tbody id="editItemsTable"></tbody>
+            </table>
+        </div>
+
+        <div class="mt-4 text-right">
+            <button onclick="updateOrder()" class="bg-indigo-600 text-white px-4 py-2 rounded">
+                Update Order
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
 <script>
     const BASE_URL = "<?= $baseUrl ?>/api/admin";
 </script>
@@ -215,6 +255,21 @@
         return await response.json();
 
     }
+    async function updateOrderAPI(id, payload) {
+
+        const token = localStorage.getItem("auth_token");
+
+        const res = await fetch(`${BASE_URL}/stocks/sales-order/update/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify(payload)
+        });
+
+        return await res.json();
+    }
 </script>
 
 <script>
@@ -304,6 +359,10 @@
 
                         <button onclick="viewOrder(${order.id})" class="text-blue-600">
                             <i class="fas fa-eye"></i>
+                        </button>
+
+                        <button onclick="editOrder(${order.id})" class="text-yellow-600">
+                            <i class="fas fa-edit"></i>
                         </button>
 
                         <button onclick="generateSalesOrder(${order.id})" class="text-green-600">
@@ -408,6 +467,84 @@
     function closeOrderDetail() {
         document.getElementById("orderDetailModal").classList.add("hidden");
     }
+
+    let editingOrderId = null;
+
+    async function editOrder(id) {
+
+        editingOrderId = id;
+
+        const res = await fetchOrderDetail(id);
+
+        if (!res.status) {
+            alert("Failed to load order");
+            return;
+        }
+
+        const order = res.data;
+
+        document.getElementById("edit_order_no").value = order.sales_order_no;
+        document.getElementById("edit_date").value = order.date;
+
+        const table = document.getElementById("editItemsTable");
+        table.innerHTML = "";
+
+        order.items.forEach(item => {
+
+            table.innerHTML += `
+                <tr>
+                    <td class="px-3 py-2">${item.uid}</td>
+                    <td><input value="${item.qty}" class="edit_qty border w-16"></td>
+                    <td><input value="${item.price}" class="edit_price border w-20"></td>
+                    <td><input value="${item.tax}" class="edit_tax border w-16"></td>
+                </tr>
+            `;
+        });
+
+        document.getElementById("editOrderModal").classList.remove("hidden");
+        document.getElementById("editOrderModal").classList.add("flex");
+    }
+    function closeEditModal() {
+        document.getElementById("editOrderModal").classList.add("hidden");
+    }
+    async function updateOrder() {
+
+        const rows = document.querySelectorAll("#editItemsTable tr");
+
+        const items = [];
+
+        rows.forEach(row => {
+
+            const uid = parseInt(row.children[0].innerText);
+
+            const qty = parseInt(row.querySelector(".edit_qty").value);
+            const price = parseFloat(row.querySelector(".edit_price").value);
+            const tax = parseFloat(row.querySelector(".edit_tax").value);
+
+            items.push({ uid, qty, price, tax });
+
+        });
+
+        const payload = {
+            client_id: 6, // later dynamic
+            date: document.getElementById("edit_date").value,
+            sales_order_no: document.getElementById("edit_order_no").value,
+            items: items
+        };
+
+        const res = await updateOrderAPI(editingOrderId, payload);
+
+        if (!res.status) {
+            alert("Update failed");
+            return;
+        }
+
+        alert("Order updated successfully");
+
+        closeEditModal();
+        loadOrders(offset);
+    }
+
     async function generateSalesOrder(id)
     {
         const token = localStorage.getItem("auth_token");

@@ -498,9 +498,8 @@
         });
     }
     let editingOrderId = null;
-    await loadClientsForEdit();
     async function editOrder(id) {
-
+        await loadClientsForEdit();
         editingOrderId = id;
 
         const res = await fetchOrderDetail(id);

@@ -134,6 +134,8 @@
 
             <input id="edit_date" class="border px-3 py-2 rounded" placeholder="Date">
 
+            <input id="edit_paid_amount" type="number" placeholder="Paid Amount" class="border px-3 py-2 rounded">
+
             <!-- STATUS -->
             <select id="edit_status" class="border px-3 py-2 rounded">
                 <option value="pending">Pending</option>
@@ -535,6 +537,7 @@
             document.getElementById("edit_client").value = order.client?.id || "";
         }, 100);
         document.getElementById("edit_date").value = order.date;
+        document.getElementById("edit_paid_amount").value = order.paid_amount || 0;
         document.getElementById("edit_status").value = order.status || "pending";
         document.getElementById("edit_payment_status").value = order.payment_status || "pending";
 
@@ -581,6 +584,7 @@
             client_id: document.getElementById("edit_client").value, // later dynamic
             so_date: document.getElementById("edit_date").value,
             sales_order_no: document.getElementById("edit_order_no").value,
+            paid_amount: parseFloat(document.getElementById("edit_paid_amount").value) || 0,
             status: document.getElementById("edit_status").value,
             payment_status: document.getElementById("edit_payment_status").value,
             items: items

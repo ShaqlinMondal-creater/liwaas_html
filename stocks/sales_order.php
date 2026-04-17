@@ -340,27 +340,27 @@
             table.innerHTML += `
                 <tr class="border-t">
 
-                    <td class="px-6 py-4">
+                    <td class="px-3 py-3">
                         <input type="checkbox" class="orderCheckbox" value="${order.id}">
                     </td>
 
-                    <td onclick="viewOrder(${order.id})" class="px-6 py-4 font-semibold text-indigo-600 cursor-pointer">
+                    <td onclick="viewOrder(${order.id})" class="px-3 py-3 font-semibold text-indigo-600 cursor-pointer">
                         ${order.sales_order_no}
                     </td>
 
-                    <td class="px-6 py-4">
+                    <td class="px-3 py-3">
                         ${order.client ? order.client.name : "N/A"}
                     </td>
 
-                    <td class="px-6 py-4">
+                    <td class="px-3 py-3">
                         ₹${order.grand_total}
                     </td>
 
-                    <td class="px-6 py-4">
+                    <td class="px-3 py-3">
                         ₹${order.total_tax}
                     </td>
 
-                    <td class="px-6 py-4">
+                    <td class="px-3 py-3">
                         ${(order.status || "pending") === "completed" 
                             ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">Completed</span>'
                             : (order.status || "pending") === "on process"
@@ -369,7 +369,7 @@
                         }
                     </td>
 
-                    <td class="px-6 py-4">
+                    <td class="px-3 py-3">
                         ${(order.payment_status || "pending") === "completed"
                             ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">Paid</span>'
                             : (order.payment_status || "pending") === "partial payment"
@@ -378,15 +378,15 @@
                         }
                     </td>
 
-                    <td class="px-6 py-4">
+                    <td class="px-3 py-3">
                         ₹${order.remain_due || 0}
                     </td>
 
-                    <td class="px-6 py-4">
+                    <td class="px-3 py-3">
                         ${order.date}
                     </td>
 
-                    <td class="px-6 py-4 space-x-3">
+                    <td class="px-3 py-3 space-x-3">
 
                         <button onclick="viewOrder(${order.id})" class="text-blue-600">
                             <i class="fas fa-eye"></i>

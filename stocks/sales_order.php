@@ -42,6 +42,7 @@
                     <th class="px-6 py-3">Tax</th>
                     <th class="px-6 py-3">Status</th>
                     <th class="px-6 py-3">Payment</th>
+                    <th class="px-6 py-3">Due</th>
                     <th class="px-6 py-3">Date</th>
                     <th class="px-6 py-3">Action</th>
 
@@ -363,14 +364,28 @@
 
                     <td class="px-6 py-4">
                         <span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded">
-                            ${order.status || "Pending"}
+                            ${(order.status || "pending") === "completed" 
+                                ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">Completed</span>'
+                                : (order.status || "pending") === "on process"
+                                ? '<span class="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded">On Process</span>'
+                                : '<span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded">Pending</span>'
+                            }
                         </span>
                     </td>
 
                     <td class="px-6 py-4">
                         <span class="px-2 py-1 text-xs bg-red-100 text-red-600 rounded">
-                            ${order.payment_status || "Pending"}
+                            ${(order.payment_status || "pending") === "completed"
+                                ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">Paid</span>'
+                                : (order.payment_status || "pending") === "partial payment"
+                                ? '<span class="px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded">Partial</span>'
+                                : '<span class="px-2 py-1 text-xs bg-red-100 text-red-600 rounded">Pending</span>'
+                            }
                         </span>
+                    </td>
+
+                    <td class="px-6 py-4">
+                        ₹${order.remain_due || 0}
                     </td>
 
                     <td class="px-6 py-4">
@@ -531,13 +546,17 @@
         }
 
         const order = res.data;
+        const total = parseFloat(order.grand_total || 0);
+        const due = parseFloat(order.remain_due || 0);
+
+        const paid = total - due;
 
         document.getElementById("edit_order_no").value = order.sales_order_no;
         setTimeout(() => {
             document.getElementById("edit_client").value = order.client?.id || "";
         }, 100);
         document.getElementById("edit_date").value = order.date;
-        document.getElementById("edit_paid_amount").value = order.paid_amount || 0;
+        document.getElementById("edit_paid_amount").value = paid || 0;
         document.getElementById("edit_status").value = order.status || "pending";
         document.getElementById("edit_payment_status").value = order.payment_status || "pending";
 

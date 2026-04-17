@@ -363,25 +363,21 @@
                     </td>
 
                     <td class="px-6 py-4">
-                        <span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded">
-                            ${(order.status || "pending") === "completed" 
-                                ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">Completed</span>'
-                                : (order.status || "pending") === "on process"
-                                ? '<span class="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded">On Process</span>'
-                                : '<span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded">Pending</span>'
-                            }
-                        </span>
+                        ${(order.status || "pending") === "completed" 
+                            ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">Completed</span>'
+                            : (order.status || "pending") === "on process"
+                            ? '<span class="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded">On Process</span>'
+                            : '<span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded">Pending</span>'
+                        }
                     </td>
 
                     <td class="px-6 py-4">
-                        <span class="px-2 py-1 text-xs bg-red-100 text-red-600 rounded">
-                            ${(order.payment_status || "pending") === "completed"
-                                ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">Paid</span>'
-                                : (order.payment_status || "pending") === "partial payment"
-                                ? '<span class="px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded">Partial</span>'
-                                : '<span class="px-2 py-1 text-xs bg-red-100 text-red-600 rounded">Pending</span>'
-                            }
-                        </span>
+                        ${(order.payment_status || "pending") === "completed"
+                            ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">Paid</span>'
+                            : (order.payment_status || "pending") === "partial payment"
+                            ? '<span class="px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded">Partial</span>'
+                            : '<span class="px-2 py-1 text-xs bg-red-100 text-red-600 rounded">Pending</span>'
+                        }
                     </td>
 
                     <td class="px-6 py-4">

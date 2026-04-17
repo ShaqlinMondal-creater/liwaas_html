@@ -549,6 +549,7 @@
         const total = parseFloat(order.grand_total || 0);
         const due = parseFloat(order.remain_due || 0);
 
+        // only for UI display
         const paid = total - due;
 
         document.getElementById("edit_order_no").value = order.sales_order_no;
@@ -556,7 +557,7 @@
             document.getElementById("edit_client").value = order.client?.id || "";
         }, 100);
         document.getElementById("edit_date").value = order.date;
-        document.getElementById("edit_paid_amount").value = paid || 0;
+        document.getElementById("edit_paid_amount").value = paid >= 0 ? paid : 0;
         document.getElementById("edit_status").value = order.status || "pending";
         document.getElementById("edit_payment_status").value = order.payment_status || "pending";
 

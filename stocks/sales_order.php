@@ -32,19 +32,19 @@
         <table class="min-w-full text-left">
             <thead class="bg-indigo-50">
                 <tr>
-                    <th class="px-6 py-3">
+                    <th class="px-3 py-3">
                         <input type="checkbox" id="selectAllOrders">
                     </th>
 
-                    <th class="px-6 py-3">Order No</th>
-                    <th class="px-6 py-3">Client</th>
-                    <th class="px-6 py-3">Total Amount</th>
-                    <th class="px-6 py-3">Tax</th>
-                    <th class="px-6 py-3">Status</th>
-                    <th class="px-6 py-3">Payment</th>
-                    <th class="px-6 py-3">Due</th>
-                    <th class="px-6 py-3">Date</th>
-                    <th class="px-6 py-3">Action</th>
+                    <th class="px-3 py-3">Order No</th>
+                    <th class="px-3 py-3">Client</th>
+                    <th class="px-3 py-3">Total Amount</th>
+                    <th class="px-3 py-3">Tax</th>
+                    <th class="px-3 py-3">Status</th>
+                    <th class="px-3 py-3">Payment</th>
+                    <th class="px-3 py-3">Due</th>
+                    <th class="px-3 py-3">Date</th>
+                    <th class="px-3 py-3">Action</th>
 
                 </tr>
             </thead>
@@ -118,7 +118,6 @@
 </div>
 
 <div id="editOrderModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
-
     <div class="bg-white rounded-xl w-full max-w-4xl p-6">
 
         <div class="flex justify-between items-center mb-4">
@@ -175,7 +174,6 @@
         </div>
 
     </div>
-
 </div>
 
 <script>

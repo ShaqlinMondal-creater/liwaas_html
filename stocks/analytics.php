@@ -270,8 +270,13 @@
                         fill: true,
                         yAxisID: 'y1',
                         borderWidth: 3,
-                        pointRadius: 4,
-                        order: 0
+                        pointRadius: 5,
+
+                        pointBackgroundColor: '#10B981',   // ✅ ADD
+                        pointBorderColor: '#ffffff',       // ✅ ADD
+                        pointBorderWidth: 2,               // ✅ ADD
+
+                        order: 10                         // 🔥 VERY IMPORTANT (bring to top)
                     },
                     {
                         label:'Items Sold',
@@ -311,6 +316,9 @@
                     y1: {
                         beginAtZero: true,
                         position: 'right',
+
+                        suggestedMax: Math.max(...revenue) * 1.2, // 🔥 ADD THIS
+
                         title: {
                             display: true,
                             text: 'Revenue'

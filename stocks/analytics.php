@@ -271,42 +271,51 @@
                         yAxisID: 'y1',
                         borderWidth: 3,
                         pointRadius: 5,
-
-                        pointBackgroundColor: '#10B981',   // ✅ ADD
-                        pointBorderColor: '#ffffff',       // ✅ ADD
-                        pointBorderWidth: 2,               // ✅ ADD
-
-                        order: 10                         // 🔥 VERY IMPORTANT (bring to top)
+                        pointBackgroundColor: '#10B981',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        order: 10
                     },
                     {
                         label:'Items Sold',
                         data:itemsSold,
                         backgroundColor:'#d29a38'
                     },
-                    {
+                   {
                         label: 'Paid',
                         data: paid,
                         type: 'line',
-                        borderColor: '#00b92e',
-                        backgroundColor: 'rgba(0,185,46,0.2)',
-                        tension: 0.4,
-                        fill: true,
+                        borderColor: '#22C55E',
+                        tension: 0.3,
+                        fill: false,
                         yAxisID: 'y1',
-                        borderWidth: 2,
-                        pointRadius: 4
+                        borderWidth: 3,
+
+                        borderDash: [8, 6],   // 🔥 dashed effect
+
+                        pointRadius: 4,
+                        pointBackgroundColor: '#22C55E',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
                     },
                     {
                         label: 'Due',
                         data: due,
                         type: 'line',
                         borderColor: '#EF4444',
-                        backgroundColor: 'rgba(239,68,68,0.2)',
-                        tension: 0.4,
-                        fill: true,
+                        tension: 0,          // 🔥 straight sharp lines
+                        fill: false,
                         yAxisID: 'y1',
-                        borderWidth: 2,
-                        pointRadius: 4
-                    }
+                        borderWidth: 3,
+
+                        borderDash: [2, 6],  // 🔥 dotted style
+
+                        pointRadius: 5,
+                        pointStyle: 'rectRot', // 🔥 diamond shape points
+                        pointBackgroundColor: '#EF4444',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    },
                 ]
             },
 

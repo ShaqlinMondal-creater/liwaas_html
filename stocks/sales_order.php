@@ -137,14 +137,14 @@
             <input id="edit_paid_amount" type="number" placeholder="Paid Amount" class="border px-3 py-2 rounded">
 
             <!-- STATUS -->
-            <select id="edit_status" class="border px-3 py-2 rounded">
+            <select id="edit_status" class="border px-3 py-2 rounded hidden">
                 <option value="pending">Pending</option>
                 <option value="on process">On Process</option>
                 <option value="completed">Completed</option>
             </select>
 
             <!-- PAYMENT STATUS -->
-            <select id="edit_payment_status" class="border px-3 py-2 rounded">
+            <select id="edit_payment_status" class="border px-3 py-2 rounded hidden">
                 <option value="pending">Pending</option>
                 <option value="partial payment">Partial Payment</option>
                 <option value="completed">Completed</option>
@@ -636,7 +636,9 @@
         const d = order.date.split("-");
         const formatted = `${d[2]}-${d[1]}-${d[0]}`;
         document.getElementById("edit_date").value = formatted;
-        document.getElementById("edit_paid_amount").value = order.remain_due || 0;
+        const paidInput = document.getElementById("edit_paid_amount");
+        paidInput.value = ""; // clear value
+        paidInput.placeholder = order.remain_due || 0;
         document.getElementById("edit_status").value = order.status || "pending";
         document.getElementById("edit_payment_status").value = order.payment_status || "pending";
 
@@ -693,9 +695,15 @@
 
         });
 
-        const rawDate = document.getElementById("edit_date").value;
+        // const rawDate = document.getElementById("edit_date").value;
 
-        const formattedDate = document.getElementById("edit_date").value;
+        const formattedDate = document.getElementById("edit_date").value || null;
+
+        const paidInput = document.getElementById("edit_paid_amount");
+
+        const paidValue = paidInput.value 
+            ? parseFloat(paidInput.value) 
+            : parseFloat(paidInput.placeholder || 0);
 
         const payload = {
             client_id: document.getElementById("edit_client").value,
@@ -705,7 +713,7 @@
             status: document.getElementById("edit_status").value,
             payment_status: document.getElementById("edit_payment_status").value,
 
-            paid_amount: parseFloat(document.getElementById("edit_paid_amount").value) || 0,
+            paid_amount: paidValue, // ✅ correct
 
             items: items
         };

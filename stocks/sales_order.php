@@ -132,7 +132,7 @@
 
             <input id="edit_order_no" class="border px-3 py-2 rounded" placeholder="Order No">
 
-            <input id="edit_date" class="border px-3 py-2 rounded" placeholder="Date">
+            <input id="edit_date" type="date" class="border px-3 py-2 rounded">
 
             <input id="edit_paid_amount" type="number" placeholder="Paid Amount" class="border px-3 py-2 rounded">
 
@@ -468,6 +468,29 @@
         </tr>
         `;
     }
+    function addItemRow() {
+
+        if(productList.length === 0){
+            alert("Products not loaded yet");
+            return;
+        }
+
+        const table = document.getElementById("editItemsTable");
+        table.innerHTML += generateItemRow();
+    }
+
+    function removeRow(btn) {
+        btn.closest("tr").remove();
+    }
+
+    document.addEventListener("change", function(e){
+        if(e.target.classList.contains("edit_uid")){
+            const selected = productList.find(p => p.uid == e.target.value);
+            if(!selected) return;
+            const row = e.target.closest("tr");
+            row.querySelector(".edit_price").value = selected.sale_price || 0;
+        }
+    });
 </script>
 
 <script>
@@ -497,36 +520,23 @@
         const table = document.getElementById("orderItemsTable");
         table.innerHTML = "";
 
-        // order.items.forEach(item => {
-
-        //     const product = item.product ?? {};
-
-        //     table.innerHTML += `
-        //         <tr class="border-t">
-        //             <td class="px-4 py-2">${product.name ?? item.uid}</td>
-        //             <td class="px-4 py-2">${product.size ?? "-"}</td>
-        //             <td class="px-4 py-2">${product.color ?? "-"}</td>
-        //             <td class="px-4 py-2">${item.qty}</td>
-        //             <td class="px-4 py-2">₹${item.price}</td>
-        //             <td class="px-4 py-2">${item.tax}% = ₹${item.sub_total_tax}</td>
-        //             <td class="px-4 py-2">₹${item.sub_total}</td>
-        //         </tr>
-        //     `;
-
-        // });
-
         order.items.forEach(item => {
-            table.innerHTML += generateItemRow(item);
+
+            const product = item.product ?? {};
+
+            table.innerHTML += `
+                <tr class="border-t">
+                    <td class="px-4 py-2">${product.name ?? item.uid}</td>
+                    <td class="px-4 py-2">${product.size ?? "-"}</td>
+                    <td class="px-4 py-2">${product.color ?? "-"}</td>
+                    <td class="px-4 py-2">${item.qty}</td>
+                    <td class="px-4 py-2">₹${item.price}</td>
+                    <td class="px-4 py-2">${item.tax}% = ₹${item.sub_total_tax}</td>
+                    <td class="px-4 py-2">₹${item.sub_total}</td>
+                </tr>
+            `;
+
         });
-
-        function addItemRow() {
-            const table = document.getElementById("editItemsTable");
-            table.innerHTML += generateItemRow();
-        }
-
-        function removeRow(btn) {
-            btn.closest("tr").remove();
-        }
 
         const pdfBtn = document.getElementById("detailPdfBtn");
 
@@ -597,6 +607,7 @@
     }
 
     let editingOrderId = null;
+
     async function editOrder(id) {
         await loadClientsForEdit();
         await loadProducts(); // 🔥 ADD THIS
@@ -623,27 +634,30 @@
         const table = document.getElementById("editItemsTable");
         table.innerHTML = "";
 
+        // order.items.forEach(item => {
+
+        //     let options = productList.map(p => `
+        //         <option value="${p.uid}" ${p.uid == item.uid ? "selected" : ""}>
+        //             ${p.name} - ${p.size} - ${p.color}
+        //         </option>
+        //     `).join("");
+
+        //     table.innerHTML += `
+        //         <tr>
+        //             <td>
+        //                 <select class="edit_uid border px-2 py-1">
+        //                     ${options}
+        //                 </select>
+        //             </td>
+
+        //             <td><input value="${item.qty}" class="edit_qty border w-16"></td>
+        //             <td><input value="${item.price}" class="edit_price border w-20"></td>
+        //             <td><input value="${item.tax}" class="edit_tax border w-16"></td>
+        //         </tr>
+        //     `;
+        // });
         order.items.forEach(item => {
-
-            let options = productList.map(p => `
-                <option value="${p.uid}" ${p.uid == item.uid ? "selected" : ""}>
-                    ${p.name} - ${p.size} - ${p.color}
-                </option>
-            `).join("");
-
-            table.innerHTML += `
-                <tr>
-                    <td>
-                        <select class="edit_uid border px-2 py-1">
-                            ${options}
-                        </select>
-                    </td>
-
-                    <td><input value="${item.qty}" class="edit_qty border w-16"></td>
-                    <td><input value="${item.price}" class="edit_price border w-20"></td>
-                    <td><input value="${item.tax}" class="edit_tax border w-16"></td>
-                </tr>
-            `;
+            table.innerHTML += generateItemRow(item);
         });
 
         document.getElementById("editOrderModal").classList.remove("hidden");
@@ -664,7 +678,7 @@
 
             const qty = parseInt(row.querySelector(".edit_qty").value);
             const price = parseFloat(row.querySelector(".edit_price").value);
-            const tax = parseFloat(row.querySelector(".edit_tax").value);
+            const tax = parseFloat(row.querySelector(".edit_tax").value = selected.tax || 0;);
 
             items.push({ uid, qty, price, tax });
 
@@ -672,8 +686,7 @@
 
         const rawDate = document.getElementById("edit_date").value;
 
-        const parts = rawDate.split("-");
-        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        const formattedDate = document.getElementById("edit_date").value;
 
         const payload = {
             client_id: document.getElementById("edit_client").value,

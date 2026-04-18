@@ -489,6 +489,8 @@
             if(!selected) return;
             const row = e.target.closest("tr");
             row.querySelector(".edit_price").value = selected.sale_price || 0;
+            // ✅ ADD THIS
+            row.querySelector(".edit_tax").value = selected.tax || 0;
         }
     });
 </script>
@@ -678,7 +680,7 @@
 
             const qty = parseInt(row.querySelector(".edit_qty").value);
             const price = parseFloat(row.querySelector(".edit_price").value);
-            const tax = parseFloat(row.querySelector(".edit_tax").value = selected.tax || 0;);
+            const tax = parseFloat(row.querySelector(".edit_tax").value);
 
             items.push({ uid, qty, price, tax });
 

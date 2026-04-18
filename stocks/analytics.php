@@ -264,11 +264,14 @@
                         label: 'Revenue',
                         data: revenue,
                         type: 'line',
-                        borderColor: '#1fb583',
+                        borderColor: '#10B981',
                         backgroundColor: 'rgba(16,185,129,0.2)',
                         tension: 0.4,
                         fill: true,
-                        yAxisID: 'y1'
+                        yAxisID: 'y1',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        order: 0
                     },
                     {
                         label:'Items Sold',

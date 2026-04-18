@@ -446,7 +446,7 @@
 
         let options = productList.map(p => `
             <option value="${p.uid}" ${p.uid == item.uid ? "selected" : ""}>
-                ${p.name} - ${p.size} - ${p.color}
+                ${p.name} - (${p.size} / ${p.color}) - ₹${p.sale_price}
             </option>
         `).join("");
 

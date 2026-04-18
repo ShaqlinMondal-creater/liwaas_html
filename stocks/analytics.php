@@ -281,20 +281,19 @@
                         data:itemsSold,
                         backgroundColor:'#d29a38'
                     },
-                   {
+                    {
                         label: 'Paid',
                         data: paid,
                         type: 'line',
-                        borderColor: '#22C55E',
+                        borderColor: '#00e052',
+                        backgroundColor: 'rgba(0, 224, 82, 0.55)',
                         tension: 0.3,
                         fill: false,
                         yAxisID: 'y1',
                         borderWidth: 3,
-
-                        borderDash: [8, 6],   // 🔥 dashed effect
-
+                        borderDash: [4, 6],   // 🔥 dashed effect
                         pointRadius: 4,
-                        pointBackgroundColor: '#22C55E',
+                        pointBackgroundColor: '#00e052',
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2
                     },
@@ -303,13 +302,12 @@
                         data: due,
                         type: 'line',
                         borderColor: '#EF4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.36)',
                         tension: 0,          // 🔥 straight sharp lines
                         fill: false,
                         yAxisID: 'y1',
                         borderWidth: 3,
-
-                        borderDash: [2, 6],  // 🔥 dotted style
-
+                        borderDash: [2, 4],  // 🔥 dotted style
                         pointRadius: 5,
                         pointStyle: 'rectRot', // 🔥 diamond shape points
                         pointBackgroundColor: '#EF4444',

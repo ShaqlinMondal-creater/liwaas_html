@@ -182,9 +182,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-
         let searchTimeout;
-
         document.getElementById("search").addEventListener("input", function () {
 
             clearTimeout(searchTimeout);
@@ -194,7 +192,6 @@
             }, 500);
 
         });
-
     });
 
     async function fetchOrders(filters) {
@@ -526,10 +523,35 @@
             `;
         });
     }
-    let editingOrderId = null;
 
+    let productList = [];
+    async function loadProducts() {
+
+        const token = localStorage.getItem("auth_token");
+
+        const res = await fetch(BASE_URL + "/stocks/get-stock", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({
+                limit: 50,
+                offset: 0
+            })
+        });
+
+        const result = await res.json();
+
+        if (!result.status) return;
+
+        productList = result.data;
+    }
+
+    let editingOrderId = null;
     async function editOrder(id) {
         await loadClientsForEdit();
+        await loadProducts(); // 🔥 ADD THIS
         editingOrderId = id;
 
         const res = await fetchOrderDetail(id);
@@ -555,9 +577,20 @@
 
         order.items.forEach(item => {
 
+            let options = productList.map(p => `
+                <option value="${p.uid}" ${p.uid == item.uid ? "selected" : ""}>
+                    ${p.name} - ${p.size} - ${p.color}
+                </option>
+            `).join("");
+
             table.innerHTML += `
                 <tr>
-                    <td class="px-3 py-2">${item.uid}</td>
+                    <td>
+                        <select class="edit_uid border px-2 py-1">
+                            ${options}
+                        </select>
+                    </td>
+
                     <td><input value="${item.qty}" class="edit_qty border w-16"></td>
                     <td><input value="${item.price}" class="edit_price border w-20"></td>
                     <td><input value="${item.tax}" class="edit_tax border w-16"></td>
@@ -579,7 +612,7 @@
 
         rows.forEach(row => {
 
-            const uid = parseInt(row.children[0].innerText);
+            const uid = row.querySelector(".edit_uid").value;
 
             const qty = parseInt(row.querySelector(".edit_qty").value);
             const price = parseFloat(row.querySelector(".edit_price").value);

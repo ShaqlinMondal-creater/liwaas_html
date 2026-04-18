@@ -11,11 +11,21 @@
     </div>
 
     <!-- Analytics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-10">
+    <div class="grid grid-cols-1 md:grid-cols-7 gap-6 mb-10">
 
         <div class="bg-white rounded-2xl shadow p-6">
             <p class="text-gray-500">Total Sales</p>
             <h2 id="total_sales" class="text-2xl font-bold mt-2">₹0</h2>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow p-6">
+            <p class="text-gray-500">Total Paid</p>
+            <h2 id="total_paid" class="text-2xl font-bold mt-2 text-green-600">₹0</h2>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow p-6">
+            <p class="text-gray-500">Total Due</p>
+            <h2 id="total_due" class="text-2xl font-bold mt-2 text-red-600">₹0</h2>
         </div>
 
         <div class="bg-white rounded-2xl shadow p-6">
@@ -40,6 +50,25 @@
 
     </div>
 
+    <!-- Payment Process -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+        <div class="bg-white rounded-2xl shadow p-6">
+            <p class="text-gray-500">This Month Paid</p>
+            <h2 id="monthly_paid" class="text-xl font-bold mt-2 text-green-600">₹0</h2>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow p-6">
+            <p class="text-gray-500">This Month Due</p>
+            <h2 id="monthly_due" class="text-xl font-bold mt-2 text-red-600">₹0</h2>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow p-6">
+            <p class="text-gray-500">Target Progress</p>
+            <h2 id="target_progress" class="text-xl font-bold mt-2 text-indigo-600">0%</h2>
+        </div>
+
+    </div>
 
     <!-- Chart -->
     <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
@@ -114,6 +143,12 @@
         document.getElementById("total_sales").innerText =
             `₹${data.total_data.total_sales}`;
 
+        document.getElementById("total_paid").innerText =
+            `₹${data.total_data.total_paid}`;
+
+        document.getElementById("total_due").innerText =
+            `₹${data.total_data.total_due}`;
+
         document.getElementById("total_orders").innerText =
             data.total_data.total_orders;
 
@@ -127,6 +162,16 @@
             data.total_data.low_stock_products;
 
 
+        // Payment Process
+        document.getElementById("monthly_paid").innerText =
+            `₹${data.this_month_data.monthly_paid}`;
+
+        document.getElementById("monthly_due").innerText =
+            `₹${data.this_month_data.monthly_due}`;
+
+        document.getElementById("target_progress").innerText =
+            `${data.this_month_data.target_progress_percent}%`;
+
         /* ======================
         MONTH CHART
         ====================== */
@@ -136,6 +181,8 @@
         const targets = [];
         const orders = [];
         const itemsSold = [];
+        const paid = [];
+        const due = [];
 
         data.month_wise_data.forEach(m => {
 
@@ -144,13 +191,15 @@
 
             labels.push(key.charAt(0).toUpperCase() + key.slice(1));
 
+            paid.push(month.paid || 0);
+            due.push(month.due || 0);
             revenue.push(month.revenue);
             targets.push(month.target);
             orders.push(month.orders);
             itemsSold.push(month.items_sold);
         });
 
-        createChart(labels,revenue,targets,orders,itemsSold);
+        createChart(labels,revenue,targets,orders,itemsSold,paid,due);
 
         /* ======================
         TOP PRODUCTS
@@ -193,7 +242,7 @@
     CREATE CHART
     ====================== */
 
-    function createChart(labels, revenue, targets, orders, itemsSold) {
+    function createChart(labels, revenue, targets, orders, itemsSold, paid, due) {
         const ctx = document.getElementById('salesChart').getContext('2d');
 
         salesChart = new Chart(ctx, {
@@ -215,7 +264,7 @@
                         label: 'Revenue',
                         data: revenue,
                         type: 'line',
-                        borderColor: '#10B981',
+                        borderColor: '#1fb583',
                         backgroundColor: 'rgba(16,185,129,0.2)',
                         tension: 0.4,
                         fill: true,
@@ -224,7 +273,17 @@
                     {
                         label:'Items Sold',
                         data:itemsSold,
-                        backgroundColor:'#F59E0B'
+                        backgroundColor:'#d29a38'
+                    },
+                    {
+                        label: 'Paid',
+                        data: paid,
+                        backgroundColor: '#00b92e'
+                    },
+                    {
+                        label: 'Due',
+                        data: due,
+                        backgroundColor: '#EF4444'
                     },
                 ]
             },

@@ -191,12 +191,12 @@
 
             labels.push(key.charAt(0).toUpperCase() + key.slice(1));
 
-            paid.push(month.paid || 0);
-            due.push(month.due || 0);
-            revenue.push(month.revenue);
-            targets.push(month.target);
-            orders.push(month.orders);
-            itemsSold.push(month.items_sold);
+            revenue.push(parseFloat(month.revenue || 0));
+            targets.push(parseFloat(month.target || 0));
+            orders.push(parseFloat(month.orders || 0));
+            itemsSold.push(parseFloat(month.items_sold || 0));
+            paid.push(parseFloat(month.paid || 0));
+            due.push(parseFloat(month.due || 0));
         });
 
         createChart(labels,revenue,targets,orders,itemsSold,paid,due);

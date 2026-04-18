@@ -286,14 +286,26 @@
                     {
                         label: 'Paid',
                         data: paid,
-                        backgroundColor: '#00b92e',
-                        yAxisID: 'y1'
+                        type: 'line',
+                        borderColor: '#00b92e',
+                        backgroundColor: 'rgba(0,185,46,0.2)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y1',
+                        borderWidth: 2,
+                        pointRadius: 4
                     },
                     {
                         label: 'Due',
                         data: due,
-                        backgroundColor: '#EF4444',
-                        yAxisID: 'y1'
+                        type: 'line',
+                        borderColor: '#EF4444',
+                        backgroundColor: 'rgba(239,68,68,0.2)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y1',
+                        borderWidth: 2,
+                        pointRadius: 4
                     }
                 ]
             },
@@ -328,10 +340,8 @@
                         }
                     }
                 }
-
             }
         });
-
     }
     loadAnalytics();
 </script>

@@ -444,7 +444,9 @@
 
     function generateItemRow(item = {}) {
 
-        let options = productList.map(p => `
+        let options = `
+            <option value="">Select Product</option>
+        ` + productList.map(p => `
             <option value="${p.uid}" ${p.uid == item.uid ? "selected" : ""}>
                 ${p.name} - (${p.size} / ${p.color}) - ₹${p.sale_price}
             </option>
@@ -476,7 +478,10 @@
         }
 
         const table = document.getElementById("editItemsTable");
-        table.innerHTML += generateItemRow();
+        const temp = document.createElement("tbody");
+        temp.innerHTML = generateItemRow();
+
+        table.appendChild(temp.firstElementChild);
     }
 
     function removeRow(btn) {
@@ -628,7 +633,9 @@
         setTimeout(() => {
             document.getElementById("edit_client").value = order.client?.id || "";
         }, 100);
-        document.getElementById("edit_date").value = order.date;
+        const d = order.date.split("-");
+        const formatted = `${d[2]}-${d[1]}-${d[0]}`;
+        document.getElementById("edit_date").value = formatted;
         document.getElementById("edit_paid_amount").value = order.remain_due || 0;
         document.getElementById("edit_status").value = order.status || "pending";
         document.getElementById("edit_payment_status").value = order.payment_status || "pending";

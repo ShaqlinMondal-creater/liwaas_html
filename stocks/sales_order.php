@@ -152,6 +152,13 @@
 
         </div>
 
+        <div class="mb-2 text-right">
+            <button onclick="addItemRow()" 
+                class="bg-green-600 text-white px-3 py-1 rounded text-sm">
+                + Add Product
+            </button>
+        </div>
+
         <!-- Items Table -->
         <div class="max-h-[300px] overflow-y-auto border rounded">
             <table class="w-full text-left">
@@ -161,6 +168,7 @@
                         <th class="px-3 py-2">Qty</th>
                         <th class="px-3 py-2">Price</th>
                         <th class="px-3 py-2">Tax</th>
+                        <th class="px-3 py-2">Action</th>
                     </tr>
                 </thead>
                 <tbody id="editItemsTable"></tbody>
@@ -433,6 +441,33 @@
     window.onload = () => {
         loadOrders(0);
     };
+
+    function generateItemRow(item = {}) {
+
+        let options = productList.map(p => `
+            <option value="${p.uid}" ${p.uid == item.uid ? "selected" : ""}>
+                ${p.name} - ${p.size} - ${p.color}
+            </option>
+        `).join("");
+
+        return `
+        <tr>
+            <td>
+                <select class="edit_uid border px-2 py-1">
+                    ${options}
+                </select>
+            </td>
+
+            <td><input value="${item.qty || 1}" class="edit_qty border w-16"></td>
+            <td><input value="${item.price || 0}" class="edit_price border w-20"></td>
+            <td><input value="${item.tax || 0}" class="edit_tax border w-16"></td>
+
+            <td>
+                <button onclick="removeRow(this)" class="text-red-600">✕</button>
+            </td>
+        </tr>
+        `;
+    }
 </script>
 
 <script>
@@ -462,23 +497,36 @@
         const table = document.getElementById("orderItemsTable");
         table.innerHTML = "";
 
+        // order.items.forEach(item => {
+
+        //     const product = item.product ?? {};
+
+        //     table.innerHTML += `
+        //         <tr class="border-t">
+        //             <td class="px-4 py-2">${product.name ?? item.uid}</td>
+        //             <td class="px-4 py-2">${product.size ?? "-"}</td>
+        //             <td class="px-4 py-2">${product.color ?? "-"}</td>
+        //             <td class="px-4 py-2">${item.qty}</td>
+        //             <td class="px-4 py-2">₹${item.price}</td>
+        //             <td class="px-4 py-2">${item.tax}% = ₹${item.sub_total_tax}</td>
+        //             <td class="px-4 py-2">₹${item.sub_total}</td>
+        //         </tr>
+        //     `;
+
+        // });
+
         order.items.forEach(item => {
-
-            const product = item.product ?? {};
-
-            table.innerHTML += `
-                <tr class="border-t">
-                    <td class="px-4 py-2">${product.name ?? item.uid}</td>
-                    <td class="px-4 py-2">${product.size ?? "-"}</td>
-                    <td class="px-4 py-2">${product.color ?? "-"}</td>
-                    <td class="px-4 py-2">${item.qty}</td>
-                    <td class="px-4 py-2">₹${item.price}</td>
-                    <td class="px-4 py-2">${item.tax}% = ₹${item.sub_total_tax}</td>
-                    <td class="px-4 py-2">₹${item.sub_total}</td>
-                </tr>
-            `;
-
+            table.innerHTML += generateItemRow(item);
         });
+
+        function addItemRow() {
+            const table = document.getElementById("editItemsTable");
+            table.innerHTML += generateItemRow();
+        }
+
+        function removeRow(btn) {
+            btn.closest("tr").remove();
+        }
 
         const pdfBtn = document.getElementById("detailPdfBtn");
 

@@ -286,13 +286,15 @@
                     {
                         label: 'Paid',
                         data: paid,
-                        backgroundColor: '#00b92e'
+                        backgroundColor: '#00b92e',
+                        yAxisID: 'y1'
                     },
                     {
                         label: 'Due',
                         data: due,
-                        backgroundColor: '#EF4444'
-                    },
+                        backgroundColor: '#EF4444',
+                        yAxisID: 'y1'
+                    }
                 ]
             },
 
@@ -312,12 +314,10 @@
                             text: 'Orders'
                         }
                     },
-
                     y1: {
                         beginAtZero: true,
                         position: 'right',
-
-                        suggestedMax: Math.max(...revenue) * 1.2, // 🔥 ADD THIS
+                        max: 50000, // ✅ FIXED LIMIT
 
                         title: {
                             display: true,
@@ -327,7 +327,6 @@
                             drawOnChartArea: false
                         }
                     }
-
                 }
 
             }

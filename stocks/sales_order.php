@@ -384,7 +384,7 @@
                     </td>
 
                     <td class="px-3 py-3">
-                        ₹${order.remain_due || 0}
+                        ${parseFloat(order.remain_due || 0) === 0 ? "-" : "₹" + order.remain_due}
                     </td>
 
                     <td class="px-3 py-3">

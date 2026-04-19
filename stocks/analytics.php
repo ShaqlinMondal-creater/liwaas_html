@@ -337,33 +337,36 @@
 
         res.data.forEach(product => {
 
-            let variantsHTML = product.variants.map(v => `
-                <div class="flex justify-between text-sm py-1 border-b">
+            let variantsHTML = product.variants.map(v => {
 
-                    <span class="font-medium">${v.size}</span>
-
-                    <span>
-                        ${v.opening_stock} / 
-                        <span class="${
-                            parseInt(v.available_stock) === 0 
-                                ? 'text-red-600 font-semibold' 
+                return `
+                    <div class="text-center px-3 py-1 border rounded min-w-[80px]">
+                        <div class="text-xs text-gray-500">${v.size}</div>
+                        <div class="text-sm font-semibold">
+                            ${v.opening_stock} / 
+                            <span class="${
+                                parseInt(v.available_stock) === 0 
+                                ? 'text-red-600' 
                                 : 'text-green-600'
-                        }">
-                            ${v.available_stock}
-                        </span>
-                    </span>
-
-                </div>
-            `).join("");
+                            }">
+                                ${v.available_stock}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join("");
 
             container.innerHTML += `
-                <div class="bg-gray-50 border rounded-lg p-4 mb-4">
+                <div class="flex items-center border rounded-lg p-3 mb-3 bg-white">
 
-                    <div class="font-semibold text-base mb-2">
-                        ${product.product_name} (${product.color})
+                    <!-- Product Name -->
+                    <div class="w-56 font-semibold">
+                        ${product.product_name} 
+                        <div class="text-xs text-gray-500">${product.color}</div>
                     </div>
 
-                    <div class="space-y-1">
+                    <!-- Variants -->
+                    <div class="flex gap-2 overflow-x-auto">
                         ${variantsHTML}
                     </div>
 

@@ -5,9 +5,18 @@
 
     <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-gray-800">Analytics Overview</h1>
-        <a href="../admin/index.php" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
-            Admin Dashboard
-        </a>
+
+        <div class="flex gap-3">
+            <button onclick="openStockModal()" 
+                class="bg-green-600 text-white px-4 py-2 rounded-lg">
+                Stock Details
+            </button>
+
+            <a href="../admin/index.php" 
+                class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+                Admin Dashboard
+            </a>
+        </div>
     </div>
 
     <!-- Analytics Cards -->
@@ -143,6 +152,22 @@
             </table>
         </div>
 
+    </div>
+
+</div>
+
+<div id="stockModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+
+    <div class="bg-white rounded-xl w-full max-w-4xl p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Stock Details</h2>
+            <button onclick="closeStockModal()">✕</button>
+        </div>
+        <div class="max-h-[500px] overflow-y-auto">
+
+            <div id="stockContainer"></div>
+
+        </div>
     </div>
 
 </div>
@@ -285,6 +310,79 @@
         return await res.json();
     }
 
+    async function fetchStockDetails() {
+
+        const res = await fetch(`${BASE_URL}/stock-details`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
+    }
+
+    async function openStockModal() {
+
+        const res = await fetchStockDetails();
+
+        if (!res.status) {
+            alert("Failed to load stock");
+            return;
+        }
+
+        const container = document.getElementById("stockContainer");
+        container.innerHTML = "";
+
+        res.data.forEach(product => {
+
+            let variantsHTML = product.variants.map(v => `
+                <tr class="border-t">
+                    <td class="px-3 py-2">${v.size}</td>
+                    <td class="px-3 py-2">${v.opening_stock}</td>
+                    <td class="px-3 py-2 ${
+                        parseInt(v.available_stock) === 0 
+                            ? 'text-red-600 font-semibold' 
+                            : ''
+                    }">
+                        ${v.available_stock}
+                    </td>
+                </tr>
+            `).join("");
+
+            container.innerHTML += `
+                <div class="mb-6 border rounded-lg p-4">
+
+                    <h3 class="font-semibold text-lg mb-2">
+                        ${product.product_name} (${product.color})
+                    </h3>
+
+                    <table class="w-full text-left border">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-3 py-2">Size</th>
+                                <th class="px-3 py-2">Opening</th>
+                                <th class="px-3 py-2">Available</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            ${variantsHTML}
+                        </tbody>
+                    </table>
+
+                </div>
+            `;
+        });
+
+        document.getElementById("stockModal").classList.remove("hidden");
+        document.getElementById("stockModal").classList.add("flex");
+    }
+    function closeStockModal() {
+        document.getElementById("stockModal").classList.add("hidden");
+    }
+    
     /* ======================
     CREATE CHART
     ====================== */

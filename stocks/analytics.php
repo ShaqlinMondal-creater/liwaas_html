@@ -112,6 +112,39 @@
         </table>
     </div>
 
+    <!-- Product Transactions -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mt-10">
+
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-semibold">Product Transactions</h2>
+
+            <input id="transaction_search" type="text"
+                placeholder="Search product (name size color...)"
+                class="border rounded px-3 py-2 w-64">
+        </div>
+
+        <div class="overflow-x-auto max-h-[400px] overflow-y-auto">
+            <table class="min-w-full text-left">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-3 py-2">Order No</th>
+                        <th class="px-3 py-2">Date</th>
+                        <th class="px-3 py-2">Client</th>
+                        <th class="px-3 py-2">Product</th>
+                        <th class="px-3 py-2">Size</th>
+                        <th class="px-3 py-2">Color</th>
+                        <th class="px-3 py-2">Qty</th>
+                        <th class="px-3 py-2">Price</th>
+                        <th class="px-3 py-2">Subtotal</th>
+                    </tr>
+                </thead>
+
+                <tbody id="transactionTable"></tbody>
+            </table>
+        </div>
+
+    </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -238,6 +271,20 @@
         });
     }
 
+    async function fetchTransactions(search = "") {
+
+        const res = await fetch(`${BASE_URL}/transactions`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ search })
+        });
+
+        return await res.json();
+    }
+
     /* ======================
     CREATE CHART
     ====================== */
@@ -350,7 +397,47 @@
             }
         });
     }
+
+    async function loadTransactions() {
+
+        const search = document.getElementById("transaction_search").value;
+
+        const res = await fetchTransactions(search);
+
+        if (!res.status) return;
+
+        const table = document.getElementById("transactionTable");
+        table.innerHTML = "";
+
+        res.data.forEach(t => {
+
+            table.innerHTML += `
+            <tr class="border-b">
+                <td class="px-3 py-2">${t.sales_order_no}</td>
+                <td class="px-3 py-2">${t.so_date}</td>
+                <td class="px-3 py-2">${t.client_name}</td>
+                <td class="px-3 py-2">${t.product_name}</td>
+                <td class="px-3 py-2">${t.size}</td>
+                <td class="px-3 py-2">${t.color}</td>
+                <td class="px-3 py-2">${t.qty}</td>
+                <td class="px-3 py-2">₹${t.price}</td>
+                <td class="px-3 py-2">₹${t.sub_total}</td>
+            </tr>
+            `;
+        });
+    }
+    document.getElementById("transaction_search").addEventListener("input", function () {
+
+        clearTimeout(window.txTimer);
+
+        window.txTimer = setTimeout(() => {
+            loadTransactions();
+        }, 400);
+
+    });
+
     loadAnalytics();
+    loadTransactions();
 </script>
 
 <?php include 'footer.php'; ?>

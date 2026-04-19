@@ -338,39 +338,34 @@
         res.data.forEach(product => {
 
             let variantsHTML = product.variants.map(v => `
-                <tr class="border-t">
-                    <td class="px-3 py-2">${v.size}</td>
-                    <td class="px-3 py-2">${v.opening_stock}</td>
-                    <td class="px-3 py-2 ${
-                        parseInt(v.available_stock) === 0 
-                            ? 'text-red-600 font-semibold' 
-                            : ''
-                    }">
-                        ${v.available_stock}
-                    </td>
-                </tr>
+                <div class="flex justify-between text-sm py-1 border-b">
+
+                    <span class="font-medium">${v.size}</span>
+
+                    <span>
+                        ${v.opening_stock} / 
+                        <span class="${
+                            parseInt(v.available_stock) === 0 
+                                ? 'text-red-600 font-semibold' 
+                                : 'text-green-600'
+                        }">
+                            ${v.available_stock}
+                        </span>
+                    </span>
+
+                </div>
             `).join("");
 
             container.innerHTML += `
-                <div class="mb-6 border rounded-lg p-4">
+                <div class="bg-gray-50 border rounded-lg p-4 mb-4">
 
-                    <h3 class="font-semibold text-lg mb-2">
+                    <div class="font-semibold text-base mb-2">
                         ${product.product_name} (${product.color})
-                    </h3>
+                    </div>
 
-                    <table class="w-full text-left border">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="px-3 py-2">Size</th>
-                                <th class="px-3 py-2">Opening</th>
-                                <th class="px-3 py-2">Available</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            ${variantsHTML}
-                        </tbody>
-                    </table>
+                    <div class="space-y-1">
+                        ${variantsHTML}
+                    </div>
 
                 </div>
             `;

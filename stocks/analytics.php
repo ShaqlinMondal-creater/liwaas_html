@@ -338,20 +338,29 @@
         res.data.forEach(product => {
 
             let variantsHTML = product.variants.map(v => {
-
                 return `
-                    <div class="text-center px-3 py-1 border rounded min-w-[80px]">
+                    <div class="text-center px-3 py-1 border rounded min-w-[90px]">
+
                         <div class="text-xs text-gray-500">${v.size}</div>
-                        <div class="text-sm font-semibold">
-                            ${v.opening_stock} / 
-                            <span class="${
+
+                        <div class="flex justify-center gap-1 mt-1">
+
+                            <!-- Opening -->
+                            <span class="text-xs px-2 py-0.5 rounded bg-orange-100 text-orange-700">
+                                ${v.opening_stock}
+                            </span>
+
+                            <!-- Available -->
+                            <span class="text-xs px-2 py-0.5 rounded ${
                                 parseInt(v.available_stock) === 0 
-                                ? 'text-red-600' 
-                                : 'text-green-600'
+                                ? 'bg-red-100 text-red-600'
+                                : 'bg-green-100 text-green-700'
                             }">
                                 ${v.available_stock}
                             </span>
+
                         </div>
+
                     </div>
                 `;
             }).join("");
@@ -362,6 +371,11 @@
                     <!-- Product Name -->
                     <div class="w-56 font-semibold">
                         ${product.product_name} 
+                        ${
+                            product.variants.some(v => parseInt(v.available_stock) <= 1)
+                            ? `<span class="ml-2 text-xs px-2 py-0.5 bg-red-500 text-white rounded">LOW</span>`
+                            : ''
+                        }
                         <div class="text-xs text-gray-500">${product.color}</div>
                     </div>
 

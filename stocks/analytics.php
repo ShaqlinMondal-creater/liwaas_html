@@ -160,25 +160,31 @@
         <h2 class="text-lg font-semibold mb-4">Return Products</h2>
 
         <!-- Filters -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+        <div class="flex justify-between items-center mb-4">
 
-            <input id="ret_search" placeholder="Search..." class="border px-2 py-2 rounded">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full">
 
-            <input id="ret_order_no" placeholder="Order No" class="border px-2 py-2 rounded">
+                <input id="ret_search" placeholder="Search..." class="border px-2 py-2 rounded">
 
-            <input id="ret_client" placeholder="Client Name" class="border px-2 py-2 rounded">
+                <input id="ret_order_no" placeholder="Order No" class="border px-2 py-2 rounded">
 
-            <select id="ret_status" class="border px-2 py-2 rounded">
-                <option value="">All Status</option>
-                <option value="returned">Returned</option>
-                <option value="migrated">Migrated</option>
-            </select>
+                <input id="ret_client" placeholder="Client Name" class="border px-2 py-2 rounded">
 
-            <input type="date" id="ret_start" class="border px-2 py-2 rounded">
-            <input type="date" id="ret_end" class="border px-2 py-2 rounded">
+                <select id="ret_status" class="border px-2 py-2 rounded">
+                    <option value="">All Status</option>
+                    <option value="returned">Returned</option>
+                    <option value="migrated">Migrated</option>
+                </select>
 
-            <input type="date" id="ret_return_date" class="border px-2 py-2 rounded">
+                <input type="date" id="ret_start" class="border px-2 py-2 rounded">
+                <input type="date" id="ret_end" class="border px-2 py-2 rounded">
 
+                <input type="date" id="ret_return_date" class="border px-2 py-2 rounded">
+            </div>
+
+            <button onclick="migrateAllReturns()"  class="bg-green-600 text-white px-4 py-2 rounded ml-4">
+                Migrate All Stocks
+            </button>
         </div>
 
         <!-- Table -->
@@ -195,6 +201,7 @@
                         <th>Price</th>
                         <th>Status</th>
                         <th>Return Date</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
 
@@ -501,6 +508,21 @@
                 </td>
 
                 <td>${r.return_date.split("T")[0]}</td>
+                <td>
+                    <div class="flex gap-2">
+
+                        <button onclick="migrateSingle(${r.id})"
+                            class="bg-green-500 text-white px-2 py-1 text-xs rounded">
+                            Migrate
+                        </button>
+
+                        <button onclick="deleteReturn(${r.id})"
+                            class="bg-red-500 text-white px-2 py-1 text-xs rounded">
+                            Delete
+                        </button>
+
+                    </div>
+                </td>
             </tr>
             `;
         });
@@ -518,6 +540,71 @@
 
         });
     });
+
+    // Migrate Functions
+    async function migrateReturns(ids) {
+
+        const res = await fetch(`${BASE_URL}/migrate-return`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                return_ids: ids
+            })
+        });
+
+        return await res.json();
+    }
+
+    async function migrateSingle(id) {
+
+        if (!confirm("Migrate this item to stock?")) return;
+
+        const res = await migrateReturns([id]);
+
+        if (!res.status) {
+            alert("Failed");
+            return;
+        }
+
+        alert(res.message);
+
+        loadReturnItems();
+    }
+    async function migrateAllReturns() {
+
+        if (!confirm("Migrate ALL return items?")) return;
+
+        const rows = document.querySelectorAll("#returnTable tr");
+
+        let ids = [];
+
+        rows.forEach(row => {
+            const id = row.getAttribute("data-id");
+            if (id) ids.push(parseInt(id));
+        });
+
+        if (ids.length === 0) {
+            alert("No items found");
+            return;
+        }
+
+        const res = await migrateReturns(ids);
+
+        if (!res.status) {
+            alert("Failed");
+            return;
+        }
+
+        alert(res.message);
+
+        loadReturnItems();
+    }
+    function deleteReturn(id) {
+        alert("Delete API not connected yet for ID: " + id);
+    }
     /* ======================
     CREATE CHART
     ====================== */

@@ -154,6 +154,56 @@
 
     </div>
 
+    <!-- Return Products -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mt-10">
+
+        <h2 class="text-lg font-semibold mb-4">Return Products</h2>
+
+        <!-- Filters -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+
+            <input id="ret_search" placeholder="Search..." class="border px-2 py-2 rounded">
+
+            <input id="ret_order_no" placeholder="Order No" class="border px-2 py-2 rounded">
+
+            <input id="ret_client" placeholder="Client Name" class="border px-2 py-2 rounded">
+
+            <select id="ret_status" class="border px-2 py-2 rounded">
+                <option value="">All Status</option>
+                <option value="returned">Returned</option>
+                <option value="migrated">Migrated</option>
+            </select>
+
+            <input type="date" id="ret_start" class="border px-2 py-2 rounded">
+            <input type="date" id="ret_end" class="border px-2 py-2 rounded">
+
+            <input type="date" id="ret_return_date" class="border px-2 py-2 rounded">
+
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto max-h-[400px] overflow-y-auto">
+            <table class="min-w-full text-left">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-3 py-2">Order</th>
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Product</th>
+                        <th>Size</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Return Date</th>
+                    </tr>
+                </thead>
+
+                <tbody id="returnTable"></tbody>
+            </table>
+        </div>
+
+    </div>
+
 </div>
 
 <div id="stockModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
@@ -395,6 +445,79 @@
         document.getElementById("stockModal").classList.add("hidden");
     }
     
+    async function fetchReturnItems(payload) {
+
+        const res = await fetch(`${BASE_URL}/get-return-items`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+
+        return await res.json();
+    }
+
+    async function loadReturnItems(offset = 0) {
+
+        const payload = {
+            search: document.getElementById("ret_search").value || "",
+            so_date_start: document.getElementById("ret_start").value || "",
+            so_date_end: document.getElementById("ret_end").value || "",
+            sales_order_no: document.getElementById("ret_order_no").value || "",
+            client_name: document.getElementById("ret_client").value || "",
+            status: document.getElementById("ret_status").value || "",
+            return_date: document.getElementById("ret_return_date").value || "",
+            limit: 10,
+            offset: offset
+        };
+
+        const res = await fetchReturnItems(payload);
+
+        if (!res.status) return;
+
+        const table = document.getElementById("returnTable");
+        table.innerHTML = "";
+
+        res.data.forEach(r => {
+
+            table.innerHTML += `
+            <tr class="border-b">
+                <td class="px-3 py-2">${r.sales_order_no}</td>
+                <td>${r.so_date}</td>
+                <td>${r.client_name}</td>
+                <td>${r.product_name}</td>
+                <td>${r.size}</td>
+                <td>${r.qty}</td>
+                <td>₹${r.price}</td>
+
+                <td>
+                    ${
+                        r.status === "migrated"
+                        ? '<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Migrated</span>'
+                        : '<span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">Returned</span>'
+                    }
+                </td>
+
+                <td>${r.return_date.split("T")[0]}</td>
+            </tr>
+            `;
+        });
+    }
+
+    ["ret_search","ret_order_no","ret_client","ret_status","ret_start","ret_end","ret_return_date"]
+    .forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
+
+            clearTimeout(window.retTimer);
+
+            window.retTimer = setTimeout(() => {
+                loadReturnItems();
+            }, 400);
+
+        });
+    });
     /* ======================
     CREATE CHART
     ====================== */
@@ -548,6 +671,7 @@
 
     loadAnalytics();
     loadTransactions();
+    loadReturnItems();
 </script>
 
 <?php include 'footer.php'; ?>

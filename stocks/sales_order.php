@@ -466,6 +466,12 @@
 
             <td>
                 <button onclick="removeRow(this)" class="text-red-600">✕</button>
+                ${item.id ? `
+                    <button onclick="returnItem(${item.id}, ${item.qty})" 
+                        class="text-orange-600">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                ` : ""}
             </td>
         </tr>
         `;
@@ -559,6 +565,53 @@
     }
     function closeOrderDetail() {
         document.getElementById("orderDetailModal").classList.add("hidden");
+    }
+
+    async function returnItem(itemId, maxQty) {
+
+        let qty = prompt(`Enter return qty (max ${maxQty})`);
+
+        if (!qty) return;
+
+        qty = parseInt(qty);
+
+        if (isNaN(qty) || qty <= 0 || qty > maxQty) {
+            alert("Invalid quantity");
+            return;
+        }
+
+        if (!confirm("Confirm return?")) return;
+
+        const token = localStorage.getItem("auth_token");
+
+        const response = await fetch(BASE_URL + "/stocks/sales-order/create-return", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({
+                sales_order_id: editingOrderId,
+                items: [
+                    {
+                        sales_order_item_id: itemId,
+                        qty: qty
+                    }
+                ]
+            })
+        });
+
+        const res = await response.json();
+
+        if (!res.status) {
+            alert("Return failed");
+            return;
+        }
+
+        alert(res.message);
+
+        // 🔥 reload edit modal data
+        editOrder(editingOrderId);
     }
 
     async function loadClientsForEdit() {

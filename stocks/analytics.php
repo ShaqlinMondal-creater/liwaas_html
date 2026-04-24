@@ -80,9 +80,20 @@
     </div>
 
     <!-- Chart -->
-    <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
-        <h2 class="text-lg font-semibold mb-4">Monthly Revenue</h2>
-        <canvas id="salesChart"></canvas>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+
+        <!-- Chart 1 -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h2 class="text-lg font-semibold mb-4">Monthly Revenue</h2>
+            <canvas id="salesChart"></canvas>
+        </div>
+
+        <!-- Chart 2 -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h2 class="text-lg font-semibold mb-4">Payment Overview</h2>
+            <canvas id="paymentChart"></canvas>
+        </div>
+
     </div>
 
 

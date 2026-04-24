@@ -469,7 +469,7 @@
         `).join("");
 
         return `
-        <tr class="${item.status === 'returned' ? 'bg-orange-100' : ''}">
+        <tr  data-id="${item.id || ''}" class="${item.status === 'returned' ? 'bg-orange-100' : ''}">
             <td>
                 <select class="edit_uid border px-2 py-1">
                     ${options}
@@ -757,13 +757,30 @@
 
         rows.forEach(row => {
 
+            const id = row.dataset.id; // 🔥 important
             const uid = row.querySelector(".edit_uid").value;
 
             const qty = parseInt(row.querySelector(".edit_qty").value);
             const price = parseFloat(row.querySelector(".edit_price").value);
             const tax = parseFloat(row.querySelector(".edit_tax").value);
 
-            items.push({ uid, qty, price, tax });
+            if (id) {
+                // ✅ existing item → update
+                items.push({
+                    so_item_id: parseInt(id),
+                    qty,
+                    price,
+                    tax
+                });
+            } else {
+                // ✅ new item → create
+                items.push({
+                    uid,
+                    qty,
+                    price,
+                    tax
+                });
+            }
 
         });
 

@@ -39,6 +39,7 @@
                 <option>M</option>
                 <option>L</option>
                 <option>XL</option>
+                <option>XXL</option>
             </select>
 
             <select id="color" class="border rounded-lg px-3 py-2">
@@ -138,6 +139,7 @@
                 <option>M</option>
                 <option>L</option>
                 <option>XL</option>
+                <option>XXL</option>
             </select>
 
             <input id="p_color" placeholder="Color" class="border rounded-lg px-3 py-2">

@@ -327,6 +327,33 @@
 
         createChart(labels,revenue,targets,orders,itemsSold,paid,due);
 
+        // Finance Chart
+        const financeRes = await fetchFinanceAnalytics();
+
+        if (financeRes.status) {
+
+            const fLabels = [];
+            const sales = [];
+            const returns = [];
+            const fPaid = [];
+            const fDue = [];
+
+            financeRes.data.forEach(m => {
+
+                const key = Object.keys(m)[0];
+                const month = m[key];
+
+                fLabels.push(key.charAt(0).toUpperCase() + key.slice(1));
+
+                sales.push(parseFloat(month.total_sales_amount || 0));
+                returns.push(parseFloat(month.total_return_amount || 0));
+                fPaid.push(parseFloat(month.total_paid_amount || 0));
+                fDue.push(parseFloat(month.total_due_amount || 0));
+            });
+
+            createFinanceChart(fLabels, sales, returns, fPaid, fDue);
+        }
+
         /* ======================
         TOP PRODUCTS
         ====================== */
@@ -362,6 +389,19 @@
             </tr>
             `;
         });
+    }
+
+    async function fetchFinanceAnalytics() {
+
+        const res = await fetch(`${BASE_URL}/finance`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        return await res.json();
     }
 
     async function fetchTransactions(search = "") {
@@ -723,6 +763,55 @@
                         grid: {
                             drawOnChartArea: false
                         }
+                    }
+                }
+            }
+        });
+    }
+
+    let financeChart;
+    function createFinanceChart(labels, sales, returns, paid, due) {
+
+        const ctx = document.getElementById('paymentChart').getContext('2d');
+
+        if (financeChart) financeChart.destroy();
+
+        financeChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Sales',
+                        data: sales,
+                        backgroundColor: '#6366F1'
+                    },
+                    {
+                        label: 'Return',
+                        data: returns,
+                        backgroundColor: '#f59e0b'
+                    },
+                    {
+                        label: 'Paid',
+                        data: paid,
+                        backgroundColor: '#22c55e'
+                    },
+                    {
+                        label: 'Due',
+                        data: due,
+                        backgroundColor: '#ef4444'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
                     }
                 }
             }

@@ -568,21 +568,6 @@
             returnBadge.classList.add("hidden");
         }
 
-        // ✅ IF RETURN EXISTS
-        if (returnAmount > 0) {
-
-            returnRow.classList.remove("hidden");
-            netTotalRow.classList.remove("hidden");
-
-            document.getElementById("detailReturn").innerText = "₹" + returnAmount.toFixed(2);
-            document.getElementById("detailNetTotal").innerText = netTotal.toFixed(2);
-
-        } else {
-
-            returnRow.classList.add("hidden");
-            netTotalRow.classList.add("hidden");
-        }
-
         // ✅ ALWAYS SHOW DUE (ORANGE BADGE)
         document.getElementById("detailDue").innerText = "₹" + remainDue.toFixed(2);
 

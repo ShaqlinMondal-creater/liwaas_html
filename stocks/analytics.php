@@ -97,39 +97,42 @@
     </div>
 
 
-    <!-- Top Selling Products -->
-    <div class="bg-white rounded-2xl shadow-lg p-6 mb-10">
-        <h2 class="text-lg font-semibold mb-4">Top Selling Products</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
 
-        <table class="w-full text-left">
-            <thead>
-                <tr class="border-b">
-                    <th class="py-2">Product</th>
-                    <th>Units Sold</th>
-                    <th>Revenue</th>
-                </tr>
-            </thead>
+        <!-- Top Selling Products -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h2 class="text-lg font-semibold mb-4">Top Selling Products</h2>
 
-            <tbody id="top_products"></tbody>
-        </table>
-    </div>
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b">
+                        <th class="py-2">Product</th>
+                        <th>Units Sold</th>
+                        <th>Revenue</th>
+                    </tr>
+                </thead>
 
+                <tbody id="top_products"></tbody>
+            </table>
+        </div>
 
-    <!-- Sales By Clients -->
-    <div class="bg-white rounded-2xl shadow-lg p-6">
-        <h2 class="text-lg font-semibold mb-4">Sales By Clients</h2>
+        <!-- Sales By Clients -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h2 class="text-lg font-semibold mb-4">Sales By Clients</h2>
 
-        <table class="w-full text-left">
-            <thead>
-                <tr class="border-b">
-                    <th class="py-2">Client</th>
-                    <th>Orders</th>
-                    <th>Total Sales</th>
-                </tr>
-            </thead>
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b">
+                        <th class="py-2">Client</th>
+                        <th>Orders</th>
+                        <th>Total Sales</th>
+                    </tr>
+                </thead>
 
-            <tbody id="sales_clients"></tbody>
-        </table>
+                <tbody id="sales_clients"></tbody>
+            </table>
+        </div>
+
     </div>
 
     <!-- Product Transactions -->

@@ -754,10 +754,11 @@
         const rows = document.querySelectorAll("#editItemsTable tr");
 
         const items = [];
+        const uidMap = {}; // 🔥 track uid → existing item
 
         rows.forEach(row => {
 
-            const id = row.dataset.id; // 🔥 important
+            const id = row.dataset.id;
             const uid = row.querySelector(".edit_uid").value;
 
             const qty = parseInt(row.querySelector(".edit_qty").value);
@@ -765,25 +766,45 @@
             const tax = parseFloat(row.querySelector(".edit_tax").value);
 
             if (id) {
-                // ✅ existing item → update
+                // ✅ existing item
                 items.push({
                     so_item_id: parseInt(id),
+                    uid, // keep for mapping
                     qty,
                     price,
                     tax
                 });
-            } else {
-                // ✅ new item → create
-                items.push({
-                    uid,
-                    qty,
-                    price,
-                    tax
-                });
+
+                if (!uidMap[uid]) {
+                    uidMap[uid] = [];
+                }
+
+                uidMap[uid].push(items[items.length - 1]);
+            } 
+            else {
+                // 🔥 NEW ITEM
+                if (uidMap[uid] && uidMap[uid].length > 0) {
+                    // ✅ merge into first existing item
+                    uidMap[uid][0].qty += qty;
+                } else {
+                    items.push({
+                        uid,
+                        qty,
+                        price,
+                        tax
+                    });
+                }
             }
 
         });
 
+        const finalItems = items.map(item => {
+            if (item.so_item_id) {
+                const { uid, ...rest } = item; // remove uid
+                return rest;
+            }
+            return item;
+        });
         // const rawDate = document.getElementById("edit_date").value;
 
         const formattedDate = document.getElementById("edit_date").value || null;
@@ -804,7 +825,7 @@
 
             paid_amount: paidValue, // ✅ correct
 
-            items: items
+            items: finalItems
         };
 
         const res = await updateOrderAPI(editingOrderId, payload);

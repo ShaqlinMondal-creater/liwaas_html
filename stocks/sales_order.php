@@ -453,7 +453,7 @@
         `).join("");
 
         return `
-        <tr class="${item.status === 'split' ? 'bg-orange-100' : ''}">
+        <tr class="${item.status === 'returned' ? 'bg-orange-100' : ''}">
             <td>
                 <select class="edit_uid border px-2 py-1">
                     ${options}
@@ -467,14 +467,14 @@
                 <button onclick="removeRow(this)" class="text-red-600">✕</button>
 
                 ${
-                    item.id && item.status !== "split"
+                    item.id && item.status !== "returned"
                     ? `
                     <button onclick="returnItem(${item.id}, ${item.qty})" 
                         class="text-orange-600">
                         <i class="fas fa-undo"></i>
                     </button>
                     `
-                    : item.status === "split"
+                    : item.status === "returned"
                     ? `<span class="px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded">
                             Returning
                     </span>`

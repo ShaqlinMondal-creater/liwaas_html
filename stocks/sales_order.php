@@ -42,6 +42,7 @@
                     <th class="px-3 py-3">Tax</th>
                     <th class="px-3 py-3">Status</th>
                     <th class="px-3 py-3">Payment</th>
+                    <th class="px-3 py-3">Return</th>
                     <th class="px-3 py-3">Due</th>
                     <th class="px-3 py-3">Date</th>
                     <th class="px-3 py-3">Action</th>
@@ -110,6 +111,7 @@
         <div class="mt-4 text-right">
             <p><b>Taxable Amount:</b> ₹<span id="detailTaxable"></span></p>
             <p><b>Total Tax:</b> ₹<span id="detailTax"></span></p>
+            <p><b>Return Amount:</b> ₹<span id="detailReturn"></span></p>
             <p class="text-lg font-bold"><b>Grand Total:</b> ₹<span id="detailTotal"></span></p>
         </div>
 
@@ -382,7 +384,12 @@
                             : '<span class="px-2 py-1 text-xs bg-red-100 text-red-600 rounded">Pending</span>'
                         }
                     </td>
-
+                    <td class="px-3 py-3">
+                        ${order.return_amount && parseFloat(order.return_amount) > 0 
+                            ? "₹" + order.return_amount 
+                            : "-"
+                        }
+                    </td>
                     <td class="px-3 py-3">
                         ${parseFloat(order.remain_due || 0) === 0 ? "-" : "₹" + order.remain_due}
                     </td>
@@ -533,9 +540,11 @@
         const totalTax = parseFloat(order.total_tax);
         const grandTotal = parseFloat(order.grand_total);
         const taxableAmount = grandTotal - totalTax;
+        const returnAmount = parseFloat(order.return_amount || 0);
 
         document.getElementById("detailTaxable").innerText = taxableAmount.toFixed(2);
         document.getElementById("detailTax").innerText = totalTax.toFixed(2);
+        document.getElementById("detailReturn").innerText = returnAmount > 0 ? returnAmount.toFixed(2) : "-";
         document.getElementById("detailTotal").innerText = grandTotal.toFixed(2);
 
         const table = document.getElementById("orderItemsTable");

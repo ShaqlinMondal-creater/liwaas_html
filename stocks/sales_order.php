@@ -111,8 +111,19 @@
         <div class="mt-4 text-right">
             <p><b>Taxable Amount:</b> ₹<span id="detailTaxable"></span></p>
             <p><b>Total Tax:</b> ₹<span id="detailTax"></span></p>
-            <p><b>Return Amount:</b> ₹<span id="detailReturn"></span></p>
-            <p class="text-lg font-bold"><b>Grand Total:</b> ₹<span id="detailTotal"></span></p>
+            <p><b>Grand Total:</b> ₹<span id="detailTotal"></span></p>
+
+            <p id="returnRow" class="hidden">
+                <b>Return Amount:</b> 
+                <span id="detailReturn" class="px-2 py-1 text-xs bg-red-100 text-red-700 rounded"></span>
+            </p>
+            <p id="netTotalRow" class="hidden">
+                <b>So, Total Now:</b> ₹<span id="detailNetTotal"></span>
+            </p>
+            <p>
+                <b>Remain Due:</b> 
+                <span id="detailDue" class="px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded"></span>
+            </p>
         </div>
 
     </div>
@@ -386,7 +397,9 @@
                     </td>
                     <td class="px-3 py-3">
                         ${order.return_amount && parseFloat(order.return_amount) > 0 
-                            ? "₹" + order.return_amount 
+                            ? `<span class="px-2 py-1 text-xs bg-red-100 text-red-700 rounded">
+                                    ₹${parseFloat(order.return_amount).toFixed(2)}
+                            </span>`
                             : "-"
                         }
                     </td>
@@ -537,15 +550,40 @@
         document.getElementById("detailClient").innerText = order.client ? order.client.name : "N/A";
         document.getElementById("detailDate").innerText = order.date;
         
-        const totalTax = parseFloat(order.total_tax);
-        const grandTotal = parseFloat(order.grand_total);
-        const taxableAmount = grandTotal - totalTax;
+        const totalTax = parseFloat(order.total_tax || 0);
+        const grandTotal = parseFloat(order.grand_total || 0);
         const returnAmount = parseFloat(order.return_amount || 0);
+        const remainDue = parseFloat(order.remain_due || 0);
 
+        const taxableAmount = grandTotal - totalTax;
+        const netTotal = grandTotal - returnAmount;
+
+        // base values
         document.getElementById("detailTaxable").innerText = taxableAmount.toFixed(2);
         document.getElementById("detailTax").innerText = totalTax.toFixed(2);
-        document.getElementById("detailReturn").innerText = returnAmount > 0 ? returnAmount.toFixed(2) : "-";
         document.getElementById("detailTotal").innerText = grandTotal.toFixed(2);
+
+        // return UI elements
+        const returnRow = document.getElementById("returnRow");
+        const netTotalRow = document.getElementById("netTotalRow");
+
+        // ✅ IF RETURN EXISTS
+        if (returnAmount > 0) {
+
+            returnRow.classList.remove("hidden");
+            netTotalRow.classList.remove("hidden");
+
+            document.getElementById("detailReturn").innerText = "₹" + returnAmount.toFixed(2);
+            document.getElementById("detailNetTotal").innerText = netTotal.toFixed(2);
+
+        } else {
+
+            returnRow.classList.add("hidden");
+            netTotalRow.classList.add("hidden");
+        }
+
+        // ✅ ALWAYS SHOW DUE (ORANGE BADGE)
+        document.getElementById("detailDue").innerText = "₹" + remainDue.toFixed(2);
 
         const table = document.getElementById("orderItemsTable");
         table.innerHTML = "";

@@ -111,14 +111,10 @@
         <div class="mt-4 text-right">
             <p><b>Taxable Amount:</b> ₹<span id="detailTaxable"></span></p>
             <p><b>Total Tax:</b> ₹<span id="detailTax"></span></p>
-            <p><b>Grand Total:</b> ₹<span id="detailTotal"></span></p>
-
-            <p id="returnRow" class="hidden">
-                <b>Return Amount:</b> 
-                <span id="detailReturn" class="px-2 py-1 text-xs bg-red-100 text-red-700 rounded"></span>
-            </p>
-            <p id="netTotalRow" class="hidden">
-                <b>So, Total Now:</b> ₹<span id="detailNetTotal"></span>
+            <p>
+                <b>Grand Total:</b> 
+                <span id="detailTotal"></span>
+                <span id="detailReturnBadge" class="ml-2 px-2 py-1 text-xs bg-red-100 text-red-700 rounded hidden"></span>
             </p>
             <p>
                 <b>Remain Due:</b> 
@@ -561,11 +557,16 @@
         // base values
         document.getElementById("detailTaxable").innerText = taxableAmount.toFixed(2);
         document.getElementById("detailTax").innerText = totalTax.toFixed(2);
-        document.getElementById("detailTotal").innerText = grandTotal.toFixed(2);
+        document.getElementById("detailTotal").innerText = "₹" + grandTotal.toFixed(2);
 
-        // return UI elements
-        const returnRow = document.getElementById("returnRow");
-        const netTotalRow = document.getElementById("netTotalRow");
+        const returnBadge = document.getElementById("detailReturnBadge");
+
+        if (returnAmount > 0) {
+            returnBadge.classList.remove("hidden");
+            returnBadge.innerText = `R: ₹${returnAmount.toFixed(2)}`;
+        } else {
+            returnBadge.classList.add("hidden");
+        }
 
         // ✅ IF RETURN EXISTS
         if (returnAmount > 0) {
@@ -593,7 +594,7 @@
             const product = item.product ?? {};
 
             table.innerHTML += `
-                <tr class="border-t">
+                <tr class="border-t ${item.status === 'returned' ? 'bg-red-50' : ''}">
                     <td class="px-4 py-2">${product.name ?? item.uid}</td>
                     <td class="px-4 py-2">${product.size ?? "-"}</td>
                     <td class="px-4 py-2">${product.color ?? "-"}</td>

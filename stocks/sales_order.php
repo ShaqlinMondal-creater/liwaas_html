@@ -235,29 +235,16 @@
 </script>
 
 <script>
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     let searchTimeout;
-    //     document.getElementById("search").addEventListener("input", function () {
-
-    //         clearTimeout(searchTimeout);
-
-    //         searchTimeout = setTimeout(() => {
-    //             loadOrders(0);
-    //         }, 500);
-
-    //     });
-    // });
 
     ["search","filter_status","filter_payment","filter_month","filter_date"]
     .forEach(id => {
-        document.getElementById(id).addEventListener("input", () => {
-
+        const el = document.getElementById(id);
+        const eventType = el.tagName === "SELECT" ? "change" : "input";
+        el.addEventListener(eventType, () => {
             clearTimeout(window.orderTimer);
-
             window.orderTimer = setTimeout(() => {
-                loadOrders(0); // reset pagination
+                loadOrders(0);
             }, 400);
-
         });
     });
 
@@ -354,7 +341,6 @@
 
         return await res.json();
     }
-    
 </script>
 
 <script>
@@ -392,6 +378,17 @@
         const table = document.getElementById("ordersTable");
 
         table.innerHTML = "";
+        
+        if (!data || data.length === 0) {
+            table.innerHTML = `
+                <tr>
+                    <td colspan="11" class="text-center py-6 text-gray-500">
+                        No orders found
+                    </td>
+                </tr>
+            `;
+            return;
+        }
 
         data.forEach(order => {
 

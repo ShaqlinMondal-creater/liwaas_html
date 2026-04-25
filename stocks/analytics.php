@@ -556,7 +556,7 @@
         res.data.forEach(r => {
 
             table.innerHTML += `
-            <tr class="border-b">
+            <tr class="border-b" data-id="${r.id}">
                 <td class="px-3 py-2">${r.sales_order_no}</td>
                 <td>${r.so_date}</td>
                 <td>${r.client_name}</td>
@@ -847,7 +847,7 @@
         res.data.forEach(t => {
 
             table.innerHTML += `
-            <tr class="border-b" data-id="${r.id}">
+            <tr class="border-b">
                 <td class="px-3 py-2">${t.sales_order_no}</td>
                 <td class="px-3 py-2">${t.so_date}</td>
                 <td class="px-3 py-2">${t.client_name}</td>

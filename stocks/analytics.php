@@ -553,6 +553,18 @@
         const table = document.getElementById("returnTable");
         table.innerHTML = "";
 
+        // ✅ HANDLE EMPTY DATA
+        if (!res.data || res.data.length === 0) {
+            table.innerHTML = `
+                <tr>
+                    <td colspan="10" class="text-center py-6 text-gray-500">
+                        No return items found
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
         res.data.forEach(r => {
 
             table.innerHTML += `

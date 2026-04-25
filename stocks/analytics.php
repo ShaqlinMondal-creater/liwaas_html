@@ -192,7 +192,23 @@
                 <tbody id="transactionTable"></tbody>
             </table>
         </div>
+        <div class="flex justify-between items-center mt-4">
 
+        <div id="tx_info" class="text-sm text-gray-500"></div>
+
+            <div class="flex gap-2">
+                <button onclick="prevTxPage()" 
+                    class="px-3 py-1 bg-gray-200 rounded">
+                    Prev
+                </button>
+
+                <button onclick="nextTxPage()" 
+                    class="px-3 py-1 bg-gray-200 rounded">
+                    Next
+                </button>
+            </div>
+
+        </div>
     </div>
 
     <!-- Return Products -->
@@ -289,6 +305,11 @@
     const BASE_URL = "<?= $baseUrl ?>/api/admin/stocks/sales-order";
     let salesChart;
     const token = localStorage.getItem("auth_token");
+
+    let txOffset = 0;
+    let txLimit = 10;
+    let txTotal = 0;
+
     async function loadAnalytics() {
 
         const res = await fetch(`${BASE_URL}/analytics`, {
@@ -879,12 +900,13 @@
             status: document.getElementById("tx_status").value || "",
             month: document.getElementById("tx_month").value || "",
             year: document.getElementById("tx_year").value || "",
-            limit: 10,
-            offset: 0
+            limit: txLimit,
+            offset: txOffset
         };
         const res = await fetchTransactions(payload);
 
         if (!res.status) return;
+        txTotal = res.total || 0;
 
         const table = document.getElementById("transactionTable");
         table.innerHTML = "";
@@ -932,8 +954,30 @@
 
         });
     });
+    document.getElementById("tx_info").innerText =
+    `Showing ${txOffset + 1} - ${Math.min(txOffset + txLimit, txTotal)} of ${txTotal}`;
+
+    function nextTxPage() {
+
+        if (txOffset + txLimit >= txTotal) return;
+
+        txOffset += txLimit;
+
+        loadTransactions();
+    }
+    function prevTxPage() {
+
+        if (txOffset === 0) return;
+
+        txOffset -= txLimit;
+
+        if (txOffset < 0) txOffset = 0;
+
+        loadTransactions();
+    }
 
     loadAnalytics();
+    txOffset = 0;
     loadTransactions();
     loadReturnItems();
 </script>

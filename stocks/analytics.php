@@ -943,6 +943,19 @@
         const table = document.getElementById("transactionTable");
         table.innerHTML = "";
 
+        if (!res.data || res.data.length === 0) {
+            table.innerHTML = `
+                <tr>
+                    <td colspan="10" class="text-center py-6 text-gray-500">
+                        No transactions found
+                    </td>
+                </tr>
+            `;
+            document.getElementById("tx_info").innerText =
+                `Showing 0 of ${txTotal}`;
+            return;
+        }
+
         res.data.forEach(t => {
             let bg = "";
             let badge = "";

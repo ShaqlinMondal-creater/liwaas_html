@@ -9,24 +9,61 @@
 
     <div class="bg-white rounded-2xl shadow-lg overflow-x-auto">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 m-4">
-            <!-- RIGHT: SEARCH -->
-            <div class="w-full sm:w-64">
+
+            <!-- SEARCH -->
+            <div class="w-full sm:w-48">
                 <input id="search" type="text" placeholder="Search Order No..."
                     class="border rounded-lg px-3 py-2 w-full">
             </div>
 
-            <!-- LEFT: BULK BUTTONS -->
+            <!-- FILTERS -->
             <div class="flex flex-wrap gap-2">
-                <button onclick="bulkDelete()" 
-                    class="bg-red-600 text-white px-4 py-2 rounded">
+
+                <select id="filter_status" class="border px-2 py-2 rounded">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="on process">On Process</option>
+                    <option value="completed">Completed</option>
+                </select>
+
+                <select id="filter_payment" class="border px-2 py-2 rounded">
+                    <option value="">Payment Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="partial payment">Partial</option>
+                    <option value="completed">Paid</option>
+                </select>
+
+                <select id="filter_month" class="border px-2 py-2 rounded">
+                    <option value="">Month</option>
+                    <option value="january">January</option>
+                    <option value="february">February</option>
+                    <option value="march">March</option>
+                    <option value="april">April</option>
+                    <option value="may">May</option>
+                    <option value="june">June</option>
+                    <option value="july">July</option>
+                    <option value="august">August</option>
+                    <option value="september">September</option>
+                    <option value="october">October</option>
+                    <option value="november">November</option>
+                    <option value="december">December</option>
+                </select>
+
+                <input type="date" id="filter_date" class="border px-2 py-2 rounded">
+
+            </div>
+
+            <!-- BULK BUTTONS -->
+            <div class="flex flex-wrap gap-2">
+                <button onclick="bulkDelete()" class="bg-red-600 text-white px-4 py-2 rounded">
                     Delete Selected
                 </button>
 
-                <button onclick="generateSalesInvoice()" 
-                    class="bg-green-600 text-white px-4 py-2 rounded">
+                <button onclick="generateSalesInvoice()" class="bg-green-600 text-white px-4 py-2 rounded">
                     Generate Invoice
                 </button>
             </div>
+
         </div>
 
         <table class="min-w-full text-left">
@@ -198,15 +235,28 @@
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let searchTimeout;
-        document.getElementById("search").addEventListener("input", function () {
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     let searchTimeout;
+    //     document.getElementById("search").addEventListener("input", function () {
 
-            clearTimeout(searchTimeout);
+    //         clearTimeout(searchTimeout);
 
-            searchTimeout = setTimeout(() => {
-                loadOrders(0);
-            }, 500);
+    //         searchTimeout = setTimeout(() => {
+    //             loadOrders(0);
+    //         }, 500);
+
+    //     });
+    // });
+
+    ["search","filter_status","filter_payment","filter_month","filter_date"]
+    .forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
+
+            clearTimeout(window.orderTimer);
+
+            window.orderTimer = setTimeout(() => {
+                loadOrders(0); // reset pagination
+            }, 400);
 
         });
     });
@@ -318,11 +368,13 @@
         offset = newOffset;
 
         const filters = {
-
-            search: document.getElementById("search").value,
+            search: document.getElementById("search").value || "",
+            status: document.getElementById("filter_status").value || "",
+            payment_status: document.getElementById("filter_payment").value || "",
+            month: document.getElementById("filter_month").value || "",
+            so_date: document.getElementById("filter_date").value || "",
             limit: limit,
             offset: offset
-
         };
 
         const res = await fetchOrders(filters);

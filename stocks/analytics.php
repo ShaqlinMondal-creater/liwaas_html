@@ -279,6 +279,19 @@
             </table>
         </div>
 
+        <div class="flex justify-between items-center mt-4">
+            <div id="ret_info" class="text-sm text-gray-500"></div>
+            <div class="flex gap-2">
+                <button onclick="prevRetPage()" class="px-3 py-1 bg-gray-200 rounded">
+                    Prev
+                </button>
+
+                <button onclick="nextRetPage()" class="px-3 py-1 bg-gray-200 rounded">
+                    Next
+                </button>
+            </div>
+        </div>
+
     </div>
 
 </div>
@@ -309,6 +322,10 @@
     let txOffset = 0;
     let txLimit = 10;
     let txTotal = 0;
+
+    let retOffset = 0;
+    let retLimit = 10;
+    let retTotal = 0;
 
     async function loadAnalytics() {
 
@@ -590,13 +607,14 @@
             client_name: document.getElementById("ret_client").value || "",
             status: document.getElementById("ret_status").value || "",
             return_date: document.getElementById("ret_return_date").value || "",
-            limit: 10,
-            offset: offset
+            limit: retLimit,
+            offset: retOffset
         };
 
         const res = await fetchReturnItems(payload);
 
         if (!res.status) return;
+        retTotal = res.total || 0;
 
         const table = document.getElementById("returnTable");
         table.innerHTML = "";
@@ -652,8 +670,10 @@
             </tr>
             `;
         });
-    }
 
+        document.getElementById("ret_info").innerText =
+            `Showing ${retOffset + 1} - ${Math.min(retOffset + retLimit, retTotal)} of ${retTotal}`;
+    }
     ["ret_search","ret_order_no","ret_client","ret_status","ret_month","ret_return_date"]
     .forEach(id => {
         document.getElementById(id).addEventListener("input", () => {
@@ -661,11 +681,23 @@
             clearTimeout(window.retTimer);
 
             window.retTimer = setTimeout(() => {
+                retOffset = 0;
                 loadReturnItems();
             }, 400);
 
         });
     });
+    function nextRetPage() {
+        if (retOffset + retLimit >= retTotal) return;
+        retOffset += retLimit;
+        loadReturnItems();
+    }
+    function prevRetPage() {
+        if (retOffset === 0) return;
+        retOffset -= retLimit;
+        if (retOffset < 0) retOffset = 0;
+        loadReturnItems();
+    }
 
     // Migrate Functions
     async function migrateReturns(ids) {
@@ -941,6 +973,9 @@
             </tr>
             `;
         });
+
+        document.getElementById("tx_info").innerText =
+            `Showing ${txOffset + 1} - ${Math.min(txOffset + txLimit, txTotal)} of ${txTotal}`;
     }
     ["transaction_search","tx_status","tx_month","tx_year"]
     .forEach(id => {
@@ -949,35 +984,29 @@
             clearTimeout(window.txTimer);
 
             window.txTimer = setTimeout(() => {
+                txOffset = 0;
                 loadTransactions();
             }, 400);
 
         });
     });
-    document.getElementById("tx_info").innerText =
-    `Showing ${txOffset + 1} - ${Math.min(txOffset + txLimit, txTotal)} of ${txTotal}`;
+    
 
     function nextTxPage() {
 
         if (txOffset + txLimit >= txTotal) return;
-
         txOffset += txLimit;
-
         loadTransactions();
     }
     function prevTxPage() {
 
         if (txOffset === 0) return;
-
         txOffset -= txLimit;
-
         if (txOffset < 0) txOffset = 0;
-
         loadTransactions();
     }
 
     loadAnalytics();
-    txOffset = 0;
     loadTransactions();
     loadReturnItems();
 </script>

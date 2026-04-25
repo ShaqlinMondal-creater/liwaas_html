@@ -190,8 +190,21 @@
                     <option value="migrated">Migrated</option>
                 </select>
 
-                <input type="date" id="ret_start" class="border px-2 py-2 rounded">
-                <input type="date" id="ret_end" class="border px-2 py-2 rounded">
+                <select id="ret_month" class="border px-2 py-2 rounded">
+                    <option value="">All Months</option>
+                    <option value="january">January</option>
+                    <option value="february">February</option>
+                    <option value="march">March</option>
+                    <option value="april">April</option>
+                    <option value="may">May</option>
+                    <option value="june">June</option>
+                    <option value="july">July</option>
+                    <option value="august">August</option>
+                    <option value="september">September</option>
+                    <option value="october">October</option>
+                    <option value="november">November</option>
+                    <option value="december">December</option>
+                </select>
 
                 <input type="date" id="ret_return_date" class="border px-2 py-2 rounded">
             </div>
@@ -524,8 +537,7 @@
 
         const payload = {
             search: document.getElementById("ret_search").value || "",
-            so_date_start: document.getElementById("ret_start").value || "",
-            so_date_end: document.getElementById("ret_end").value || "",
+            month: document.getElementById("ret_month").value || "",
             sales_order_no: document.getElementById("ret_order_no").value || "",
             client_name: document.getElementById("ret_client").value || "",
             status: document.getElementById("ret_status").value || "",
@@ -582,7 +594,7 @@
         });
     }
 
-    ["ret_search","ret_order_no","ret_client","ret_status","ret_start","ret_end","ret_return_date"]
+    ["ret_search","ret_order_no","ret_client","ret_status","ret_month","ret_return_date"]
     .forEach(id => {
         document.getElementById(id).addEventListener("input", () => {
 
@@ -835,7 +847,7 @@
         res.data.forEach(t => {
 
             table.innerHTML += `
-            <tr class="border-b">
+            <tr class="border-b" data-id="${r.id}">
                 <td class="px-3 py-2">${t.sales_order_no}</td>
                 <td class="px-3 py-2">${t.so_date}</td>
                 <td class="px-3 py-2">${t.client_name}</td>

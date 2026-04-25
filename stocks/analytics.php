@@ -141,9 +141,35 @@
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold">Product Transactions</h2>
 
-            <input id="transaction_search" type="text"
-                placeholder="Search product (name size color...)"
-                class="border rounded px-3 py-2 w-64">
+            <div class="flex gap-3 items-center">
+
+                <input id="transaction_search" type="text" placeholder="Search product..." class="border rounded px-3 py-2 w-48">
+
+                <select id="tx_status" class="border px-2 py-2 rounded">
+                    <option value="">All Status</option>
+                    <option value="returned">Returned</option>
+                    <option value="completed">Completed</option>
+                    <option value="split">Split</option>
+                </select>
+
+                <select id="tx_month" class="border px-2 py-2 rounded">
+                    <option value="">Month</option>
+                    <option value="january">January</option>
+                    <option value="february">February</option>
+                    <option value="march">March</option>
+                    <option value="april">April</option>
+                    <option value="may">May</option>
+                    <option value="june">June</option>
+                    <option value="july">July</option>
+                    <option value="august">August</option>
+                    <option value="september">September</option>
+                    <option value="october">October</option>
+                    <option value="november">November</option>
+                    <option value="december">December</option>
+                </select>
+
+                <input id="tx_year" type="number" placeholder="Year" class="border px-2 py-2 rounded w-24">
+            </div>
         </div>
 
         <div class="overflow-x-auto max-h-[400px] overflow-y-auto">
@@ -159,6 +185,7 @@
                         <th class="px-3 py-2">Qty</th>
                         <th class="px-3 py-2">Price</th>
                         <th class="px-3 py-2">Subtotal</th>
+                        <th class="px-3 py-2">Status</th>
                     </tr>
                 </thead>
 
@@ -420,7 +447,7 @@
         return await res.json();
     }
 
-    async function fetchTransactions(search = "") {
+    async function fetchTransactions(payload) {
 
         const res = await fetch(`${BASE_URL}/transactions`, {
             method: "POST",
@@ -428,7 +455,7 @@
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             },
-            body: JSON.stringify({ search })
+            body: JSON.stringify(payload)
         });
 
         return await res.json();
@@ -847,9 +874,15 @@
 
     async function loadTransactions() {
 
-        const search = document.getElementById("transaction_search").value;
-
-        const res = await fetchTransactions(search);
+        const payload = {
+            search: document.getElementById("transaction_search").value || "",
+            status: document.getElementById("tx_status").value || "",
+            month: document.getElementById("tx_month").value || "",
+            year: document.getElementById("tx_year").value || "",
+            limit: 10,
+            offset: 0
+        };
+        const res = await fetchTransactions(payload);
 
         if (!res.status) return;
 
@@ -857,9 +890,22 @@
         table.innerHTML = "";
 
         res.data.forEach(t => {
+            let bg = "";
+            let badge = "";
+
+            if (t.status === "returned") {
+                bg = "bg-red-50";
+                badge = '<span class="bg-red-100 text-red-600 px-2 py-1 rounded text-xs">Returned</span>';
+            } else if (t.status === "completed") {
+                bg = "bg-green-50";
+                badge = '<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Completed</span>';
+            } else if (t.status === "split") {
+                bg = "bg-blue-50";
+                badge = '<span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">Split</span>';
+            }
 
             table.innerHTML += `
-            <tr class="border-b">
+            <tr class="border-b ${bg}">
                 <td class="px-3 py-2">${t.sales_order_no}</td>
                 <td class="px-3 py-2">${t.so_date}</td>
                 <td class="px-3 py-2">${t.client_name}</td>
@@ -869,18 +915,22 @@
                 <td class="px-3 py-2">${t.qty}</td>
                 <td class="px-3 py-2">₹${t.price}</td>
                 <td class="px-3 py-2">₹${t.sub_total}</td>
+                <td class="px-3 py-2">${badge}</td>
             </tr>
             `;
         });
     }
-    document.getElementById("transaction_search").addEventListener("input", function () {
+    ["transaction_search","tx_status","tx_month","tx_year"]
+    .forEach(id => {
+        document.getElementById(id).addEventListener("input", () => {
 
-        clearTimeout(window.txTimer);
+            clearTimeout(window.txTimer);
 
-        window.txTimer = setTimeout(() => {
-            loadTransactions();
-        }, 400);
+            window.txTimer = setTimeout(() => {
+                loadTransactions();
+            }, 400);
 
+        });
     });
 
     loadAnalytics();

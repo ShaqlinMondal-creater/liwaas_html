@@ -808,7 +808,7 @@
                                 ${color} | Size: ${size}
                             </span><br>
 
-                            <span class="text-xs text-blue-600">
+                            <span class="text-xs text-red-600">
                                 Available: ${stock}
                             </span>
                             <input type="hidden" class="item_uid" value="${uid}">

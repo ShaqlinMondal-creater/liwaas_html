@@ -184,10 +184,17 @@
 
         <div class="grid grid-cols-2 gap-4">
 
-            <input id="e_name" class="border px-3 py-2 rounded col-span-2" disabled>
+            <input id="e_name" class="border px-3 py-2 rounded col-span-2">
 
-            <input id="e_size" class="border px-3 py-2 rounded" disabled>
-            <input id="e_color" class="border px-3 py-2 rounded" disabled>
+            <select id="e_size" class="border px-3 py-2 rounded">
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+                <option>XXL</option>
+            </select>
+
+            <input id="e_color" class="border px-3 py-2 rounded">
 
             <input id="e_list_price" type="number" class="border px-3 py-2 rounded">
             <input id="e_sale_price" type="number" class="border px-3 py-2 rounded">
@@ -681,6 +688,9 @@
 
         const payload = {
             id: editingStockId,
+            name: document.getElementById("e_name").value,
+            size: document.getElementById("e_size").value,
+            color: document.getElementById("e_color").value,
             list_price: parseFloat(document.getElementById("e_list_price").value),
             sale_price: parseFloat(document.getElementById("e_sale_price").value),
             stock: parseInt(document.getElementById("e_stock").value),

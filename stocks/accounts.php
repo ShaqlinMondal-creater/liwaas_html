@@ -101,7 +101,7 @@
 
             const token = localStorage.getItem("auth_token");
 
-            fetch("<?= $baseUrl ?>/admin/stocks/sales-order/profit-margin", {
+            fetch("<?= $baseUrl ?>/api/admin/stocks/sales-order/profit-margin", {
                 method: "POST",
                 headers: {
                     "Authorization": "Bearer " + token,

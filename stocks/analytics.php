@@ -1,5 +1,30 @@
 <?php include 'header.php'; ?>
+<style>
+    /* OTP BOX STYLE */
+    .otp-box {
+        width: 48px;
+        height: 55px;
+        border-radius: 12px;
+        border: 2px solid #e5e7eb;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        transition: all 0.2s ease;
+    }
 
+    /* Focus animation */
+    .otp-box:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 10px rgba(99,102,241,0.5);
+        transform: scale(1.1);
+    }
+
+    /* Filled animation */
+    .otp-box:not(:placeholder-shown) {
+        border-color: #6366f1;
+    }
+</style>
 <!-- ================= DASHBOARD CONTENT ================= -->
 <div class="max-w-7xl mx-auto px-6 mt-12">
 
@@ -317,26 +342,39 @@
 
 </div>
 
-<div id="accountModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+<!-- PREMIUM OTP MODAL -->
+<div id="accountModal" class="fixed inset-0 hidden items-center justify-center z-50">
 
-    <div class="bg-white p-6 rounded-xl text-center w-full max-w-sm">
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-br from-black/60 via-indigo-900/40 to-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300" id="modalOverlay"></div>
 
-        <h2 class="text-lg font-bold mb-4">Enter Access Code</h2>
+    <!-- Modal -->
+    <div id="modalBox" class="relative bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8 w-full max-w-md transform scale-90 opacity-0 transition-all duration-300">
 
-        <div class="flex justify-center gap-2 mb-4">
-            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
-            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
-            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
-            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
-            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
-            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
+        <!-- Title -->
+        <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">
+            🔐 Secure Access
+        </h2>
+
+        <!-- OTP Inputs -->
+        <div class="flex justify-center gap-3 mb-5">
+
+            <input maxlength="1" class="otp-box">
+            <input maxlength="1" class="otp-box">
+            <input maxlength="1" class="otp-box">
+            <input maxlength="1" class="otp-box">
+            <input maxlength="1" class="otp-box">
+            <input maxlength="1" class="otp-box">
+
         </div>
 
-        <p id="authError" class="text-red-500 text-sm mb-2"></p>
+        <!-- Error -->
+        <p id="authError" class="text-red-500 text-center text-sm mb-3"></p>
 
+        <!-- Button -->
         <button onclick="verifyAccountAccess()" 
-            class="bg-blue-600 text-white px-4 py-2 rounded">
-            Verify
+            class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-3 rounded-xl font-semibold hover:scale-[1.02] transition">
+            Verify Access
         </button>
 
     </div>
@@ -1066,15 +1104,44 @@
             return;
         }
 
-        document.getElementById("accountModal").classList.remove("hidden");
-        document.getElementById("accountModal").classList.add("flex");
+        const modal = document.getElementById("accountModal");
+        const overlay = document.getElementById("modalOverlay");
+        const box = document.getElementById("modalBox");
+
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+
+        // animate
+        setTimeout(() => {
+            overlay.classList.remove("opacity-0");
+            box.classList.remove("opacity-0", "scale-90");
+            box.classList.add("opacity-100", "scale-100");
+        }, 10);
+
     }
 
-    document.querySelectorAll(".otp").forEach((input, index, arr) => {
+    document.querySelectorAll(".otp-box").forEach((input, index, arr) => {
 
         input.addEventListener("input", () => {
+
             if (input.value && arr[index + 1]) {
                 arr[index + 1].focus();
+            }
+
+            // Auto submit when full
+            let code = "";
+            arr.forEach(i => code += i.value);
+
+            if (code.length === 6) {
+                verifyAccountAccess();
+            }
+
+        });
+
+        // Backspace support
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace" && !input.value && arr[index - 1]) {
+                arr[index - 1].focus();
             }
         });
 
@@ -1120,12 +1187,22 @@
     }
 
     function closeAccountModal() {
-        const modal = document.getElementById("accountModal");
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
 
-        document.querySelectorAll(".otp").forEach(i => i.value = "");
-        document.getElementById("authError").innerText = "";
+        const modal = document.getElementById("accountModal");
+        const overlay = document.getElementById("modalOverlay");
+        const box = document.getElementById("modalBox");
+
+        overlay.classList.add("opacity-0");
+        box.classList.add("opacity-0", "scale-90");
+
+        setTimeout(() => {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+
+            document.querySelectorAll(".otp-box").forEach(i => i.value = "");
+            document.getElementById("authError").innerText = "";
+
+        }, 300);
     }
 </script>
 

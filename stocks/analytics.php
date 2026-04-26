@@ -24,6 +24,16 @@
     .otp-box:not(:placeholder-shown) {
         border-color: #6366f1;
     }
+
+    @keyframes shake {
+        0%,100% { transform: translateX(0); }
+        25% { transform: translateX(-6px); }
+        75% { transform: translateX(6px); }
+    }
+
+    .animate-shake {
+        animation: shake 0.3s;
+    }
 </style>
 <!-- ================= DASHBOARD CONTENT ================= -->
 <div class="max-w-7xl mx-auto px-6 mt-12">
@@ -1094,31 +1104,40 @@
 </script>
 
 <script>
-    function openAccountAuth() {
 
-        const lockUntil = localStorage.getItem("account_lock");
+// ===== OPEN MODAL =====
+function openAccountAuth() {
 
-        if (lockUntil && Date.now() < parseInt(lockUntil)) {
-            const mins = Math.ceil((lockUntil - Date.now()) / 60000);
-            alert(`Locked. Try again in ${mins} minutes`);
-            return;
-        }
+    const lockUntil = localStorage.getItem("account_lock");
 
-        const modal = document.getElementById("accountModal");
-        const overlay = document.getElementById("modalOverlay");
-        const box = document.getElementById("modalBox");
-
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-
-        // animate
-        setTimeout(() => {
-            overlay.classList.remove("opacity-0");
-            box.classList.remove("opacity-0", "scale-90");
-            box.classList.add("opacity-100", "scale-100");
-        }, 10);
-
+    if (lockUntil && Date.now() < parseInt(lockUntil)) {
+        const mins = Math.ceil((lockUntil - Date.now()) / 60000);
+        alert(`Locked. Try again in ${mins} minutes`);
+        return;
     }
+
+    const modal = document.getElementById("accountModal");
+    const overlay = document.getElementById("modalOverlay");
+    const box = document.getElementById("modalBox");
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+
+    setTimeout(() => {
+        overlay.classList.remove("opacity-0");
+        box.classList.remove("opacity-0", "scale-90");
+        box.classList.add("opacity-100", "scale-100");
+    }, 10);
+
+    // focus first input
+    setTimeout(() => {
+        document.querySelector(".otp-box").focus();
+    }, 300);
+}
+
+
+// ===== OTP INPUT HANDLING =====
+document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll(".otp-box").forEach((input, index, arr) => {
 
@@ -1128,7 +1147,6 @@
                 arr[index + 1].focus();
             }
 
-            // Auto submit when full
             let code = "";
             arr.forEach(i => code += i.value);
 
@@ -1138,7 +1156,6 @@
 
         });
 
-        // Backspace support
         input.addEventListener("keydown", (e) => {
             if (e.key === "Backspace" && !input.value && arr[index - 1]) {
                 arr[index - 1].focus();
@@ -1147,35 +1164,68 @@
 
     });
 
-    function verifyAccountAccess() {
+});
 
-        const inputs = document.querySelectorAll(".otp");
-        let code = "";
 
-        inputs.forEach(i => code += i.value);
+// ===== VERIFY WITH LOADING =====
+function verifyAccountAccess() {
+
+    const inputs = document.querySelectorAll(".otp-box");
+    let code = "";
+
+    inputs.forEach(i => code += i.value);
+
+    if (code.length < 6) return;
+
+    const btn = document.querySelector("#modalBox button");
+
+    // show loading
+    btn.innerHTML = "Verifying...";
+    btn.disabled = true;
+
+    setTimeout(() => {
 
         const correct = "123654";
-
         let attempts = parseInt(localStorage.getItem("account_attempts") || 0);
 
         if (code === correct) {
 
             localStorage.removeItem("account_attempts");
 
-            window.location.href = "accounts.php"; // 👉 your page
+            btn.innerHTML = "Success ✓";
+            btn.classList.remove("bg-indigo-600","bg-blue-600");
+            btn.classList.add("bg-green-600");
+
+            setTimeout(() => {
+                window.location.href = "accounts.php";
+            }, 500);
 
             return;
         }
 
+        // ❌ WRONG CODE
         attempts++;
         localStorage.setItem("account_attempts", attempts);
 
         document.getElementById("authError").innerText = "Wrong code";
 
-        // 🔒 Lock after 5 tries
+        // clear inputs
+        document.querySelectorAll(".otp-box").forEach(i => i.value = "");
+        document.querySelector(".otp-box").focus();
+
+        // shake animation
+        const box = document.getElementById("modalBox");
+        box.classList.add("animate-shake");
+        setTimeout(() => box.classList.remove("animate-shake"), 300);
+
+        // reset button
+        btn.innerHTML = "Verify Access";
+        btn.disabled = false;
+
+        // 🔒 LOCK AFTER 5 ATTEMPTS
         if (attempts >= 5) {
 
-            const lockTime = Date.now() + (5 * 60 * 1000); // 5 mins
+            const lockTime = Date.now() + (5 * 60 * 1000);
 
             localStorage.setItem("account_lock", lockTime);
             localStorage.removeItem("account_attempts");
@@ -1184,26 +1234,39 @@
 
             closeAccountModal();
         }
-    }
 
-    function closeAccountModal() {
+    }, 2000); // ⏳ 2 sec loading
 
-        const modal = document.getElementById("accountModal");
-        const overlay = document.getElementById("modalOverlay");
-        const box = document.getElementById("modalBox");
+}
 
-        overlay.classList.add("opacity-0");
-        box.classList.add("opacity-0", "scale-90");
 
-        setTimeout(() => {
-            modal.classList.add("hidden");
-            modal.classList.remove("flex");
+// ===== CLOSE MODAL =====
+function closeAccountModal() {
 
-            document.querySelectorAll(".otp-box").forEach(i => i.value = "");
-            document.getElementById("authError").innerText = "";
+    const modal = document.getElementById("accountModal");
+    const overlay = document.getElementById("modalOverlay");
+    const box = document.getElementById("modalBox");
 
-        }, 300);
-    }
+    overlay.classList.add("opacity-0");
+    box.classList.add("opacity-0", "scale-90");
+
+    setTimeout(() => {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+
+        document.querySelectorAll(".otp-box").forEach(i => i.value = "");
+        document.getElementById("authError").innerText = "";
+
+        // reset button
+        const btn = document.querySelector("#modalBox button");
+        btn.innerHTML = "Verify Access";
+        btn.disabled = false;
+        btn.classList.remove("bg-green-600");
+        btn.classList.add("bg-indigo-600");
+
+    }, 300);
+}
+
 </script>
 
 <?php include 'footer.php'; ?>

@@ -4,28 +4,31 @@
 <meta charset="UTF-8">
 <title>Accounts - Profit Analytics</title>
 <script src="https://cdn.tailwindcss.com"></script>
-
+<?php
+    $config = include('../admin/configs/config.php');
+    $baseUrl   = $config['API_BASE_URL'];
+?>
 <style>
-.card {
-    background: white;
-    padding: 18px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    transition: 0.2s;
-}
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 35px rgba(0,0,0,0.08);
-}
-.card p {
-    color: #6b7280;
-    font-size: 14px;
-}
-.card h2 {
-    font-size: 22px;
-    font-weight: bold;
-    margin-top: 6px;
-}
+    .card {
+        background: white;
+        padding: 18px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        transition: 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 35px rgba(0,0,0,0.08);
+    }
+    .card p {
+        color: #6b7280;
+        font-size: 14px;
+    }
+    .card h2 {
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 6px;
+    }
 </style>
 </head>
 
@@ -101,7 +104,7 @@ function loadProfitAnalytics() {
 
     const token = localStorage.getItem("token");
 
-    fetch("{{base_url}}/admin/stocks/sales-order/profit-margin", {
+    fetch("<?= $baseUrl ?>/admin/stocks/sales-order/profit-margin", {
         method: "POST",
         headers: {
             "Authorization": "Bearer " + token,

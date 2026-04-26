@@ -484,7 +484,7 @@
         ====================== */
 
         document.getElementById("stock_value").innerText =
-            `₹${data.stock_data.stock_value}`;
+            `₹${parseFloat(data.stock_data.stock_value).toFixed(2)}`;
 
         document.getElementById("stock_qty").innerText =
             data.stock_data.total_stock_qty;
@@ -501,7 +501,7 @@
         ====================== */
 
         document.getElementById("sales_stock_value").innerText =
-            `₹${data.total_data.total_sales_stock_value}`;
+            `₹${parseFloat(data.total_data.total_sales_stock_value).toFixed(2)}`;
 
         document.getElementById("total_sales").innerText =
             `₹${data.total_data.total_sales}`;

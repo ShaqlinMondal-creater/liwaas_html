@@ -136,8 +136,8 @@
     </div>
 
 
-    <!-- ===== EXTRA ===== -->
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-10">
+    <!-- ===== FINAL SUMMARY ROW ===== -->
+    <div class="grid grid-cols-2 md:grid-cols-6 gap-6 mb-10">
 
         <div class="card">
             <p>Total Tax</p>
@@ -154,24 +154,25 @@
             <h2 id="total_items_sold">0</h2>
         </div>
 
-    </div>
-
-    <!-- Payment Process -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-
-        <div class="bg-white rounded-2xl shadow p-6">
-            <p class="text-gray-500">This Month Paid</p>
-            <h2 id="monthly_paid" class="text-xl font-bold mt-2 text-green-600">₹0</h2>
+        <div class="card text-green-600">
+            <p>This Month Paid</p>
+            <h2 id="monthly_paid">₹0</h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow p-6">
-            <p class="text-gray-500">This Month Due</p>
-            <h2 id="monthly_due" class="text-xl font-bold mt-2 text-red-600">₹0</h2>
+        <div class="card text-red-600">
+            <p>This Month Due</p>
+            <h2 id="monthly_due">₹0</h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow p-6">
-            <p class="text-gray-500">Target Progress</p>
-            <h2 id="target_progress" class="text-xl font-bold mt-2 text-indigo-600">0%</h2>
+        <div class="card text-indigo-600">
+            <p>Target Progress</p>
+
+            <h2 id="progress_percent">0%</h2>
+
+            <!-- Progress Bar -->
+            <div class="mt-2 bg-gray-200 h-2 rounded">
+                <div id="progress_bar" class="bg-indigo-600 h-2 rounded transition-all duration-500" style="width:0%"></div>
+            </div>
         </div>
 
     </div>
@@ -513,7 +514,7 @@
 
 
         /* ======================
-        EXTRA
+        FINAL SUMMARY
         ====================== */
 
         document.getElementById("total_tax").innerText =
@@ -525,16 +526,28 @@
         document.getElementById("total_items_sold").innerText =
             data.total_data.total_items_sold;
 
-
-        // Payment Process
         document.getElementById("monthly_paid").innerText =
             `₹${data.this_month_data.monthly_paid}`;
 
         document.getElementById("monthly_due").innerText =
             `₹${data.this_month_data.monthly_due}`;
 
-        document.getElementById("target_progress").innerText =
-            `${data.this_month_data.target_progress_percent}%`;
+        const percent = data.this_month_data.target_progress_percent;
+        // set text
+        document.getElementById("progress_percent").innerText = percent + "%";
+
+        // set progress bar width
+        const bar = document.getElementById("progress_bar");
+        bar.style.width = percent + "%";
+
+        // dynamic color
+        if (percent < 30) {
+            bar.className = "bg-red-500 h-2 rounded transition-all duration-500";
+        } else if (percent < 70) {
+            bar.className = "bg-yellow-500 h-2 rounded transition-all duration-500";
+        } else {
+            bar.className = "bg-green-500 h-2 rounded transition-all duration-500";
+        }
 
         /* ======================
         MONTH CHART

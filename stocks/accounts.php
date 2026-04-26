@@ -99,7 +99,7 @@
         // ===== LOAD PROFIT DATA =====
         function loadProfitAnalytics() {
 
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("auth_token");
 
             fetch("<?= $baseUrl ?>/admin/stocks/sales-order/profit-margin", {
                 method: "POST",

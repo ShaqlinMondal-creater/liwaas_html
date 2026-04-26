@@ -2,15 +2,38 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Accounts</title>
+<title>Accounts - Profit Analytics</title>
 <script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+.card {
+    background: white;
+    padding: 18px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    transition: 0.2s;
+}
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 35px rgba(0,0,0,0.08);
+}
+.card p {
+    color: #6b7280;
+    font-size: 14px;
+}
+.card h2 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 6px;
+}
+</style>
 </head>
 
 <body class="bg-gray-100 p-6">
 
 <!-- HEADER -->
 <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold text-gray-800">Accounts</h1>
+    <h1 class="text-2xl font-bold text-gray-800">Accounts (Profit Analytics)</h1>
 
     <button onclick="window.history.back()" 
         class="bg-gray-600 text-white px-4 py-2 rounded">
@@ -18,164 +41,129 @@
     </button>
 </div>
 
-<!-- SUMMARY -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+<!-- ===== TOP CARDS ===== -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
 
-    <div class="bg-white p-4 rounded-xl shadow">
-        <p class="text-gray-500 text-sm">Total Sales</p>
-        <h2 class="text-xl font-bold">₹ 7,128</h2>
+    <div class="card">
+        <p>Total Sell Value</p>
+        <h2 id="total_sell_value">₹0</h2>
     </div>
 
-    <div class="bg-white p-4 rounded-xl shadow">
-        <p class="text-gray-500 text-sm">Total Paid</p>
-        <h2 class="text-xl font-bold text-green-600">₹ 500</h2>
+    <div class="card">
+        <p>Total Stock Value</p>
+        <h2 id="total_stock_value">₹0</h2>
     </div>
 
-    <div class="bg-white p-4 rounded-xl shadow">
-        <p class="text-gray-500 text-sm">Total Due</p>
-        <h2 class="text-xl font-bold text-red-600">₹ 6,628</h2>
+    <div class="card text-green-600">
+        <p>Total Profit</p>
+        <h2 id="total_profit">₹0</h2>
+    </div>
+
+    <div class="card text-indigo-600">
+        <p>Profit Margin</p>
+        <h2 id="profit_margin">0%</h2>
     </div>
 
 </div>
 
-<!-- FILTER -->
-<div class="flex gap-3 mb-4 flex-wrap">
+<!-- ===== TABLE ===== -->
+<div class="bg-white rounded-xl shadow p-4">
 
-    <input id="acc_search" type="text" placeholder="Search client..."
-        class="border px-3 py-2 rounded w-48">
-
-    <select id="acc_status" class="border px-2 py-2 rounded">
-        <option value="">All Status</option>
-        <option value="paid">Paid</option>
-        <option value="partial">Partial</option>
-        <option value="due">Due</option>
-    </select>
-
-</div>
-
-<!-- TABLE -->
-<div class="bg-white rounded-xl shadow overflow-x-auto">
+    <h3 class="text-lg font-bold mb-4">Monthly Profit</h3>
 
     <table class="min-w-full text-sm">
-
         <thead class="bg-gray-100">
             <tr>
-                <th class="px-4 py-2 text-left">Order No</th>
-                <th class="px-4 py-2">Date</th>
-                <th class="px-4 py-2">Client</th>
-                <th class="px-4 py-2">Total</th>
-                <th class="px-4 py-2">Paid</th>
-                <th class="px-4 py-2">Due</th>
-                <th class="px-4 py-2">Status</th>
+                <th class="px-4 py-2 text-left">Month</th>
+                <th class="px-4 py-2">Sell Value</th>
+                <th class="px-4 py-2">Stock Value</th>
+                <th class="px-4 py-2">Profit</th>
+                <th class="px-4 py-2">Margin %</th>
             </tr>
         </thead>
 
-        <tbody id="accountsTable"></tbody>
-
+        <tbody id="profitTable"></tbody>
     </table>
 
 </div>
 
+
 <script>
 
-// SAMPLE DATA
-let accountsData = [
-    {
-        order_no: "SO1776369736",
-        date: "2026-04-17",
-        client: "Zisan",
-        total: 998,
-        paid: 200,
-        due: 798,
-        status: "partial"
-    },
-    {
-        order_no: "SO1776334309",
-        date: "2026-04-16",
-        client: "Sananda Bastralay",
-        total: 2560,
-        paid: 2560,
-        due: 0,
-        status: "paid"
-    },
-    {
-        order_no: "SO1776333505",
-        date: "2026-04-16",
-        client: "Sananda Bastralay",
-        total: 3520,
-        paid: 0,
-        due: 3520,
-        status: "due"
-    }
-];
+// ===== FORMAT MONEY =====
+function formatMoney(val) {
+    return "₹" + parseFloat(val || 0).toFixed(2);
+}
 
-function renderAccounts(data) {
 
-    const table = document.getElementById("accountsTable");
-    table.innerHTML = "";
+// ===== LOAD PROFIT DATA =====
+function loadProfitAnalytics() {
 
-    if (!data.length) {
-        table.innerHTML = `
-            <tr>
-                <td colspan="7" class="text-center py-6 text-gray-500">
-                    No records found
-                </td>
-            </tr>
-        `;
-        return;
-    }
+    const token = localStorage.getItem("token");
 
-    data.forEach(item => {
+    fetch("{{base_url}}/admin/stocks/sales-order/profit-margin", {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json"
+        }
+    })
+    .then(res => res.json())
+    .then(res => {
 
-        let statusBadge = "";
-
-        if (item.status === "paid") {
-            statusBadge = `<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">Paid</span>`;
-        } else if (item.status === "partial") {
-            statusBadge = `<span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">Partial</span>`;
-        } else {
-            statusBadge = `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs">Due</span>`;
+        if (!res.status) {
+            alert("Failed to load data");
+            return;
         }
 
-        table.innerHTML += `
-        <tr class="border-b">
-            <td class="px-4 py-2">${item.order_no}</td>
-            <td class="px-4 py-2">${item.date}</td>
-            <td class="px-4 py-2">${item.client}</td>
-            <td class="px-4 py-2">₹${item.total}</td>
-            <td class="px-4 py-2 text-green-600">₹${item.paid}</td>
-            <td class="px-4 py-2 text-red-600">₹${item.due}</td>
-            <td class="px-4 py-2">${statusBadge}</td>
-        </tr>
-        `;
+        const data = res.data;
+
+        // ===== TOP DATA =====
+        document.getElementById("total_sell_value").innerText =
+            formatMoney(data.total_profit_data.total_sell_value);
+
+        document.getElementById("total_stock_value").innerText =
+            formatMoney(data.total_profit_data.total_stock_value);
+
+        document.getElementById("total_profit").innerText =
+            formatMoney(data.total_profit_data.total_profit);
+
+        document.getElementById("profit_margin").innerText =
+            data.total_profit_data.profit_margin + "%";
+
+
+        // ===== TABLE =====
+        const table = document.getElementById("profitTable");
+        table.innerHTML = "";
+
+        data.month_wise_profit.forEach(item => {
+
+            const month = Object.keys(item)[0];
+            const val = item[month];
+
+            let rowColor = val.profit > 0 ? "text-green-600" : "text-gray-600";
+
+            table.innerHTML += `
+            <tr class="border-b">
+                <td class="px-4 py-2 capitalize font-semibold">${month}</td>
+                <td class="px-4 py-2">${formatMoney(val.sell_value)}</td>
+                <td class="px-4 py-2">${formatMoney(val.total_sales_stock_value)}</td>
+                <td class="px-4 py-2 ${rowColor}">${formatMoney(val.profit)}</td>
+                <td class="px-4 py-2">${val.profit_margin}%</td>
+            </tr>
+            `;
+        });
+
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Something went wrong");
     });
 }
 
-// FILTER
-function applyFilter() {
 
-    const search = document.getElementById("acc_search").value.toLowerCase();
-    const status = document.getElementById("acc_status").value;
-
-    const filtered = accountsData.filter(item => {
-
-        return (
-            (!search || item.client.toLowerCase().includes(search)) &&
-            (!status || item.status === status)
-        );
-
-    });
-
-    renderAccounts(filtered);
-}
-
-// EVENTS
-["acc_search","acc_status"].forEach(id => {
-    document.getElementById(id).addEventListener("input", applyFilter);
-});
-
-// INIT
-renderAccounts(accountsData);
+// ===== INIT =====
+loadProfitAnalytics();
 
 </script>
 

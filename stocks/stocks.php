@@ -796,13 +796,21 @@
                 const name = tr.children[2].innerText.trim();
                 const size = tr.children[3].innerText.trim();
                 const price = tr.children[6].innerText.replace("₹","").trim();
-
+                const color = tr.children[4].innerText.trim();   // ✅ ADD
+                const stock = tr.children[7].innerText.trim();
+                
                 table.innerHTML += `
 
                     <tr class="orderRow">
                         <td class="px-4 py-2">
                             ${name} <br>
-                            <span class="text-xs text-gray-500">Size: ${size}</span>
+                            <span class="text-xs text-gray-500">
+                                ${color} | Size: ${size}
+                            </span><br>
+
+                            <span class="text-xs text-blue-600">
+                                Available: ${stock}
+                            </span>
                             <input type="hidden" class="item_uid" value="${uid}">
                         </td>
 

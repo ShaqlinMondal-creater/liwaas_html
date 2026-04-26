@@ -119,7 +119,6 @@
 </div>
 
 <!-- ADD PRODUCT MODAL -->
-
 <div id="addProductModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
 
     <div class="bg-white rounded-xl w-full max-w-lg p-6">
@@ -167,6 +166,49 @@
                 Save
             </button>
 
+        </div>
+
+    </div>
+
+</div>
+
+<!-- EDIT PRODUCT MODAL -->
+<div id="editStockModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+
+    <div class="bg-white rounded-xl w-full max-w-lg p-6">
+
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Update Stock</h2>
+            <button onclick="closeEditStockModal()">✕</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+
+            <input id="e_name" class="border px-3 py-2 rounded col-span-2" disabled>
+
+            <input id="e_size" class="border px-3 py-2 rounded" disabled>
+            <input id="e_color" class="border px-3 py-2 rounded" disabled>
+
+            <input id="e_list_price" type="number" class="border px-3 py-2 rounded">
+            <input id="e_sale_price" type="number" class="border px-3 py-2 rounded">
+
+            <input id="e_stock" type="number" class="border px-3 py-2 rounded">
+
+            <select id="e_status" class="border px-3 py-2 rounded">
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+            </select>
+
+        </div>
+
+        <div class="flex justify-end mt-6 gap-3">
+            <button onclick="closeEditStockModal()" class="bg-gray-200 px-4 py-2 rounded">
+                Cancel
+            </button>
+
+            <button onclick="updateStock()" class="bg-indigo-600 text-white px-4 py-2 rounded">
+                Update
+            </button>
         </div>
 
     </div>
@@ -312,6 +354,22 @@
 
     }
 
+    async function updateStockAPI(payload) {
+
+        const token = localStorage.getItem("auth_token");
+
+        const res = await fetch(BASE_URL + "/stocks/edit-stock", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify(payload)
+        });
+
+        return await res.json();
+    }
+
     async function deleteStockAPI(ids)
     {
 
@@ -442,7 +500,7 @@
         if(!response.status) return;
 
         total = response.total;
-
+        window.stockData = response.data;
         renderStocks(response.data);
 
     }
@@ -506,7 +564,7 @@
                         <i class="fas fa-eye"></i>
                     </button>
 
-                    <button class="text-yellow-600">
+                    <button onclick="openEditStock(${item.id})" class="text-yellow-600">
                         <i class="fas fa-edit"></i>
                     </button>
 
@@ -592,6 +650,55 @@
 
     }
 
+    let editingStockId = null;
+
+    function openEditStock(id) {
+
+        editingStockId = id;
+
+        const item = window.stockData.find(i => i.id === id);
+        if (!item) return;
+
+        document.getElementById("e_name").value = item.name;
+        document.getElementById("e_size").value = item.size;
+        document.getElementById("e_color").value = item.color;
+
+        document.getElementById("e_list_price").value = item.list_price;
+        document.getElementById("e_sale_price").value = item.sale_price;
+        document.getElementById("e_stock").value = item.stock;
+
+        document.getElementById("e_status").value = item.status;
+
+        document.getElementById("editStockModal").classList.remove("hidden");
+        document.getElementById("editStockModal").classList.add("flex");
+    }
+    function closeEditStockModal() {
+        const modal = document.getElementById("editStockModal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex"); // ✅ IMPORTANT
+    }
+    async function updateStock() {
+
+        const payload = {
+            id: editingStockId,
+            list_price: parseFloat(document.getElementById("e_list_price").value),
+            sale_price: parseFloat(document.getElementById("e_sale_price").value),
+            stock: parseInt(document.getElementById("e_stock").value),
+            status: parseInt(document.getElementById("e_status").value)
+        };
+
+        const res = await updateStockAPI(payload);
+
+        if (!res.status) {
+            alert("Update failed");
+            return;
+        }
+
+        alert(res.message);
+
+        closeEditStockModal();
+        loadStocks(offset); // refresh
+    }
     async function deleteSingle(id)
     {
 

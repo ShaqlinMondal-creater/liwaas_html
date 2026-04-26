@@ -16,6 +16,11 @@
                 class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
                 Admin Dashboard
             </a>
+
+            <button onclick="openAccountAuth()" 
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+                Accounts
+            </button>
         </div>
     </div>
 
@@ -308,6 +313,32 @@
             <div id="stockContainer"></div>
 
         </div>
+    </div>
+
+</div>
+
+<div id="accountModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+
+    <div class="bg-white p-6 rounded-xl text-center w-full max-w-sm">
+
+        <h2 class="text-lg font-bold mb-4">Enter Access Code</h2>
+
+        <div class="flex justify-center gap-2 mb-4">
+            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
+            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
+            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
+            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
+            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
+            <input maxlength="1" class="otp w-10 h-10 border text-center text-lg">
+        </div>
+
+        <p id="authError" class="text-red-500 text-sm mb-2"></p>
+
+        <button onclick="verifyAccountAccess()" 
+            class="bg-blue-600 text-white px-4 py-2 rounded">
+            Verify
+        </button>
+
     </div>
 
 </div>
@@ -1022,6 +1053,80 @@
     loadAnalytics();
     loadTransactions();
     loadReturnItems();
+</script>
+
+<script>
+    function openAccountAuth() {
+
+        const lockUntil = localStorage.getItem("account_lock");
+
+        if (lockUntil && Date.now() < parseInt(lockUntil)) {
+            const mins = Math.ceil((lockUntil - Date.now()) / 60000);
+            alert(`Locked. Try again in ${mins} minutes`);
+            return;
+        }
+
+        document.getElementById("accountModal").classList.remove("hidden");
+        document.getElementById("accountModal").classList.add("flex");
+    }
+
+    document.querySelectorAll(".otp").forEach((input, index, arr) => {
+
+        input.addEventListener("input", () => {
+            if (input.value && arr[index + 1]) {
+                arr[index + 1].focus();
+            }
+        });
+
+    });
+
+    function verifyAccountAccess() {
+
+        const inputs = document.querySelectorAll(".otp");
+        let code = "";
+
+        inputs.forEach(i => code += i.value);
+
+        const correct = "123654";
+
+        let attempts = parseInt(localStorage.getItem("account_attempts") || 0);
+
+        if (code === correct) {
+
+            localStorage.removeItem("account_attempts");
+
+            window.location.href = "accounts.php"; // 👉 your page
+
+            return;
+        }
+
+        attempts++;
+        localStorage.setItem("account_attempts", attempts);
+
+        document.getElementById("authError").innerText = "Wrong code";
+
+        // 🔒 Lock after 5 tries
+        if (attempts >= 5) {
+
+            const lockTime = Date.now() + (5 * 60 * 1000); // 5 mins
+
+            localStorage.setItem("account_lock", lockTime);
+            localStorage.removeItem("account_attempts");
+
+            alert("Too many attempts. Locked for 5 minutes.");
+
+            closeAccountModal();
+        }
+    }
+
+    function closeAccountModal() {
+        const modal = document.getElementById("accountModal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+
+        document.querySelectorAll(".otp").forEach(i => i.value = "");
+        document.getElementById("authError").innerText = "";
+    }
 </script>
 
 <?php include 'footer.php'; ?>

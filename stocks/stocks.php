@@ -517,21 +517,6 @@
 
         const table = document.getElementById("stocksTable");
 
-        let rowClass = "";
-
-        // 🔴 Stock zero or negative
-        if (parseInt(item.stock) <= 0) {
-            rowClass = "bg-red-100";
-
-        // 🟠 Inactive
-        } else if (parseInt(item.status) === 0) {
-            rowClass = "bg-orange-100";
-
-        // 🟢 Good stock
-        } else if (parseInt(item.stock) > 5) {
-            rowClass = "bg-green-50";
-        }
-
         table.innerHTML = "";
 
         data.forEach(item => {
@@ -540,6 +525,24 @@
             ? `<span class="text-green-600">Active</span>`
             : `<span class="text-red-600">Inactive</span>`;
 
+            let rowClass = "";
+
+            // 🔴 Stock zero or negative
+            if (parseInt(item.stock) <= 0) {
+                rowClass = "bg-red-100";
+
+            // 🟠 Inactive
+            } else if (parseInt(item.status) === 0) {
+                rowClass = "bg-orange-100";
+
+            // 🟢 Good stock
+            } else if (parseInt(item.stock) > 5) {
+                rowClass = "bg-green-50";
+
+            } else if (item.stock <= 2) {
+                rowClass = "bg-yellow-50"; // low stock warning
+            }
+            
             table.innerHTML += `
             
             <tr class="border-b ${rowClass}">

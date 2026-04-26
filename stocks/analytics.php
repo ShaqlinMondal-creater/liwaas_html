@@ -34,7 +34,31 @@
     .animate-shake {
         animation: shake 0.3s;
     }
+    .card {
+        background: white;
+        padding: 18px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        transition: 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 35px rgba(0,0,0,0.08);
+    }
+
+    .card p {
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .card h2 {
+        font-size: 22px;
+        font-weight: bold;
+        margin-top: 6px;
+    }
 </style>
+
 <!-- ================= DASHBOARD CONTENT ================= -->
 <div class="max-w-7xl mx-auto px-6 mt-12">
 
@@ -60,41 +84,74 @@
     </div>
 
     <!-- Analytics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-7 gap-6 mb-10">
+    <!-- ===== STOCK DATA ===== -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
 
-        <div class="bg-white rounded-2xl shadow p-6">
-            <p class="text-gray-500">Total Sales</p>
-            <h2 id="total_sales" class="text-2xl font-bold mt-2">₹0</h2>
+        <div class="card">
+            <p>Stock Value</p>
+            <h2 id="stock_value">₹0</h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow p-6">
-            <p class="text-gray-500">Total Paid</p>
-            <h2 id="total_paid" class="text-2xl font-bold mt-2 text-green-600">₹0</h2>
+        <div class="card">
+            <p>Total Qty</p>
+            <h2 id="stock_qty">0</h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow p-6">
-            <p class="text-gray-500">Total Due</p>
-            <h2 id="total_due" class="text-2xl font-bold mt-2 text-red-600">₹0</h2>
+        <div class="card">
+            <p>Total Products</p>
+            <h2 id="stock_products">0</h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow p-6">
-            <p class="text-gray-500">Total Orders</p>
-            <h2 id="total_orders" class="text-2xl font-bold mt-2">0</h2>
+        <div class="card">
+            <p>Low Stock</p>
+            <h2 id="low_stock_products">0</h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow p-6">
-            <p class="text-gray-500">Total Tax</p>
-            <h2 id="total_tax" class="text-2xl font-bold mt-2">₹0</h2>
+    </div>
+
+
+    <!-- ===== SALES CORE ===== -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+
+        <div class="card bg-indigo-50">
+            <p>Sales Stock Value</p>
+            <h2 id="sales_stock_value">₹0</h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow p-6">
-            <p class="text-gray-500">Total Products</p>
-            <h2 id="total_products" class="text-2xl font-bold mt-2">0</h2>
+        <div class="card">
+            <p>Total Sales</p>
+            <h2 id="total_sales">₹0</h2>
         </div>
 
-        <div class="bg-white rounded-2xl shadow p-6">
-            <p class="text-gray-500">Low Stock</p>
-            <h2 id="low_stock" class="text-2xl font-bold mt-2">0</h2>
+        <div class="card text-green-600">
+            <p>Total Paid</p>
+            <h2 id="total_paid">₹0</h2>
+        </div>
+
+        <div class="card text-red-600">
+            <p>Total Due</p>
+            <h2 id="total_due">₹0</h2>
+        </div>
+
+    </div>
+
+
+    <!-- ===== EXTRA ===== -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-10">
+
+        <div class="card">
+            <p>Total Tax</p>
+            <h2 id="total_tax">₹0</h2>
+        </div>
+
+        <div class="card">
+            <p>Total Orders</p>
+            <h2 id="total_orders">0</h2>
+        </div>
+
+        <div class="card">
+            <p>Total Items Sold</p>
+            <h2 id="total_items_sold">0</h2>
         </div>
 
     </div>
@@ -422,8 +479,28 @@
         const data = result.data;
 
         /* ======================
-        TOTAL DATA
+        STOCK DATA
         ====================== */
+
+        document.getElementById("stock_value").innerText =
+            `₹${data.stock_data.stock_value}`;
+
+        document.getElementById("stock_qty").innerText =
+            data.stock_data.total_stock_qty;
+
+        document.getElementById("stock_products").innerText =
+            data.stock_data.total_products;
+
+        document.getElementById("low_stock_products").innerText =
+            data.stock_data.low_stock_products;
+
+
+        /* ======================
+        SALES CORE
+        ====================== */
+
+        document.getElementById("sales_stock_value").innerText =
+            `₹${data.total_data.total_sales_stock_value}`;
 
         document.getElementById("total_sales").innerText =
             `₹${data.total_data.total_sales}`;
@@ -434,17 +511,19 @@
         document.getElementById("total_due").innerText =
             `₹${data.total_data.total_due}`;
 
-        document.getElementById("total_orders").innerText =
-            data.total_data.total_orders;
+
+        /* ======================
+        EXTRA
+        ====================== */
 
         document.getElementById("total_tax").innerText =
             `₹${data.total_data.total_tax}`;
 
-        document.getElementById("total_products").innerText =
-            data.total_data.total_products;
+        document.getElementById("total_orders").innerText =
+            data.total_data.total_orders;
 
-        document.getElementById("low_stock").innerText =
-            data.total_data.low_stock_products;
+        document.getElementById("total_items_sold").innerText =
+            data.total_data.total_items_sold;
 
 
         // Payment Process

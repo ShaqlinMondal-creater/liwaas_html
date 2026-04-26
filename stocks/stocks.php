@@ -19,6 +19,17 @@
                 + Add Product
             </button>
         </div>
+        <div class="flex items-center gap-2">
+            <span class="text-sm text-gray-600">Show:</span>
+
+            <select id="limitSelect" class="border px-2 py-1 rounded">
+                <option value="20">20</option>
+                <option value="40" selected>40</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+            </select>
+        </div>
     </div>
 
     <!-- Filters -->
@@ -542,7 +553,7 @@
             } else if (item.stock <= 2) {
                 rowClass = "bg-yellow-50"; // low stock warning
             }
-            
+
             table.innerHTML += `
             
             <tr class="border-b ${rowClass}">
@@ -1025,6 +1036,12 @@
         });
 
         document.getElementById("color").addEventListener("change", function () {
+            loadStocks(0);
+        });
+
+        // ✅ ADD THIS PART
+        document.getElementById("limitSelect").addEventListener("change", function () {
+            limit = parseInt(this.value);
             loadStocks(0);
         });
 

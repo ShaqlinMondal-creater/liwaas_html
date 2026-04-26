@@ -517,6 +517,21 @@
 
         const table = document.getElementById("stocksTable");
 
+        let rowClass = "";
+
+        // 🔴 Stock zero or negative
+        if (parseInt(item.stock) <= 0) {
+            rowClass = "bg-red-100";
+
+        // 🟠 Inactive
+        } else if (parseInt(item.status) === 0) {
+            rowClass = "bg-orange-100";
+
+        // 🟢 Good stock
+        } else if (parseInt(item.stock) > 5) {
+            rowClass = "bg-green-50";
+        }
+
         table.innerHTML = "";
 
         data.forEach(item => {
@@ -527,7 +542,7 @@
 
             table.innerHTML += `
             
-            <tr class="border-t">
+            <tr class="border-b ${rowClass}">
 
                 <td class="px-6 py-4">
                     <input type="checkbox" class="rowCheckbox" value="${item.id}">

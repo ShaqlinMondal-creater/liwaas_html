@@ -382,8 +382,7 @@
         <p id="authError" class="text-red-500 text-center text-sm mb-3"></p>
 
         <!-- Button -->
-        <button onclick="verifyAccountAccess()" 
-            class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-3 rounded-xl font-semibold hover:scale-[1.02] transition">
+        <button id="verifyBtn" class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-3 rounded-xl font-semibold">
             Verify Access
         </button>
 

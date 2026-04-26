@@ -2,33 +2,43 @@
 
 <div class="max-w-7xl mx-auto px-6 mt-12">
 
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-6 flex-wrap gap-3">
+        <!-- LEFT -->
         <h1 class="text-3xl font-bold text-gray-800">Stocks</h1>
 
-        <div class="flex flex-wrap gap-3 md:flex-nowrap">
+        <!-- RIGHT -->
+        <div class="flex flex-wrap items-center gap-3">
+
+            <!-- Buttons -->
             <button class="bg-green-600 text-white px-4 py-2 rounded-lg">
                 Export Excel
             </button>
+
             <button onclick="openSalesOrderModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg">
                 Generate Order
             </button>
+
             <button onclick="deleteSelected()" class="bg-red-700 text-white px-4 py-2 rounded-lg">
                 Delete Selected
             </button>
+
             <button onclick="openAddModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
                 + Add Product
             </button>
-        </div>
-        <div class="flex items-center gap-2">
-            <span class="text-sm text-gray-600">Show:</span>
 
-            <select id="limitSelect" class="border px-2 py-1 rounded">
-                <option value="20">20</option>
-                <option value="40" selected>40</option>
-                <option value="100">100</option>
-                <option value="150">150</option>
-                <option value="200">200</option>
-            </select>
+            <!-- Limit -->
+            <div class="flex items-center gap-2 ml-2">
+                <span class="text-sm text-gray-600">Show:</span>
+
+                <select id="limitSelect" class="border px-2 py-1 rounded">
+                    <option value="20">20</option>
+                    <option value="40" selected>40</option>
+                    <option value="100">100</option>
+                    <option value="150">150</option>
+                    <option value="200">200</option>
+                </select>
+            </div>
+
         </div>
     </div>
 
